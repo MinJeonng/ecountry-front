@@ -1,9 +1,9 @@
-import Setting from './pages/Setting';
+import Setting1 from './components/Setting1';
 
 function App() {
   return (
     <div className="App">
-      <Background />
+      <Setting1 />
     </div>
   );
 }

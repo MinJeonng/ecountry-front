@@ -1,0 +1,50 @@
+.background{
+    width: 100vw;
+    height: 100vh;
+    background-color: #75A47F;
+    display:flex; 
+    flex-direction: column;
+    justify-content:center; 
+    align-items:center;
+    transition: background-color 2s ease;
+}
+
+.logo-wrap{
+    display:flex;
+    flex-direction: column;
+    /* width: ; */
+}
+.logo-wrap .logo-img{
+
+}
+.logo-wrap .logo-title{
+
+}
+.button-wrap{
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: visibility 0s, opacity 1s ease;
+    width: 100%;
+    height: 15%;
+}
+.big-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 35%;
+    color: #093030;
+    margin: 2%;
+    border-radius: 18px;
+}
+.button1{
+    background-color: #75A47F;
+}
+.button2{
+    background-color: #BACD92;
+}
+
+

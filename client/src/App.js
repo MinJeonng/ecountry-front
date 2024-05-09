@@ -1,9 +1,9 @@
-import Setting1 from './components/Setting1';
+import Setting2 from './components/Setting2';
 
 function App() {
   return (
     <div className="App">
-      <Setting1 />
+      <Setting2 />
     </div>
   );
 }

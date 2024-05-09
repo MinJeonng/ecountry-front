@@ -1,7 +1,6 @@
 $under-line: #e9ae24;
 
 .select-common {
-  width: -webkit-fill-available;
   border: none;
   border-bottom: 1px solid $under-line;
   background-color: transparent;
@@ -17,19 +16,25 @@ $under-line: #e9ae24;
   }
 }
 
-.select-student-id-title {
+.set-country-title {
   color: #a5a5a5;
 }
 
-.select-school-name {
+.set-country-detail {
+  width: -webkit-fill-available;
   @extend .select-common;
 }
 
-.select-student-id {
+.set-salary {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+
+  .set-salary-text {
+    margin: 10px 0 20px 0;
+  }
 
   select {
+    width: 80%;
     @extend .select-common;
   }
 }

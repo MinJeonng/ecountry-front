@@ -5,14 +5,14 @@ $bg-color2: #bacd92;
   background: linear-gradient(to left, $bg-color1, $bg-color2);
 
   .bgTop {
-    height: 140px;
+    height: 160px;
   }
 
   .bgBottom {
-    padding: 30px 20px;
+    padding: 50px 20px;
     height: 100%;
     background-color: #ffffff;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
   }
 }

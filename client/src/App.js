@@ -3,7 +3,7 @@ import Setting from './pages/Setting';
 function App() {
   return (
     <div className="App">
-      <Setting />
+      <Background />
     </div>
   );
 }

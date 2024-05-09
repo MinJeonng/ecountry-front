@@ -1,0 +1,18 @@
+$bg-color1: #75a47f;
+$bg-color2: #bacd92;
+
+.wrap {
+  background: linear-gradient(to left, $bg-color1, $bg-color2);
+
+  .bgTop {
+    height: 160px;
+  }
+
+  .bgBottom {
+    padding: 50px 20px;
+    height: 100%;
+    background-color: #ffffff;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+  }
+}

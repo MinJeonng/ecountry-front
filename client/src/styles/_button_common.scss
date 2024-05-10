@@ -1,0 +1,27 @@
+.big-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 35%;
+  color: #093030;
+  margin: 2%;
+  border-radius: 18px;
+}
+
+.navi-btn {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+
+  .next-button {
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #bacd92;
+    background-color: #bacd92;
+    width: 40%;
+    border-radius: 18px;
+    margin: 20px 0;
+    padding: 6px 15px;
+  }
+}

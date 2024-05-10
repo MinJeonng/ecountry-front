@@ -1,0 +1,67 @@
+$under-line: #e9ae24;
+
+@import '../styles/variables';
+@import '../styles/input_common';
+
+@include mobile {
+  .title-list {
+    font-size: 14px;
+    margin: 10px 0;
+
+    li {
+      margin-left: 20px;
+      list-style: disc;
+      font-size: 12px;
+      color: #777777;
+    }
+  }
+
+  .box-style {
+    @include boxStyle-common;
+
+    .select-student-id-title {
+      color: #a5a5a5;
+      font-size: 14px;
+    }
+
+    .select-school-name {
+      width: -webkit-fill-available;
+      @include select-common;
+    }
+
+    .select-student-id {
+      display: flex;
+      flex-direction: column;
+
+      select {
+        width: -webkit-fill-available;
+        @include select-common;
+      }
+    }
+  }
+
+  .set-country-title {
+    color: #a5a5a5;
+    font-size: 14px;
+  }
+
+  .set-country-detail {
+    width: -webkit-fill-available;
+    @include select-common;
+  }
+
+  .set-salary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .set-salary-text {
+      margin: 10px 0 20px 0;
+      font-size: 14px;
+    }
+
+    select {
+      @include select-common;
+    }
+  }
+}

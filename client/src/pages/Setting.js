@@ -1,12 +1,12 @@
 import React from 'react';
+import Background from '../components/Background';
 
 import '../styles/background.scss';
 
 export default function Setting() {
   return (
-    <div className="wrap">
-      <div className="bgTop"></div>
-      <div className="bgBottom"></div>
-    </div>
+    <>
+      <Background></Background>
+    </>
   );
 }

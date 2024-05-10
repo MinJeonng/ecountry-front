@@ -8,3 +8,13 @@ $under-line: #e9ae24;
   padding: 5px 10px;
   margin: 10px 0 20px 0;
 }
+.boxStyle-common {
+  width: calc(100% - 40px);
+  background-color: #f5f6f6;
+  margin: 20px;
+  height: 300px;
+  border-radius: 18px;
+  box-sizing: border-box;
+  z-index: 10;
+  position: relative;
+}

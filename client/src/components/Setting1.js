@@ -18,13 +18,16 @@ export default function Setting1() {
   const classSelect = (event) => {
     setSelectedClass(event.target.value);
   };
+
   return (
     <div>
       <div>반 정보 입력</div>
       <ul className="title-list">
         <li>학교, 학년, 반 정보를 입력하세요&#46;</li>
       </ul>
+
       <form className="box-style">
+
         <div className="select-school">
           <div className="select-student-id-title">초등학교</div>
           <input className="select-school-name" type="text" />
@@ -51,6 +54,7 @@ export default function Setting1() {
             ))}
           </select>
         </div>
+
       </form>
     </div>
   );

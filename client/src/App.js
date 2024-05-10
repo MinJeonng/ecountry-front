@@ -4,7 +4,9 @@ import Intro from './pages/Intro';
 import Login from './pages/Login';
 import Setting from './pages/Setting';
 
+
 import './styles/reset.css';
+
 
 function App() {
   return (

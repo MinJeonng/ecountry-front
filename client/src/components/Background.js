@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Setting1 from './Setting1';
 import Setting2 from './Setting2';
@@ -19,6 +20,9 @@ export default function Background() {
     // 다음 컴포넌트로 전환
     setCurrentIndex((prevIndex) => prevIndex + 1);
   };
+
+
+export default function Background(props) {
 
   // 현재 인덱스에 해당하는 컴포넌트를 렌더링합니다.
   const CurrentSetting = settings[currentIndex];

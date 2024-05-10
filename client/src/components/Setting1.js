@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import '../styles/_input_common.scss';
-import '../styles/background.scss';
-import '../styles/Setting1.scss';
-
 export default function Setting1() {
   const [selectedGrade, setSelectedGrade] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
@@ -27,7 +23,6 @@ export default function Setting1() {
       </ul>
 
       <form className="box-style">
-
         <div className="select-school">
           <div className="select-student-id-title">초등학교</div>
           <input className="select-school-name" type="text" />
@@ -54,7 +49,6 @@ export default function Setting1() {
             ))}
           </select>
         </div>
-
       </form>
     </div>
   );

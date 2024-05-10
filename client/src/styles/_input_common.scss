@@ -5,7 +5,7 @@ $under-line: #e9ae24;
   border-bottom: 1px solid $under-line;
   background-color: transparent;
   outline: none;
-  padding: 5px 10px;
+  padding: 5px;
   margin: 10px 0 20px 0;
 }
 
@@ -18,4 +18,7 @@ $under-line: #e9ae24;
   box-sizing: border-box;
   z-index: 10;
   position: relative;
+}
+
+@mixin big-button {
 }

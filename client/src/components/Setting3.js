@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Background from './Background';
 
+
 export default function Setting3() {
   const [directInput, setDirectUInput] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -69,5 +70,6 @@ export default function Setting3() {
         </>
       )}
     </>
+
   );
 }

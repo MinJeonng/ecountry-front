@@ -1,6 +1,6 @@
 $under-line: #e9ae24;
 
-.select-common {
+@mixin select-common {
   border: none;
   border-bottom: 1px solid $under-line;
   background-color: transparent;
@@ -8,6 +8,7 @@ $under-line: #e9ae24;
   padding: 5px 10px;
   margin: 10px 0 20px 0;
 }
+
 .boxStyle-common {
   width: calc(100% - 40px);
   background-color: #f5f6f6;

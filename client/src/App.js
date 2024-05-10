@@ -1,8 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Intro from './pages/Intro';
 import Login from './pages/Login';
+
 import Setting from './pages/Setting';
-import StudentSetting from './components/StudentSetting';
+
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/intro" element={<Intro />} />
           <Route path="/user/login" element={<Login />} />
+          <Route path="/setting1" element={<Setting1 />} />
 
           <Route path="/setting" element={<Setting />} />
         </Routes>

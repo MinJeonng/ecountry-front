@@ -1,11 +1,7 @@
-
 import Intro from './pages/Intro';
-
 import Background from './components/Background';
-
-// import logo from './logo.svg';
-import './App.css';
 import InputContainer from './components/InputContainer';
+import StudentSetting from './components/StudentSetting';
 
 function App() {
   return (
@@ -13,6 +9,7 @@ function App() {
       <Intro />
       <Background />
      <InputContainer />
+     <StudentSetting />
     </div>
   );
 }

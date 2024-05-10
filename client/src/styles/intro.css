@@ -14,12 +14,12 @@
     flex-direction: column;
     /* width: ; */
 }
-.logo-wrap .logo-img{
+/* .logo-wrap .logo-img{
 
 }
 .logo-wrap .logo-title{
 
-}
+} */
 .button-wrap{
     visibility: hidden;
     display: flex;

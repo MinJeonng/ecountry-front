@@ -1,0 +1,36 @@
+$under-line: #e9ae24;
+
+.select-common {
+  border: none;
+  border-bottom: 1px solid $under-line;
+  background-color: transparent;
+  outline: none;
+  padding: 5px 10px;
+  margin: 10px 0 20px 0;
+}
+
+.title-list {
+  font-size: 12px;
+  li {
+    color: #777777;
+  }
+}
+
+.select-student-id-title {
+  color: #a5a5a5;
+}
+
+.select-school-name {
+  width: -webkit-fill-available;
+  @extend .select-common;
+}
+
+.select-student-id {
+  display: flex;
+  flex-direction: column;
+
+  select {
+    width: -webkit-fill-available;
+    @extend .select-common;
+  }
+}

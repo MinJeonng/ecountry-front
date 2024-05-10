@@ -1,4 +1,4 @@
-import BackGround from '../components/BackGround';
+import BackGround from '../components/Background';
 import InputContainer from '../components/InputContainer';
 
 export default function Login() {

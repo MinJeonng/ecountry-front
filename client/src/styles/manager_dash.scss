@@ -1,0 +1,19 @@
+@import '../styles/variables';
+
+@include mobile {
+  .managerInfo {
+    width: calc(100% - 40px);
+    height: auto;
+    display: flex;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    // margin-left: 30px;
+    margin: 30px auto;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .InfoPart1 {
+    display: flex;
+    align-items: center;
+  }
+}

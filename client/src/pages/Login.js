@@ -9,9 +9,7 @@ export default function Login() {
   );
   return (
     <>
-
-      <Background mian={inputContainer} />
-
+      <Background main={inputContainer} />
     </>
   );
 }

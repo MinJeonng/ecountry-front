@@ -1,10 +1,5 @@
 import React from 'react';
 
-import Background from './Background';
-
-import '../styles/background.scss';
-import '../styles/setting4.scss';
-
 export default function Setting4() {
   return (
     <>

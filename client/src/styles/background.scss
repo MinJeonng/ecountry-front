@@ -4,6 +4,7 @@ $bg-color2: #bacd92;
 @import '../styles/variables';
 .wrap {
   position: relative;
+
   @include mobile {
     // .wrap {
     //   position: relative;

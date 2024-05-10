@@ -93,6 +93,11 @@ video {
   font-family: 'Noto Sans KR', sans-serif, '돋움';
   vertical-align: baseline;
 }
+
+input,
+button {
+  font-family: 'Noto Sans KR', sans-serif, '돋움';
+}
 /* HTML5 display-role reset for older browsers */
 article,
 aside,

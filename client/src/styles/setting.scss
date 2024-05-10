@@ -9,7 +9,7 @@ $under-line: #e9ae24;
     margin: 10px 0;
 
     li {
-      margin: 0 20px;
+      margin-left: 20px;
       list-style: disc;
       font-size: 12px;
       color: #777777;
@@ -37,6 +37,31 @@ $under-line: #e9ae24;
         width: -webkit-fill-available;
         @include select-common;
       }
+    }
+  }
+
+  .set-country-title {
+    color: #a5a5a5;
+    font-size: 14px;
+  }
+
+  .set-country-detail {
+    width: -webkit-fill-available;
+    @include select-common;
+  }
+
+  .set-salary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .set-salary-text {
+      margin: 10px 0 20px 0;
+      font-size: 14px;
+    }
+
+    select {
+      @include select-common;
     }
   }
 }

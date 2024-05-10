@@ -1,7 +1,7 @@
 import React from 'react';
 import Background from './Background';
 
-export default function StudentSetting() {
+export default function Setting3() {
   const titleContent = (
     <div className="title-wrap">
       <div className="title">학생 파일 업로드</div>

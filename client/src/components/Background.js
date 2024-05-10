@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../styles/background.scss';
 
-export default function Background() {
+export default function BackGround() {
   return (
     <div className="wrap">
       <div className="bgTop"></div>

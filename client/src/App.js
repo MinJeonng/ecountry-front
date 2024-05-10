@@ -1,18 +1,18 @@
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Intro from './pages/Intro';
-
-import Background from './components/Background';
-
-// import logo from './logo.svg';
-import './App.css';
-import InputContainer from './components/InputContainer';
+import Login from './pages/Login';
 
 function App() {
   return (
     <div className="App">
-      <Intro />
-      <Background />
-     <InputContainer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/intro" element={<Intro />} />
+          <Route path="/user/login" element={<Login />} />
+
+          {/* <Route path = "/setting" element = {} /> */}
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

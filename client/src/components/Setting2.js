@@ -11,12 +11,10 @@ export default function Setting2() {
 
   return (
     <div>
-      <Background />
       <div>국가 이름 &#47; 화폐 단위 &#47; 금여 지급일 설정</div>
       <ul className="title-list">
         <li>국가의 이름과 화폐 단위&#44; 급여 지급일을 설정하세요&#46;</li>
       </ul>
-      <InputContainer />
       <form>
         <div className="set-country">
           <div className="set-country-title">국가 이름</div>
@@ -39,8 +37,6 @@ export default function Setting2() {
           </select>
           <span className="set-salary-text">일</span>
         </div>
-
-        <button>다음</button>
       </form>
     </div>
   );

@@ -1,0 +1,24 @@
+//반응형 크기
+$mobile: 1159px;
+$semiMobile: 850px;
+$desktop: 1160px;
+
+//반응형 , 1200px 미만
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+//850px이상 1159px 미만
+@mixin semiMobile {
+  @media (min-width: $semiMobile) and (max-width: $mobile) {
+    @content;
+  }
+}
+
+//desktop
+@mixin desktop {
+  @media (min-width: $desktop) {
+    @content;
+  }
+}

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
+
 import { useNavigate } from 'react-router-dom';
+
 // import '../styles/Setting1.scss';
 // import '../styles/Setting2.scss';
 // import '../styles/setting4.scss';

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Intro from './pages/Intro';
 import Login from './pages/Login';
 import Setting from './pages/Setting';
+import Signup from './pages/Signup';
 // import StudentSetting from './components/StudentSetting';
 import ManagerDashBoard from './pages/ManagerDashBoard';
 import './styles/common.scss';
@@ -16,6 +17,7 @@ function App() {
           {/* intro는 나중에 router 삭제할 예정 */}
           <Route path="/intro" element={<Intro />} />
           <Route path="/user/login" element={<Login />} />
+            <Route path="/user/signup" element={<Signup />} />
           <Route
             path="/setting/schoolInfo"
             element={<Setting position="학교 정보 입력" />}
@@ -28,7 +30,6 @@ function App() {
             path="/setting/studentInfo"
             element={<Setting position="학생 정보 입력" />}
           />
-
           <Route
             path="/setting/seatingMap"
             element={<Setting position="자리배치도" />}

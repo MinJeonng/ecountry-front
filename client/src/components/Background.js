@@ -19,8 +19,6 @@ import {
 // import Setting9 from './Setting9';
 // import Setting3_1 from './Setting3_1';
 
-
-
 export default function Background() {
   const [settings, setSettings] = useState([
     Setting1,
@@ -29,12 +27,10 @@ export default function Background() {
     Setting4,
     Setting5,
     Setting6,
-    Setting7,
-    Setting8,
-    Setting9,
-
+    // Setting7,
+    // Setting8,
+    // Setting9,
   ]);
-
 
   // 현재 컴포넌트 인덱스
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -47,7 +43,6 @@ export default function Background() {
     setCurrentIndex((prevIndex) => prevIndex - 1);
   };
 
-
   const CurrentSetting = settings[currentIndex];
 
   return (
@@ -57,7 +52,6 @@ export default function Background() {
         <CurrentSetting />
         {currentIndex > 0 && <button onClick={beforeSetting}>이전</button>}
         <button onClick={nextSetting}>다음</button>
-
       </div>
     </div>
   );

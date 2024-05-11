@@ -1,6 +1,4 @@
 import React from 'react';
-import Background from '../components/Background';
-
 import '../styles/background.scss';
 
 import {
@@ -10,23 +8,34 @@ import {
   Setting4,
   Setting5,
   Setting6,
+  Setting7,
+  Setting8,
+  Setting9,
 } from '../components/Setting';
 
 import '../styles/_input_common.scss';
 import '../styles/setting.scss';
 import '../styles/_button_common.scss';
+import Template from '../components/Template';
 
-
-export default function Setting() {
+export default function Setting({ position }) {
   return (
     <>
-      <Background />
-      {/* {position === '설정1' && <Setting1 />}
-      {position === '설정2' && <Setting2 />}
-      {position === '설정3' && <Setting3 />}
-      {position === '설정4' && <Setting4 />}
-      {position === '설정5' && <Setting5 />}
-      {position === '설정6' && <Setting6 />} */}
+      <Template
+        childrenBottom={
+          <>
+            {position === '학교 정보 입력' && <Setting1 />}
+            {position === '국가 정보 입력' && <Setting2 />}
+            {position === '학생 정보 입력' && <Setting3 />}
+            {position === '자리배치도' && <Setting4 />}
+            {position === '직업리스트' && <Setting5 />}
+            {position === '기본 법 제정' && <Setting6 />}
+            {position === '세법' && <Setting7 />}
+            {position === '자리임대료' && <Setting8 />}
+            {position === '과태료' && <Setting9 />}
+          </>
+        }
+      />
     </>
   );
 }

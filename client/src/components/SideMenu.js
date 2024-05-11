@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as IcoClose } from '../images/icon-close.svg';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SideBox = styled.div`
   position: fixed;
@@ -39,6 +40,7 @@ const SideBox = styled.div`
 `;
 
 export function SideMenuComponent({ func }) {
+  const location = useLocation();
   return (
     <>
       {/* <ContainerBoard>

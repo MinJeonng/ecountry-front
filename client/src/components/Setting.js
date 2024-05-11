@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
-import '../styles/Setting1.scss';
-import '../styles/Setting2.scss';
-import '../styles/setting4.scss';
+import { useNavigate } from 'react-router-dom';
+// import '../styles/Setting1.scss';
+// import '../styles/Setting2.scss';
+// import '../styles/setting4.scss';
 
 export function Setting1() {
+  const navigate = useNavigate();
   const [selectedGrade, setSelectedGrade] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
@@ -19,6 +21,10 @@ export function Setting1() {
 
   const classSelect = (event) => {
     setSelectedClass(event.target.value);
+  };
+
+  const nextSetting = () => {
+    navigate('/setting/countryInfo');
   };
 
   return (
@@ -55,6 +61,8 @@ export function Setting1() {
             ))}
           </select>
         </div>
+
+        <button onClick={nextSetting}>다음</button>
       </form>
     </div>
   );
@@ -62,6 +70,13 @@ export function Setting1() {
 
 export function Setting2() {
   const days = Array.from({ length: 31 }, (_, index) => index + 1);
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/schoolInfo');
+  };
+  const nextSetting = () => {
+    navigate('/setting/studentInfo');
+  };
 
   return (
     <div>
@@ -91,12 +106,21 @@ export function Setting2() {
           </select>
           <span className="set-salary-text">일</span>
         </div>
+        <button onClick={beforeSetting}>이전</button>
+        <button onClick={nextSetting}>다음</button>
       </form>
     </div>
   );
 }
 
 export function Setting3() {
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/countryInfo');
+  };
+  const nextSetting = () => {
+    navigate('/setting/seatingMap');
+  };
   return (
     <>
       <div className="title-wrap">
@@ -109,11 +133,20 @@ export function Setting3() {
           </li>
         </ul>
       </div>
+      <button onClick={beforeSetting}>이전</button>
+      <button onClick={nextSetting}>다음</button>
     </>
   );
 }
 
 export function Setting4() {
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/studentInfo');
+  };
+  const nextSetting = () => {
+    navigate('/setting/jobList');
+  };
   return (
     <>
       <div className="title-list">
@@ -122,11 +155,20 @@ export function Setting4() {
           <li>교실 내의 자리 배치를 설정하세요&#46;</li>
         </ul>
       </div>
+      <button onClick={beforeSetting}>이전</button>
+      <button onClick={nextSetting}>다음</button>
     </>
   );
 }
 
 export function Setting5() {
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/seatingMap');
+  };
+  const nextSetting = () => {
+    navigate('/setting/law');
+  };
   return (
     <>
       <div className="title-list">
@@ -139,11 +181,20 @@ export function Setting5() {
           <li>기본적으로 제공되는 직업 외에 직업을 추가할 수 있습니다&#46;</li>
         </ul>
       </div>
+      <button onClick={beforeSetting}>이전</button>
+      <button onClick={nextSetting}>다음</button>
     </>
   );
 }
 
 export function Setting6() {
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/jobList');
+  };
+  const nextSetting = () => {
+    navigate('/setting/taxLaw');
+  };
   return (
     <>
       <div className="title-list">
@@ -152,6 +203,71 @@ export function Setting6() {
           <li>국가에 필수인 기본법을 제정하세요&#46;</li>
         </ul>
       </div>
+      <button onClick={beforeSetting}>이전</button>
+      <button onClick={nextSetting}>다음</button>
+    </>
+  );
+}
+
+export function Setting7() {
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/law');
+  };
+  const nextSetting = () => {
+    navigate('/setting/seatRental');
+  };
+  return (
+    <>
+      <div className="title-wrap">
+        <div>세법 제정</div>
+        <ul className="title-list">
+          <li>국가에 필수인 세법을 제정하세요&#46;</li>
+        </ul>
+      </div>
+      <button onClick={beforeSetting}>이전</button>
+      <button onClick={nextSetting}>다음</button>
+    </>
+  );
+}
+
+export function Setting8() {
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/taxLaw');
+  };
+  const nextSetting = () => {
+    navigate('/setting/fine');
+  };
+  return (
+    <>
+      <div className="title-wrap">
+        <div>자리 임대료</div>
+        <ul className="title-list">
+          <li>자리 임대료를 설정하세요&#46;</li>
+        </ul>
+      </div>
+      <button onClick={beforeSetting}>이전</button>
+      <button onClick={nextSetting}>다음</button>
+    </>
+  );
+}
+
+export function Setting9() {
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/seatRental');
+  };
+
+  return (
+    <>
+      <div className="title-wrap">
+        <div>벌금 설정</div>
+        <ul className="title-list">
+          <li>국가에 필수인 벌금을 제정하세요&#46;</li>
+        </ul>
+      </div>
+      <button onClick={beforeSetting}>이전</button>
     </>
   );
 }

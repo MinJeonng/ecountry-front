@@ -13,15 +13,46 @@ function App() {
     <div className="App Contain">
       <BrowserRouter>
         <Routes>
+          {/* intro는 나중에 router 삭제할 예정 */}
           <Route path="/intro" element={<Intro />} />
           <Route path="/user/login" element={<Login />} />
-          <Route path="/setting" element={<Setting position="설정1" />} />
-          <Route path="/setting/2" element={<Setting position="설정2" />} />
-          <Route path="/setting/3" element={<Setting position="설정3" />} />
+          <Route
+            path="/setting/schoolInfo"
+            element={<Setting position="학교 정보 입력" />}
+          />
+          <Route
+            path="/setting/countryInfo"
+            element={<Setting position="국가 정보 입력" />}
+          />
+          <Route
+            path="/setting/studentInfo"
+            element={<Setting position="학생 정보 입력" />}
+          />
 
-          <Route path="/setting/4" element={<Setting position="설정4" />} />
-          <Route path="/setting/5" element={<Setting position="설정5" />} />
-          <Route path="/setting/6" element={<Setting position="설정6" />} />
+          <Route
+            path="/setting/seatingMap"
+            element={<Setting position="자리배치도" />}
+          />
+          <Route
+            path="/setting/jobList"
+            element={<Setting position="직업리스트" />}
+          />
+          <Route
+            path="/setting/law"
+            element={<Setting position="기본 법 제정" />}
+          />
+          <Route
+            path="/setting/taxLaw"
+            element={<Setting position={'세법'} />}
+          />
+          <Route
+            path="/setting/seatRental"
+            element={<Setting position={'자리임대료'} />}
+          />
+          <Route
+            path="/setting/fine"
+            element={<Setting position={'과태료'} />}
+          />
 
           <Route path="/manager" element={<ManagerDashBoard />} />
 

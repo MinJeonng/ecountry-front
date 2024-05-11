@@ -181,7 +181,9 @@ export function Setting3() {
       <div className="title-wrap">
         <div className="title">학생 파일 업로드</div>
         <ul className="title-list">
-          <li>아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요.</li>
+          <li>
+            아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요&#46;
+          </li>
           <li>
             만약 엑셀 업로드가 불가할 경우 '직접 입력' 버튼을 눌러 학생 정보를
             기입할 수 있습니다.
@@ -283,6 +285,50 @@ export function Setting3() {
 }
 
 export function Setting4() {
+  const [columns, setColumns] = useState([
+    { id: 1, label: '1열', rowCount: '' },
+    { id: 2, label: '2열', rowCount: '' },
+  ]);
+
+  const [tableRows, setTableRows] = useState([]);
+
+  const addColumn = () => {
+    const newColumn = {
+      id: columns.length + 1,
+      label: `${columns.length + 1}열`,
+      rowCount: '',
+    };
+    setColumns([...columns, newColumn]);
+  };
+
+  const removeColumn = (id) => {
+    setColumns(columns.filter((column) => column.id !== id));
+  };
+
+  const rowCountChange = (id, rowCount) => {
+    setColumns(
+      columns.map((column) => {
+        if (column.id === id) {
+          return { ...column, rowCount };
+        }
+        return column;
+      })
+    );
+  };
+
+  const showTable = () => {
+    const rows = [];
+    columns.forEach((column) => {
+      const count = parseInt(column.rowCount);
+      if (!isNaN(count) && count > 0) {
+        for (let i = 0; i < count; i++) {
+          rows.push({ columnId: column.id, rowId: i + 1 });
+        }
+      }
+    });
+    setTableRows(rows);
+  };
+
   const navigate = useNavigate();
   const beforeSetting = () => {
     navigate('/setting/studentInfo');
@@ -298,9 +344,89 @@ export function Setting4() {
           <li>교실 내의 자리 배치를 설정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+
+
+      <form>
+        {columns.map((column) => (
+          <div key={column.id}>
+            <div>{column.label}</div>
+            <select
+              value={column.rowCount}
+              onChange={(e) => rowCountChange(column.id, e.target.value)}
+            >
+              <option value=""></option>
+              {[...Array(10)].map((_, index) => (
+                <option key={index} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
+            <div>명</div>
+          </div>
+        ))}
+        <div>
+          <button type="button" onClick={addColumn}>
+            +
+          </button>
+          {columns.length > 2 && (
+            <button
+              type="button"
+              onClick={() => removeColumn(columns[columns.length - 1].id)}
+            >
+              -
+            </button>
+          )}
+        </div>
+
+        <div>
+          <button type="button" onClick={showTable}>
+            미리보기
+          </button>
+        </div>
+
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>1열</th>
+                <th>2열</th>
+                <th>3열</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="navi-btn">
+          <button className="next-button" type="submit" onClick={beforeSetting}>
+            이전
+          </button>
+          <button className="next-button" type="submit" onClick={nextSetting}>
+            다음
+          </button>
+        </div>
+      </form>
+    </div>
+
   );
 }
 
@@ -324,9 +450,28 @@ export function Setting5() {
           <li>기본적으로 제공되는 직업 외에 직업을 추가할 수 있습니다&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+
+      <form className="box-style">
+        <div>
+          <div className="set-title">직업명</div>
+          <select className="set-input" type="text"></select>
+          <div className="set-title">급여</div>
+          <input className="set-input" type="text" />
+        </div>
+      </form>
+
+      <form>
+        <div className="navi-btn">
+          <button className="next-button" type="submit" onClick={beforeSetting}>
+            이전
+          </button>
+          <button className="next-button" type="submit" onClick={nextSetting}>
+            다음
+          </button>
+        </div>
+      </form>
+    </div>
+
   );
 }
 

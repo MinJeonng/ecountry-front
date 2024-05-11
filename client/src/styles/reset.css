@@ -1,6 +1,6 @@
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
-   License: none (public domain)
+   License: none ( domain)
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
@@ -97,6 +97,7 @@ video {
 input,
 button {
   font-family: 'Noto Sans KR', sans-serif, '돋움';
+  cursor: 'pointer';
 }
 /* HTML5 display-role reset for older browsers */
 article,

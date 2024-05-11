@@ -6,6 +6,9 @@ import Setting from './pages/Setting';
 import Signup from './pages/Signup';
 // import StudentSetting from './components/StudentSetting';
 import ManagerDashBoard from './pages/ManagerDashBoard';
+
+import NOTFOUND from './pages/NOTFOUND';
+
 import './styles/common.scss';
 import './styles/reset.css';
 
@@ -17,7 +20,7 @@ function App() {
           {/* intro는 나중에 router 삭제할 예정 */}
           <Route path="/intro" element={<Intro />} />
           <Route path="/user/login" element={<Login />} />
-            <Route path="/user/signup" element={<Signup />} />
+          <Route path="/user/signup" element={<Signup />} />
           <Route
             path="/setting/schoolInfo"
             element={<Setting position="학교 정보 입력" />}
@@ -58,6 +61,8 @@ function App() {
           <Route path="/manager" element={<ManagerDashBoard />} />
 
           {/* <Route path = "/setting" element = {} /> */}
+
+          <Route path="*" element={<NOTFOUND />} />
         </Routes>
       </BrowserRouter>
     </div>

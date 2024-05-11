@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-
-import '../styles/_input_common.scss';
-import '../styles/background.scss';
-
 import { useNavigate } from 'react-router-dom';
-
-// import '../styles/Setting1.scss';
-// import '../styles/Setting2.scss';
-// import '../styles/setting4.scss';
 
 export function Setting1() {
   const navigate = useNavigate();
@@ -31,10 +23,12 @@ export function Setting1() {
 
   return (
     <div>
-      <div>반 정보 입력</div>
-      <ul className="title-list">
-        <li>학교, 학년, 반 정보를 입력하세요&#46;</li>
-      </ul>
+      <div className="title-wrap">
+        <div>반 정보 입력</div>
+        <ul className="title-list">
+          <li>학교, 학년, 반 정보를 입력하세요&#46;</li>
+        </ul>
+      </div>
 
       <form className="box-style">
         <div className="select-school">
@@ -64,7 +58,13 @@ export function Setting1() {
           </select>
         </div>
 
-        <button onClick={nextSetting}>다음</button>
+        <button
+          className="frist-next-button"
+          type="submit"
+          onClick={nextSetting}
+        >
+          다음
+        </button>
       </form>
     </div>
   );
@@ -82,11 +82,14 @@ export function Setting2() {
 
   return (
     <div>
-      <div>국가 이름 &#47; 화폐 단위 &#47; 금여 지급일 설정</div>
-      <ul className="title-list">
-        <li>국가의 이름과 화폐 단위&#44; 급여 지급일을 설정하세요&#46;</li>
-      </ul>
-      <form>
+      <div className="title-wrap">
+        <div>국가 이름 &#47; 화폐 단위 &#47; 금여 지급일 설정</div>
+        <ul className="title-list">
+          <li>국가의 이름과 화폐 단위&#44; 급여 지급일을 설정하세요&#46;</li>
+        </ul>
+      </div>
+
+      <form className="box-style">
         <div className="set-country">
           <div className="set-country-title">국가 이름</div>
           <input className="set-country-detail" type="text" />
@@ -98,18 +101,26 @@ export function Setting2() {
         <div className="set-country-title">급여 지급일</div>
         <div className="set-salary">
           <div className="set-salary-text">매월</div>
-          <select id="day">
-            <option value=""></option>
-            {days.map((day) => (
-              <option key={day} value={day}>
-                {day}
-              </option>
-            ))}
-          </select>
-          <span className="set-salary-text">일</span>
+          <div>
+            <select id="day">
+              <option value=""></option>
+              {days.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
+            <span className="set-salary-text">일</span>
+          </div>
         </div>
-        <button onClick={beforeSetting}>이전</button>
-        <button onClick={nextSetting}>다음</button>
+        <div className="navi-btn">
+          <button className="next-button" type="submit" onClick={beforeSetting}>
+            이전
+          </button>
+          <button className="next-button" type="submit" onClick={nextSetting}>
+            다음
+          </button>
+        </div>
       </form>
     </div>
   );
@@ -124,10 +135,10 @@ export function Setting3() {
     navigate('/setting/seatingMap');
   };
   return (
-    <>
+    <div>
       <div className="title-wrap">
         <div className="title">학생 파일 업로드</div>
-        <ul>
+        <ul className="title-list">
           <li>아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요.</li>
           <li>
             만약 엑셀 업로드가 불가할 경우 직접 입력 버튼을 눌러 학생 정보를
@@ -135,9 +146,16 @@ export function Setting3() {
           </li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+
+      <div className="navi-btn">
+        <button className="next-button" type="submit" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" type="submit" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -150,16 +168,22 @@ export function Setting4() {
     navigate('/setting/jobList');
   };
   return (
-    <>
-      <div className="title-list">
+    <div>
+      <div className="title-wrap">
         <div>자리 배치도</div>
         <ul className="title-list">
           <li>교실 내의 자리 배치를 설정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+      <div className="navi-btn">
+        <button className="next-button" type="submit" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" type="submit" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -172,8 +196,8 @@ export function Setting5() {
     navigate('/setting/law');
   };
   return (
-    <>
-      <div className="title-list">
+    <div>
+      <div className="title-wrap">
         <div>직업 리스트</div>
         <ul className="title-list">
           <li>국가 내의 다양한 직업과 급여를 설정하세요&#46;</li>
@@ -183,9 +207,16 @@ export function Setting5() {
           <li>기본적으로 제공되는 직업 외에 직업을 추가할 수 있습니다&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+
+      <div className="navi-btn">
+        <button className="next-button" type="submit" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" type="submit" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -198,16 +229,23 @@ export function Setting6() {
     navigate('/setting/taxLaw');
   };
   return (
-    <>
-      <div className="title-list">
+    <div>
+      <div className="title-wrap">
         <div>기본법 제정</div>
         <ul className="title-list">
           <li>국가에 필수인 기본법을 제정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+
+      <div className="navi-btn">
+        <button className="next-button" type="submit" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" type="submit" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -220,16 +258,23 @@ export function Setting7() {
     navigate('/setting/seatRental');
   };
   return (
-    <>
+    <div>
       <div className="title-wrap">
         <div>세법 제정</div>
         <ul className="title-list">
           <li>국가에 필수인 세법을 제정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+
+      <div className="navi-btn">
+        <button className="next-button" type="submit" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" type="submit" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -242,16 +287,22 @@ export function Setting8() {
     navigate('/setting/fine');
   };
   return (
-    <>
+    <div>
       <div className="title-wrap">
         <div>자리 임대료</div>
         <ul className="title-list">
           <li>자리 임대료를 설정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
-    </>
+      <div className="navi-btn">
+        <button className="next-button" type="submit" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" type="submit" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -262,7 +313,7 @@ export function Setting9() {
   };
 
   return (
-    <>
+    <div>
       <div className="title-wrap">
         <div>벌금 설정</div>
         <ul className="title-list">
@@ -270,6 +321,6 @@ export function Setting9() {
         </ul>
       </div>
       <button onClick={beforeSetting}>이전</button>
-    </>
+    </div>
   );
 }

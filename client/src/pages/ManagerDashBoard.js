@@ -101,7 +101,7 @@ export default function ManagerDashBoard() {
                 />
                 <ManagerName>홍길동 대통령</ManagerName>
               </div>
-              <Button style={{ fontSize: '15px', backgroundColor: '#D9D9D9' }}>
+              <Button style={{ fontSize: '14px', backgroundColor: '#D9D9D9' }}>
                 <Link to="/">초기세팅수정</Link>
               </Button>
             </div>

@@ -1,9 +1,12 @@
 @import '../styles/variables';
 .Contain {
   min-width: 320px;
-  // @include mobile {
-  //   .wrap {
-  //     margin: 30px;
-  //   }
-  // }
+  @include mobile {
+    a {
+      text-decoration: none;
+      &.hover {
+        cursor: pointer;
+      }
+    }
+  }
 }

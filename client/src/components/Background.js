@@ -1,11 +1,18 @@
-
 import React, { useState } from 'react';
-import Setting1 from './Setting1';
-import Setting2 from './Setting2';
-import Setting3 from './Setting3';
-import Setting4 from './Setting4';
-import Setting5 from './Setting5';
-import Setting6 from './Setting6';
+import {
+  Setting1,
+  Setting2,
+  Setting3,
+  Setting4,
+  Setting5,
+  Setting6,
+} from './Setting';
+// import Setting1 from './Setting1';
+// import Setting2 from './Setting2';
+// import Setting3 from './Setting3';
+// import Setting4 from './Setting4';
+// import Setting5 from './Setting5';
+// import Setting6 from './Setting6';
 
 import '../styles/background.scss';
 
@@ -20,9 +27,6 @@ export default function Background() {
     // 다음 컴포넌트로 전환
     setCurrentIndex((prevIndex) => prevIndex + 1);
   };
-
-
-export default function Background(props) {
 
   // 현재 인덱스에 해당하는 컴포넌트를 렌더링합니다.
   const CurrentSetting = settings[currentIndex];

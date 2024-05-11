@@ -2,18 +2,45 @@
 
 @include mobile {
   .managerInfo {
-    width: calc(100% - 40px);
+    // width: calc(100% - 40px);
     height: auto;
     display: flex;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     // margin-left: 30px;
-    margin: 30px auto;
+    // margin: 30px auto;
+    margin: 0 auto;
+
+    padding: 30px;
     justify-content: space-between;
     align-items: center;
+    position: relative;
   }
   .InfoPart1 {
     display: flex;
     align-items: center;
+  }
+  .content {
+    // border: 1px solid #d4fcd7;
+    background-color: #d9d9d9;
+    border-radius: 18px;
+    padding: 20px;
+    height: auto;
+
+    .newsHead {
+      font-weight: bold;
+      font-size: 19px;
+    }
+    .newsContent {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .registerBtn {
+      // border: 1px solid rgb(246, 193, 193);
+      border-radius: 4px;
+      background-color: #fff5d6;
+      padding: 5px;
+    }
   }
 }

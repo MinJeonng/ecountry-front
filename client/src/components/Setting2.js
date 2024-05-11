@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Background from './Background';
-import InputContainer from '../components/InputContainer';
 
 import '../styles/Setting2.scss';
 import '../styles/background.scss';

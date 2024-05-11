@@ -1,5 +1,10 @@
 import React from 'react';
 
+import Background from './Background';
+
+import '../styles/Setting2.scss';
+import '../styles/background.scss';
+
 export default function Setting2() {
   const days = Array.from({ length: 31 }, (_, index) => index + 1);
 

@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 
-import Setting1 from './Setting1';
-import Setting2 from './Setting2';
-import Setting3 from './Setting3';
-import Setting4 from './Setting4';
-import Setting5 from './Setting5';
-import Setting6 from './Setting6';
-import Setting7 from './Setting7';
-import Setting8 from './Setting8';
-import Setting9 from './Setting9';
-import Setting3_1 from './Setting3_1';
+import {
+  Setting1,
+  Setting2,
+  Setting3,
+  Setting4,
+  Setting5,
+  Setting6,
+} from './Setting';
+// import Setting1 from './Setting1';
+// import Setting2 from './Setting2';
+// import Setting3 from './Setting3';
+// import Setting4 from './Setting4';
+// import Setting5 from './Setting5';
+// import Setting6 from './Setting6';
+// import Setting7 from './Setting7';
+// import Setting8 from './Setting8';
+// import Setting9 from './Setting9';
+// import Setting3_1 from './Setting3_1';
+
 
 
 export default function Background() {

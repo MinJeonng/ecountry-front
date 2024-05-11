@@ -23,13 +23,30 @@ $under-line: #e9ae24;
       color: #a5a5a5;
       font-size: 14px;
     }
+    .select-title {
+      color: #a5a5a5;
+      font-size: 14px;
+    }
 
     .select-school-name {
       width: -webkit-fill-available;
       @include select-common;
     }
+    .select-name {
+      width: -webkit-fill-available;
+      @include select-common;
+    }
 
     .select-student-id {
+      display: flex;
+      flex-direction: column;
+
+      select {
+        width: -webkit-fill-available;
+        @include select-common;
+      }
+    }
+    .select-id {
       display: flex;
       flex-direction: column;
 
@@ -44,8 +61,16 @@ $under-line: #e9ae24;
     color: #a5a5a5;
     font-size: 14px;
   }
+  .set-title {
+    color: #a5a5a5;
+    font-size: 14px;
+  }
 
   .set-country-detail {
+    width: -webkit-fill-available;
+    @include select-common;
+  }
+  .set-input {
     width: -webkit-fill-available;
     @include select-common;
   }

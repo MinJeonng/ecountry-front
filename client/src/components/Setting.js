@@ -189,6 +189,8 @@ export function Setting4() {
 
 export function Setting5() {
   const navigate = useNavigate();
+  const jobList = [];
+
   const beforeSetting = () => {
     navigate('/setting/seatingMap');
   };
@@ -207,6 +209,14 @@ export function Setting5() {
           <li>기본적으로 제공되는 직업 외에 직업을 추가할 수 있습니다&#46;</li>
         </ul>
       </div>
+      <form className="box-style">
+        <div>
+          <div className="set-title">직업명</div>
+          <select className="set-input" type="text"></select>
+          <div className="set-title">급여</div>
+          <input className="set-input" type="text" />
+        </div>
+      </form>
 
       <div className="navi-btn">
         <button className="next-button" type="submit" onClick={beforeSetting}>

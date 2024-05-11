@@ -6,6 +6,9 @@ import Setting from './pages/Setting';
 import Signup from './pages/Signup';
 // import StudentSetting from './components/StudentSetting';
 import ManagerDashBoard from './pages/ManagerDashBoard';
+
+import NOTFOUND from './pages/NOTFOUND';
+
 import './styles/common.scss';
 import './styles/reset.css';
 
@@ -57,6 +60,8 @@ function App() {
           <Route path="/manager" element={<ManagerDashBoard />} />
 
           {/* <Route path = "/setting" element = {} /> */}
+
+          <Route path="*" element={<NOTFOUND />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -21,8 +21,10 @@ export default function ManagerDashBoard() {
               <div className="InfoPart1">
                 <MainProfile />
               </div>
+
               <Button style={{ fontSize: '15px', backgroundColor: '#D9D9D9' }}>
                 <Link to="/setting/schoolInfo">초기세팅수정</Link>
+
               </Button>
             </div>
           </>

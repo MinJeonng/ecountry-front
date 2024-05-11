@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/background.scss';
 
 import {
   Setting1,
@@ -12,11 +11,12 @@ import {
   Setting8,
   Setting9,
 } from '../components/Setting';
+import Template from '../components/Template';
 
+import '../styles/background.scss';
 import '../styles/_input_common.scss';
 import '../styles/setting.scss';
 import '../styles/_button_common.scss';
-import Template from '../components/Template';
 
 export default function Setting({ position }) {
   return (

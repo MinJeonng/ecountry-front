@@ -1,4 +1,19 @@
+$green: #bacd92;
+$deep-green: #75a47f;
+
+@mixin button-style {
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid $green;
+  background-color: $green;
+  width: 40%;
+  border-radius: 18px;
+  margin-top: 20px;
+  padding: 6px 15px;
+}
+
 .big-button {
+  @include button-style;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,7 +21,16 @@
   height: 35%;
   color: #093030;
   margin: 2%;
-  border-radius: 18px;
+}
+
+.frist-next-button {
+  @include button-style;
+  width: 100%;
+}
+
+.frist-next-button:hover {
+  border: 1px solid $deep-green;
+  background-color: $deep-green;
 }
 
 .navi-btn {
@@ -15,13 +39,29 @@
   justify-content: space-between;
 
   .next-button {
-    color: #ffffff;
-    font-weight: bold;
-    border: 1px solid #bacd92;
-    background-color: #bacd92;
-    width: 40%;
-    border-radius: 18px;
-    margin: 20px 0;
-    padding: 6px 15px;
+    @include button-style;
   }
+
+  .next-button:hover {
+    border: 1px solid $deep-green;
+    background-color: $deep-green;
+  }
+}
+
+.login-btn,
+.signup-btn {
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid $green;
+  background-color: $green;
+  width: 100%;
+  border-radius: 18px;
+  margin-top: 20px;
+  padding: 6px 15px;
+}
+
+.login-btn:hover,
+.signup-btn:hover {
+  border: 1px solid $deep-green;
+  background-color: $deep-green;
 }

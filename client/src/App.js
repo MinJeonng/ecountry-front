@@ -17,8 +17,7 @@ function App() {
     <div className="App Contain">
       <BrowserRouter>
         <Routes>
-          {/* intro는 나중에 router 삭제할 예정 */}
-          <Route path="/intro" element={<Intro />} />
+          <Route path="/" element={<Intro />} />
           <Route path="/user/login" element={<Login />} />
           <Route path="/user/signup" element={<Signup />} />
           <Route

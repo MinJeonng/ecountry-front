@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ReactComponent as IcoMenuRight } from '../images/icon-sideMenu.svg';
 import styled from 'styled-components';
 import { SideMenuComponent } from './SideMenu';
@@ -13,17 +13,28 @@ const BoxStyle = styled.div`
 
 export function ManagerMainHeader() {
   const [showSideMenu, setShowSideMenu] = useState(false);
+  useEffect(() => {
+    console.log('showSideMenu 상태 변경됨:', showSideMenu);
+  }, [showSideMenu]);
+  const closeFunc = () => {
+    setShowSideMenu(false);
+  };
 
   return (
     <>
       <BoxStyle className="headerBg">
         <header>
-          <IcoMenuRight onClick={() => setShowSideMenu(!showSideMenu)} />
+          {/* Ico안뜸 확인 */}
+          <IcoMenuRight
+            onClick={() => {
+              console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu); // 로그 추가
+              setShowSideMenu(true);
+              console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
+            }}
+          />
         </header>
       </BoxStyle>
-      {showSideMenu && (
-        <SideMenuComponent func={() => setShowSideMenu(false)} />
-      )}
+      {showSideMenu && <SideMenuComponent func={closeFunc} />}
     </>
   );
 }

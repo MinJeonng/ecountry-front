@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Intro from './pages/Intro';
 import Login from './pages/Login';
 import Setting from './pages/Setting';
+import Signup from './pages/Signup';
 // import StudentSetting from './components/StudentSetting';
 import ManagerDashBoard from './pages/ManagerDashBoard';
 import './styles/common.scss';
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/intro" element={<Intro />} />
           <Route path="/user/login" element={<Login />} />
+          <Route path="/user/signup" element={<Signup />} />
           <Route path="/setting" element={<Setting position="설정1" />} />
           <Route path="/setting/2" element={<Setting position="설정2" />} />
           <Route path="/setting/3" element={<Setting position="설정3" />} />

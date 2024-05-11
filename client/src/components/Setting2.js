@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Background from './Background';
-
 import '../styles/Setting2.scss';
 import '../styles/background.scss';
 

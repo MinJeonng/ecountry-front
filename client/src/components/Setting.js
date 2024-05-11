@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
-import '../styles/Setting1.scss';
-import '../styles/Setting2.scss';
-import '../styles/setting4.scss';
+// import '../styles/Setting1.scss';
+// import '../styles/Setting2.scss';
+// import '../styles/setting4.scss';
 
 export function Setting1() {
   const [selectedGrade, setSelectedGrade] = useState('');

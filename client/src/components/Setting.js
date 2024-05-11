@@ -337,14 +337,13 @@ export function Setting4() {
     navigate('/setting/jobList');
   };
   return (
-    <>
+    <div>
       <div className="title-list">
         <div>자리 배치도</div>
         <ul className="title-list">
           <li>교실 내의 자리 배치를 설정하세요&#46;</li>
         </ul>
       </div>
-
 
       <form>
         {columns.map((column) => (
@@ -426,7 +425,6 @@ export function Setting4() {
         </div>
       </form>
     </div>
-
   );
 }
 
@@ -439,7 +437,7 @@ export function Setting5() {
     navigate('/setting/law');
   };
   return (
-    <>
+    <div>
       <div className="title-list">
         <div>직업 리스트</div>
         <ul className="title-list">
@@ -471,7 +469,6 @@ export function Setting5() {
         </div>
       </form>
     </div>
-
   );
 }
 

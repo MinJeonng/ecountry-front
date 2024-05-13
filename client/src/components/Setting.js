@@ -3,16 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './SettingBtn';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  schoolInfo,
+  countryInfo,
+  studnetInfo,
+  seatingMap,
+  jobsInfo,
+  basicLaw,
+  taxLaw,
+  seatRentalFee,
+} from '../store/settingReducer';
+
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
 
 export function Setting1() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [schoolName, setSchoolName] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
   const grades = [1, 2, 3, 4, 5, 6];
   const classes = [1, 2, 3, 4, 5, 6, 7];
+
+  const inputSchoolName = (event) => {
+    setSchoolName(event.target.value);
+  };
 
   const gradeSelect = (event) => {
     setSelectedGrade(event.target.value);
@@ -24,6 +42,13 @@ export function Setting1() {
 
   const nextSetting = () => {
     navigate('/setting/countryInfo');
+    dispatch(
+      schoolInfo({
+        schoolName: schoolName,
+        schoolGrade: selectedGrade,
+        schoolClass: selectedClass,
+      })
+    );
   };
 
   return (
@@ -38,7 +63,12 @@ export function Setting1() {
       <form className="box-style">
         <div className="select-school">
           <div className="select-student-id-title set-title">초등학교</div>
-          <input className="select-school-name" type="text" />
+          <input
+            className="select-school-name"
+            type="text"
+            value={schoolName}
+            onChange={inputSchoolName}
+          />
         </div>
 
         <div className="select-student-id">
@@ -71,20 +101,35 @@ export function Setting1() {
 }
 
 export function Setting2() {
-  // const [students, setStudents] = useState([]);
-  // const [password, setPassword] = useState('');
-  const days = Array.from({ length: 31 }, (_, index) => index + 1);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [countryName, setCountryName] = useState('');
+  const [moneyUnit, setMoneyUnit] = useState('');
+  const [salaryDate, setSalaryDate] = useState('');
+  const days = Array.from({ length: 31 }, (_, index) => index + 1);
   const beforeSetting = () => {
     navigate('/setting/schoolInfo');
   };
   const nextSetting = () => {
     navigate('/setting/studentInfo');
+    dispatch(
+      countryInfo({
+        countryName: countryName,
+        moneyUnit: moneyUnit,
+        salaryDate: salaryDate,
+      })
+    );
   };
 
-  // const addStudentInfo = () => {
-  //   setStudents([...students, { attendanceNumber: '', name: '' }]);
-  // };
+  const handleCountryName = (e) => {
+    setCountryName(e.target.value);
+  };
+  const handleMoneyUnit = (e) => {
+    setMoneyUnit(e.target.value);
+  };
+  const handleSalaryDate = (e) => {
+    setSalaryDate(e.target.value);
+  };
 
   return (
     <div>
@@ -97,25 +142,40 @@ export function Setting2() {
       <form className="box-style">
         <div className="set-country">
           <div className="set-country-title set-title">국가 이름</div>
-          <input className="set-country-detail" type="text" />
+          <input
+            className="set-country-detail"
+            type="text"
+            value={countryName}
+            onChange={handleCountryName}
+          />
         </div>
 
         <div className="set-country-title set-title">화폐 단위</div>
-        <input className="set-country-detail" type="text" />
+        <input
+          className="set-country-detail"
+          type="text"
+          value={moneyUnit}
+          onChange={handleMoneyUnit}
+        />
 
         <div className="set-country-title set-title">급여 지급일</div>
-        <div className="set-salary">
+        <div className="set-salary container">
           <div className="set-salary-text">매월</div>
-          <div>
-            <select id="day">
-              <option value=""></option>
+          <div className="container">
+            <select
+              id="day"
+              className="selectSalary"
+              value={salaryDate}
+              onChange={handleSalaryDate}
+            >
+              <option value="" selected disabled></option>
               {days.map((day) => (
                 <option key={day} value={day}>
                   {day}
                 </option>
               ))}
             </select>
-            <span className="set-salary-text">일</span>
+            <div className="set-salary-text ">일</div>
           </div>
         </div>
       </form>
@@ -132,12 +192,19 @@ export function Setting2() {
 }
 
 export function Setting3() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const beforeSetting = () => {
     navigate('/setting/countryInfo');
   };
   const nextSetting = () => {
     navigate('/setting/seatingMap');
+    dispatch(
+      studnetInfo({
+        password: password,
+        studentList: attendees,
+      })
+    );
   };
 
   const [directInput, setDirectInput] = useState(false);
@@ -221,6 +288,15 @@ export function Setting3() {
 
       {directInput ? (
         <div className="box-style">
+          <div>임시 비밀번호</div>
+          <input
+            type="password"
+            placeholder="4자리"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          ></input>
           <div>출석번호</div>
           <input
             type="number"
@@ -276,6 +352,15 @@ export function Setting3() {
 }
 
 export function Setting4() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const beforeSetting = () => {
+    navigate('/setting/studentInfo');
+  };
+  const nextSetting = () => {
+    navigate('/setting/jobList');
+    dispatch(seatingMap({ columns: columns }));
+  };
   const [columns, setColumns] = useState([
     { id: 1, label: '1열', rowCount: '' },
     { id: 2, label: '2열', rowCount: '' },
@@ -318,14 +403,6 @@ export function Setting4() {
       }
     });
     setTableRows(rows);
-  };
-
-  const navigate = useNavigate();
-  const beforeSetting = () => {
-    navigate('/setting/studentInfo');
-  };
-  const nextSetting = () => {
-    navigate('/setting/jobList');
   };
 
   return (
@@ -409,6 +486,7 @@ export function Setting4() {
 }
 
 export function Setting5() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [inputValue, handleInputChange] = useCommaInput();
 
@@ -436,6 +514,7 @@ export function Setting5() {
   };
   const nextSetting = () => {
     navigate('/setting/law');
+    dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const handleCountValue = (e) => {
     setCountValue(e.target.value);
@@ -646,12 +725,14 @@ export function Setting5() {
 }
 
 export function Setting6() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const beforeSetting = () => {
     navigate('/setting/jobList');
   };
   const nextSetting = () => {
     navigate('/setting/taxLaw');
+    dispatch(basicLaw({ basicLaw: laws }));
   };
 
   const [laws, setLaws] = useState([]); // 법 리스트
@@ -689,6 +770,10 @@ export function Setting6() {
     const updatedLaws = [...laws];
     updatedLaws.splice(index, 1);
     setLaws(updatedLaws);
+    if (correct) {
+      setCorrect(!correct);
+    }
+    setDetail('');
   };
 
   return (
@@ -722,6 +807,8 @@ export function Setting6() {
               handleEditLaw(index);
             }}
           >
+            {index + 1}항.
+            <br />
             {law.detail}
             <button
               type="button"
@@ -749,6 +836,7 @@ export function Setting6() {
 }
 
 export function Setting7() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [lawNameValue, setLawNameValue] = useState('');
   const [rateValue, setRateValue] = useState('');
@@ -782,6 +870,7 @@ export function Setting7() {
   };
   const nextSetting = () => {
     navigate('/setting/seatRental');
+    dispatch(taxLaw({ taxLaw: taxLawDisplay }));
   };
   const resetBtn = () => {
     setLawNameValue('');
@@ -928,13 +1017,22 @@ export function Setting7() {
 }
 
 export function Setting8() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const beforeSetting = () => {
     navigate('/setting/taxLaw');
   };
   const nextSetting = () => {
     navigate('/setting/fine');
+    dispatch(
+      seatRentalFee({
+        taxName: taxName,
+        fee: fee,
+      })
+    );
   };
+  const [taxName, setTaxName] = useState('');
+  const [fee, setFee] = useState('');
   return (
     <>
       <div className="title-list">
@@ -947,11 +1045,25 @@ export function Setting8() {
       <form className="box-style">
         <div className="set-country">
           <div className="set-country-title set-title">세금 명</div>
-          <input className="set-country-detail" type="text" />
+          <input
+            className="set-country-detail"
+            type="text"
+            value={taxName}
+            onChange={(e) => {
+              setTaxName(e.target.value);
+            }}
+          />
         </div>
         <div className="set-country">
           <div className="set-country-title set-title">숫자</div>
-          <input className="set-country-detail" type="number" />
+          <input
+            className="set-country-detail"
+            type="number"
+            value={fee}
+            onChange={(e) => {
+              setFee(e.target.value);
+            }}
+          />
         </div>
         <div className="set-country">
           <div className="set-country-title set-title">부가 단위</div>
@@ -971,20 +1083,121 @@ export function Setting8() {
 }
 
 export function Setting9() {
-  const navigate = useNavigate();
-  const beforeSetting = () => {
-    navigate('/setting/seatRental');
-  };
-
-  return (
-    <>
-      <div className="title-list">
-        <div>벌금 설정</div>
-        <ul className="title-list">
-          <li>국가에 필수인 벌금을 제정하세요&#46;</li>
-        </ul>
-      </div>
-      <button onClick={beforeSetting}>이전</button>
-    </>
-  );
+  // const navigate = useNavigate();
+  // const beforeSetting = () => {
+  //   navigate('/setting/seatRental');
+  // };
+  // const finishSetting = () => {
+  //   navigate('/');
+  // };
+  // const [reason, setReason] = useState('');
+  // const [fee, SetFee] = useState('');
+  // const [fineList, SetFineList] = useState([]);
+  // const [selectedIndex, setSelectedIndex] = useState('');
+  // const [correct, setCorrect] = useState(false);
+  // // 벌금 추가
+  // const handleAddFine = () => {
+  //   if (reason.trim() !== '' && fee.trim() !== '') {
+  //     SetFineList([...fineList, { reason, fee }]);
+  //     setReason('');
+  //     SetFee('');
+  //   }
+  // };
+  // //벌금 수정
+  // const handleEditLaw = (index) => {
+  //   const selectedFineReason = fineList[index].reason;
+  //   const selectedFineFee = fineList[index].fee;
+  //   setReason(selectedFineReason);
+  //   setFee(selectedFineFee);
+  //   setSelectedIndex(index);
+  //   setCorrect(true);
+  // };
+  // const updateLaw = () => {
+  //   const updatedLaws = [...laws];
+  //   updatedLaws[selectedIndex].detail = detail;
+  //   setLaws(updatedLaws);
+  //   setDetail('');
+  //   setSelectedIndex(null);
+  //   setCorrect(false);
+  // };
+  // // 법 삭제
+  // const handleDeleteLaw = (index) => {
+  //   const updatedLaws = [...fineList];
+  //   updatedLaws.splice(index, 1);
+  //   SetFineList(updatedLaws);
+  //   // if (correct) {
+  //   //   setCorrect(!correct);
+  //   // }
+  //   setDetail('');
+  // };
+  // return (
+  //   <>
+  //     <div className="title-list">
+  //       <div>벌금 설정</div>
+  //       <ul className="title-list">
+  //         <li>국가에 필수인 벌금을 제정하세요&#46;</li>
+  //       </ul>
+  //     </div>
+  //     <form className="box-style">
+  //       <div className="set-country">
+  //         <div className="set-country-title set-title">벌금사유</div>
+  //         <input
+  //           className="set-country-detail"
+  //           type="text"
+  //           value={reason}
+  //           onChange={(e) => {
+  //             setReason(e.target.value);
+  //           }}
+  //         />
+  //       </div>
+  //       <div className="set-country">
+  //         <div className="set-country-title set-title">숫자</div>
+  //         <input
+  //           className="set-country-detail"
+  //           type="number"
+  //           value={fee}
+  //           onChange={(e) => {
+  //             SetFee(e.target.value);
+  //           }}
+  //         />
+  //       </div>
+  //       <div className="set-country">
+  //         <div className="set-country-title set-title">단위</div>
+  //         <input className="set-country-detail" type="text" value="단위" />
+  //       </div>
+  //       <button type="button" onClick={handleAddFine}>
+  //         확인
+  //       </button>
+  //       <ul>
+  //         {fineList.map((fine, index) => (
+  //           <li key={index}>
+  //            {correct ? :( `사유 : ${law.reason}
+  //             <br />
+  //             금액 : ${law.fee} 단위`)}
+  //             <button
+  //               type="button"
+  //               onClick={(e) => {
+  //                 e.stopPropagation();
+  //                 handleDeleteLaw(index);
+  //               }}
+  //             >
+  //               삭제
+  //             </button>
+  //             <button
+  //               type="button"
+  //               onClick={(e) => {
+  //                 e.stopPropagation();
+  //                 handleEditLaw(index);
+  //               }}
+  //             >
+  //               수정
+  //             </button>
+  //           </li>
+  //         ))}
+  //       </ul>
+  //     </form>
+  //     <button onClick={beforeSetting}>이전</button>
+  //     <button onClick={finishSetting}>완료</button>
+  //   </>
+  // );
 }

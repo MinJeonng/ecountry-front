@@ -142,8 +142,7 @@ $blue: #61759f;
     position: absolute;
     cursor: pointer;
     margin-top: 4px;
-
-
+  }
   // 자리 배치도
   .seat-count {
     display: flex;
@@ -215,6 +214,5 @@ $blue: #61759f;
   .preview::-webkit-scrollbar-track {
     background-color: $deep-green;
     border-radius: 10px;
-
   }
 }

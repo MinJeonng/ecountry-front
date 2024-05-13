@@ -143,8 +143,18 @@ $blue: #61759f;
     cursor: pointer;
     margin-top: 4px;
 
-    // 자리 배치도
-    .seat-count {
+  }
+  // 자리 배치도
+  .seat-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .seat-colum {
+      font-size: 14px;
+    }
+
+    .seat-count-select {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -201,19 +211,20 @@ $blue: #61759f;
         }
       }
     }
+  }
 
-    .preview::-webkit-scrollbar {
-      width: 2px;
-    }
-    .preview::-webkit-scrollbar-thumb {
-      background-color: $green;
-      border-radius: 10px;
-      background-clip: padding-box;
-      border: 1px solid transparent;
-    }
-    .preview::-webkit-scrollbar-track {
-      background-color: $deep-green;
-      border-radius: 10px;
-    }
+  .preview::-webkit-scrollbar {
+    width: 2px;
+  }
+  .preview::-webkit-scrollbar-thumb {
+    background-color: $green;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+  }
+  .preview::-webkit-scrollbar-track {
+    background-color: $deep-green;
+    border-radius: 10px;
+
   }
 }

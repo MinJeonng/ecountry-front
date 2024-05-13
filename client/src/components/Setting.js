@@ -28,19 +28,21 @@ export function Setting1() {
 
   return (
     <div>
-      <div>반 정보 입력</div>
+      <div className="title-list">
+        <div>반 정보 입력</div>
+      </div>
       <ul className="title-list">
         <li>학교, 학년, 반 정보를 입력하세요&#46;</li>
       </ul>
 
       <form className="box-style">
         <div className="select-school">
-          <div className="select-student-id-title">초등학교</div>
+          <div className="select-student-id-title set-title">초등학교</div>
           <input className="select-school-name" type="text" />
         </div>
 
         <div className="select-student-id">
-          <div className="select-student-id-title">학년</div>
+          <div className="select-student-id-title set-title">학년</div>
           <select id="grade" value={selectedGrade} onChange={gradeSelect}>
             <option value=""></option>
             {grades.map((grade, index) => (
@@ -50,7 +52,7 @@ export function Setting1() {
             ))}
           </select>
 
-          <div className="select-student-id-title">반</div>
+          <div className="select-student-id-title set-title">반</div>
           <select id="class" value={selectedClass} onChange={classSelect}>
             <option value=""></option>
             {classes.map((classItem, index) => (
@@ -86,20 +88,22 @@ export function Setting2() {
 
   return (
     <div>
-      <div>국가 이름 &#47; 화폐 단위 &#47; 금여 지급일 설정</div>
+      <div className="title-list">
+        <div>국가 이름 &#47; 화폐 단위 &#47; 금여 지급일 설정</div>
+      </div>
       <ul className="title-list">
         <li>국가의 이름과 화폐 단위&#44; 급여 지급일을 설정하세요&#46;</li>
       </ul>
       <form className="box-style">
         <div className="set-country">
-          <div className="set-country-title">국가 이름</div>
+          <div className="set-country-title set-title">국가 이름</div>
           <input className="set-country-detail" type="text" />
         </div>
 
-        <div className="set-country-title">화폐 단위</div>
+        <div className="set-country-title set-title">화폐 단위</div>
         <input className="set-country-detail" type="text" />
 
-        <div className="set-country-title">급여 지급일</div>
+        <div className="set-country-title set-title">급여 지급일</div>
         <div className="set-salary">
           <div className="set-salary-text">매월</div>
           <div>
@@ -199,8 +203,8 @@ export function Setting3() {
 
   return (
     <>
-      <div className="title-wrap">
-        <div className="title">학생 파일 업로드</div>
+      <div className="title-list">
+        <div>학생 파일 업로드</div>
         <ul className="title-list">
           <li>
             아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요&#46;
@@ -933,7 +937,7 @@ export function Setting8() {
   };
   return (
     <>
-      <div className="title-wrap">
+      <div className="title-list">
         <div>자리 임대료</div>
         <ul className="title-list">
           <li>자리 임대료를 설정하세요&#46;</li>
@@ -942,15 +946,15 @@ export function Setting8() {
 
       <form className="box-style">
         <div className="set-country">
-          <div className="set-country-title">세금 명</div>
+          <div className="set-country-title set-title">세금 명</div>
           <input className="set-country-detail" type="text" />
         </div>
         <div className="set-country">
-          <div className="set-country-title">숫자</div>
+          <div className="set-country-title set-title">숫자</div>
           <input className="set-country-detail" type="number" />
         </div>
         <div className="set-country">
-          <div className="set-country-title">부가 단위</div>
+          <div className="set-country-title set-title">부가 단위</div>
           <input className="set-country-detail" type="text" />
         </div>
       </form>
@@ -974,7 +978,7 @@ export function Setting9() {
 
   return (
     <>
-      <div className="title-wrap">
+      <div className="title-list">
         <div>벌금 설정</div>
         <ul className="title-list">
           <li>국가에 필수인 벌금을 제정하세요&#46;</li>

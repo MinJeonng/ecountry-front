@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import '../styles/_input_common.scss';
-import '../styles/background.scss';
-
-import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './SettingBtn';
 
-// import '../styles/Setting1.scss';
-// import '../styles/Setting2.scss';
-// import '../styles/setting4.scss';
+import '../styles/_input_common.scss';
+import '../styles/background.scss';
 
 export function Setting1() {
   const navigate = useNavigate();
@@ -647,70 +641,6 @@ export function Setting5() {
   );
 }
 
-// export function Setting6() {
-//   const navigate = useNavigate();
-//   const beforeSetting = () => {
-//     navigate('/setting/jobList');
-//   };
-//   const nextSetting = () => {
-//     navigate('/setting/taxLaw');
-//   };
-
-//   const [laws, setLaws] = useState([]); // 법 리스트
-//   const [detail, setDetail] = useState(''); // 법 내용
-
-//   //laws구조
-//   const handleLaw = (e) => {
-//     e.preventDefault();
-//     setLaws([...laws, { detail: '' }]);
-//   };
-//   //laws-detail 입력
-//   const handleChange = (index, field, value) => {
-//     const updatedLaws = laws.map((law, i) => {
-//       if (i === index) {
-//         return { ...law, [field]: value };
-//       }
-//       return law;
-//     });
-//     setLaws(updatedLaws);
-//   };
-//   //law 삭제
-//   const deleteLaw = (index) => {
-//     const updatedLaws = [...laws];
-//     updatedLaws.splice(index, 1);
-//     setLaws(updatedLaws);
-//   };
-
-//   return (
-//     <>
-//       <div className="title-list">
-//         <div>기본법 제정</div>
-//         <ul className="title-list">
-//           <li>국가에 필수인 기본법을 제정하세요&#46;</li>
-//         </ul>
-//       </div>
-//       <form className="box-style">
-//         <button onClick={(e) => handleLaw(e)}>추가</button>
-//         {laws.map((law, index) => (
-//           <div>
-//             {index + 1}항
-//             <input
-//               type="text"
-//               placeholder="내용"
-//               value={law.detail}
-//               onChange={(e) => {
-//                 handleChange(index, 'detail', e.target.value);
-//               }}
-//             ></input>
-//             <div onClick={(index) => deleteLaw(index)}>지우기</div>
-//           </div>
-//         ))}
-//       </form>
-//       <button onClick={beforeSetting}>이전</button>
-//       <button onClick={nextSetting}>다음</button>
-//     </>
-//   );
-// }
 export function Setting6() {
   const navigate = useNavigate();
   const beforeSetting = () => {
@@ -801,6 +731,7 @@ export function Setting6() {
           </li>
         ))}
       </ul>
+
       <div className="navi-btn">
         <button className="next-button" onClick={beforeSetting}>
           이전
@@ -988,7 +919,6 @@ export function Setting7() {
           </button>
         </div>
       </form>
-
     </>
   );
 }

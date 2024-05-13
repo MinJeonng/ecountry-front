@@ -1,8 +1,23 @@
+import { useState } from 'react';
 import Template from '../components/Template';
 
-import '../styles/login.scss';
+import '../styles/background.scss';
+import axios from 'axios';
 
 export default function Login() {
+  const [userId, setUserId] = useState('');
+  const [pw, setPw] = useState('');
+
+  const loginFunc = async () => {
+    await axios
+      .post('http://localhost:8080/api/user/login', { userId, pw })
+      .then((res) => {
+        alert(res.data.message);
+        if (res.data.success) {
+          localStorage.setItem('token', res.data.result);
+        }
+      });
+  };
   return (
     <Template
       childrenBottom={
@@ -10,19 +25,24 @@ export default function Login() {
           <div>
             <div>로그인</div>
             <ul className="title-list">
-              <li>이름과 비밀번호를 입력하세요.</li>
+              <li>아이디와 비밀번호를 입력하세요.</li>
             </ul>
           </div>
           <form className="box-style">
-            <div className="user-name user-login-title">이름</div>
-            <input type="text" className="user-name-input user-login"></input>
-            <div className="user-pw user-login-title">비밀번호</div>
+            <div>아이디</div>
+            <input
+              type="text"
+              onChange={(e) => setUserId(e.target.value)}
+            ></input>
+            <div>비밀번호</div>
             <input
               type="password"
-              className="user-pw-input user-login"
               maxLength={4}
+              onChange={(e) => setPw(e.target.value)}
             ></input>
-            <button className="login-btn">로그인</button>
+            <button type="button" onClick={loginFunc}>
+              로그인
+            </button>
           </form>
         </div>
       }

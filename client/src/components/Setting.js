@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './SettingBtn';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
-// import '../styles/Setting1.scss';
-// import '../styles/Setting2.scss';
-// import '../styles/setting4.scss';
 
 export function Setting1() {
   const navigate = useNavigate();

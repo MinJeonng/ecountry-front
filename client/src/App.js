@@ -11,6 +11,7 @@ import NOTFOUND from './pages/NOTFOUND';
 
 import './styles/common.scss';
 import './styles/reset.css';
+import Test from './pages/Test';
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
           />
 
           <Route path="/manager" element={<ManagerDashBoard />} />
+          <Route path="/test" element={<Test />} />
 
           {/* <Route path = "/setting" element = {} /> */}
 

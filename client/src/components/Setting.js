@@ -210,7 +210,6 @@ export function Setting3() {
         </ul>
       </div>
       <button className="blue-btn" onClick={() => setDirectInput(!directInput)}>
-
         {directInput ? '파일 업로드' : '직접 입력'}
       </button>
 
@@ -266,7 +265,6 @@ export function Setting3() {
           다음
         </button>
       </div>
-
     </>
   );
 }
@@ -600,9 +598,8 @@ export function Setting6() {
               삭제
             </button>
           </li>
-        ))}</ul>
-
-      </form>
+        ))}
+      </ul>
       <div className="navi-btn">
         <button className="next-button" onClick={beforeSetting}>
           이전
@@ -611,7 +608,6 @@ export function Setting6() {
           다음
         </button>
       </div>
-
     </>
   );
 }

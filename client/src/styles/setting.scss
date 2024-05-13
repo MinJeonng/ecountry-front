@@ -5,13 +5,13 @@ $under-line: #e9ae24;
 
 @include mobile {
   .title-list {
-    font-size: 14px;
+    font-size: 18px;
     margin: 10px 0;
 
     li {
       margin-left: 20px;
       list-style: disc;
-      font-size: 12px;
+      font-size: 16px;
       color: #777777;
     }
   }
@@ -63,7 +63,7 @@ $under-line: #e9ae24;
   }
   .set-title {
     color: #a5a5a5;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .set-country-detail {
@@ -88,5 +88,54 @@ $under-line: #e9ae24;
     select {
       @include select-common;
     }
+  }
+  .container {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    .count {
+      padding-right: 20px;
+    }
+    .unit {
+      font-size: 16px;
+      color: #a5a5a5;
+      position: absolute;
+      right: 30px;
+      margin-bottom: 10px;
+      pointer-events: none;
+    }
+  }
+  .input-textarea {
+    border: 1px solid #e9ae24;
+    border-radius: 4px;
+  }
+  .reset {
+    display: flex;
+    justify-content: space-between;
+  }
+  .display {
+    // border: 1px solid #e9ae24;
+    border-radius: 10px;
+    background: #d9d9d9;
+    font-size: 16px;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .resetBtn {
+    width: 15px;
+    height: 15px;
+    right: 30px;
+    position: absolute;
+    cursor: pointer;
+  }
+  .deleteBtn {
+    width: 17px;
+    height: 17px;
+    right: 60px;
+    position: absolute;
+    cursor: pointer;
+    margin-top: 4px;
   }
 }

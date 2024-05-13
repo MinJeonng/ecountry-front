@@ -2,16 +2,19 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Intro from './pages/Intro';
 import Login from './pages/Login';
+import NationBuilding from './pages/NationBuilding';
+import CountryList from './pages/CountryList';
 import Setting from './pages/Setting';
+import Loading from './components/Loading';
 import Signup from './pages/Signup';
 // import StudentSetting from './components/StudentSetting';
 import ManagerDashBoard from './pages/ManagerDashBoard';
 
+import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
 
 import './styles/common.scss';
 import './styles/reset.css';
-import Test from './pages/Test';
 
 function App() {
   return (
@@ -21,6 +24,12 @@ function App() {
           <Route path="/" element={<Intro />} />
           <Route path="/user/login" element={<Login />} />
           <Route path="/user/signup" element={<Signup />} />
+
+          <Route path="/user/country" element={<NationBuilding />} />
+          <Route path="/user/countryList" element={<CountryList />} />
+
+          <Route path="/setDone" element={<Loading />} />
+
           <Route
             path="/setting/schoolInfo"
             element={<Setting position="학교 정보 입력" />}

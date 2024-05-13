@@ -71,8 +71,6 @@ export function Setting1() {
 }
 
 export function Setting2() {
-  // const [students, setStudents] = useState([]);
-  // const [password, setPassword] = useState('');
   const days = Array.from({ length: 31 }, (_, index) => index + 1);
   const navigate = useNavigate();
   const beforeSetting = () => {
@@ -81,10 +79,6 @@ export function Setting2() {
   const nextSetting = () => {
     navigate('/setting/studentInfo');
   };
-
-  // const addStudentInfo = () => {
-  //   setStudents([...students, { attendanceNumber: '', name: '' }]);
-  // };
 
   return (
     <div>
@@ -976,6 +970,10 @@ export function Setting9() {
     navigate('/setting/seatRental');
   };
 
+  const setDone = () => {
+    navigate('/setDone');
+  };
+
   return (
     <>
       <div className="title-list">
@@ -985,6 +983,7 @@ export function Setting9() {
         </ul>
       </div>
       <button onClick={beforeSetting}>이전</button>
+      <button onClick={setDone}>완성</button>
     </>
   );
 }

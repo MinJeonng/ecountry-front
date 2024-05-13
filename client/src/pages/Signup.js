@@ -7,11 +7,13 @@ export default function Login() {
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
+
   const signupFunc = async () => {
     if (pw !== confirmPw) {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
+
     await axios
       .post('http://localhost:8080/api/user/signup', {
         name: name,
@@ -20,6 +22,7 @@ export default function Login() {
       })
       .then((res) => alert(res.data.message));
   };
+
   return (
     <Template
       childrenBottom={
@@ -32,30 +35,36 @@ export default function Login() {
             </ul>
           </div>
           <form className="box-style">
-            <div>이름</div>
+            <div className="user-signup-title">이름</div>
             <input
+              className="user-signup"
               type="text"
               onChange={(e) => setName(e.target.value)}
             ></input>
-            <div>아이디</div>
+            <div className="user-signup-title">아이디</div>
             <input
+              className="user-signup"
               type="text"
               onChange={(e) => setUserId(e.target.value)}
             ></input>
-            <div>비밀번호</div>
+            <div className="user-signup-title">비밀번호</div>
             <input
+              className="user-signup"
               type="password"
               maxLength={4}
               onChange={(e) => setPw(e.target.value)}
             ></input>
-            <div>비밀번호 확인</div>
+            <div className="user-signup-title">비밀번호 확인</div>
             <input
+              className="user-signup"
               type="password"
               maxLength={4}
               onChange={(e) => setConfirmPw(e.target.value)}
             ></input>
-            {confirmPw === pw || <div>비밀번호가 일치하지 않습니다.</div>}
-            <button type="button" onClick={signupFunc}>
+            {confirmPw === pw || (
+              <div className="pw-error">비밀번호가 일치하지 않습니다.</div>
+            )}
+            <button className="signup-btn" type="button" onClick={signupFunc}>
               회원가입
             </button>
           </form>

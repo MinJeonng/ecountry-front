@@ -13,4 +13,9 @@
     width: -webkit-fill-available;
     @include select-common;
   }
+
+  .pw-error {
+    font-size: 14px;
+    color: #e03232;
+  }
 }

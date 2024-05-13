@@ -1,6 +1,25 @@
+import { useState } from 'react';
 import Template from '../components/Template';
+import axios from 'axios';
 
 export default function Login() {
+  const [name, setName] = useState('');
+  const [userId, setUserId] = useState('');
+  const [pw, setPw] = useState('');
+  const [confirmPw, setConfirmPw] = useState('');
+  const signupFunc = async () => {
+    if (pw !== confirmPw) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    await axios
+      .post('http://localhost:8080/api/user/signup', {
+        name: name,
+        userId: userId,
+        pw: pw,
+      })
+      .then((res) => alert(res.data.message));
+  };
   return (
     <Template
       childrenBottom={
@@ -13,22 +32,32 @@ export default function Login() {
             </ul>
           </div>
           <form className="box-style">
-            <div className="user-signup-title">이름</div>
-            <input type="text" className="user-signup"></input>
-            <div className="user-signup-title">비밀번호</div>
+            <div>이름</div>
+            <input
+              type="text"
+              onChange={(e) => setName(e.target.value)}
+            ></input>
+            <div>아이디</div>
+            <input
+              type="text"
+              onChange={(e) => setUserId(e.target.value)}
+            ></input>
+            <div>비밀번호</div>
             <input
               type="password"
-              className="user-signup"
               maxLength={4}
+              onChange={(e) => setPw(e.target.value)}
             ></input>
-            <div className="user-signup-title">비밀번호 확인</div>
+            <div>비밀번호 확인</div>
             <input
               type="password"
-              className="user-signup"
               maxLength={4}
+              onChange={(e) => setConfirmPw(e.target.value)}
             ></input>
-
-            <button className="signup-btn">회원가입</button>
+            {confirmPw === pw || <div>비밀번호가 일치하지 않습니다.</div>}
+            <button type="button" onClick={signupFunc}>
+              회원가입
+            </button>
           </form>
         </div>
       }

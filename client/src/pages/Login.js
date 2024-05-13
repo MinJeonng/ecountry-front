@@ -20,16 +20,14 @@ export default function Login() {
   };
   return (
     <Template
-      childrenTop={
-        <>
-          <div>로그인</div>
-          <ul className='"title-list'>
-            <li>아이디와 비밀번호를 입력하세요.</li>
-          </ul>
-        </>
-      }
       childrenBottom={
-        <>
+        <div>
+          <div>
+            <div>로그인</div>
+            <ul className="title-list">
+              <li>아이디와 비밀번호를 입력하세요.</li>
+            </ul>
+          </div>
           <form className="box-style">
             <div>아이디</div>
             <input
@@ -46,7 +44,7 @@ export default function Login() {
               로그인
             </button>
           </form>
-        </>
+        </div>
       }
     ></Template>
   );

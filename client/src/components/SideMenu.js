@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as IcoClose } from '../images/icon-close.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SideBox = styled.div`
   position: fixed;
@@ -11,11 +11,22 @@ const SideBox = styled.div`
   height: 100%;
   z-index: 200;
   box-sizing: border-box;
+  background: #fff;
   .btnClose {
     position: absolute;
     top: 20px;
     right: 20px;
     width: 24px;
+    /* z-index: 100; */
+  }
+  img {
+    width: 20px;
+  }
+  .bankBox {
+    width: 50px;
+    height: 50px;
+    background-color: #f5f6fc;
+    border-radius: 5px;
   }
   .blogIcons {
     padding: 15px 20px;
@@ -40,7 +51,6 @@ const SideBox = styled.div`
 `;
 
 export function SideMenuComponent({ func }) {
-  const location = useLocation();
   return (
     <>
       {/* <ContainerBoard>
@@ -50,11 +60,17 @@ export function SideMenuComponent({ func }) {
       </ManagerBoard>
     </ContainerBoard> */}
       <SideBox>
-        <IcoClose
-          className="btnClose changeStroke"
-          onClick={func}
-          style={{ cursor: 'pointer' }}
-        />
+        <div className="sideBox">
+          {/* 닫기버튼 문제해결하기 */}
+          <IcoClose
+            className="btnClose changeStroke"
+            onClick={func}
+            style={{ cursor: 'pointer' }}
+          />
+          <div className="bankBox">
+            <img src={`${process.env.PUBLIC_URL}/images/icon-bank.png`} />
+          </div>
+        </div>
       </SideBox>
     </>
   );

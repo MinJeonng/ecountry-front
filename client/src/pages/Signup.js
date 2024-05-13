@@ -2,8 +2,6 @@ import { useState } from 'react';
 import Template from '../components/Template';
 import axios from 'axios';
 
-import '../styles/background.scss';
-
 export default function Login() {
   const [name, setName] = useState('');
   const [userId, setUserId] = useState('');
@@ -24,17 +22,15 @@ export default function Login() {
   };
   return (
     <Template
-      childrenTop={
-        <>
-          <div>회원가입</div>
-          <ul className='"title-list'>
-            <li>본인의 계정을 생성하세요.</li>
-            <li>이름과 4자리의 비밀번호를 작성하세요.</li>
-          </ul>
-        </>
-      }
       childrenBottom={
-        <>
+        <div>
+          <div>
+            <div>회원가입</div>
+            <ul className="title-list">
+              <li>본인의 계정을 생성하세요.</li>
+              <li>이름과 4자리의 비밀번호를 작성하세요.</li>
+            </ul>
+          </div>
           <form className="box-style">
             <div>이름</div>
             <input
@@ -63,7 +59,7 @@ export default function Login() {
               회원가입
             </button>
           </form>
-        </>
+        </div>
       }
     ></Template>
   );

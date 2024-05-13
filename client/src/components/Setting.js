@@ -101,7 +101,11 @@ export function Setting1() {
 }
 
 export function Setting2() {
+
+  const days = Array.from({ length: 31 }, (_, index) => index + 1);
+
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [countryName, setCountryName] = useState('');
   const [moneyUnit, setMoneyUnit] = useState('');
@@ -1083,6 +1087,7 @@ export function Setting8() {
 }
 
 export function Setting9() {
+
   // const navigate = useNavigate();
   // const beforeSetting = () => {
   //   navigate('/setting/seatRental');
@@ -1200,4 +1205,5 @@ export function Setting9() {
   //     <button onClick={finishSetting}>완료</button>
   //   </>
   // );
+
 }

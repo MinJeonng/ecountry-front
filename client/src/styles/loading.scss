@@ -1,0 +1,16 @@
+.spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .spinner-img {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+
+  .spinner-text {
+    color: #363130;
+    font-size: 24px;
+    font-weight: bold;
+  }
+}

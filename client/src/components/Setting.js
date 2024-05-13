@@ -24,10 +24,8 @@ export function Setting1() {
   const [schoolName, setSchoolName] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
-  const [schoolName, setSchoolName] = useState('');
 
   const grades = [1, 2, 3, 4, 5, 6];
-
 
   const inputSchoolName = (event) => {
     setSchoolName(event.target.value);
@@ -35,7 +33,6 @@ export function Setting1() {
 
   const gradeSelect = (event) => {
     setSelectedGrade(event.target.value);
-
   };
 
   const classSelect = (e) => {
@@ -43,7 +40,6 @@ export function Setting1() {
   };
 
   const nextSetting = () => {
-
     try {
       if (!selectedClass || !selectedGrade || !schoolName) {
         alert('모든 값을 입력해주세요');
@@ -51,13 +47,12 @@ export function Setting1() {
       }
       navigate('/setting/countryInfo');
       dispatch(
-      schoolInfo({
-        schoolName: schoolName,
-        schoolGrade: selectedGrade,
-        schoolClass: selectedClass,
-      })
-    );
-      
+        schoolInfo({
+          schoolName: schoolName,
+          schoolGrade: selectedGrade,
+          schoolClass: selectedClass,
+        })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -117,13 +112,11 @@ export function Setting2() {
   const [countryName, setCountryName] = useState('');
   const [moneyUnit, setMoneyUnit] = useState('');
   const [salaryDate, setSalaryDate] = useState('');
-  const days = Array.from({ length: 31 }, (_, index) => index + 1);
   const beforeSetting = () => {
     navigate('/setting/schoolInfo');
   };
 
   const nextSetting = () => {
-
     try {
       if (!countryName || !moneyUnit || !salaryDate) {
         alert('모든 값을 입력해주세요');
@@ -131,16 +124,15 @@ export function Setting2() {
       }
       navigate('/setting/studentInfo');
       dispatch(
-      countryInfo({
-        countryName: countryName,
-        moneyUnit: moneyUnit,
-        salaryDate: salaryDate,
-      })
-    );
+        countryInfo({
+          countryName: countryName,
+          moneyUnit: moneyUnit,
+          salaryDate: salaryDate,
+        })
+      );
     } catch (error) {
       console.log(error);
     }
-
   };
 
   const handleCountryName = (e) => {
@@ -238,22 +230,6 @@ export function Setting3() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const beforeSetting = () => {
-    navigate('/setting/countryInfo');
-  };
-
-  const nextSetting = () => {
-    try {
-      // if (!attendanceNumber || !name) {
-      //   alert('업로드 및 직접 입력을 입력해주세요');
-      //   return;
-      // }
-      navigate('/setting/seatingMap');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleCheckBtn = () => {
     setIsEditing(false);
   };
@@ -329,13 +305,11 @@ export function Setting3() {
       </button>
 
       {directInput ? (
-
         <>
           <div>
             {attendees.length > 0 &&
               attendees.map((attendee, index) => (
                 <div className="display" key={index}>
-
                   {attendee.attendanceNumber} - {attendee.name}
                   <button
                     className="updateBtn"
@@ -399,11 +373,9 @@ export function Setting3() {
 }
 
 export function Setting4() {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-    
+
   const [columns, setColumns] = useState([
     { id: 1, label: '1열', rowCount: '' },
     { id: 2, label: '2열', rowCount: '' },
@@ -448,7 +420,6 @@ export function Setting4() {
     setTableRows(rows);
   };
 
-
   const beforeSetting = () => {
     navigate('/setting/studentInfo');
   };
@@ -469,7 +440,6 @@ export function Setting4() {
     try {
       navigate('/setting/jobList');
       dispatch(seatingMap({ columns: columns }));
-  
     } catch (error) {
       console.log(error);
     }
@@ -1169,7 +1139,6 @@ export function Setting8() {
 }
 
 export function Setting9() {
-
   // const navigate = useNavigate();
   // const beforeSetting = () => {
   //   navigate('/setting/seatRental');
@@ -1287,5 +1256,4 @@ export function Setting9() {
   //     <button onClick={finishSetting}>완료</button>
   //   </>
   // );
-
 }

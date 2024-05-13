@@ -4,10 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
 
-// import '../styles/Setting1.scss';
-// import '../styles/Setting2.scss';
-// import '../styles/setting4.scss';
-
 export function Setting1() {
   const navigate = useNavigate();
   const [selectedGrade, setSelectedGrade] = useState('');
@@ -62,16 +58,17 @@ export function Setting1() {
             ))}
           </select>
         </div>
-
-        <button onClick={nextSetting}>다음</button>
       </form>
+      <button className="frist-next-button" onClick={nextSetting}>
+        다음
+      </button>
     </div>
   );
 }
 
 export function Setting2() {
-  const [students, setStudents] = useState([]);
-  const [password, setPassword] = useState('');
+  // const [students, setStudents] = useState([]);
+  // const [password, setPassword] = useState('');
   const days = Array.from({ length: 31 }, (_, index) => index + 1);
   const navigate = useNavigate();
   const beforeSetting = () => {
@@ -81,9 +78,9 @@ export function Setting2() {
     navigate('/setting/studentInfo');
   };
 
-  const addStudentInfo = () => {
-    setStudents([...students, { attendanceNumber: '', name: '' }]);
-  };
+  // const addStudentInfo = () => {
+  //   setStudents([...students, { attendanceNumber: '', name: '' }]);
+  // };
 
   return (
     <div>
@@ -91,7 +88,7 @@ export function Setting2() {
       <ul className="title-list">
         <li>국가의 이름과 화폐 단위&#44; 급여 지급일을 설정하세요&#46;</li>
       </ul>
-      <form>
+      <form className="box-style">
         <div className="set-country">
           <div className="set-country-title">국가 이름</div>
           <input className="set-country-detail" type="text" />
@@ -103,19 +100,27 @@ export function Setting2() {
         <div className="set-country-title">급여 지급일</div>
         <div className="set-salary">
           <div className="set-salary-text">매월</div>
-          <select id="day">
-            <option value=""></option>
-            {days.map((day) => (
-              <option key={day} value={day}>
-                {day}
-              </option>
-            ))}
-          </select>
-          <span className="set-salary-text">일</span>
+          <div>
+            <select id="day">
+              <option value=""></option>
+              {days.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
+            <span className="set-salary-text">일</span>
+          </div>
         </div>
-        <button onClick={beforeSetting}>이전</button>
-        <button onClick={nextSetting}>다음</button>
       </form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </div>
   );
 }
@@ -204,8 +209,8 @@ export function Setting3() {
           </li>
         </ul>
       </div>
+      <button className="blue-btn" onClick={() => setDirectInput(!directInput)}>
 
-      <button onClick={() => setDirectInput(!directInput)}>
         {directInput ? '파일 업로드' : '직접 입력'}
       </button>
 
@@ -253,9 +258,15 @@ export function Setting3() {
           <button onClick={handleUpload}>업로드</button>
         </form>
       )}
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
 
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
     </>
   );
 }
@@ -312,6 +323,7 @@ export function Setting4() {
   const nextSetting = () => {
     navigate('/setting/jobList');
   };
+
   return (
     <div>
       <div className="title-list">
@@ -321,85 +333,73 @@ export function Setting4() {
         </ul>
       </div>
 
-      <form>
+      <form className="box-style">
         {columns.map((column) => (
-          <div key={column.id}>
-            <div>{column.label}</div>
-            <select
-              value={column.rowCount}
-              onChange={(e) => rowCountChange(column.id, e.target.value)}
-            >
-              <option value=""></option>
-              {[...Array(10)].map((_, index) => (
-                <option key={index} value={index + 1}>
-                  {index + 1}
-                </option>
-              ))}
-            </select>
-            <div>명</div>
+          <div className="seat-count" key={column.id}>
+            <div className="seat-colum">{column.label}</div>
+            <div className="seat-count-select">
+              <select
+                value={column.rowCount}
+                onChange={(e) => rowCountChange(column.id, e.target.value)}
+              >
+                <option value=""></option>
+                {[...Array(10)].map((_, index) => (
+                  <option key={index} value={index + 1}>
+                    {index + 1}
+                  </option>
+                ))}
+              </select>
+              <div className="unit">명</div>
+            </div>
           </div>
         ))}
-        <div>
-          <button type="button" onClick={addColumn}>
-            +
+        <div className="add-remove-btn">
+          <button className="circle-btn" type="button" onClick={addColumn}>
+            &#43;
           </button>
           {columns.length > 2 && (
             <button
+              className="circle-btn"
               type="button"
               onClick={() => removeColumn(columns[columns.length - 1].id)}
             >
-              -
+              &#45;
             </button>
           )}
         </div>
 
         <div>
-          <button type="button" onClick={showTable}>
+          <button className="blue-btn" type="button" onClick={showTable}>
             미리보기
           </button>
         </div>
 
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>1열</th>
-                <th>2열</th>
-                <th>3열</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>4</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className="navi-btn">
-          <button className="next-button" type="submit" onClick={beforeSetting}>
-            이전
-          </button>
-          <button className="next-button" type="submit" onClick={nextSetting}>
-            다음
-          </button>
+        <div className="preview">
+          {columns.map((column, columnIndex) => (
+            <div className="seating-map" key={columnIndex}>
+              <div className="cloumn-num">{column.label}</div>
+              <div className="row-container">
+                {tableRows
+                  .filter((row) => row.columnId === column.id)
+                  .map((row, rowIndex) => (
+                    <div key={rowIndex} className="cell">
+                      {row.rowId}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
         </div>
       </form>
+
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </div>
   );
 }
@@ -600,10 +600,18 @@ export function Setting6() {
               삭제
             </button>
           </li>
-        ))}
-      </ul>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
+        ))}</ul>
+
+      </form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+
     </>
   );
 }
@@ -624,8 +632,14 @@ export function Setting7() {
           <li>국가에 필수인 세법을 제정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </>
   );
 }
@@ -646,8 +660,29 @@ export function Setting8() {
           <li>자리 임대료를 설정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
+
+      <form className="box-style">
+        <div className="set-country">
+          <div className="set-country-title">세금 명</div>
+          <input className="set-country-detail" type="text" />
+        </div>
+        <div className="set-country">
+          <div className="set-country-title">숫자</div>
+          <input className="set-country-detail" type="number" />
+        </div>
+        <div className="set-country">
+          <div className="set-country-title">부가 단위</div>
+          <input className="set-country-detail" type="text" />
+        </div>
+      </form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </>
   );
 }

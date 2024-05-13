@@ -1,5 +1,6 @@
 $green: #bacd92;
 $deep-green: #75a47f;
+$blue: #61759f;
 
 @mixin button-style {
   color: #ffffff;
@@ -9,6 +10,16 @@ $deep-green: #75a47f;
   width: 40%;
   border-radius: 18px;
   margin-top: 20px;
+  padding: 6px 15px;
+}
+
+@mixin blue-btn-style {
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid $blue;
+  background-color: $blue;
+  border-radius: 16px;
+  margin: 20px 0;
   padding: 6px 15px;
 }
 
@@ -64,4 +75,18 @@ $deep-green: #75a47f;
 .signup-btn:hover {
   border: 1px solid $deep-green;
   background-color: $deep-green;
+}
+
+.blue-btn {
+  @include blue-btn-style;
+  width: -webkit-fill-available;
+}
+
+.circle-btn {
+  border: 1px solid $green;
+  background-color: $green;
+  border-radius: 50%;
+  color: #ffffff;
+  margin: 10px auto;
+  padding: 6px 10px;
 }

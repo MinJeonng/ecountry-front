@@ -1083,126 +1083,121 @@ export function Setting8() {
 }
 
 export function Setting9() {
-  const navigate = useNavigate();
-  const beforeSetting = () => {
-    navigate('/setting/seatRental');
-  };
-  const finishSetting = () => {
-    navigate('/');
-  };
-  const [reason, setReason] = useState('');
-  const [fee, SetFee] = useState('');
-  const [fineList, SetFineList] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState('');
-  const [correct, setCorrect] = useState(false);
-
-  // 벌금 추가
-  const handleAddFine = () => {
-    if (reason.trim() !== '' && fee.trim() !== '') {
-      SetFineList([...fineList, { reason, fee }]);
-      setReason('');
-      SetFee('');
-    }
-  };
-  //벌금 수정
-  const handleEditLaw = (index) => {
-    const selectedFineReason = fineList[index].reason;
-    const selectedFineFee = fineList[index].fee;
-    setReason(selectedFineReason);
-    setFee(selectedFineFee);
-    setSelectedIndex(index);
-    setCorrect(true);
-  };
-
-  const updateLaw = () => {
-    const updatedLaws = [...laws];
-    updatedLaws[selectedIndex].detail = detail;
-    setLaws(updatedLaws);
-    setDetail('');
-    setSelectedIndex(null);
-    setCorrect(false);
-  };
-
-  // 법 삭제
-  const handleDeleteLaw = (index) => {
-    const updatedLaws = [...fineList];
-    updatedLaws.splice(index, 1);
-    SetFineList(updatedLaws);
-    // if (correct) {
-    //   setCorrect(!correct);
-    // }
-    setDetail('');
-  };
-
-  return (
-    <>
-      <div className="title-list">
-        <div>벌금 설정</div>
-        <ul className="title-list">
-          <li>국가에 필수인 벌금을 제정하세요&#46;</li>
-        </ul>
-      </div>
-      <form className="box-style">
-        <div className="set-country">
-          <div className="set-country-title set-title">벌금사유</div>
-          <input
-            className="set-country-detail"
-            type="text"
-            value={reason}
-            onChange={(e) => {
-              setReason(e.target.value);
-            }}
-          />
-        </div>
-        <div className="set-country">
-          <div className="set-country-title set-title">숫자</div>
-          <input
-            className="set-country-detail"
-            type="number"
-            value={fee}
-            onChange={(e) => {
-              SetFee(e.target.value);
-            }}
-          />
-        </div>
-        <div className="set-country">
-          <div className="set-country-title set-title">단위</div>
-          <input className="set-country-detail" type="text" value="단위" />
-        </div>
-        <button type="button" onClick={handleAddFine}>
-          확인
-        </button>
-        <ul>
-          {fineList.map((fine, index) => (
-            <li key={index}>
-             {correct ? : 사유 : {law.reason}
-              <br />
-              금액 : {law.fee} 단위}
-             
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteLaw(index);
-                }}
-              >
-                삭제
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleEditLaw(index);
-                }}
-              >
-                수정
-              </button>
-            </li>
-          ))}
-        </ul>
-      </form>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={finishSetting}>완료</button>
-    </>
-  );
+  // const navigate = useNavigate();
+  // const beforeSetting = () => {
+  //   navigate('/setting/seatRental');
+  // };
+  // const finishSetting = () => {
+  //   navigate('/');
+  // };
+  // const [reason, setReason] = useState('');
+  // const [fee, SetFee] = useState('');
+  // const [fineList, SetFineList] = useState([]);
+  // const [selectedIndex, setSelectedIndex] = useState('');
+  // const [correct, setCorrect] = useState(false);
+  // // 벌금 추가
+  // const handleAddFine = () => {
+  //   if (reason.trim() !== '' && fee.trim() !== '') {
+  //     SetFineList([...fineList, { reason, fee }]);
+  //     setReason('');
+  //     SetFee('');
+  //   }
+  // };
+  // //벌금 수정
+  // const handleEditLaw = (index) => {
+  //   const selectedFineReason = fineList[index].reason;
+  //   const selectedFineFee = fineList[index].fee;
+  //   setReason(selectedFineReason);
+  //   setFee(selectedFineFee);
+  //   setSelectedIndex(index);
+  //   setCorrect(true);
+  // };
+  // const updateLaw = () => {
+  //   const updatedLaws = [...laws];
+  //   updatedLaws[selectedIndex].detail = detail;
+  //   setLaws(updatedLaws);
+  //   setDetail('');
+  //   setSelectedIndex(null);
+  //   setCorrect(false);
+  // };
+  // // 법 삭제
+  // const handleDeleteLaw = (index) => {
+  //   const updatedLaws = [...fineList];
+  //   updatedLaws.splice(index, 1);
+  //   SetFineList(updatedLaws);
+  //   // if (correct) {
+  //   //   setCorrect(!correct);
+  //   // }
+  //   setDetail('');
+  // };
+  // return (
+  //   <>
+  //     <div className="title-list">
+  //       <div>벌금 설정</div>
+  //       <ul className="title-list">
+  //         <li>국가에 필수인 벌금을 제정하세요&#46;</li>
+  //       </ul>
+  //     </div>
+  //     <form className="box-style">
+  //       <div className="set-country">
+  //         <div className="set-country-title set-title">벌금사유</div>
+  //         <input
+  //           className="set-country-detail"
+  //           type="text"
+  //           value={reason}
+  //           onChange={(e) => {
+  //             setReason(e.target.value);
+  //           }}
+  //         />
+  //       </div>
+  //       <div className="set-country">
+  //         <div className="set-country-title set-title">숫자</div>
+  //         <input
+  //           className="set-country-detail"
+  //           type="number"
+  //           value={fee}
+  //           onChange={(e) => {
+  //             SetFee(e.target.value);
+  //           }}
+  //         />
+  //       </div>
+  //       <div className="set-country">
+  //         <div className="set-country-title set-title">단위</div>
+  //         <input className="set-country-detail" type="text" value="단위" />
+  //       </div>
+  //       <button type="button" onClick={handleAddFine}>
+  //         확인
+  //       </button>
+  //       <ul>
+  //         {fineList.map((fine, index) => (
+  //           <li key={index}>
+  //            {correct ? :( `사유 : ${law.reason}
+  //             <br />
+  //             금액 : ${law.fee} 단위`)}
+  //             <button
+  //               type="button"
+  //               onClick={(e) => {
+  //                 e.stopPropagation();
+  //                 handleDeleteLaw(index);
+  //               }}
+  //             >
+  //               삭제
+  //             </button>
+  //             <button
+  //               type="button"
+  //               onClick={(e) => {
+  //                 e.stopPropagation();
+  //                 handleEditLaw(index);
+  //               }}
+  //             >
+  //               수정
+  //             </button>
+  //           </li>
+  //         ))}
+  //       </ul>
+  //     </form>
+  //     <button onClick={beforeSetting}>이전</button>
+  //     <button onClick={finishSetting}>완료</button>
+  //   </>
+  // );
 }

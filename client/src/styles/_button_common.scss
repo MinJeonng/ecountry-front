@@ -83,10 +83,16 @@ $blue: #61759f;
 }
 
 .circle-btn {
-  border: 1px solid $green;
-  background-color: $green;
+  border: 1px solid #bacd92;
+  background-color: #bacd92;
   border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
   color: #ffffff;
   margin: 10px auto;
-  padding: 6px 10px;
 }

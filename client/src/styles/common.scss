@@ -12,7 +12,7 @@
     -webkit-appearance: none; /* Chrome, Safari에서 기본 화살표 제거 */
     -moz-appearance: none; /* Firefox에서 기본 화살표 제거 */
     appearance: none; /* 최신 브라우저에서 기본 화살표 제거 */
-    padding-right: 30px;
+    padding-right: 60px;
   }
   @include mobile {
     a {

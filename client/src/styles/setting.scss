@@ -24,11 +24,11 @@ $blue: #61759f;
 
     .select-student-id-title {
       color: #a5a5a5;
-      font-size: 14px;
+      font-size: 15px;
     }
     .select-title {
       color: #a5a5a5;
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .select-school-name {
@@ -85,7 +85,8 @@ $blue: #61759f;
 
     .set-salary-text {
       margin: 10px 0 20px 0;
-      font-size: 14px;
+      font-size: 15px;
+      color: #5c5b5b;
     }
 
     select {
@@ -100,6 +101,9 @@ $blue: #61759f;
     align-items: center;
     .count {
       padding-right: 20px;
+    }
+    .selectSalary {
+      margin-right: 10px;
     }
     .unit {
       font-size: 16px;
@@ -126,7 +130,16 @@ $blue: #61759f;
     text-align: center;
     padding: 5px;
     margin-bottom: 10px;
+    // cursor: pointer;
+  }
+  .updateBtn {
+    right: 100px;
+    position: absolute;
     cursor: pointer;
+    text-align: center;
+    background: #bacd92;
+    border: 1px solid #bacd92;
+    border-radius: 2px;
   }
   .resetBtn {
     width: 15px;
@@ -142,7 +155,6 @@ $blue: #61759f;
     position: absolute;
     cursor: pointer;
     margin-top: 4px;
-
   }
   // 자리 배치도
   .seat-count {
@@ -158,73 +170,61 @@ $blue: #61759f;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      .seat-colum {
-        font-size: 14px;
+      width: 50%;
+      select {
+        width: -webkit-fill-available;
+        text-align: center;
+        @include select-common;
       }
 
-      .seat-count-select {
-        display: flex;
-        align-items: center;
-        width: 50%;
-
-        select {
-          width: -webkit-fill-available;
-          text-align: center;
-          @include select-common;
-        }
-
-        .unit {
-          margin-left: 10px;
-        }
-      }
-    }
-
-    .add-remove-btn {
-      display: flex;
-    }
-
-    .preview {
-      display: flex;
-      justify-content: space-around;
-      border: 1px solid $deep-green;
-      border-radius: 16px;
-      background-color: $deep-green;
-      text-align: center;
-      margin: 10px 0;
-      overflow-x: scroll;
-
-      .seating-map {
-        padding: 15px;
-
-        .cloumn-num {
-          font-weight: bold;
-          color: #ffffff;
-        }
-
-        .row-container {
-          .cell {
-            border: 1px solid #ffffff;
-            padding: 10px 20px;
-            color: #ffffff;
-          }
-        }
+      .unit {
+        margin-left: 10px;
       }
     }
   }
+}
+.add-remove-btn {
+  display: flex;
+}
 
-  .preview::-webkit-scrollbar {
-    width: 2px;
-  }
-  .preview::-webkit-scrollbar-thumb {
-    background-color: $green;
-    border-radius: 10px;
-    background-clip: padding-box;
-    border: 1px solid transparent;
-  }
-  .preview::-webkit-scrollbar-track {
-    background-color: $deep-green;
-    border-radius: 10px;
+.preview {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid $deep-green;
+  border-radius: 16px;
+  background-color: $deep-green;
+  text-align: center;
+  margin: 10px 0;
+  overflow-x: scroll;
 
+  .seating-map {
+    padding: 15px;
+
+    .cloumn-num {
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .row-container {
+      .cell {
+        border: 1px solid #ffffff;
+        padding: 10px 20px;
+        color: #ffffff;
+      }
+    }
   }
+}
+
+.preview::-webkit-scrollbar {
+  width: 2px;
+}
+.preview::-webkit-scrollbar-thumb {
+  background-color: $green;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+.preview::-webkit-scrollbar-track {
+  background-color: $deep-green;
+  border-radius: 10px;
 }

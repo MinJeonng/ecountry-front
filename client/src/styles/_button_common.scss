@@ -23,17 +23,6 @@ $blue: #61759f;
   padding: 6px 15px;
 }
 
-.big-button {
-  @include button-style;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60%;
-  height: 35%;
-  color: #093030;
-  margin: 2%;
-}
-
 .frist-next-button {
   @include button-style;
   width: 100%;
@@ -72,9 +61,11 @@ $blue: #61759f;
 }
 
 .login-btn:hover,
-.signup-btn:hover {
+.signup-btn:hover,
+.big-button:hover {
   border: 1px solid $deep-green;
   background-color: $deep-green;
+  color: #093030;
 }
 
 .blue-btn {

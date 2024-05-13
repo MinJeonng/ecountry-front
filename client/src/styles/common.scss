@@ -17,6 +17,7 @@
   @include mobile {
     a {
       text-decoration: none;
+      color: #ffffff;
       &.hover {
         cursor: pointer;
       }

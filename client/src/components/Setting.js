@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
@@ -65,16 +66,17 @@ export function Setting1() {
             ))}
           </select>
         </div>
-
-        <button onClick={nextSetting}>다음</button>
       </form>
+      <button className="frist-next-button" onClick={nextSetting}>
+        다음
+      </button>
     </div>
   );
 }
 
 export function Setting2() {
-  const [students, setStudents] = useState([]);
-  const [password, setPassword] = useState('');
+  // const [students, setStudents] = useState([]);
+  // const [password, setPassword] = useState('');
   const days = Array.from({ length: 31 }, (_, index) => index + 1);
   const navigate = useNavigate();
   const beforeSetting = () => {
@@ -84,9 +86,9 @@ export function Setting2() {
     navigate('/setting/studentInfo');
   };
 
-  const addStudentInfo = () => {
-    setStudents([...students, { attendanceNumber: '', name: '' }]);
-  };
+  // const addStudentInfo = () => {
+  //   setStudents([...students, { attendanceNumber: '', name: '' }]);
+  // };
 
   return (
     <div>
@@ -94,7 +96,7 @@ export function Setting2() {
       <ul className="title-list">
         <li>국가의 이름과 화폐 단위&#44; 급여 지급일을 설정하세요&#46;</li>
       </ul>
-      <form>
+      <form className="box-style">
         <div className="set-country">
           <div className="set-country-title">국가 이름</div>
           <input className="set-country-detail" type="text" />
@@ -106,19 +108,27 @@ export function Setting2() {
         <div className="set-country-title">급여 지급일</div>
         <div className="set-salary">
           <div className="set-salary-text">매월</div>
-          <select id="day">
-            <option value=""></option>
-            {days.map((day) => (
-              <option key={day} value={day}>
-                {day}
-              </option>
-            ))}
-          </select>
-          <span className="set-salary-text">일</span>
+          <div>
+            <select id="day">
+              <option value=""></option>
+              {days.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
+            <span className="set-salary-text">일</span>
+          </div>
         </div>
-        <button onClick={beforeSetting}>이전</button>
-        <button onClick={nextSetting}>다음</button>
       </form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </div>
   );
 }
@@ -134,33 +144,48 @@ export function Setting3() {
 
   const [directInput, setDirectInput] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+
   const [password, setPassword] = useState(null);
   const [attendees, setAttendees] = useState([]);
-  const [attendanceNumber, setAttendanceNumber] = useState(null);
+  const [attendanceNumber, setAttendanceNumber] = useState('');
   const [name, setName] = useState('');
+  const [correct, setCorrect] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
-  const handleAddAttendee = (e) => {
-    e.preventDefault();
-    // setAttendees([...attendees, { attendanceNumber: '', name: '' }]);
-  };
-
-  const handleChange = (field, value) => {
-    const updatedAttendees = [...attendees];
-    updatedAttendees[attendees.length - 1][field] = value;
-    setAttendees(updatedAttendees);
-    console.log(attendees.length);
-  };
-
-  const handleCheck = (e) => {
-    e.preventDefault();
-    handleChange('attendanceNumber', attendanceNumber);
-    handleChange('name', name);
+  const handleCheck = () => {
+    if (attendanceNumber && name) {
+      setAttendees([...attendees, { attendanceNumber, name }]);
+      setAttendanceNumber('');
+      setName('');
+    } else {
+      alert('출석번호와 이름을 모두 입력해주세요.');
+    }
   };
 
   const deleteAttendee = (index) => {
     const updatedAttendees = [...attendees];
     updatedAttendees.splice(index, 1);
     setAttendees(updatedAttendees);
+    setAttendanceNumber('');
+    setName('');
+  };
+
+  const correctAttendee = (index) => {
+    const { attendanceNumber, name } = attendees[index];
+    setAttendanceNumber(attendanceNumber);
+    setName(name);
+    setCorrect(true);
+    setSelectedIndex(index);
+  };
+
+  const updateAttendee = () => {
+    const updatedAttendees = [...attendees];
+    updatedAttendees[selectedIndex] = { attendanceNumber, name };
+    setAttendees(updatedAttendees);
+    setAttendanceNumber('');
+    setName('');
+    setSelectedIndex(null);
+    setCorrect(!correct);
   };
 
   // 파일이 선택되었을 때
@@ -173,11 +198,11 @@ export function Setting3() {
   const handleUpload = () => {
     if (selectedFile) {
       // 선택된 파일 어떻게 할지!
-      console.log('업로드된 파일:', selectedFile);
     } else {
       alert('파일을 선택해주세요.');
     }
   };
+
   return (
     <>
       <div className="title-wrap">
@@ -192,96 +217,64 @@ export function Setting3() {
           </li>
         </ul>
       </div>
-      <button onClick={() => setDirectInput(!directInput)}>
+      <button className="blue-btn" onClick={() => setDirectInput(!directInput)}>
+
         {directInput ? '파일 업로드' : '직접 입력'}
       </button>
+
       {directInput ? (
-        <>
-          <form className="box-style">
-            <div>비밀번호</div>
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              maxLength={4}
-            />
-            {/* <div>
-              <button onClick={(e) => handleAddAttendee(e)}>추가</button>
+        <div className="box-style">
+          <div>출석번호</div>
+          <input
+            type="number"
+            placeholder="출석번호"
+            value={attendanceNumber}
+            onChange={(e) => setAttendanceNumber(e.target.value)}
+          />
+          <div>이름</div>
+          <input
+            type="text"
+            placeholder="이름"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {correct ? (
+            <button onClick={updateAttendee}>수정</button>
+          ) : (
+            <button onClick={handleCheck}>확인</button>
+          )}
 
+          {attendees.length > 0 && (
+            <ul>
               {attendees.map((attendee, index) => (
-                <div key={index}>
-                  <input
-                    type="number"
-                    placeholder="출석번호"
-                    value={attendee.attendanceNumber}
-                    onChange={(e) =>
-                      handleChange(index, 'attendanceNumber', e.target.value)
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="이름"
-                    value={attendee.name}
-                    onChange={(e) =>
-                      handleChange(index, 'name', e.target.value)
-                    }
-                  />
-                  <div onClick={(index) => deleteAttendee(index)}>지우기</div>
-                </div>
+                <li key={index} onClick={() => correctAttendee(index)}>
+                  {attendee.attendanceNumber} - {attendee.name}
+                  <button onClick={() => deleteAttendee(index)}>지우기</button>
+                </li>
               ))}
+            </ul>
+          )}
 
-              <ul>
-                {attendees.map((attendee, index) => (
-                  <li key={index}>
-                    {attendee.attendanceNumber} - {attendee.name}
-                  </li>
-                ))}
-              </ul>
-            </div> */}
-            <input
-              type="number"
-              placeholder="출석번호"
-              value={attendanceNumber}
-              onChange={(e) => setAttendanceNumber(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="이름"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <button onClick={(e) => handleCheck(e)}>확인</button>
-            <button onClick={handleAddAttendee}>추가</button>
-
-            {attendees.length > 0 && (
-              <>
-                <ul>
-                  {attendees.map((attendee, index) => (
-                    <li key={index}>
-                      {attendee.attendanceNumber} - {attendee.name}
-                      <div onClick={() => deleteAttendee(index)}>지우기</div>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </form>
-        </>
+          <button onClick={beforeSetting}>이전</button>
+          <button onClick={nextSetting}>다음</button>
+        </div>
       ) : (
-        <>
-          <form className="box-style">
-            <div>여기에 엑셀 예시가 들어가야함</div>
+        <form className="box-style">
+          <div>여기에 엑셀 예시가 들어가야함</div>
 
-            <input
-              type="file"
-              onChange={handleFileChange}
-              accept=".xlsx,.xls"
-            />
-            <button onClick={handleUpload}>업로드</button>
-          </form>
-        </>
+          <input type="file" onChange={handleFileChange} accept=".xlsx,.xls" />
+          <button onClick={handleUpload}>업로드</button>
+        </form>
       )}
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+
     </>
   );
 }
@@ -338,6 +331,7 @@ export function Setting4() {
   const nextSetting = () => {
     navigate('/setting/jobList');
   };
+
   return (
     <div>
       <div className="title-list">
@@ -347,85 +341,73 @@ export function Setting4() {
         </ul>
       </div>
 
-      <form>
+      <form className="box-style">
         {columns.map((column) => (
-          <div key={column.id}>
-            <div>{column.label}</div>
-            <select
-              value={column.rowCount}
-              onChange={(e) => rowCountChange(column.id, e.target.value)}
-            >
-              <option value=""></option>
-              {[...Array(10)].map((_, index) => (
-                <option key={index} value={index + 1}>
-                  {index + 1}
-                </option>
-              ))}
-            </select>
-            <div>명</div>
+          <div className="seat-count" key={column.id}>
+            <div className="seat-colum">{column.label}</div>
+            <div className="seat-count-select">
+              <select
+                value={column.rowCount}
+                onChange={(e) => rowCountChange(column.id, e.target.value)}
+              >
+                <option value=""></option>
+                {[...Array(10)].map((_, index) => (
+                  <option key={index} value={index + 1}>
+                    {index + 1}
+                  </option>
+                ))}
+              </select>
+              <div className="unit">명</div>
+            </div>
           </div>
         ))}
-        <div>
-          <button type="button" onClick={addColumn}>
-            +
+        <div className="add-remove-btn">
+          <button className="circle-btn" type="button" onClick={addColumn}>
+            &#43;
           </button>
           {columns.length > 2 && (
             <button
+              className="circle-btn"
               type="button"
               onClick={() => removeColumn(columns[columns.length - 1].id)}
             >
-              -
+              &#45;
             </button>
           )}
         </div>
 
         <div>
-          <button type="button" onClick={showTable}>
+          <button className="blue-btn" type="button" onClick={showTable}>
             미리보기
           </button>
         </div>
 
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>1열</th>
-                <th>2열</th>
-                <th>3열</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>4</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className="navi-btn">
-          <button className="next-button" type="submit" onClick={beforeSetting}>
-            이전
-          </button>
-          <button className="next-button" type="submit" onClick={nextSetting}>
-            다음
-          </button>
+        <div className="preview">
+          {columns.map((column, columnIndex) => (
+            <div className="seating-map" key={columnIndex}>
+              <div className="cloumn-num">{column.label}</div>
+              <div className="row-container">
+                {tableRows
+                  .filter((row) => row.columnId === column.id)
+                  .map((row, rowIndex) => (
+                    <div key={rowIndex} className="cell">
+                      {row.rowId}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
         </div>
       </form>
+
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </div>
   );
 }
@@ -667,6 +649,70 @@ export function Setting5() {
   );
 }
 
+// export function Setting6() {
+//   const navigate = useNavigate();
+//   const beforeSetting = () => {
+//     navigate('/setting/jobList');
+//   };
+//   const nextSetting = () => {
+//     navigate('/setting/taxLaw');
+//   };
+
+//   const [laws, setLaws] = useState([]); // 법 리스트
+//   const [detail, setDetail] = useState(''); // 법 내용
+
+//   //laws구조
+//   const handleLaw = (e) => {
+//     e.preventDefault();
+//     setLaws([...laws, { detail: '' }]);
+//   };
+//   //laws-detail 입력
+//   const handleChange = (index, field, value) => {
+//     const updatedLaws = laws.map((law, i) => {
+//       if (i === index) {
+//         return { ...law, [field]: value };
+//       }
+//       return law;
+//     });
+//     setLaws(updatedLaws);
+//   };
+//   //law 삭제
+//   const deleteLaw = (index) => {
+//     const updatedLaws = [...laws];
+//     updatedLaws.splice(index, 1);
+//     setLaws(updatedLaws);
+//   };
+
+//   return (
+//     <>
+//       <div className="title-list">
+//         <div>기본법 제정</div>
+//         <ul className="title-list">
+//           <li>국가에 필수인 기본법을 제정하세요&#46;</li>
+//         </ul>
+//       </div>
+//       <form className="box-style">
+//         <button onClick={(e) => handleLaw(e)}>추가</button>
+//         {laws.map((law, index) => (
+//           <div>
+//             {index + 1}항
+//             <input
+//               type="text"
+//               placeholder="내용"
+//               value={law.detail}
+//               onChange={(e) => {
+//                 handleChange(index, 'detail', e.target.value);
+//               }}
+//             ></input>
+//             <div onClick={(index) => deleteLaw(index)}>지우기</div>
+//           </div>
+//         ))}
+//       </form>
+//       <button onClick={beforeSetting}>이전</button>
+//       <button onClick={nextSetting}>다음</button>
+//     </>
+//   );
+// }
 export function Setting6() {
   const navigate = useNavigate();
   const beforeSetting = () => {
@@ -678,24 +724,36 @@ export function Setting6() {
 
   const [laws, setLaws] = useState([]); // 법 리스트
   const [detail, setDetail] = useState(''); // 법 내용
+  const [correct, setCorrect] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [law, setLaw] = useState('');
 
-  //laws구조
-  const handleLaw = (e) => {
-    e.preventDefault();
-    setLaws([...laws, { detail: '' }]);
+  // 법 추가
+  const handleAddLaw = () => {
+    if (detail.trim() !== '') {
+      setLaws([...laws, { detail }]);
+      setDetail('');
+    }
   };
-  //laws-detail 입력
-  const handleChange = (index, field, value) => {
-    const updatedLaws = laws.map((law, i) => {
-      if (i === index) {
-        return { ...law, [field]: value };
-      }
-      return law;
-    });
+
+  const handleEditLaw = (index) => {
+    const selectedLaw = laws[index].detail;
+    setDetail(selectedLaw); //detail에 입력값 넣어주기
+    setSelectedIndex(index);
+    setCorrect(true);
+  };
+
+  const updateLaw = () => {
+    const updatedLaws = [...laws];
+    updatedLaws[selectedIndex].detail = detail;
     setLaws(updatedLaws);
+    setDetail('');
+    setSelectedIndex(null);
+    setCorrect(false);
   };
-  //law 삭제
-  const deleteLaw = (index) => {
+
+  // 법 삭제
+  const handleDeleteLaw = (index) => {
     const updatedLaws = [...laws];
     updatedLaws.splice(index, 1);
     setLaws(updatedLaws);
@@ -710,24 +768,51 @@ export function Setting6() {
         </ul>
       </div>
       <form className="box-style">
-        <button onClick={(e) => handleLaw(e)}>추가</button>
-        {laws.map((law, index) => (
-          <div>
-            {index + 1}항
-            <input
-              type="text"
-              placeholder="내용"
-              value={law.detail}
-              onChange={(e) => {
-                handleChange(index, 'detail', e.target.value);
-              }}
-            ></input>
-            <div onClick={(index) => deleteLaw(index)}>지우기</div>
-          </div>
-        ))}
+        <input
+          type="text"
+          placeholder="내용"
+          value={detail}
+          onChange={(e) => setDetail(e.target.value)}
+        />
+        {correct ? (
+          <button onClick={updateLaw}>수정</button>
+        ) : (
+          <button type="button" onClick={handleAddLaw}>
+            추가
+          </button>
+        )}
       </form>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
+      <ul>
+        {laws.map((law, index) => (
+          <li
+            key={index}
+            onClick={() => {
+              handleEditLaw(index);
+            }}
+          >
+            {law.detail}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteLaw(index);
+              }}
+            >
+              삭제
+            </button>
+          </li>
+        ))}</ul>
+
+      </form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+
     </>
   );
 }
@@ -831,6 +916,7 @@ export function Setting7() {
           <li>국가에 필수인 세법을 제정하세요&#46;</li>
         </ul>
       </div>
+
       <form className="box-style">
         <div className="reset">
           <div className="set-title">세금명</div>
@@ -906,6 +992,7 @@ export function Setting7() {
           </button>
         </div>
       </form>
+
     </>
   );
 }
@@ -926,8 +1013,29 @@ export function Setting8() {
           <li>자리 임대료를 설정하세요&#46;</li>
         </ul>
       </div>
-      <button onClick={beforeSetting}>이전</button>
-      <button onClick={nextSetting}>다음</button>
+
+      <form className="box-style">
+        <div className="set-country">
+          <div className="set-country-title">세금 명</div>
+          <input className="set-country-detail" type="text" />
+        </div>
+        <div className="set-country">
+          <div className="set-country-title">숫자</div>
+          <input className="set-country-detail" type="number" />
+        </div>
+        <div className="set-country">
+          <div className="set-country-title">부가 단위</div>
+          <input className="set-country-detail" type="text" />
+        </div>
+      </form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </>
   );
 }

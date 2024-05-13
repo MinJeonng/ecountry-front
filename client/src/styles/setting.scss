@@ -1,4 +1,7 @@
 $under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
 
 @import '../styles/variables';
 @import '../styles/input_common';
@@ -86,9 +89,11 @@ $under-line: #e9ae24;
     }
 
     select {
+      text-align: center;
       @include select-common;
     }
   }
+
   .container {
     display: flex;
     // justify-content: center;
@@ -137,5 +142,79 @@ $under-line: #e9ae24;
     position: absolute;
     cursor: pointer;
     margin-top: 4px;
+
+
+  // 자리 배치도
+  .seat-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .seat-colum {
+      font-size: 14px;
+    }
+
+    .seat-count-select {
+      display: flex;
+      align-items: center;
+      width: 50%;
+
+      select {
+        width: -webkit-fill-available;
+        text-align: center;
+        @include select-common;
+      }
+
+      .unit {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .add-remove-btn {
+    display: flex;
+  }
+
+  .preview {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid $deep-green;
+    border-radius: 16px;
+    background-color: $deep-green;
+    text-align: center;
+    margin: 10px 0;
+    overflow-x: scroll;
+
+    .seating-map {
+      padding: 15px;
+
+      .cloumn-num {
+        font-weight: bold;
+        color: #ffffff;
+      }
+
+      .row-container {
+        .cell {
+          border: 1px solid #ffffff;
+          padding: 10px 20px;
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  .preview::-webkit-scrollbar {
+    width: 2px;
+  }
+  .preview::-webkit-scrollbar-thumb {
+    background-color: $green;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+  }
+  .preview::-webkit-scrollbar-track {
+    background-color: $deep-green;
+    border-radius: 10px;
+
   }
 }

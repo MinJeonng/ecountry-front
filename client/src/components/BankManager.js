@@ -210,7 +210,11 @@ export function AddSavings() {
       ))}
 
       {isAccordionOpen && (
-        <button onClick={() => newAddBtn()}>상품 등록</button>
+        <ConfirmBtn
+          onClick={() => newAddBtn()}
+          btnName="상품 등록"
+          width={'40%'}
+        ></ConfirmBtn>
       )}
 
       {isAddOpen && (

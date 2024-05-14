@@ -28,7 +28,7 @@ export function ConfirmBtn({ onClick, btnName }) {
   );
 }
 
-export function NextBtn({ onClick, width }) {
+export function NextBtn({ onClick, width, btnName }) {
   const handleClick = (e) => {
     e.preventDefault(); // 기본 동작 방지
     onClick(); // 부모 컴포넌트에서 전달된 onClick 함수 실행
@@ -42,9 +42,9 @@ export function NextBtn({ onClick, width }) {
         className="frist-next-button"
         onClick={handleClick}
         style={buttonStyled}
-        type="button"
+        type="submit"
       >
-        다음
+        {btnName}
       </button>
     </>
   );

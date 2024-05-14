@@ -33,27 +33,23 @@ export default function Loading() {
   }, [navigate]);
 
   return (
-    <Template
-      childrenBottom={
-        <div className="spinner-bg">
-          <div className="spinner">
-            {loading ? (
-              <>
-                <img
-                  className="spinner-img"
-                  src="/images/icon-diagram-process.gif"
-                  alt="Spinner"
-                />
-                <div className="spinner-text">초기 설정</div>
-                <div className="spinner-text">적용중...</div>
-              </>
-            ) : (
-              <SetDone />
-            )}
-          </div>
-        </div>
-      }
-    />
+    <div className="spinner-bg">
+      <div className="spinner">
+        {loading ? (
+          <>
+            <img
+              className="spinner-img"
+              src="/images/icon-diagram-process.gif"
+              alt="Spinner"
+            />
+            <div className="spinner-text">초기 설정</div>
+            <div className="spinner-text">적용중...</div>
+          </>
+        ) : (
+          <SetDone />
+        )}
+      </div>
+    </div>
   );
 }
 

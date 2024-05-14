@@ -1293,7 +1293,6 @@ export function Setting9() {
 
             <input className="set-input" type="text" value={moneyUnit} />
 
-
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
           </form>
           <div className="navi-btn">

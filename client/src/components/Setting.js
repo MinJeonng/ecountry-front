@@ -312,6 +312,23 @@ export function Setting3() {
       {directInput ? (
         <div className="setting-wrap">
           <div>
+            <div className="box-style">
+              <div className="set-title">비밀번호</div>
+              <ul className="title-list">
+                <li>국민들의 초기 비밀번호를 설정하세요.(4자리)</li>
+                <li>
+                  각각의 비밀번호는 국민 개인 계정에서 변경가능하며, 관리자
+                  페이지에서 재설정 가능합니다.
+                </li>
+              </ul>
+              <input
+                className="set-input"
+                type="number"
+                value={password}
+                maxLength={4}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
             {attendees.length > 0 &&
               attendees.map((attendee, index) => (
                 <div className="display" key={index}>
@@ -329,16 +346,6 @@ export function Setting3() {
                   ></img>
                 </div>
               ))}
-          </div>
-          <div className="box-style">
-            <div className="set-title">비밀번호</div>
-            <input
-              className="set-input"
-              type="number"
-              value={attendanceNumber}
-              maxLength={4}
-              onChange={(e) => setPassword(e.target.value)}
-            />
           </div>
 
           <div className="box-style">
@@ -542,6 +549,7 @@ export function Setting5() {
 
   const [selectedJob, setSelectedJob] = useState('');
   const [customJob, setCustomJob] = useState('');
+  const [value, setValue] = useState('');
   const [standardValue, setStandardValue] = useState('');
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
@@ -600,9 +608,13 @@ export function Setting5() {
     if (selectedJobIndex !== null) {
       // 이미 목록에 있는 직업을 업데이트
       const updatedJobs = [...jobsDisplay];
+      if (customJob !== null) {
+        setValue(customJob);
+      } else {
+        setValue(selectedJob);
+      }
       updatedJobs[selectedJobIndex] = {
-        customValue: customJob,
-        selectValue: selectedJob,
+        value: value,
         standard: standardValue,
         role: jobRoleValue,
         count: countValue,
@@ -611,11 +623,15 @@ export function Setting5() {
       setJobsDisplay(updatedJobs);
     } else {
       // 새 직업을 목록에 추가
+      if (customJob !== null) {
+        setValue(customJob);
+      } else {
+        setValue(selectedJob);
+      }
       const newJobsDisplay = [
         ...jobsDisplay,
         {
-          customValue: customJob,
-          selectValue: selectedJob,
+          value: value,
           standard: standardValue,
           role: jobRoleValue,
           count: countValue,
@@ -968,6 +984,7 @@ export function Setting7() {
         value: newTaxLaw,
         name: lawNameValue,
         rate: rateValue,
+        division: division,
       };
       setTaxLawDisplay(updatedTaxLaws);
     } else {
@@ -978,6 +995,7 @@ export function Setting7() {
           value: newTaxLaw,
           name: lawNameValue,
           rate: rateValue,
+          division: division,
         },
       ];
       setTaxLawDisplay(newTaxLawDisplay);
@@ -1292,7 +1310,6 @@ export function Setting9() {
             <div className="set-title">단위</div>
 
             <input className="set-input" type="text" value={moneyUnit} />
-
 
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
           </form>

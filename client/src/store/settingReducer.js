@@ -187,9 +187,9 @@ const initalState9 = {
   fine: [],
   division: 2,
 };
-export const setting9Reducer = (state = initalState8, action) => {
+export const setting9Reducer = (state = initalState9, action) => {
   switch (action.type) {
-    case SEATRENTALFEE:
+    case FINE:
       return {
         ...state,
         fine: action.info.fine,

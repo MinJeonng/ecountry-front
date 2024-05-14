@@ -74,18 +74,21 @@ function App() {
             element={<Setting position={'과태료'} />}
           />
 
-          <Route path="/manager" element={<ManagerDashBoard />} />
+          <Route path="/:id/manager" element={<ManagerDashBoard />} />
           <Route path="/test" element={<Test />} />
 
           {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
-          <Route path="/bank" element={<SetBank position="적금 생성" />} />
-          <Route path="/investment" element={<SetInvestment />} />
-          <Route path="/assembly" element={<SetAssembly />} />
-          <Route path="/boardPeople" element={<SetBoardPeople />} />
-          <Route path="/news" element={<SetNews />} />
-          <Route path="/peopleList" element={<SetPeopleList />} />
-          <Route path="/seat" element={<SetSeat />} />
-          <Route path="/taxService" element={<SetTaxService />} />
+          <Route
+            path="/manager/bank"
+            element={<SetBank position="적금 생성" />}
+          />
+          <Route path="/manager/investment" element={<SetInvestment />} />
+          <Route path="/manager/assembly" element={<SetAssembly />} />
+          <Route path="/manager/boardPeople" element={<SetBoardPeople />} />
+          <Route path="/manager/news" element={<SetNews />} />
+          <Route path="/manager/peopleList" element={<SetPeopleList />} />
+          <Route path="/manager/seat" element={<SetSeat />} />
+          <Route path="/manager/taxService" element={<SetTaxService />} />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

@@ -218,7 +218,7 @@ export function Setting3() {
   const nextSetting = () => {
     navigate('/setting/seatingMap');
     dispatch(
-      studnetInfo({
+      studentInfo({
         password: password,
         studentList: attendees,
       })

@@ -236,3 +236,14 @@ $blue: #61759f;
   background-color: $deep-green;
   border-radius: 10px;
 }
+.title-list {
+  font-size: 18px;
+  margin: 10px 0;
+
+  li {
+    margin-left: 20px;
+    list-style: disc;
+    font-size: 16px;
+    color: #777777;
+  }
+}

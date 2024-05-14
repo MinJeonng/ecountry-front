@@ -7,11 +7,10 @@ import CountryList from './pages/CountryList';
 import Setting from './pages/Setting';
 import Loading from './components/Loading';
 import Signup from './pages/Signup';
-// import StudentSetting from './components/StudentSetting';
 import ManagerDashBoard from './pages/ManagerDashBoard';
-
 import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
+import StudentList from './pages/StudentList';
 
 import './styles/common.scss';
 import './styles/reset.css';
@@ -78,6 +77,8 @@ function App() {
           <Route path="/manager" element={<ManagerDashBoard />} />
           <Route path="/test" element={<Test />} />
 
+          <Route path="/studentList" element={<StudentList />} />
+            
           {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
           <Route path="/bank" element={<SetBank />} />
           <Route path="/investment" element={<SetInvestment />} />
@@ -87,6 +88,7 @@ function App() {
           <Route path="/peopleList" element={<SetPeopleList />} />
           <Route path="/seat" element={<SetSeat />} />
           <Route path="/taxService" element={<SetTaxService />} />
+
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

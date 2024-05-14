@@ -69,7 +69,7 @@ export const setting3Reducer = (state = initalState3, action) => {
       return {
         ...state,
         password: action.info.password,
-        studentList: [action.info.studentList],
+        studentList: action.info.studentList,
       };
     default:
       return state;
@@ -88,7 +88,7 @@ export const setting4Reducer = (state = initalState4, action) => {
     case SEATINGMAP:
       return {
         ...state,
-        columns: [action.info.columns],
+        columns: action.info.columns,
       };
     default:
       return state;
@@ -107,7 +107,7 @@ export const setting5Reducer = (state = initalState5, action) => {
     case JOBLIST:
       return {
         ...state,
-        jobsDisplay: [action.info.jobsDisplay],
+        jobsDisplay: action.info.jobsDisplay,
       };
     default:
       return state;
@@ -126,7 +126,7 @@ export const setting6Reducer = (state = initalState6, action) => {
     case BASICLAW:
       return {
         ...state,
-        basicLaw: [action.info.basicLaw],
+        basicLaw: action.info.basicLaw,
       };
     default:
       return state;
@@ -145,7 +145,7 @@ export const setting7Reducer = (state = initalState7, action) => {
     case TAXLAW:
       return {
         ...state,
-        taxLaw: [action.info.taxLaw],
+        taxLaw: action.info.taxLaw,
       };
     default:
       return state;

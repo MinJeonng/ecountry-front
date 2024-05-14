@@ -901,9 +901,10 @@ export function Setting7() {
   const [selectedUnit, setSelectedUnit] = useState('');
   const [selectedTaxLawIndex, setSelectedTaxLawIndex] = useState(null);
   const [taxLawDisplay, setTaxLawDisplay] = useState([]);
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
-    { label: '화폐단위(직접입력)', value: '화폐단위(직접입력)' },
+    { label: moneyUnit, value: moneyUnit },
     { label: '%', value: '%' },
   ];
   const handleLawNameValue = (e) => {
@@ -1088,6 +1089,7 @@ export function Setting8() {
       })
     );
   };
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const [taxName, setTaxName] = useState('');
   const [fee, setFee] = useState('');
   return (
@@ -1124,7 +1126,7 @@ export function Setting8() {
         </div>
         <div className="set-country">
           <div className="set-country-title set-title">부가 단위</div>
-          <input className="set-country-detail" type="text" />
+          <input className="set-country-detail" type="text" value={moneyUnit} />
         </div>
       </form>
       <div className="navi-btn">

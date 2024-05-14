@@ -55,7 +55,7 @@ export const setting2Reducer = (state = initalState2, action) => {
 };
 
 // setting3 - 학생 리스트 , 임시 비밀번호
-export const studnetInfo = (info) => ({
+export const studentInfo = (info) => ({
   type: STUDENTINFO,
   info,
 });
@@ -185,9 +185,9 @@ const initalState9 = {
   fine: [],
   division: 2,
 };
-export const setting9Reducer = (state = initalState8, action) => {
+export const setting9Reducer = (state = initalState9, action) => {
   switch (action.type) {
-    case SEATRENTALFEE:
+    case FINE:
       return {
         ...state,
         fine: action.info.fine,

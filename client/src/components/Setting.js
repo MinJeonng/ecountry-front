@@ -165,6 +165,7 @@ export function Setting2() {
             value={countryName}
             onChange={handleCountryName}
             style={{ imeMode: 'active' }}
+            lang="ko"
           />
         </div>
 
@@ -290,6 +291,11 @@ export function Setting3() {
       alert('파일을 선택해주세요.');
     }
   };
+  //예시 파일 다운로드
+  const downloadFile = () => {
+    const fileUrl = process.env.PUBLIC_URL + '/files/example.xlsx';
+    window.open(fileUrl); // 파일 열기
+  };
 
   return (
     <div className="setting-wrap">
@@ -334,8 +340,7 @@ export function Setting3() {
             <div className="set-title">비밀번호</div>
             <input
               className="set-input"
-              type="number"
-              value={attendanceNumber}
+              value={password}
               maxLength={4}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -372,9 +377,15 @@ export function Setting3() {
         </div>
       ) : (
         <form className="box-style">
-          <div>여기에 엑셀 예시가 들어가야함</div>
+          <div>
+            <button onClick={downloadFile}>예시 파일 열기</button>
+          </div>
 
-          <input type="file" onChange={handleFileChange} accept=".xlsx,.xls" />
+          <input
+            type="file"
+            onChange={handleFileChange}
+            accept=".xlsx,.xls, .csv"
+          />
           <ConfirmBtn onClick={handleUpload} btnName="업로드"></ConfirmBtn>
         </form>
       )}
@@ -1292,7 +1303,6 @@ export function Setting9() {
             <div className="set-title">단위</div>
 
             <input className="set-input" type="text" value={moneyUnit} />
-
 
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
           </form>

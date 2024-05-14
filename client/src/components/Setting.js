@@ -1062,7 +1062,7 @@ export function Setting7() {
             ))}
           </select>
         )}
-        <ConfirmBtn onClick={addTaxLaw}></ConfirmBtn>
+        <ConfirmBtn onClick={addTaxLaw} btnName="확인"></ConfirmBtn>
       </form>
       <div>
         {taxLawDisplay.map((taxLaw, index) => (
@@ -1170,7 +1170,7 @@ export function Setting9() {
   const [reasonFine, setReasonFine] = useState('');
   const [fineValue, setFineValue] = useState('');
   const [fineList, setFineList] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const beforeSetting = () => {
@@ -1290,7 +1290,9 @@ export function Setting9() {
             />
 
             <div className="set-title">단위</div>
+
             <input className="set-input" type="text" value={moneyUnit} />
+
 
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
           </form>

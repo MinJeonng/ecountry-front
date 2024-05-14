@@ -10,7 +10,8 @@ const SideBox = styled.div`
   height: 100%;
   z-index: 200;
   box-sizing: border-box;
-  background: #bacd92;
+
+  background: #f8f5f5;
   .btnClose {
     position: absolute;
     top: 20px;
@@ -36,6 +37,7 @@ const SideMenuContainer = styled.div`
     background-color: #f5f6fc;
     border-radius: 10px;
     padding: 10px;
+    margin-right: 4px;
   }
   img {
     width: 50px;
@@ -47,6 +49,36 @@ const SideMenuContainer = styled.div`
     margin: 20px 0 0 8px;
     font-weight: 700;
     font-size: 18px;
+  }
+  .bankBox {
+    background: #ffdddd;
+  }
+  .investmentBox {
+    background: #fff6dd;
+  }
+  .taxServiceBox {
+    background: #ddeecc;
+  }
+  .assemblyBox {
+    background: #ddeeff;
+  }
+  .newsBox {
+    background: #fff6dd;
+  }
+  .boardPeopleBox {
+    background: #e8e8f7;
+  }
+  .seatBox {
+    background: #ffffdd;
+  }
+  .menuBox {
+    background: #f6ddff;
+  }
+  .scheduleBox {
+    background: #eeffdd;
+  }
+  .peopleListBox {
+    background: #ddf6ff;
   }
 `;
 
@@ -134,7 +166,7 @@ export function SideMenuComponent({ func }) {
               <img src={`${process.env.PUBLIC_URL}/images/icon-schedule.png`} />
               <p>시간표</p>
             </div>
-            <div className="menuBox" onClick={handlePeopleList}>
+            <div className="peopleListBox" onClick={handlePeopleList}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-create-list.png`}
               />

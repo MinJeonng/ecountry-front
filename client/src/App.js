@@ -14,6 +14,14 @@ import StudentList from './pages/StudentList';
 
 import './styles/common.scss';
 import './styles/reset.css';
+import { SetBank } from './pages/Bank';
+import { SetInvestment } from './pages/Investment';
+import { SetAssembly } from './pages/Assembly';
+import { SetBoardPeople } from './pages/BoardPeople';
+import { SetNews } from './pages/News';
+import { SetPeopleList } from './pages/PeopleList';
+import { SetSeat } from './pages/Seat';
+import { SetTaxService } from './pages/TaxService';
 
 function App() {
   return (
@@ -68,7 +76,19 @@ function App() {
 
           <Route path="/manager" element={<ManagerDashBoard />} />
           <Route path="/test" element={<Test />} />
+
           <Route path="/studentList" element={<StudentList />} />
+            
+          {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
+          <Route path="/bank" element={<SetBank />} />
+          <Route path="/investment" element={<SetInvestment />} />
+          <Route path="/assembly" element={<SetAssembly />} />
+          <Route path="/boardPeople" element={<SetBoardPeople />} />
+          <Route path="/news" element={<SetNews />} />
+          <Route path="/peopleList" element={<SetPeopleList />} />
+          <Route path="/seat" element={<SetSeat />} />
+          <Route path="/taxService" element={<SetTaxService />} />
+
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

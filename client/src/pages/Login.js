@@ -27,7 +27,7 @@ export default function Login() {
   return (
     <Template
       childrenBottom={
-        <div>
+        <div className="setting-wrap">
           <div>
             <div>로그인</div>
             <ul className="title-list">

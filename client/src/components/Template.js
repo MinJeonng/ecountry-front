@@ -8,7 +8,6 @@ const BgTop = styled.div`
 `;
 
 const BgBottom = styled.div`
-  /* padding: 50px 20px; */
   padding: 40px;
   background-color: #ffffff;
   border-top-left-radius: 25px;

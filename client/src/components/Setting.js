@@ -18,6 +18,7 @@ import Loading from './Loading';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
+import axios from 'axios';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -118,7 +119,7 @@ export function Setting2() {
     navigate('/setting/schoolInfo');
   };
 
-  const nextSetting = () => {
+  const nextSetting = async () => {
     try {
       if (!countryName || !moneyUnit || !salaryDate) {
         alert('모든 값을 입력해주세요');
@@ -1153,14 +1154,70 @@ export function Setting9() {
   const [fineList, setFineList] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };
+  console.log(setInfo);
 
-  const finishSetting = () => {
+  const finishSetting = async () => {
     setIsLoading(true);
     dispatch(Fine({ fine: fineList }));
+    try {
+      // 국가 생성
+      // const res = await axios({
+      //   method: 'POST',
+      //   url: `http://localhost:8080/api/country`,
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem('token')}`,
+      //   },
+      //   data: {
+      //     name: setInfo.setting2.countryName,
+      //     grade: parseInt(setInfo.setting1.schoolGrade),
+      //     class: parseInt(setInfo.setting1.schoolClass),
+      //     unit: setInfo.setting2.moneyUnit,
+      //     salaryDate: parseInt(setInfo.setting2.salaryDate),
+      //     school: setInfo.setting1.schoolName,
+      //   },
+      // });
+      // 학생 등록(수기)
+      // if (setInfo.setting3.studentList.length > 0) {
+      //   const data2 = [];
+      //   setInfo.setting3.studentList.forEach((student) => {
+      //     data2.push({
+      //       rollNumber: student.attendanceNumber,
+      //       name: student.name,
+      //       // pw: setInfo.setting3.password,
+      //       pw: '1234',
+      //     });
+      //   });
+      //   const res2 = await axios({
+      //     method: 'POST',
+      //     // 국가 생성 후 return된 id 값으로 수정해야함
+      //     // 비밀번호 값 추가
+      //     url: `http://localhost:8080/api/student/1`,
+      //     data: data2,
+      //   });
+      // }
+      // // 자리 배치 등록
+      // const data3 = [];
+      // setInfo.setting4.columns.forEach((data) => {
+      //   data3.push({
+      //     rowNum: data.id,
+      //     colNum: data.rowCount,
+      //     countryId: 1,
+      //   });
+      // });
+      // const res3 = await axios({
+      //   method: 'POST',
+      //   url: `http://localhost:8080/api/seat`,
+      //   data: data3,
+      // });
+    } catch {
+      alert('회원 가입 후 이용 가능합니다.');
+      // navigate('/user/signup');
+    }
   };
 
   const handleAddFine = () => {

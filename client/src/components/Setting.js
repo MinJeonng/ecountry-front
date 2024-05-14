@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn, NextBtn } from './SettingBtn';
@@ -17,6 +17,7 @@ import {
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
+import Loading from './Loading';
 
 export function Setting1() {
   const dispatch = useDispatch();
@@ -100,7 +101,7 @@ export function Setting1() {
           />
         </div>
       </form>
-      <NextBtn onClick={nextSetting}></NextBtn>
+      <NextBtn onClick={nextSetting} btnName="다음"></NextBtn>
     </div>
   );
 }
@@ -197,7 +198,7 @@ export function Setting2() {
         <button className="next-button" onClick={beforeSetting}>
           이전
         </button>
-        <NextBtn onClick={nextSetting} width={'40%'}></NextBtn>
+        <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
       </div>
     </div>
   );
@@ -366,7 +367,7 @@ export function Setting3() {
         <button className="next-button" onClick={beforeSetting}>
           이전
         </button>
-        <NextBtn onClick={nextSetting} width={'40%'}></NextBtn>
+        <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
       </div>
     </>
   );
@@ -517,7 +518,7 @@ export function Setting4() {
         <button className="next-button" onClick={beforeSetting}>
           이전
         </button>
-        <NextBtn onClick={nextSetting} width={'40%'}></NextBtn>
+        <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
       </div>
     </div>
   );
@@ -1139,121 +1140,155 @@ export function Setting8() {
 }
 
 export function Setting9() {
-  // const navigate = useNavigate();
-  // const beforeSetting = () => {
-  //   navigate('/setting/seatRental');
-  // };
-  // const finishSetting = () => {
-  //   navigate('/');
-  // };
-  // const [reason, setReason] = useState('');
-  // const [fee, SetFee] = useState('');
-  // const [fineList, SetFineList] = useState([]);
-  // const [selectedIndex, setSelectedIndex] = useState('');
-  // const [correct, setCorrect] = useState(false);
-  // // 벌금 추가
-  // const handleAddFine = () => {
-  //   if (reason.trim() !== '' && fee.trim() !== '') {
-  //     SetFineList([...fineList, { reason, fee }]);
-  //     setReason('');
-  //     SetFee('');
+  const navigate = useNavigate();
+
+  const [reasonFine, setReasonFine] = useState('');
+  const [fineValue, setFineValue] = useState('');
+  const [fineList, setFineList] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const beforeSetting = () => {
+    navigate('/setting/seatRental');
+  };
+  // useEffect(()=>{
+  //   if(isLoading){
+  //     <Loading />
   //   }
-  // };
-  // //벌금 수정
-  // const handleEditLaw = (index) => {
-  //   const selectedFineReason = fineList[index].reason;
-  //   const selectedFineFee = fineList[index].fee;
-  //   setReason(selectedFineReason);
-  //   setFee(selectedFineFee);
-  //   setSelectedIndex(index);
-  //   setCorrect(true);
-  // };
-  // const updateLaw = () => {
-  //   const updatedLaws = [...laws];
-  //   updatedLaws[selectedIndex].detail = detail;
-  //   setLaws(updatedLaws);
-  //   setDetail('');
-  //   setSelectedIndex(null);
-  //   setCorrect(false);
-  // };
-  // // 법 삭제
-  // const handleDeleteLaw = (index) => {
-  //   const updatedLaws = [...fineList];
-  //   updatedLaws.splice(index, 1);
-  //   SetFineList(updatedLaws);
-  //   // if (correct) {
-  //   //   setCorrect(!correct);
-  //   // }
-  //   setDetail('');
-  // };
-  // return (
-  //   <>
-  //     <div className="title-list">
-  //       <div>벌금 설정</div>
-  //       <ul className="title-list">
-  //         <li>국가에 필수인 벌금을 제정하세요&#46;</li>
-  //       </ul>
-  //     </div>
-  //     <form className="box-style">
-  //       <div className="set-country">
-  //         <div className="set-country-title set-title">벌금사유</div>
-  //         <input
-  //           className="set-country-detail"
-  //           type="text"
-  //           value={reason}
-  //           onChange={(e) => {
-  //             setReason(e.target.value);
-  //           }}
-  //         />
-  //       </div>
-  //       <div className="set-country">
-  //         <div className="set-country-title set-title">숫자</div>
-  //         <input
-  //           className="set-country-detail"
-  //           type="number"
-  //           value={fee}
-  //           onChange={(e) => {
-  //             SetFee(e.target.value);
-  //           }}
-  //         />
-  //       </div>
-  //       <div className="set-country">
-  //         <div className="set-country-title set-title">단위</div>
-  //         <input className="set-country-detail" type="text" value="단위" />
-  //       </div>
-  //       <button type="button" onClick={handleAddFine}>
-  //         확인
-  //       </button>
-  //       <ul>
-  //         {fineList.map((fine, index) => (
-  //           <li key={index}>
-  //            {correct ? :( `사유 : ${law.reason}
-  //             <br />
-  //             금액 : ${law.fee} 단위`)}
-  //             <button
-  //               type="button"
-  //               onClick={(e) => {
-  //                 e.stopPropagation();
-  //                 handleDeleteLaw(index);
-  //               }}
-  //             >
-  //               삭제
-  //             </button>
-  //             <button
-  //               type="button"
-  //               onClick={(e) => {
-  //                 e.stopPropagation();
-  //                 handleEditLaw(index);
-  //               }}
-  //             >
-  //               수정
-  //             </button>
-  //           </li>
-  //         ))}
-  //       </ul>
-  //     </form>
-  //     <button onClick={beforeSetting}>이전</button>
-  //     <button onClick={finishSetting}>완료</button>
-  //   </>
-  // );
+  // },[isLoading])
+
+  const finishSetting = () => {
+    setIsLoading(true);
+  };
+
+  const handleAddFine = () => {
+    if (!reasonFine || !fineValue) {
+      alert('모든 값을 입력해주세요');
+      return;
+    }
+    if (selectedIndex !== null) {
+      const updatedFine = [...fineList];
+      updatedFine[selectedIndex] = {
+        reason: reasonFine,
+        fine: fineValue,
+      };
+      setFineList(updatedFine);
+    } else {
+      const newFineList = [
+        ...fineList,
+        {
+          reason: reasonFine,
+          fine: fineValue,
+        },
+      ];
+      setFineList(newFineList);
+    }
+    setSelectedIndex(null);
+    setReasonFine('');
+    setFineValue('');
+  };
+  const selectInput = (fine, index) => {
+    setFineValue(fine.fine);
+    setReasonFine(fine.reason);
+    setSelectedIndex(index);
+  };
+  const resetBtn = () => {
+    setSelectedIndex(null);
+    setReasonFine('');
+    setFineValue('');
+  };
+  const deleteBtn = (index) => (e) => {
+    e.stopPropagation();
+    const filteredFine = fineList.filter((_, i) => i !== index);
+    setFineList(filteredFine);
+    setSelectedIndex(null);
+    setReasonFine('');
+    setFineValue('');
+  };
+
+  return (
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="title-list">
+            <div>벌금 설정</div>
+            <ul className="title-list">
+              <li>국가에 필수인 벌금을 제정하세요&#46;</li>
+            </ul>
+          </div>
+          <div>
+            {fineList.map((fine, index) => (
+              <div
+                className="display"
+                // key={index}
+                // onClick={() => selectInput(job, index)}
+              >
+                {fine.reason}
+                {fine.fine}
+                <button
+                  className="updateBtn"
+                  key={index}
+                  onClick={() => selectInput(fine, index)}
+                >
+                  수정
+                </button>
+                <img
+                  className="deleteBtn"
+                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                  onClick={deleteBtn(index)}
+                />
+              </div>
+            ))}
+          </div>
+          <form className="box-style">
+            <div className="reset">
+              <div className="set-title">벌금사유</div>
+              <img
+                className="resetBtn"
+                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
+                onClick={resetBtn}
+              />
+            </div>
+            <input
+              className="set-input"
+              type="text"
+              value={reasonFine}
+              onChange={(e) => {
+                setReasonFine(e.target.value);
+              }}
+            />
+
+            <div className="set-title">숫자</div>
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={fineValue}
+              onChange={(e) => {
+                setFineValue(e.target.value);
+              }}
+            />
+
+            <div className="set-title">단위</div>
+            {/* 단위는 reduxd에서 가져오기 */}
+            <input className="set-input" type="text" value="단위" />
+
+            <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
+          </form>
+          <div className="navi-btn">
+            <button className="next-button" onClick={beforeSetting}>
+              이전
+            </button>
+            <NextBtn
+              onClick={finishSetting}
+              btnName="완료"
+              width={'40%'}
+            ></NextBtn>
+          </div>
+        </>
+      )}
+    </>
+  );
 }

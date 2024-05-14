@@ -560,7 +560,6 @@ export function Setting5() {
 
   const [selectedJob, setSelectedJob] = useState('');
   const [customJob, setCustomJob] = useState('');
-  const [value, setValue] = useState('');
   const [standardValue, setStandardValue] = useState('');
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
@@ -619,13 +618,9 @@ export function Setting5() {
     if (selectedJobIndex !== null) {
       // 이미 목록에 있는 직업을 업데이트
       const updatedJobs = [...jobsDisplay];
-      if (customJob !== null) {
-        setValue(customJob);
-      } else {
-        setValue(selectedJob);
-      }
       updatedJobs[selectedJobIndex] = {
-        value: value,
+        customValue: customJob,
+        selectValue: selectedJob,
         standard: standardValue,
         role: jobRoleValue,
         count: countValue,
@@ -634,15 +629,11 @@ export function Setting5() {
       setJobsDisplay(updatedJobs);
     } else {
       // 새 직업을 목록에 추가
-      if (customJob !== null) {
-        setValue(customJob);
-      } else {
-        setValue(selectedJob);
-      }
       const newJobsDisplay = [
         ...jobsDisplay,
         {
-          value: value,
+          customValue: customJob,
+          selectValue: selectedJob,
           standard: standardValue,
           role: jobRoleValue,
           count: countValue,
@@ -1060,7 +1051,7 @@ export function Setting7() {
           onChange={handleLawNameValue}
           style={{ imeMode: 'active' }}
         />
-        <div className="set-title">숫자</div>
+        <div className="set-title">금액</div>
         <input
           className="set-input"
           type="number"
@@ -1165,7 +1156,7 @@ export function Setting8() {
           />
         </div>
         <div className="set-country">
-          <div className="set-country-title set-title">숫자</div>
+          <div className="set-country-title set-title">금액</div>
           <input
             className="set-country-detail"
             type="number"
@@ -1271,8 +1262,8 @@ export function Setting9() {
           <div>
             {fineList.map((fine, index) => (
               <div className="display">
-                {fine.reason}
-                {fine.fine}
+                {fine.reason} {fine.fine}
+                {/* 여기에 단위 나오게 하기 */}
                 <button
                   className="updateBtn"
                   key={index}
@@ -1307,7 +1298,7 @@ export function Setting9() {
               style={{ imeMode: 'active' }}
             />
 
-            <div className="set-title">숫자</div>
+            <div className="set-title">금액</div>
             <input
               className="set-input"
               type="number"

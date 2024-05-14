@@ -171,14 +171,15 @@ $blue: #61759f;
       align-items: center;
       justify-content: space-between;
       width: 50%;
-      select {
+
+      .seat-count-input {
         width: -webkit-fill-available;
         text-align: center;
         @include select-common;
       }
 
       .unit {
-        margin-left: 10px;
+        font-size: 14px;
       }
     }
   }

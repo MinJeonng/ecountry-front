@@ -460,17 +460,13 @@ export function Setting4() {
           <div className="seat-count" key={column.id}>
             <div className="seat-colum">{column.label}</div>
             <div className="seat-count-select">
-              <select
+              <input
+                className="seat-count-input"
+                type="number"
                 value={column.rowCount}
                 onChange={(e) => rowCountChange(column.id, e.target.value)}
-              >
-                <option value="" disabled selected></option>
-                {[...Array(10)].map((_, index) => (
-                  <option key={index} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
+                placeholder="자리 수"
+              />
               <div className="unit">명</div>
             </div>
           </div>
@@ -1153,11 +1149,6 @@ export function Setting9() {
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };
-  // useEffect(()=>{
-  //   if(isLoading){
-  //     <Loading />
-  //   }
-  // },[isLoading])
 
   const finishSetting = () => {
     setIsLoading(true);

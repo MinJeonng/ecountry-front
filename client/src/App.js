@@ -13,7 +13,6 @@ import Loading from './components/Loading';
 
 import ManagerDashBoard from './pages/ManagerDashBoard';
 
-import StudentList from './pages/StudentList';
 import { SetBank } from './pages/Bank';
 import { SetInvestment } from './pages/Investment';
 import { SetAssembly } from './pages/Assembly';
@@ -79,8 +78,6 @@ function App() {
 
           <Route path="/manager" element={<ManagerDashBoard />} />
           <Route path="/test" element={<Test />} />
-
-          <Route path="/studentList" element={<StudentList />} />
 
           {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
           <Route path="/bank" element={<SetBank />} />

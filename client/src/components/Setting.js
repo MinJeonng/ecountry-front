@@ -76,6 +76,7 @@ export function Setting1() {
             type="text"
             value={schoolName}
             onChange={inputSchoolName}
+            style={{ imeMode: 'active' }}
           />
         </div>
 
@@ -98,6 +99,7 @@ export function Setting1() {
             type="number"
             value={selectedClass}
             onChange={classSelect}
+            style={{ imeMode: 'active' }}
           />
         </div>
       </form>
@@ -162,6 +164,7 @@ export function Setting2() {
             type="text"
             value={countryName}
             onChange={handleCountryName}
+            style={{ imeMode: 'active' }}
           />
         </div>
 
@@ -171,6 +174,7 @@ export function Setting2() {
           type="text"
           value={moneyUnit}
           onChange={handleMoneyUnit}
+          style={{ imeMode: 'active' }}
         />
 
         <div className="set-country-title set-title">급여 지급일</div>
@@ -326,6 +330,17 @@ export function Setting3() {
                 </div>
               ))}
           </div>
+          <div className="box-style">
+            <div className="set-title">비밀번호</div>
+            <input
+              className="set-input"
+              type="number"
+              value={attendanceNumber}
+              maxLength={4}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
           <div className="box-style">
             <div className="set-title">출석번호</div>
             <input
@@ -722,6 +737,7 @@ export function Setting5() {
               value={customJob}
               onChange={handleCustomInputChange}
               placeholder="직업을 입력해주세요"
+              style={{ imeMode: 'active' }}
             />
           )}
           <div className="set-title">급여</div>
@@ -750,6 +766,7 @@ export function Setting5() {
             type="text"
             value={standardValue}
             onChange={handleStandardChange}
+            style={{ imeMode: 'active' }}
           />
           <div className="set-title">직업의 역할</div>
           <textarea
@@ -758,6 +775,7 @@ export function Setting5() {
             type="text"
             value={jobRoleValue}
             onChange={handleJobRoleChange}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <ConfirmBtn onClick={addJob} btnName="확인"></ConfirmBtn>
@@ -843,6 +861,7 @@ export function Setting6() {
           placeholder="내용"
           value={detail}
           onChange={(e) => setDetail(e.target.value)}
+          style={{ imeMode: 'active' }}
         />
         {correct ? (
           <button onClick={updateLaw}>수정</button>
@@ -987,7 +1006,6 @@ export function Setting7() {
     setSelectedTaxLawIndex(null);
     setSelectedUnit('');
   };
-
   return (
     <div className="setting-wrap">
       <div className="title-list">
@@ -1011,6 +1029,7 @@ export function Setting7() {
           className="set-input"
           value={lawNameValue}
           onChange={handleLawNameValue}
+          style={{ imeMode: 'active' }}
         />
         <div className="set-title">숫자</div>
         <input
@@ -1113,6 +1132,7 @@ export function Setting8() {
             onChange={(e) => {
               setTaxName(e.target.value);
             }}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <div className="set-country">
@@ -1255,6 +1275,7 @@ export function Setting9() {
               onChange={(e) => {
                 setReasonFine(e.target.value);
               }}
+              style={{ imeMode: 'active' }}
             />
 
             <div className="set-title">숫자</div>

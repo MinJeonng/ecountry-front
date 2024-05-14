@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   schoolInfo,
   countryInfo,
-  studnetInfo,
+  studentInfo,
   seatingMap,
   jobsInfo,
   basicLaw,

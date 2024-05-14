@@ -1261,12 +1261,11 @@ export function Setting9() {
           </div>
           <div>
             {fineList.map((fine, index) => (
-              <div className="display">
+              <div className="display" key={index}>
                 {fine.reason} {fine.fine}
                 {/* 여기에 단위 나오게 하기 */}
                 <button
                   className="updateBtn"
-                  key={index}
                   onClick={() => selectInput(fine, index)}
                 >
                   수정

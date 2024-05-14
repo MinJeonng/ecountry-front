@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn, NextBtn } from './SettingBtn';
-
 import { useDispatch, useSelector } from 'react-redux';
 import {
   schoolInfo,
@@ -13,12 +12,13 @@ import {
   basicLaw,
   taxLaw,
   seatRentalFee,
+  Fine,
 } from '../store/settingReducer';
-
-import '../styles/_input_common.scss';
-import '../styles/background.scss';
 import Loading from './Loading';
 
+import '../styles/_input_common.scss';
+
+//Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ export function Setting1() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>반 정보 입력</div>
       </div>
@@ -76,6 +76,7 @@ export function Setting1() {
             type="text"
             value={schoolName}
             onChange={inputSchoolName}
+            style={{ imeMode: 'active' }}
           />
         </div>
 
@@ -98,6 +99,7 @@ export function Setting1() {
             type="number"
             value={selectedClass}
             onChange={classSelect}
+            style={{ imeMode: 'active' }}
           />
         </div>
       </form>
@@ -105,7 +107,7 @@ export function Setting1() {
     </div>
   );
 }
-
+//Setting2 - 나라이름 / 화폐단위 / 월급날 설정
 export function Setting2() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -147,7 +149,7 @@ export function Setting2() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>국가 이름 &#47; 화폐 단위 &#47; 급여 지급일 설정</div>
       </div>
@@ -162,6 +164,7 @@ export function Setting2() {
             type="text"
             value={countryName}
             onChange={handleCountryName}
+            style={{ imeMode: 'active' }}
           />
         </div>
 
@@ -171,6 +174,7 @@ export function Setting2() {
           type="text"
           value={moneyUnit}
           onChange={handleMoneyUnit}
+          style={{ imeMode: 'active' }}
         />
 
         <div className="set-country-title set-title">급여 지급일</div>
@@ -203,7 +207,7 @@ export function Setting2() {
     </div>
   );
 }
-
+//Setting3 - 학생정보 / 비밀번호
 export function Setting3() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -288,7 +292,7 @@ export function Setting3() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>학생 파일 업로드</div>
         <ul className="title-list">
@@ -306,7 +310,7 @@ export function Setting3() {
       </button>
 
       {directInput ? (
-        <>
+        <div className="setting-wrap">
           <div>
             {attendees.length > 0 &&
               attendees.map((attendee, index) => (
@@ -326,6 +330,17 @@ export function Setting3() {
                 </div>
               ))}
           </div>
+          <div className="box-style">
+            <div className="set-title">비밀번호</div>
+            <input
+              className="set-input"
+              type="number"
+              value={attendanceNumber}
+              maxLength={4}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
           <div className="box-style">
             <div className="set-title">출석번호</div>
             <input
@@ -354,7 +369,7 @@ export function Setting3() {
               <ConfirmBtn onClick={handleCheck} btnName="확인" />
             )}
           </div>
-        </>
+        </div>
       ) : (
         <form className="box-style">
           <div>여기에 엑셀 예시가 들어가야함</div>
@@ -369,10 +384,10 @@ export function Setting3() {
         </button>
         <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
       </div>
-    </>
+    </div>
   );
 }
-
+//Setting4 - 자리 배치도
 export function Setting4() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -447,7 +462,7 @@ export function Setting4() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>자리 배치도</div>
         <ul className="title-list">
@@ -460,17 +475,13 @@ export function Setting4() {
           <div className="seat-count" key={column.id}>
             <div className="seat-colum">{column.label}</div>
             <div className="seat-count-select">
-              <select
-                value={column.rowCount}
+              <input
+                className="seat-count-input"
+                type="number"
                 onChange={(e) => rowCountChange(column.id, e.target.value)}
-              >
-                <option value="" disabled selected></option>
-                {[...Array(10)].map((_, index) => (
-                  <option key={index} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
+                value={column.rowCount}
+                placeholder="자리 수"
+              />
               <div className="unit">명</div>
             </div>
           </div>
@@ -523,7 +534,7 @@ export function Setting4() {
     </div>
   );
 }
-
+//Setting5 - 직업 설정 (1)
 export function Setting5() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -660,7 +671,7 @@ export function Setting5() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>직업 리스트</div>
         <ul className="title-list">
@@ -726,6 +737,7 @@ export function Setting5() {
               value={customJob}
               onChange={handleCustomInputChange}
               placeholder="직업을 입력해주세요"
+              style={{ imeMode: 'active' }}
             />
           )}
           <div className="set-title">급여</div>
@@ -754,6 +766,7 @@ export function Setting5() {
             type="text"
             value={standardValue}
             onChange={handleStandardChange}
+            style={{ imeMode: 'active' }}
           />
           <div className="set-title">직업의 역할</div>
           <textarea
@@ -762,6 +775,7 @@ export function Setting5() {
             type="text"
             value={jobRoleValue}
             onChange={handleJobRoleChange}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <ConfirmBtn onClick={addJob} btnName="확인"></ConfirmBtn>
@@ -780,7 +794,7 @@ export function Setting5() {
     </div>
   );
 }
-
+//Setting6 - 기본법 설정
 export function Setting6() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -834,7 +848,7 @@ export function Setting6() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>기본법 제정</div>
         <ul className="title-list">
@@ -847,6 +861,7 @@ export function Setting6() {
           placeholder="내용"
           value={detail}
           onChange={(e) => setDetail(e.target.value)}
+          style={{ imeMode: 'active' }}
         />
         {correct ? (
           <button onClick={updateLaw}>수정</button>
@@ -888,10 +903,10 @@ export function Setting6() {
           다음
         </button>
       </div>
-    </>
+    </div>
   );
 }
-
+//Setting7 - 세법 설정 (0/1)
 export function Setting7() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -901,9 +916,11 @@ export function Setting7() {
   const [selectedUnit, setSelectedUnit] = useState('');
   const [selectedTaxLawIndex, setSelectedTaxLawIndex] = useState(null);
   const [taxLawDisplay, setTaxLawDisplay] = useState([]);
+  const [division, setDivision] = useState(null);
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
-    { label: '화폐단위(직접입력)', value: '화폐단위(직접입력)' },
+    { label: moneyUnit, value: moneyUnit },
     { label: '%', value: '%' },
   ];
   const handleLawNameValue = (e) => {
@@ -920,6 +937,11 @@ export function Setting7() {
 
   const handleSelectedUnit = (e) => {
     setSelectedUnit(e.target.value);
+    if (selectedUnit === moneyUnit) {
+      setDivision(1);
+    } else {
+      setDivision(0);
+    }
   };
 
   const beforeSetting = () => {
@@ -927,7 +949,7 @@ export function Setting7() {
   };
   const nextSetting = () => {
     navigate('/setting/seatRental');
-    dispatch(taxLaw({ taxLaw: taxLawDisplay }));
+    dispatch(taxLaw({ taxLaw: taxLawDisplay, division: division }));
   };
   const resetBtn = () => {
     setLawNameValue('');
@@ -984,9 +1006,8 @@ export function Setting7() {
     setSelectedTaxLawIndex(null);
     setSelectedUnit('');
   };
-
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>세법 제정</div>
         <ul className="title-list">
@@ -1008,6 +1029,7 @@ export function Setting7() {
           className="set-input"
           value={lawNameValue}
           onChange={handleLawNameValue}
+          style={{ imeMode: 'active' }}
         />
         <div className="set-title">숫자</div>
         <input
@@ -1069,10 +1091,10 @@ export function Setting7() {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
-
+//Setting8 - 자리세 설정(2)
 export function Setting8() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -1088,10 +1110,11 @@ export function Setting8() {
       })
     );
   };
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const [taxName, setTaxName] = useState('');
   const [fee, setFee] = useState('');
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>자리 임대료</div>
         <ul className="title-list">
@@ -1109,6 +1132,7 @@ export function Setting8() {
             onChange={(e) => {
               setTaxName(e.target.value);
             }}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <div className="set-country">
@@ -1124,7 +1148,7 @@ export function Setting8() {
         </div>
         <div className="set-country">
           <div className="set-country-title set-title">부가 단위</div>
-          <input className="set-country-detail" type="text" />
+          <input className="set-country-detail" type="text" value={moneyUnit} />
         </div>
       </form>
       <div className="navi-btn">
@@ -1135,11 +1159,12 @@ export function Setting8() {
           다음
         </button>
       </div>
-    </>
+    </div>
   );
 }
-
+//Setting9 - 벌금 설정 (3)
 export function Setting9() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [reasonFine, setReasonFine] = useState('');
@@ -1147,13 +1172,14 @@ export function Setting9() {
   const [fineList, setFineList] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };
 
   const finishSetting = () => {
     setIsLoading(true);
+    dispatch(Fine({ fine: fineList }));
   };
 
   const handleAddFine = () => {
@@ -1202,11 +1228,11 @@ export function Setting9() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       {isLoading ? (
         <Loading />
       ) : (
-        <>
+        <div className="setting-wrap">
           <div className="title-list">
             <div>벌금 설정</div>
             <ul className="title-list">
@@ -1215,11 +1241,7 @@ export function Setting9() {
           </div>
           <div>
             {fineList.map((fine, index) => (
-              <div
-                className="display"
-                // key={index}
-                // onClick={() => selectInput(job, index)}
-              >
+              <div className="display">
                 {fine.reason}
                 {fine.fine}
                 <button
@@ -1253,6 +1275,7 @@ export function Setting9() {
               onChange={(e) => {
                 setReasonFine(e.target.value);
               }}
+              style={{ imeMode: 'active' }}
             />
 
             <div className="set-title">숫자</div>
@@ -1268,7 +1291,8 @@ export function Setting9() {
 
             <div className="set-title">단위</div>
 
-            <input className="set-input" type="text" value="단위" />
+            <input className="set-input" type="text" value={moneyUnit} />
+
 
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
           </form>
@@ -1282,8 +1306,8 @@ export function Setting9() {
               width={'40%'}
             ></NextBtn>
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }

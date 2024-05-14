@@ -7,7 +7,7 @@ const BASICLAW = 'setting6/BASICLAW';
 const TAXLAW = 'setting7/TAXLAW';
 const SEATRENTALFEE = 'setting8/SEATRENTALFEE';
 const FINE = 'setting9/FINE';
-//setting1
+//setting1 - 학교 이름/ 반 /번호
 export const schoolInfo = (info) => ({
   type: SCHOOLINFO,
   info,
@@ -30,7 +30,7 @@ export const setting1Reducer = (state = initalState1, action) => {
       return state;
   }
 };
-//setting2
+//setting2 - 나라이름 / 단위 / 월급날
 export const countryInfo = (info) => ({
   type: COUNTRYINFO,
   info,
@@ -54,7 +54,7 @@ export const setting2Reducer = (state = initalState2, action) => {
   }
 };
 
-// setting3
+// setting3 - 학생 리스트 , 임시 비밀번호
 export const studnetInfo = (info) => ({
   type: STUDENTINFO,
   info,
@@ -69,7 +69,7 @@ export const setting3Reducer = (state = initalState3, action) => {
       return {
         ...state,
         password: action.info.password,
-        studentList: [action.info.studentList],
+        studentList: action.info.studentList,
       };
     default:
       return state;
@@ -88,26 +88,28 @@ export const setting4Reducer = (state = initalState4, action) => {
     case SEATINGMAP:
       return {
         ...state,
-        columns: [action.info.columns],
+        columns: action.info.columns || [],
       };
     default:
       return state;
   }
 };
-//setting5
+//setting5 - 직업 divison:1
 export const jobsInfo = (info) => ({
   type: JOBLIST,
   info,
 });
 const initalState5 = {
   jobsDisplay: [],
+  division: 1,
 };
 export const setting5Reducer = (state = initalState5, action) => {
   switch (action.type) {
     case JOBLIST:
       return {
         ...state,
-        jobsDisplay: [action.info.jobsDisplay],
+        jobsDisplay: action.info.jobsDisplay,
+        division: 1,
       };
     default:
       return state;
@@ -119,39 +121,41 @@ export const basicLaw = (info) => ({
   info,
 });
 const initalState6 = {
-  laws: [],
+  basicLaw: [],
 };
 export const setting6Reducer = (state = initalState6, action) => {
   switch (action.type) {
     case BASICLAW:
       return {
         ...state,
-        basicLaw: [action.info.basicLaw],
+        basicLaw: action.info.basicLaw,
       };
     default:
       return state;
   }
 };
-//setting7
+//setting7 - 세법 division : 0/1
 export const taxLaw = (info) => ({
   type: TAXLAW,
   info,
 });
 const initalState7 = {
   taxLaw: [],
+  division: null,
 };
 export const setting7Reducer = (state = initalState7, action) => {
   switch (action.type) {
     case TAXLAW:
       return {
         ...state,
-        taxLaw: [action.info.taxLaw],
+        taxLaw: action.info.taxLaw,
+        division: action.info.division,
       };
     default:
       return state;
   }
 };
-//setting8
+//setting8 - 자리세 division:2
 export const seatRentalFee = (info) => ({
   type: SEATRENTALFEE,
   info,
@@ -174,14 +178,13 @@ export const setting8Reducer = (state = initalState8, action) => {
       return state;
   }
 };
-//setting9
+//setting9 -세법 division : 3
 export const Fine = (info) => ({
   type: FINE,
   info,
 });
 const initalState9 = {
-  taxName: null,
-  fee: null,
+  fine: [],
   division: 2,
 };
 export const setting9Reducer = (state = initalState8, action) => {
@@ -189,9 +192,8 @@ export const setting9Reducer = (state = initalState8, action) => {
     case SEATRENTALFEE:
       return {
         ...state,
-        taxName: action.info.taxName,
-        fee: action.info.fee,
-        division: 2,
+        fine: action.info.fine,
+        division: 3,
       };
     default:
       return state;

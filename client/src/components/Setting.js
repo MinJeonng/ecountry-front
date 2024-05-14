@@ -221,7 +221,7 @@ export function Setting3() {
   const nextSetting = () => {
     navigate('/setting/seatingMap');
     dispatch(
-      studnetInfo({
+      studentInfo({
         password: password,
         studentList: attendees,
       })
@@ -1212,6 +1212,7 @@ export function Setting9() {
   const finishSetting = async () => {
     setIsLoading(true);
     dispatch(Fine({ fine: fineList }));
+    console.log(fineList);
     try {
       // 국가 생성
       console.log(setInfo);
@@ -1230,6 +1231,7 @@ export function Setting9() {
           school: setInfo.setting1.schoolName,
         },
       });
+      console.log(res.data.result.id);
       // 학생 등록(수기)
       if (setInfo.setting3.studentList.length > 0) {
         const data2 = [];
@@ -1237,15 +1239,14 @@ export function Setting9() {
           data2.push({
             rollNumber: student.attendanceNumber,
             name: student.name,
-            // pw: setInfo.setting3.password,
-            pw: '1234',
+            pw: setInfo.setting3.password,
           });
         });
         const res2 = await axios({
           method: 'POST',
           // 국가 생성 후 return된 id 값으로 수정해야함
           // 비밀번호 값 추가
-          url: `http://localhost:8080/api/student/${res.data.result}`,
+          url: `http://localhost:8080/api/student/${res.data.result.id}`,
           data: data2,
         });
       }
@@ -1255,7 +1256,7 @@ export function Setting9() {
         data3.push({
           rowNum: data.id,
           colNum: data.rowCount,
-          countryId: res.data.result,
+          countryId: res.data.result.id,
         });
       });
       const res3 = await axios({
@@ -1273,7 +1274,7 @@ export function Setting9() {
           standard: data.standard,
           salary: parseInt(data.salary),
           skills: null,
-          countryId: res.data.result,
+          countryId: res.data.result.id,
         });
       });
       const res4 = await axios({
@@ -1286,7 +1287,7 @@ export function Setting9() {
       setInfo.setting6.basicLaw.forEach((data) => {
         data5.push({
           rule: data.detail,
-          countryId: res.data.result,
+          countryId: res.data.result.id,
         });
       });
       const res5 = await axios({
@@ -1301,7 +1302,7 @@ export function Setting9() {
           name: data.name,
           division: data.division,
           tax: parseFloat(data.rate),
-          countryId: res.data.result,
+          countryId: res.data.result.id,
         });
       });
       const rent = setInfo.setting8;
@@ -1309,7 +1310,15 @@ export function Setting9() {
         name: rent.taxName,
         division: rent.division,
         tax: parseInt(rent.fee),
-        countryId: res.data.result,
+        countryId: res.data.result.id,
+      });
+      fineList.forEach((data) => {
+        data6.push({
+          name: data.reason,
+          division: 3,
+          tax: data.fine,
+          countryId: res.data.result.id,
+        });
       });
       const res6 = await axios({
         method: 'POST',

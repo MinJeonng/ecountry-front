@@ -1040,7 +1040,7 @@ export function Setting7() {
             ))}
           </select>
         )}
-        <ConfirmBtn onClick={addTaxLaw}></ConfirmBtn>
+        <ConfirmBtn onClick={addTaxLaw} btnName="확인"></ConfirmBtn>
       </form>
       <div>
         {taxLawDisplay.map((taxLaw, index) => (
@@ -1145,17 +1145,12 @@ export function Setting9() {
   const [reasonFine, setReasonFine] = useState('');
   const [fineValue, setFineValue] = useState('');
   const [fineList, setFineList] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };
-  // useEffect(()=>{
-  //   if(isLoading){
-  //     <Loading />
-  //   }
-  // },[isLoading])
 
   const finishSetting = () => {
     setIsLoading(true);
@@ -1272,7 +1267,7 @@ export function Setting9() {
             />
 
             <div className="set-title">단위</div>
-            {/* 단위는 reduxd에서 가져오기 */}
+
             <input className="set-input" type="text" value="단위" />
 
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>

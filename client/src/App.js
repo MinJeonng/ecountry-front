@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import NationBuilding from './pages/NationBuilding';
 import CountryList from './pages/CountryList';
 import Setting from './pages/Setting';
+import SetBank from './pages/Bank';
 import Loading from './components/Loading';
 import Signup from './pages/Signup';
 // import StudentSetting from './components/StudentSetting';
@@ -15,7 +16,7 @@ import NOTFOUND from './pages/NOTFOUND';
 
 import './styles/common.scss';
 import './styles/reset.css';
-import { SetBank } from './pages/Bank';
+
 import { SetInvestment } from './pages/Investment';
 import { SetAssembly } from './pages/Assembly';
 import { SetBoardPeople } from './pages/BoardPeople';
@@ -79,7 +80,7 @@ function App() {
           <Route path="/test" element={<Test />} />
 
           {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
-          <Route path="/bank" element={<SetBank />} />
+          <Route path="/bank" element={<SetBank position="적금 생성" />} />
           <Route path="/investment" element={<SetInvestment />} />
           <Route path="/assembly" element={<SetAssembly />} />
           <Route path="/boardPeople" element={<SetBoardPeople />} />

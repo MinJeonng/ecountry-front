@@ -88,7 +88,7 @@ export const setting4Reducer = (state = initalState4, action) => {
     case SEATINGMAP:
       return {
         ...state,
-        columns: action.info.columns,
+        columns: action.info.columns || [],
       };
     default:
       return state;
@@ -141,7 +141,7 @@ export const taxLaw = (info) => ({
 });
 const initalState7 = {
   taxLaw: [],
-  division,
+  division: null,
 };
 export const setting7Reducer = (state = initalState7, action) => {
   switch (action.type) {

@@ -26,7 +26,7 @@ export default function Login() {
   return (
     <Template
       childrenBottom={
-        <div>
+        <div className="setting-wrap">
           <div>
             <div>회원가입</div>
             <ul className="title-list">

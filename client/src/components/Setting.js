@@ -17,7 +17,6 @@ import {
 import Loading from './Loading';
 
 import '../styles/_input_common.scss';
-import '../styles/background.scss';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -61,7 +60,7 @@ export function Setting1() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>반 정보 입력</div>
       </div>
@@ -148,7 +147,7 @@ export function Setting2() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>국가 이름 &#47; 화폐 단위 &#47; 급여 지급일 설정</div>
       </div>
@@ -289,7 +288,7 @@ export function Setting3() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>학생 파일 업로드</div>
         <ul className="title-list">
@@ -307,7 +306,7 @@ export function Setting3() {
       </button>
 
       {directInput ? (
-        <>
+        <div className="setting-wrap">
           <div>
             {attendees.length > 0 &&
               attendees.map((attendee, index) => (
@@ -355,7 +354,7 @@ export function Setting3() {
               <ConfirmBtn onClick={handleCheck} btnName="확인" />
             )}
           </div>
-        </>
+        </div>
       ) : (
         <form className="box-style">
           <div>여기에 엑셀 예시가 들어가야함</div>
@@ -370,7 +369,7 @@ export function Setting3() {
         </button>
         <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
       </div>
-    </>
+    </div>
   );
 }
 //Setting4 - 자리 배치도
@@ -448,7 +447,7 @@ export function Setting4() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>자리 배치도</div>
         <ul className="title-list">
@@ -464,8 +463,8 @@ export function Setting4() {
               <input
                 className="seat-count-input"
                 type="number"
-                value={column.rowCount}
                 onChange={(e) => rowCountChange(column.id, e.target.value)}
+                value={column.rowCount}
                 placeholder="자리 수"
               />
               <div className="unit">명</div>
@@ -657,7 +656,7 @@ export function Setting5() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>직업 리스트</div>
         <ul className="title-list">
@@ -831,7 +830,7 @@ export function Setting6() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>기본법 제정</div>
         <ul className="title-list">
@@ -885,7 +884,7 @@ export function Setting6() {
           다음
         </button>
       </div>
-    </>
+    </div>
   );
 }
 //Setting7 - 세법 설정 (0/1)
@@ -990,7 +989,7 @@ export function Setting7() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>세법 제정</div>
         <ul className="title-list">
@@ -1073,7 +1072,7 @@ export function Setting7() {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 //Setting8 - 자리세 설정(2)
@@ -1096,7 +1095,7 @@ export function Setting8() {
   const [taxName, setTaxName] = useState('');
   const [fee, setFee] = useState('');
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>자리 임대료</div>
         <ul className="title-list">
@@ -1140,7 +1139,7 @@ export function Setting8() {
           다음
         </button>
       </div>
-    </>
+    </div>
   );
 }
 //Setting9 - 벌금 설정 (3)
@@ -1209,11 +1208,11 @@ export function Setting9() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       {isLoading ? (
         <Loading />
       ) : (
-        <>
+        <div className="setting-wrap">
           <div className="title-list">
             <div>벌금 설정</div>
             <ul className="title-list">
@@ -1284,8 +1283,8 @@ export function Setting9() {
               width={'40%'}
             ></NextBtn>
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }

@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
+import '../styles/_button_common.scss';
 
 const StyledConfirmBtn = styled.div`
   display: flex;
   justify-content: center;
   .confirmBtn {
-    border: none;
+    /* border: none;
     color: blue;
-    font-size: 16px;
+    font-size: 16px; */
+    @include blue-btn-style;
   }
 `;
 
@@ -20,7 +22,11 @@ export function ConfirmBtn({ onClick, btnName }) {
   return (
     <>
       <StyledConfirmBtn>
-        <button className="confirmBtn" onClick={handleClick} type="button">
+        <button
+          className="confirmBtn blue-btn"
+          onClick={handleClick}
+          type="button"
+        >
           {btnName}
         </button>
       </StyledConfirmBtn>

@@ -62,7 +62,7 @@ export function Setting1() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>반 정보 입력</div>
       </div>
@@ -78,6 +78,7 @@ export function Setting1() {
             type="text"
             value={schoolName}
             onChange={inputSchoolName}
+            style={{ imeMode: 'active' }}
           />
         </div>
 
@@ -100,6 +101,7 @@ export function Setting1() {
             type="number"
             value={selectedClass}
             onChange={classSelect}
+            style={{ imeMode: 'active' }}
           />
         </div>
       </form>
@@ -149,7 +151,7 @@ export function Setting2() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>국가 이름 &#47; 화폐 단위 &#47; 급여 지급일 설정</div>
       </div>
@@ -164,6 +166,7 @@ export function Setting2() {
             type="text"
             value={countryName}
             onChange={handleCountryName}
+            style={{ imeMode: 'active' }}
           />
         </div>
 
@@ -173,6 +176,7 @@ export function Setting2() {
           type="text"
           value={moneyUnit}
           onChange={handleMoneyUnit}
+          style={{ imeMode: 'active' }}
         />
 
         <div className="set-country-title set-title">급여 지급일</div>
@@ -290,7 +294,7 @@ export function Setting3() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>학생 파일 업로드</div>
         <ul className="title-list">
@@ -308,7 +312,7 @@ export function Setting3() {
       </button>
 
       {directInput ? (
-        <>
+        <div className="setting-wrap">
           <div>
             {attendees.length > 0 &&
               attendees.map((attendee, index) => (
@@ -328,6 +332,17 @@ export function Setting3() {
                 </div>
               ))}
           </div>
+          <div className="box-style">
+            <div className="set-title">비밀번호</div>
+            <input
+              className="set-input"
+              type="number"
+              value={attendanceNumber}
+              maxLength={4}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
           <div className="box-style">
             <div className="set-title">출석번호</div>
             <input
@@ -356,7 +371,7 @@ export function Setting3() {
               <ConfirmBtn onClick={handleCheck} btnName="확인" />
             )}
           </div>
-        </>
+        </div>
       ) : (
         <form className="box-style">
           <div>여기에 엑셀 예시가 들어가야함</div>
@@ -371,7 +386,7 @@ export function Setting3() {
         </button>
         <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
       </div>
-    </>
+    </div>
   );
 }
 //Setting4 - 자리 배치도
@@ -449,7 +464,7 @@ export function Setting4() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>자리 배치도</div>
         <ul className="title-list">
@@ -465,8 +480,8 @@ export function Setting4() {
               <input
                 className="seat-count-input"
                 type="number"
-                value={column.rowCount}
                 onChange={(e) => rowCountChange(column.id, e.target.value)}
+                value={column.rowCount}
                 placeholder="자리 수"
               />
               <div className="unit">명</div>
@@ -658,7 +673,7 @@ export function Setting5() {
   };
 
   return (
-    <div>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>직업 리스트</div>
         <ul className="title-list">
@@ -724,6 +739,7 @@ export function Setting5() {
               value={customJob}
               onChange={handleCustomInputChange}
               placeholder="직업을 입력해주세요"
+              style={{ imeMode: 'active' }}
             />
           )}
           <div className="set-title">급여</div>
@@ -752,6 +768,7 @@ export function Setting5() {
             type="text"
             value={standardValue}
             onChange={handleStandardChange}
+            style={{ imeMode: 'active' }}
           />
           <div className="set-title">직업의 역할</div>
           <textarea
@@ -760,6 +777,7 @@ export function Setting5() {
             type="text"
             value={jobRoleValue}
             onChange={handleJobRoleChange}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <ConfirmBtn onClick={addJob} btnName="확인"></ConfirmBtn>
@@ -832,7 +850,7 @@ export function Setting6() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>기본법 제정</div>
         <ul className="title-list">
@@ -845,6 +863,7 @@ export function Setting6() {
           placeholder="내용"
           value={detail}
           onChange={(e) => setDetail(e.target.value)}
+          style={{ imeMode: 'active' }}
         />
         {correct ? (
           <button onClick={updateLaw}>수정</button>
@@ -886,7 +905,7 @@ export function Setting6() {
           다음
         </button>
       </div>
-    </>
+    </div>
   );
 }
 //Setting7 - 세법 설정 (0/1)
@@ -989,9 +1008,8 @@ export function Setting7() {
     setSelectedTaxLawIndex(null);
     setSelectedUnit('');
   };
-
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>세법 제정</div>
         <ul className="title-list">
@@ -1013,6 +1031,7 @@ export function Setting7() {
           className="set-input"
           value={lawNameValue}
           onChange={handleLawNameValue}
+          style={{ imeMode: 'active' }}
         />
         <div className="set-title">숫자</div>
         <input
@@ -1045,7 +1064,7 @@ export function Setting7() {
             ))}
           </select>
         )}
-        <ConfirmBtn onClick={addTaxLaw}></ConfirmBtn>
+        <ConfirmBtn onClick={addTaxLaw} btnName="확인"></ConfirmBtn>
       </form>
       <div>
         {taxLawDisplay.map((taxLaw, index) => (
@@ -1074,7 +1093,7 @@ export function Setting7() {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 //Setting8 - 자리세 설정(2)
@@ -1097,7 +1116,7 @@ export function Setting8() {
   const [taxName, setTaxName] = useState('');
   const [fee, setFee] = useState('');
   return (
-    <>
+    <div className="setting-wrap">
       <div className="title-list">
         <div>자리 임대료</div>
         <ul className="title-list">
@@ -1115,6 +1134,7 @@ export function Setting8() {
             onChange={(e) => {
               setTaxName(e.target.value);
             }}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <div className="set-country">
@@ -1141,7 +1161,7 @@ export function Setting8() {
           다음
         </button>
       </div>
-    </>
+    </div>
   );
 }
 //Setting9 - 벌금 설정 (3)
@@ -1152,71 +1172,123 @@ export function Setting9() {
   const [reasonFine, setReasonFine] = useState('');
   const [fineValue, setFineValue] = useState('');
   const [fineList, setFineList] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };
-  console.log(setInfo);
 
   const finishSetting = async () => {
     setIsLoading(true);
     dispatch(Fine({ fine: fineList }));
     try {
       // 국가 생성
-      // const res = await axios({
-      //   method: 'POST',
-      //   url: `http://localhost:8080/api/country`,
-      //   headers: {
-      //     Authorization: `Bearer ${localStorage.getItem('token')}`,
-      //   },
-      //   data: {
-      //     name: setInfo.setting2.countryName,
-      //     grade: parseInt(setInfo.setting1.schoolGrade),
-      //     class: parseInt(setInfo.setting1.schoolClass),
-      //     unit: setInfo.setting2.moneyUnit,
-      //     salaryDate: parseInt(setInfo.setting2.salaryDate),
-      //     school: setInfo.setting1.schoolName,
-      //   },
-      // });
+      console.log(setInfo);
+      const res = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/country`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: {
+          name: setInfo.setting2.countryName,
+          grade: parseInt(setInfo.setting1.schoolGrade),
+          classroom: parseInt(setInfo.setting1.schoolClass),
+          unit: setInfo.setting2.moneyUnit,
+          salaryDate: parseInt(setInfo.setting2.salaryDate),
+          school: setInfo.setting1.schoolName,
+        },
+      });
       // 학생 등록(수기)
-      // if (setInfo.setting3.studentList.length > 0) {
-      //   const data2 = [];
-      //   setInfo.setting3.studentList.forEach((student) => {
-      //     data2.push({
-      //       rollNumber: student.attendanceNumber,
-      //       name: student.name,
-      //       // pw: setInfo.setting3.password,
-      //       pw: '1234',
-      //     });
-      //   });
-      //   const res2 = await axios({
-      //     method: 'POST',
-      //     // 국가 생성 후 return된 id 값으로 수정해야함
-      //     // 비밀번호 값 추가
-      //     url: `http://localhost:8080/api/student/1`,
-      //     data: data2,
-      //   });
-      // }
-      // // 자리 배치 등록
-      // const data3 = [];
-      // setInfo.setting4.columns.forEach((data) => {
-      //   data3.push({
-      //     rowNum: data.id,
-      //     colNum: data.rowCount,
-      //     countryId: 1,
-      //   });
-      // });
-      // const res3 = await axios({
-      //   method: 'POST',
-      //   url: `http://localhost:8080/api/seat`,
-      //   data: data3,
-      // });
+      if (setInfo.setting3.studentList.length > 0) {
+        const data2 = [];
+        setInfo.setting3.studentList.forEach((student) => {
+          data2.push({
+            rollNumber: student.attendanceNumber,
+            name: student.name,
+            // pw: setInfo.setting3.password,
+            pw: '1234',
+          });
+        });
+        const res2 = await axios({
+          method: 'POST',
+          // 국가 생성 후 return된 id 값으로 수정해야함
+          // 비밀번호 값 추가
+          url: `http://localhost:8080/api/student/${res.data.result}`,
+          data: data2,
+        });
+      }
+      // 자리 배치 등록
+      const data3 = [];
+      setInfo.setting4.columns.forEach((data) => {
+        data3.push({
+          rowNum: data.id,
+          colNum: data.rowCount,
+          countryId: res.data.result,
+        });
+      });
+      const res3 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/seat`,
+        data: data3,
+      });
+      // 직업 리스트 등록
+      const data4 = [];
+      setInfo.setting5.jobsDisplay.forEach((data) => {
+        data4.push({
+          limited: parseInt(data.count),
+          name: data.selectValue,
+          roll: data.roll,
+          standard: data.standard,
+          salary: parseInt(data.salary),
+          skills: null,
+          countryId: res.data.result,
+        });
+      });
+      const res4 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/job`,
+        data: data4,
+      });
+      // 규칙 리스트 등록
+      const data5 = [];
+      setInfo.setting6.basicLaw.forEach((data) => {
+        data5.push({
+          rule: data.detail,
+          countryId: res.data.result,
+        });
+      });
+      const res5 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/rule`,
+        data: data5,
+      });
+      // 세금 규칙 등록
+      const data6 = [];
+      setInfo.setting7.taxLaw.forEach((data) => {
+        data6.push({
+          name: data.name,
+          division: data.division,
+          tax: parseFloat(data.rate),
+          countryId: res.data.result,
+        });
+      });
+      const rent = setInfo.setting8;
+      data6.push({
+        name: rent.taxName,
+        division: rent.division,
+        tax: parseInt(rent.fee),
+        countryId: res.data.result,
+      });
+      const res6 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/tax`,
+        data: data6,
+      });
     } catch {
-      alert('회원 가입 후 이용 가능합니다.');
-      // navigate('/user/signup');
+      alert('error');
     }
   };
 
@@ -1266,11 +1338,11 @@ export function Setting9() {
   };
 
   return (
-    <>
+    <div className="setting-wrap">
       {isLoading ? (
         <Loading />
       ) : (
-        <>
+        <div className="setting-wrap">
           <div className="title-list">
             <div>벌금 설정</div>
             <ul className="title-list">
@@ -1313,6 +1385,7 @@ export function Setting9() {
               onChange={(e) => {
                 setReasonFine(e.target.value);
               }}
+              style={{ imeMode: 'active' }}
             />
 
             <div className="set-title">숫자</div>
@@ -1327,6 +1400,7 @@ export function Setting9() {
             />
 
             <div className="set-title">단위</div>
+
             <input className="set-input" type="text" value={moneyUnit} />
 
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
@@ -1341,8 +1415,8 @@ export function Setting9() {
               width={'40%'}
             ></NextBtn>
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }

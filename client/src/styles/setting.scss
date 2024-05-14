@@ -7,15 +7,19 @@ $blue: #61759f;
 @import '../styles/input_common';
 
 @include mobile {
-  .title-list {
-    font-size: 18px;
-    margin: 10px 0;
+  .setting-wrap {
+    padding-bottom: 40px;
 
-    li {
-      margin-left: 20px;
-      list-style: disc;
-      font-size: 16px;
-      color: #777777;
+    .title-list {
+      font-size: 18px;
+      margin: 10px 0;
+
+      li {
+        margin-left: 20px;
+        list-style: disc;
+        font-size: 16px;
+        color: #777777;
+      }
     }
   }
 
@@ -131,6 +135,9 @@ $blue: #61759f;
     padding: 5px;
     margin-bottom: 10px;
     // cursor: pointer;
+  }
+  .accordion-open {
+    background-color: #fff5d6;
   }
   .updateBtn {
     right: 100px;

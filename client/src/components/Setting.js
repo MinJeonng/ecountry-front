@@ -17,6 +17,8 @@ import {
 import Loading from './Loading';
 
 import '../styles/_input_common.scss';
+import '../styles/background.scss';
+import axios from 'axios';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -119,7 +121,7 @@ export function Setting2() {
     navigate('/setting/schoolInfo');
   };
 
-  const nextSetting = () => {
+  const nextSetting = async () => {
     try {
       if (!countryName || !moneyUnit || !salaryDate) {
         alert('모든 값을 입력해주세요');
@@ -1201,14 +1203,131 @@ export function Setting9() {
   const [fineList, setFineList] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };
 
-  const finishSetting = () => {
+  const finishSetting = async () => {
     setIsLoading(true);
     dispatch(Fine({ fine: fineList }));
+    console.log(fineList);
+    try {
+      // 국가 생성
+      console.log(setInfo);
+      const res = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/country`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: {
+          name: setInfo.setting2.countryName,
+          grade: parseInt(setInfo.setting1.schoolGrade),
+          classroom: parseInt(setInfo.setting1.schoolClass),
+          unit: setInfo.setting2.moneyUnit,
+          salaryDate: parseInt(setInfo.setting2.salaryDate),
+          school: setInfo.setting1.schoolName,
+        },
+      });
+      console.log(res.data.result.id);
+      // 학생 등록(수기)
+      if (setInfo.setting3.studentList.length > 0) {
+        const data2 = [];
+        setInfo.setting3.studentList.forEach((student) => {
+          data2.push({
+            rollNumber: student.attendanceNumber,
+            name: student.name,
+            pw: setInfo.setting3.password,
+          });
+        });
+        const res2 = await axios({
+          method: 'POST',
+          // 국가 생성 후 return된 id 값으로 수정해야함
+          // 비밀번호 값 추가
+          url: `http://localhost:8080/api/student/${res.data.result.id}`,
+          data: data2,
+        });
+      }
+      // 자리 배치 등록
+      const data3 = [];
+      setInfo.setting4.columns.forEach((data) => {
+        data3.push({
+          rowNum: data.id,
+          colNum: data.rowCount,
+          countryId: res.data.result.id,
+        });
+      });
+      const res3 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/seat`,
+        data: data3,
+      });
+      // 직업 리스트 등록
+      const data4 = [];
+      setInfo.setting5.jobsDisplay.forEach((data) => {
+        data4.push({
+          limited: parseInt(data.count),
+          name: data.selectValue,
+          roll: data.roll,
+          standard: data.standard,
+          salary: parseInt(data.salary),
+          skills: null,
+          countryId: res.data.result.id,
+        });
+      });
+      const res4 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/job`,
+        data: data4,
+      });
+      // 규칙 리스트 등록
+      const data5 = [];
+      setInfo.setting6.basicLaw.forEach((data) => {
+        data5.push({
+          rule: data.detail,
+          countryId: res.data.result.id,
+        });
+      });
+      const res5 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/rule`,
+        data: data5,
+      });
+      // 세금 규칙 등록
+      const data6 = [];
+      setInfo.setting7.taxLaw.forEach((data) => {
+        data6.push({
+          name: data.name,
+          division: data.division,
+          tax: parseFloat(data.rate),
+          countryId: res.data.result.id,
+        });
+      });
+      const rent = setInfo.setting8;
+      data6.push({
+        name: rent.taxName,
+        division: rent.division,
+        tax: parseInt(rent.fee),
+        countryId: res.data.result.id,
+      });
+      fineList.forEach((data) => {
+        data6.push({
+          name: data.reason,
+          division: 3,
+          tax: data.fine,
+          countryId: res.data.result.id,
+        });
+      });
+      const res6 = await axios({
+        method: 'POST',
+        url: `http://localhost:8080/api/tax`,
+        data: data6,
+      });
+    } catch {
+      alert('error');
+    }
   };
 
   const handleAddFine = () => {

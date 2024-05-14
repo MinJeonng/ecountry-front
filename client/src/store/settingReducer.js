@@ -101,7 +101,6 @@ export const jobsInfo = (info) => ({
 });
 const initalState5 = {
   jobsDisplay: [],
-  division: 1,
 };
 export const setting5Reducer = (state = initalState5, action) => {
   switch (action.type) {
@@ -109,7 +108,6 @@ export const setting5Reducer = (state = initalState5, action) => {
       return {
         ...state,
         jobsDisplay: action.info.jobsDisplay,
-        division: 1,
       };
     default:
       return state;

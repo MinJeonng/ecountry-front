@@ -7,7 +7,7 @@ const BASICLAW = 'setting6/BASICLAW';
 const TAXLAW = 'setting7/TAXLAW';
 const SEATRENTALFEE = 'setting8/SEATRENTALFEE';
 const FINE = 'setting9/FINE';
-//setting1
+//setting1 - 학교 이름/ 반 /번호
 export const schoolInfo = (info) => ({
   type: SCHOOLINFO,
   info,
@@ -30,7 +30,7 @@ export const setting1Reducer = (state = initalState1, action) => {
       return state;
   }
 };
-//setting2
+//setting2 - 나라이름 / 단위 / 월급날
 export const countryInfo = (info) => ({
   type: COUNTRYINFO,
   info,
@@ -54,7 +54,7 @@ export const setting2Reducer = (state = initalState2, action) => {
   }
 };
 
-// setting3
+// setting3 - 학생 리스트 , 임시 비밀번호
 export const studnetInfo = (info) => ({
   type: STUDENTINFO,
   info,
@@ -121,7 +121,7 @@ export const basicLaw = (info) => ({
   info,
 });
 const initalState6 = {
-  laws: [],
+  basicLaw: [],
 };
 export const setting6Reducer = (state = initalState6, action) => {
   switch (action.type) {
@@ -141,7 +141,7 @@ export const taxLaw = (info) => ({
 });
 const initalState7 = {
   taxLaw: [],
-  division,
+  division: null,
 };
 export const setting7Reducer = (state = initalState7, action) => {
   switch (action.type) {

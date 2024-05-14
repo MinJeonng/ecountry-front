@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Template from '../components/Template';
 import { useSelector } from 'react-redux';
 
 // 자리배치도
 export function SetSeat() {
   const columns = useSelector((state) => state.setting4.columns);
-  const tableRows = useSelector((state) => state.someReducer.tableRows);
+  const tableRows = useSelector((state) => state.setting4.tableRows);
+
+  useEffect(() => {
+    console.log('Columns:', columns);
+    console.log('Table Rows:', tableRows);
+  }, [columns, tableRows]);
 
   return (
     <Template

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn, NextBtn } from './SettingBtn';
-
 import { useDispatch, useSelector } from 'react-redux';
 import {
   schoolInfo,
@@ -13,12 +12,14 @@ import {
   basicLaw,
   taxLaw,
   seatRentalFee,
+  Fine,
 } from '../store/settingReducer';
+import Loading from './Loading';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
-import Loading from './Loading';
 
+//Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -105,7 +106,7 @@ export function Setting1() {
     </div>
   );
 }
-
+//Setting2 - 나라이름 / 화폐단위 / 월급날 설정
 export function Setting2() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -203,7 +204,7 @@ export function Setting2() {
     </div>
   );
 }
-
+//Setting3 - 학생정보 / 비밀번호
 export function Setting3() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -372,7 +373,7 @@ export function Setting3() {
     </>
   );
 }
-
+//Setting4 - 자리 배치도
 export function Setting4() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -523,7 +524,7 @@ export function Setting4() {
     </div>
   );
 }
-
+//Setting5 - 직업 설정 (1)
 export function Setting5() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -780,7 +781,7 @@ export function Setting5() {
     </div>
   );
 }
-
+//Setting6 - 기본법 설정
 export function Setting6() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -891,7 +892,7 @@ export function Setting6() {
     </>
   );
 }
-
+//Setting7 - 세법 설정 (0/1)
 export function Setting7() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -901,6 +902,7 @@ export function Setting7() {
   const [selectedUnit, setSelectedUnit] = useState('');
   const [selectedTaxLawIndex, setSelectedTaxLawIndex] = useState(null);
   const [taxLawDisplay, setTaxLawDisplay] = useState([]);
+  const [division, setDivision] = useState(null);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
@@ -921,6 +923,11 @@ export function Setting7() {
 
   const handleSelectedUnit = (e) => {
     setSelectedUnit(e.target.value);
+    if (selectedUnit === moneyUnit) {
+      setDivision(1);
+    } else {
+      setDivision(0);
+    }
   };
 
   const beforeSetting = () => {
@@ -928,7 +935,7 @@ export function Setting7() {
   };
   const nextSetting = () => {
     navigate('/setting/seatRental');
-    dispatch(taxLaw({ taxLaw: taxLawDisplay }));
+    dispatch(taxLaw({ taxLaw: taxLawDisplay, division: division }));
   };
   const resetBtn = () => {
     setLawNameValue('');
@@ -1073,7 +1080,7 @@ export function Setting7() {
     </>
   );
 }
-
+//Setting8 - 자리세 설정(2)
 export function Setting8() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -1140,8 +1147,9 @@ export function Setting8() {
     </>
   );
 }
-
+//Setting9 - 벌금 설정 (3)
 export function Setting9() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [reasonFine, setReasonFine] = useState('');
@@ -1149,18 +1157,14 @@ export function Setting9() {
   const [fineList, setFineList] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };
-  // useEffect(()=>{
-  //   if(isLoading){
-  //     <Loading />
-  //   }
-  // },[isLoading])
 
   const finishSetting = () => {
     setIsLoading(true);
+    dispatch(Fine({ fine: fineList }));
   };
 
   const handleAddFine = () => {
@@ -1222,11 +1226,7 @@ export function Setting9() {
           </div>
           <div>
             {fineList.map((fine, index) => (
-              <div
-                className="display"
-                // key={index}
-                // onClick={() => selectInput(job, index)}
-              >
+              <div className="display">
                 {fine.reason}
                 {fine.fine}
                 <button
@@ -1274,8 +1274,7 @@ export function Setting9() {
             />
 
             <div className="set-title">단위</div>
-            {/* 단위는 reduxd에서 가져오기 */}
-            <input className="set-input" type="text" value="단위" />
+            <input className="set-input" type="text" value={moneyUnit} />
 
             <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
           </form>

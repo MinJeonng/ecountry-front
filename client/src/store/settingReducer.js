@@ -94,13 +94,14 @@ export const setting4Reducer = (state = initalState4, action) => {
       return state;
   }
 };
-//setting5
+//setting5 - 직업 divison:1
 export const jobsInfo = (info) => ({
   type: JOBLIST,
   info,
 });
 const initalState5 = {
   jobsDisplay: [],
+  division: 1,
 };
 export const setting5Reducer = (state = initalState5, action) => {
   switch (action.type) {
@@ -108,6 +109,7 @@ export const setting5Reducer = (state = initalState5, action) => {
       return {
         ...state,
         jobsDisplay: action.info.jobsDisplay,
+        division: 1,
       };
     default:
       return state;
@@ -132,13 +134,14 @@ export const setting6Reducer = (state = initalState6, action) => {
       return state;
   }
 };
-//setting7
+//setting7 - 세법 division : 0/1
 export const taxLaw = (info) => ({
   type: TAXLAW,
   info,
 });
 const initalState7 = {
   taxLaw: [],
+  division,
 };
 export const setting7Reducer = (state = initalState7, action) => {
   switch (action.type) {
@@ -146,12 +149,13 @@ export const setting7Reducer = (state = initalState7, action) => {
       return {
         ...state,
         taxLaw: action.info.taxLaw,
+        division: action.info.division,
       };
     default:
       return state;
   }
 };
-//setting8
+//setting8 - 자리세 division:2
 export const seatRentalFee = (info) => ({
   type: SEATRENTALFEE,
   info,
@@ -174,14 +178,13 @@ export const setting8Reducer = (state = initalState8, action) => {
       return state;
   }
 };
-//setting9
+//setting9 -세법 division : 3
 export const Fine = (info) => ({
   type: FINE,
   info,
 });
 const initalState9 = {
-  taxName: null,
-  fee: null,
+  fine: [],
   division: 2,
 };
 export const setting9Reducer = (state = initalState8, action) => {
@@ -189,9 +192,8 @@ export const setting9Reducer = (state = initalState8, action) => {
     case SEATRENTALFEE:
       return {
         ...state,
-        taxName: action.info.taxName,
-        fee: action.info.fee,
-        division: 2,
+        fine: action.info.fine,
+        division: 3,
       };
     default:
       return state;

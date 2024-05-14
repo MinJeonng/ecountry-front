@@ -11,12 +11,7 @@ export function SetPeopleList() {
       <Template
         childrenBottom={
           <>
-            {/* {studentList.map((student, index) => (
-              <>
-                <div key={index}>출석번호{student.attendanceNumber}</div>
-                <div key={index}>학생이름{student.name}</div>
-              </>
-            ))} */}
+            <div></div>
           </>
         }
       ></Template>

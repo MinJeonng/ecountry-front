@@ -87,3 +87,44 @@ $blue: #61759f;
   color: #ffffff;
   margin: 10px auto;
 }
+
+.updateBtn {
+  right: 100px;
+  position: absolute;
+  cursor: pointer;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+}
+.resetBtn {
+  width: 15px;
+  height: 15px;
+  right: 30px;
+  position: absolute;
+  cursor: pointer;
+}
+.deleteBtn {
+  width: 17px;
+  height: 17px;
+  right: 60px;
+  position: absolute;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+// 기본법 제정 btn
+.delete-btn {
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  margin-top: 4px;
+  margin-right: 10px;
+}
+
+.edit-btn,
+.add-btn {
+  @include blue-btn-style;
+  width: -webkit-fill-available;
+  text-align: center;
+}

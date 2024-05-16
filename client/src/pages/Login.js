@@ -18,7 +18,7 @@ export default function Login() {
       .then((res) => {
         alert(res.data.message);
         if (res.data.success) {
-          localStorage.setItem('token', res.data.result);
+          localStorage.setItem('token', res.data.result.token);
           navigate('/user/country');
         } else {
         }

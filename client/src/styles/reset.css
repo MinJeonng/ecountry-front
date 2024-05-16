@@ -95,10 +95,13 @@ video {
 }
 
 input,
-button {
+button,
+select,
+textarea {
   font-family: 'Noto Sans KR', sans-serif, '돋움';
-  cursor: 'pointer';
+  cursor: pointer;
 }
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ConfirmBtn } from './SettingBtn';
 import '../styles/setting.scss';
@@ -18,12 +18,8 @@ export function AddSavings() {
     // 등록 날짜를 오늘 날짜로 설정
     setRegisterDate(new Date());
   }, []);
-  useEffect(() => {
-    // savingDeadLine이 변경될 때마다 D-Day 계산
-    calculateDDay();
-  }, [savingDeadLine]);
 
-  const calculateDDay = (savingDeadLine) => {
+  const calculateDDay = useCallback(() => {
     const today = new Date();
     const deadline = new Date(registerDate);
     deadline.setDate(deadline.getDate() + parseInt(savingDeadLine)); // 만기 날짜
@@ -32,14 +28,19 @@ export function AddSavings() {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     return `D-${diffDays}`;
-  };
+  }, [registerDate, savingDeadLine]);
+
+  useEffect(() => {
+    // savingDeadLine이 변경될 때마다 D-Day 계산
+    calculateDDay();
+  }, [savingDeadLine, calculateDDay]);
 
   const handleAddSavings = () => {
     if (!savingName || !savingDeadLine || !interestRate) {
       alert('모든 값을 입력해주세요');
       return;
     }
-    const dDayForItem = calculateDDay(savingDeadLine);
+    const dDayForItem = calculateDDay();
 
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
@@ -78,7 +79,8 @@ export function AddSavings() {
     setIsAddOpen(false);
   };
   const handleCloseAccordion = () => {
-    const dDayForItem = calculateDDay(savingDeadLine);
+    const dDayForItem = calculateDDay();
+
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
       updatedSaving[selectedIndex] = {
@@ -108,10 +110,16 @@ export function AddSavings() {
     setIsAddOpen(true);
   };
   const resetBtn = () => {
-    setSelectedIndex(null);
-    setSavingName('');
-    setInterestRate('');
-    setSavingDeadLine('');
+    if (savingName !== '' || savingDeadLine !== '' || selectedIndex !== null) {
+      const isConfirmed = window.confirm('초기화 하시겠습니까?');
+      if (!isConfirmed) {
+        return;
+      }
+      setSelectedIndex(null);
+      setSavingName('');
+      setInterestRate('');
+      setSavingDeadLine('');
+    }
   };
 
   const deleteBtn = (index) => (e) => {
@@ -159,7 +167,8 @@ export function AddSavings() {
             <img
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={() => deleteBtn(index)}
+              onClick={deleteBtn(index)}
+              alt="삭제"
             />
           </div>
           {isAccordionOpen && selectedIndex === index && (
@@ -170,6 +179,7 @@ export function AddSavings() {
                   className="resetBtn"
                   src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
                   onClick={resetBtn}
+                  alt="초기화"
                 />
               </div>
               <input
@@ -203,6 +213,7 @@ export function AddSavings() {
               <ConfirmBtn
                 onClick={() => handleCloseAccordion()}
                 btnName="업데이트"
+                backgroundColor="#61759f"
               ></ConfirmBtn>
             </form>
           )}
@@ -214,6 +225,7 @@ export function AddSavings() {
           onClick={() => newAddBtn()}
           btnName="상품 등록"
           width={'40%'}
+          backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}
 
@@ -225,6 +237,7 @@ export function AddSavings() {
               className="resetBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
               onClick={resetBtn}
+              alt="초기화"
             />
           </div>
           <input
@@ -258,6 +271,7 @@ export function AddSavings() {
           <ConfirmBtn
             onClick={handleAddSavings}
             btnName="상품 등록"
+            backgroundColor="#bacd92"
           ></ConfirmBtn>
         </form>
       )}

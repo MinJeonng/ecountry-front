@@ -128,42 +128,28 @@ $blue: #61759f;
     justify-content: space-between;
   }
   .display {
-    // border: 1px solid #e9ae24;
     border-radius: 10px;
     background: #d9d9d9;
     font-size: 16px;
-    text-align: center;
-    padding: 5px;
+    text-align: start;
+    padding: 5px 0 5px 10px;
     margin-bottom: 10px;
-    // cursor: pointer;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
   .accordion-open {
     background-color: #fff5d6;
   }
-  .updateBtn {
-    right: 100px;
-    position: absolute;
-    cursor: pointer;
-    text-align: center;
-    background: #bacd92;
-    border: 1px solid #bacd92;
-    border-radius: 2px;
+
+  .studentInfo-upload {
+    margin: 10px 0 0 5px;
   }
-  .resetBtn {
-    width: 15px;
-    height: 15px;
-    right: 30px;
-    position: absolute;
-    cursor: pointer;
+
+  .studentInfo-input {
+    @include select-common;
   }
-  .deleteBtn {
-    width: 17px;
-    height: 17px;
-    right: 60px;
-    position: absolute;
-    cursor: pointer;
-    margin-top: 4px;
-  }
+
   // 자리 배치도
   .seat-count {
     display: flex;
@@ -215,10 +201,29 @@ $blue: #61759f;
     }
 
     .row-container {
+      display: flex;
+      flex-direction: column;
+
       .cell {
         border: 1px solid #ffffff;
         padding: 10px 20px;
         color: #ffffff;
+      }
+
+      .cell-input {
+        background-color: transparent;
+        border: 1px solid #ffffff;
+        color: #ffffff;
+        text-align: center;
+        padding: 10px 20px;
+        width: 80px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .cell-input:focus {
+        outline: 4px solid #f77137;
+        border: none;
       }
     }
   }
@@ -247,4 +252,24 @@ $blue: #61759f;
     font-size: 16px;
     color: #777777;
   }
+}
+
+// 기본법 제정
+
+.law-input {
+  @include select-common;
+  width: -webkit-fill-available;
+}
+
+.law-display {
+  border-radius: 10px;
+  background: #d9d9d9;
+  font-size: 16px;
+  text-align: start;
+  padding: 5px 0 5px 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

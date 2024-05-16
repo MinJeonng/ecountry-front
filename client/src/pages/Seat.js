@@ -13,16 +13,19 @@ export function SetSeat() {
     { id: 5, label: '5열' },
   ];
   const initialTableRows = [
-    { columnId: 1, rowId: '1', value: '1' },
-    { columnId: 1, rowId: '2', value: '2' },
+    { columnId: 1, rowId: '1', value: '홍길동' },
+    { columnId: 1, rowId: '2', value: '임꺽정' },
     { columnId: 1, rowId: '3', value: '3' },
-    { columnId: 1, rowId: '4', value: '4' },
+
     { columnId: 2, rowId: '1', value: '1' },
     { columnId: 2, rowId: '2', value: '2' },
+
     { columnId: 3, rowId: '1', value: '1' },
     { columnId: 3, rowId: '2', value: '2' },
+
     { columnId: 4, rowId: '1', value: '1' },
     { columnId: 4, rowId: '2', value: '2' },
+
     { columnId: 5, rowId: '1', value: '1' },
     { columnId: 5, rowId: '2', value: '2' },
   ];

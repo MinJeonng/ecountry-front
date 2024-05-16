@@ -5,15 +5,9 @@ import '../styles/_button_common.scss';
 const StyledConfirmBtn = styled.div`
   display: flex;
   justify-content: center;
-  .confirmBtn {
-    /* border: none;
-    color: blue;
-    font-size: 16px; */
-    @include blue-btn-style;
-  }
 `;
 
-export function ConfirmBtn({ onClick, btnName }) {
+export function ConfirmBtn({ onClick, btnName, backgroundColor }) {
   const handleClick = (e) => {
     e.preventDefault(); // 기본 동작 방지
     onClick(); // 부모 컴포넌트에서 전달된 onClick 함수 실행
@@ -23,9 +17,10 @@ export function ConfirmBtn({ onClick, btnName }) {
     <>
       <StyledConfirmBtn>
         <button
-          className="confirmBtn blue-btn"
+          className="confirm-btn"
           onClick={handleClick}
           type="button"
+          style={{ background: backgroundColor }}
         >
           {btnName}
         </button>

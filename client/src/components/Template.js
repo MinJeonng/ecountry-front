@@ -6,6 +6,9 @@ const BgTop = styled.div`
   height: 100vh;
   position: relative;
 `;
+const PageName = styled.div`
+  height: 30px;
+`;
 
 const BgBottom = styled.div`
   padding: 40px;
@@ -22,7 +25,8 @@ const BgBottom = styled.div`
 export default function Template({ childrenTop, childrenBottom }) {
   return (
     <>
-      <BgTop>{childrenTop}</BgTop>
+      <BgTop></BgTop>
+      {/* <PageName>{childrenTop}</PageName> */}
       <BgBottom>{childrenBottom}</BgBottom>
     </>
   );

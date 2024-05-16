@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ReactComponent as IcoMenuRight } from '../images/icon-sideMenu.svg';
+import { ReactComponent as ArrowLeft } from '../images/ico-arr-left.svg';
 import styled from 'styled-components';
 import { SideMenuComponent } from './SideMenu';
+import { useNavigate } from 'react-router-dom';
+import Template from './Template';
 
 const BoxStyle = styled.div`
   position: sticky;
@@ -9,6 +12,16 @@ const BoxStyle = styled.div`
   left: 0;
   z-index: 100;
   padding: 25px 0 0 30px;
+`;
+
+const PageHeaderBox = styled.div`
+  display: flex;
+  align-items: center;
+  position: sticky;
+`;
+const Text = styled.div`
+  color: #fff;
+  font-size: 15px;
 `;
 
 export function ManagerMainHeader() {
@@ -36,5 +49,30 @@ export function ManagerMainHeader() {
       </BoxStyle>
       {showSideMenu && <SideMenuComponent func={closeFunc} />}
     </>
+  );
+}
+//각 페이지마다 이전 페이지로 돌아가기 위한..
+// < 은행 이거 만들어서 childrenTop에 적용하기!!!!
+
+//changeFill 다가가면 border약간 티나게 바뀌기
+export function PageHeader({ children }) {
+  const navigate = useNavigate();
+  return (
+    <Template
+      childrenTop={
+        <>
+          <PageHeaderBox>
+            <header>
+              <ArrowLeft
+                onClick={() => navigate(-1)}
+                className="changeFill"
+                style={{ width: '15px' }}
+              />
+              <Text>{children}</Text>
+            </header>
+          </PageHeaderBox>
+        </>
+      }
+    />
   );
 }

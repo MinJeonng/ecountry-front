@@ -85,28 +85,28 @@ const SideMenuContainer = styled.div`
 export function SideMenuComponent({ func }) {
   const navigate = useNavigate();
   const handleBank = () => {
-    navigate('/bank');
+    navigate('/manager/bank');
   };
   const handleInvestment = () => {
-    navigate('/investment');
+    navigate('/manager/investment');
   };
   const handleAssembly = () => {
-    navigate('/assembly');
+    navigate('/manager/assembly');
   };
   const handleBoardPeople = () => {
-    navigate('/boardPeople');
+    navigate('/manager/boardPeople');
   };
   const handleNews = () => {
-    navigate('/news');
+    navigate('/manager/news');
   };
   const handlePeopleList = () => {
-    navigate('/peopleList');
+    navigate('/manager/peopleList');
   };
   const handleSeat = () => {
-    navigate('/seat');
+    navigate('/manager/seat');
   };
   const handleTaxService = () => {
-    navigate('/taxService');
+    navigate('/manager/taxService');
   };
   return (
     <>
@@ -117,58 +117,85 @@ export function SideMenuComponent({ func }) {
           className="btnClose changeStroke"
           onClick={func}
           style={{ cursor: 'pointer' }}
+          alt="닫기"
         />
         <div className="sideBox">
           <SideMenuContainer>
             <div className="bankBox" onClick={handleBank}>
-              <img src={`${process.env.PUBLIC_URL}/images/icon-bank.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-bank.png`}
+                alt="은행"
+              />
               <p>은행</p>
             </div>
             <div className="investmentBox" onClick={handleInvestment}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-investmentPng.png`}
+                alt="투자"
               />
               <p>투자</p>
             </div>
           </SideMenuContainer>
           <SideMenuContainer>
             <div className="taxServiceBox" onClick={handleTaxService}>
-              <img src={`${process.env.PUBLIC_URL}/images/icon-tax.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
+                alt="국세청"
+              />
               <p>국세청</p>
             </div>
             <div className="assemblyBox" onClick={handleAssembly}>
-              <img src={`${process.env.PUBLIC_URL}/images/icon-capitol.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-capitol.png`}
+                alt="국회"
+              />
               <p>국회</p>
             </div>
           </SideMenuContainer>
           <SideMenuContainer>
             <div className="newsBox" onClick={handleNews}>
-              <img src={`${process.env.PUBLIC_URL}/images/icon-news.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-news.png`}
+                alt="뉴스"
+              />
               <p>뉴스</p>
             </div>
             <div className="boardPeopleBox" onClick={handleBoardPeople}>
-              <img src={`${process.env.PUBLIC_URL}/images/icon-board.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-board.png`}
+                alt="국민 신문고"
+              />
               <p>국민 신문고</p>
             </div>
           </SideMenuContainer>
           <SideMenuContainer>
             <div className="seatBox" onClick={handleSeat}>
-              <img src={`${process.env.PUBLIC_URL}/images/icon-seat.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-seat.png`}
+                alt="자리 배치도"
+              />
               <p>자리 배치도</p>
             </div>
             <div className="menuBox">
-              <img src={`${process.env.PUBLIC_URL}/images/icon-menu.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-menu.png`}
+                alt="급식표"
+              />
               <p>급식표</p>
             </div>
           </SideMenuContainer>
           <SideMenuContainer>
             <div className="scheduleBox">
-              <img src={`${process.env.PUBLIC_URL}/images/icon-schedule.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-schedule.png`}
+                alt="시간표"
+              />
               <p>시간표</p>
             </div>
             <div className="peopleListBox" onClick={handlePeopleList}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-create-list.png`}
+                alt="국민 리스트"
               />
               <p>국민 리스트</p>
             </div>

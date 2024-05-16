@@ -9,7 +9,7 @@ export default function SetBank({ position }) {
   return (
     <>
       <Template
-        childrenBottom={<>{position === '적금 생성' && <AddSavings />}</>}
+        childrenBottom={<>{position === '적금 상품' && <AddSavings />}</>}
       />
     </>
   );

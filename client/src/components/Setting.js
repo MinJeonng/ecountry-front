@@ -373,14 +373,26 @@ export function Setting3() {
             {correct ? ( //수정버튼
               isEditing ? (
                 // correct가 true이고, isEditing도 true일 때
-                <ConfirmBtn onClick={handleCheckBtn} btnName="확인" />
+                <ConfirmBtn
+                  onClick={handleCheckBtn}
+                  btnName="확인"
+                  backgroundColor="#bacd92"
+                />
               ) : (
                 // correct가 true이지만, isEditing은 false일 때
-                <ConfirmBtn onClick={updateAttendee} btnName="수정" />
+                <ConfirmBtn
+                  onClick={updateAttendee}
+                  btnName="수정"
+                  backgroundColor="#bacd92"
+                />
               )
             ) : (
               // correct가 false일 때
-              <ConfirmBtn onClick={handleCheck} btnName="확인" />
+              <ConfirmBtn
+                onClick={handleCheck}
+                btnName="확인"
+                backgroundColor="#bacd92"
+              />
             )}
           </div>
         </div>
@@ -395,7 +407,11 @@ export function Setting3() {
             onChange={handleFileChange}
             accept=".xlsx,.xls, .csv"
           />
-          <ConfirmBtn onClick={handleUpload} btnName="업로드"></ConfirmBtn>
+          <ConfirmBtn
+            onClick={handleUpload}
+            btnName="업로드"
+            backgroundColor="#bacd92"
+          ></ConfirmBtn>
         </form>
       )}
       <div className="navi-btn">
@@ -798,7 +814,11 @@ export function Setting5() {
             style={{ imeMode: 'active' }}
           />
         </div>
-        <ConfirmBtn onClick={addJob} btnName="확인"></ConfirmBtn>
+        <ConfirmBtn
+          onClick={addJob}
+          btnName="확인"
+          backgroundColor="#bacd92"
+        ></ConfirmBtn>
       </form>
 
       <form>
@@ -1084,7 +1104,11 @@ export function Setting7() {
             ))}
           </select>
         )}
-        <ConfirmBtn onClick={addTaxLaw} btnName="확인"></ConfirmBtn>
+        <ConfirmBtn
+          onClick={addTaxLaw}
+          btnName="확인"
+          backgroundColor="#bacd92"
+        ></ConfirmBtn>
       </form>
       <div>
         {taxLawDisplay.map((taxLaw, index) => (
@@ -1431,7 +1455,11 @@ export function Setting9() {
 
             <input className="set-input" type="text" value={moneyUnit} />
 
-            <ConfirmBtn onClick={handleAddFine} btnName="확인"></ConfirmBtn>
+            <ConfirmBtn
+              onClick={handleAddFine}
+              btnName="확인"
+              backgroundColor="#bacd92"
+            ></ConfirmBtn>
           </form>
           <div className="navi-btn">
             <button className="next-button" onClick={beforeSetting}>

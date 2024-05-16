@@ -1296,7 +1296,7 @@ export function Setting8() {
     </div>
   );
 }
-//Setting9 - 벌금 설정 (3)
+//Setting9 - 과태료 설정 (3)
 export function Setting9() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -1503,9 +1503,9 @@ export function Setting9() {
       ) : (
         <div className="setting-wrap">
           <div className="title-list">
-            <div>벌금 설정</div>
+            <div>과태료 설정</div>
             <ul className="title-list">
-              <li>국가에 필수인 벌금을 제정하세요&#46;</li>
+              <li>국가에 필수인 과태료를 제정하세요&#46;</li>
             </ul>
           </div>
           <div>
@@ -1529,7 +1529,7 @@ export function Setting9() {
           </div>
           <form className="box-style">
             <div className="reset">
-              <div className="set-title">벌금사유</div>
+              <div className="set-title">과태료 사유</div>
               <img
                 className="resetBtn"
                 src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}

@@ -1,101 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { ConfirmBtn } from './SettingBtn';
-
-import '../styles/setting.scss';
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export function SetNewsDetail() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [newsTitle, setNewsTitle] = useState('');
-  const [newsContent, setNewsContent] = useState('');
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [news, setNews] = useState(null);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000); // 1분(60초)마다 갱신
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleImageChange = (event) => {
-    const imageFile = event.target.files[0];
-    setSelectedImage(imageFile);
+  const getNews = async () => {
+    try {
+      const res = await axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_HOST}/api/rule`,
+      });
+      setNews(res.data); // 전체 데이터를 상태로 설정
+    } catch (error) {
+      console.error('뉴스를 가져오는데 실패했습니다.', error);
+    }
   };
 
+  useEffect(() => {
+    getNews();
+  }, []);
+
+  useEffect(() => {
+    const mockData = {
+      success: true,
+      result: [
+        { id: 1, rule: '뉴스 제목 1' },
+        { id: 2, rule: '뉴스 제목 2' },
+        { id: 3, rule: '뉴스 제목 3' },
+      ],
+    };
+
+    setNews(mockData);
+  }, []);
   return (
-    <form className="box-style">
-      <div
-        className="reset"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          textAlign: 'center',
-          position: 'relative',
-        }}
-      >
-        <label
-          htmlFor="fileInput"
-          style={{
-            border: 'none',
-            textAlign: 'center',
-            lineHeight: '200px',
-            cursor: 'pointer',
-            marginBottom: '20px',
-            position: 'relative',
-            borderRadius: '18px',
-          }}
-        >
-          {selectedImage ? (
-            <img
-              src={URL.createObjectURL(selectedImage)}
-              alt="Uploaded"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          ) : (
-            <div>이미지를 드롭하세요.</div>
-          )}
-        </label>
-        <input
-          id="fileInput"
-          type="file"
-          onChange={handleImageChange}
-          accept="image/*"
-          style={{ display: 'none' }}
-        />
-        {/* 뉴스 제목 */}
-        <input
-          type="text"
-          placeholder="뉴스 제목을 입력하세요."
-          value={newsTitle}
-          onChange={(e) => setNewsTitle(e.target.value)}
-          style={{
-            marginBottom: '20px',
-            padding: '10px',
-            border: 'none',
-            borderRadius: '18px',
-          }}
-        />
-        {/* 뉴스 기사 */}
-        <textarea
-          placeholder="뉴스 기사를 입력하세요."
-          value={newsContent}
-          onChange={(e) => setNewsContent(e.target.value)}
-          style={{
-            height: '200px',
-            padding: '10px',
-            resize: 'none',
-            border: 'none',
-            borderRadius: '18px',
-          }}
-        />
-        <div style={{ marginTop: '20px' }}>
-          {currentTime.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </div>
-        {/* 저장 버튼 */}
-        <ConfirmBtn btnName="업데이트"></ConfirmBtn>
+    <>
+      <div className="content">
+        <span className="newsHead">뉴스</span>
+        {news?.success ? (
+          <div className="newsInfo">
+            {news.result.map((item) => (
+              <div key={item.id}>
+                <span>{item.rule}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="newsContent">
+            <span>뉴스가 존재하지 않습니다.</span>
+            <Link
+              className="registerBtn"
+              to="/:id/manager/news/write"
+              style={{ color: 'black' }}
+            >
+              등록하기
+            </Link>
+          </div>
+        )}
       </div>
-    </form>
+    </>
   );
 }

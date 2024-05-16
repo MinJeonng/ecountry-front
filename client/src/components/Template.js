@@ -25,7 +25,7 @@ const BgBottom = styled.div`
 export default function Template({ childrenTop, childrenBottom }) {
   return (
     <>
-      <BgTop></BgTop>
+      <BgTop>{childrenTop}</BgTop>
       {/* <PageName>{childrenTop}</PageName> */}
       <BgBottom>{childrenBottom}</BgBottom>
     </>

@@ -183,7 +183,7 @@ export const Fine = (info) => ({
 });
 const initalState9 = {
   fine: [],
-  division: 2,
+  division: 3,
 };
 export const setting9Reducer = (state = initalState9, action) => {
   switch (action.type) {

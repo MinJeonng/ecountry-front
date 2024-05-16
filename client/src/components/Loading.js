@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Template from './Template';
-
 import '../styles/background.scss';
 import '../styles/loading.scss';
 
-export default function Loading() {
+export default function Loading({ countryid }) {
   const [loading, setLoading] = useState(true);
   const [done, setDone] = useState(false);
 
@@ -18,11 +16,19 @@ export default function Loading() {
     }, 4000);
 
     const doneTimer = setTimeout(() => {
-      setDone(true);
+      if (countryid === undefined) {
+        setDone(false);
+      } else {
+        setDone(true);
+      }
     }, 3000);
 
     const navigateTimer = setTimeout(() => {
-      navigate('/manager');
+      if (countryid === undefined) {
+        navigate(`/user/country`);
+      } else {
+        navigate(`/${countryid}/manager`);
+      }
     }, 7000);
 
     return () => {
@@ -45,8 +51,10 @@ export default function Loading() {
             <div className="spinner-text">초기 설정</div>
             <div className="spinner-text">적용중...</div>
           </>
-        ) : (
+        ) : done ? (
           <SetDone />
+        ) : (
+          <SetFail />
         )}
       </div>
     </div>
@@ -59,6 +67,16 @@ export function SetDone() {
       <img className="spinner-img" src="/images/icon-like.gif" alt="Done" />
       <div className="spinner-text">초기 설정이</div>
       <div className="spinner-text">완료되었습니다.</div>
+    </div>
+  );
+}
+
+export function SetFail() {
+  return (
+    <div className="spinner">
+      <img className="spinner-img" src="/images/icon-like.gif" alt="Fail" />
+      <div className="spinner-text">초기 설정 실패</div>
+      <div className="spinner-text">국가를 다시 생성해주세요.</div>
     </div>
   );
 }

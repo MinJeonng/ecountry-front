@@ -72,11 +72,11 @@ function App() {
 
           {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
           <Route
-            path="/manager/bank"
+            path="/:id/manager/bank"
             element={<SetBank position="적금 상품" />}
           />
           <Route
-            path="/manager/investment"
+            path="/:id/manager/investment"
             element={<SetInvestment position="투자 상품" />}
           />
 

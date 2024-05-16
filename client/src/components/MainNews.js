@@ -37,7 +37,7 @@ export default function MainNews() {
             <span>뉴스가 존재하지 않습니다.</span>
             <Link
               className="registerBtn"
-              to="/manager/news"
+              to="/:id/manager/news"
               style={{ color: 'black' }}
             >
               등록하기

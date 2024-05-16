@@ -9,6 +9,7 @@ import Template from '../components/Template';
 import { ManagerMainHeader } from '../components/Headers';
 import MainProfile from '../components/MainProfile';
 import MainNews from '../components/MainNews';
+import { SetNewsList } from '../components/NewsDetail';
 
 export default function ManagerDashBoard() {
   return (
@@ -24,14 +25,14 @@ export default function ManagerDashBoard() {
 
               <Button style={{ fontSize: '15px', backgroundColor: '#D9D9D9' }}>
                 <Link to="/setting/schoolInfo">초기세팅수정</Link>
-
               </Button>
             </div>
           </>
         }
         childrenBottom={
           <>
-            <MainNews />
+            {/* <MainNews /> */}
+            {/* <SetNewsList /> */}
           </>
         }
       />

@@ -83,8 +83,15 @@ function App() {
 
           <Route path="/:id/manager/assembly" element={<SetAssembly />} />
           <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
-          <Route path="/:id/manager/news" element={<SetNews />} />
-          <Route path="/:id/manager/peopleList" element={<SetPeopleList />} />
+          <Route
+            path="/:id/manager/news/:id"
+            element={<SetNews position="리스트" />}
+          />
+          <Route
+            path="/:id/manager/news/write"
+            element={<SetNews position="작성" />}
+          />
+          <Route path="/:id/manager/peopleList" element={<PeopleList />} />
           <Route path="/:id/manager/seat" element={<SetSeat />} />
           <Route path="/:id/manager/taxService" element={<SetTaxService />} />
 

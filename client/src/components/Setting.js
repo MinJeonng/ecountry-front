@@ -27,8 +27,14 @@ export function Setting1() {
   const [schoolName, setSchoolName] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
-
   const grades = [1, 2, 3, 4, 5, 6];
+  const schoolInfoState = useSelector((state) => state.setting1);
+
+  useEffect(() => {
+    setSchoolName(schoolInfoState?.schoolName);
+    setSelectedGrade(schoolInfoState?.schoolGrade);
+    setSelectedClass(schoolInfoState?.schoolClass);
+  }, [schoolInfoState]);
 
   const inputSchoolName = (event) => {
     setSchoolName(event.target.value);
@@ -117,8 +123,23 @@ export function Setting2() {
   const [countryName, setCountryName] = useState('');
   const [moneyUnit, setMoneyUnit] = useState('');
   const [salaryDate, setSalaryDate] = useState('');
+  const countryInfoState = useSelector((state) => state.setting2);
+
+  useEffect(() => {
+    setCountryName(countryInfoState?.countryName);
+    setMoneyUnit(countryInfoState?.moneyUnit);
+    setSalaryDate(countryInfoState?.salaryDate);
+  }, [countryInfoState]);
+
   const beforeSetting = () => {
     navigate('/setting/schoolInfo');
+    dispatch(
+      countryInfo({
+        countryName: countryName,
+        moneyUnit: moneyUnit,
+        salaryDate: salaryDate,
+      })
+    );
   };
 
   const nextSetting = async () => {
@@ -214,9 +235,31 @@ export function Setting2() {
 export function Setting3() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [directInput, setDirectInput] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [attendees, setAttendees] = useState([]);
+  const [attendanceNumber, setAttendanceNumber] = useState('');
+  const [name, setName] = useState('');
+  const [correct, setCorrect] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const studentInfoState = useSelector((state) => state.setting3);
+
+  useEffect(() => {
+    setPassword(studentInfoState?.password);
+    setAttendees(studentInfoState?.studentList);
+  }, [studentInfoState]);
 
   const beforeSetting = () => {
     navigate('/setting/countryInfo');
+    dispatch(
+      studentInfo({
+        password: password,
+        studentList: attendees,
+      })
+    );
   };
   const nextSetting = () => {
     navigate('/setting/seatingMap');
@@ -227,16 +270,6 @@ export function Setting3() {
       })
     );
   };
-
-  const [directInput, setDirectInput] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [attendees, setAttendees] = useState([]);
-  const [attendanceNumber, setAttendanceNumber] = useState('');
-  const [name, setName] = useState('');
-  const [correct, setCorrect] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleCheckBtn = () => {
     setIsEditing(false);
@@ -430,6 +463,7 @@ export function Setting3() {
 export function Setting4() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const seatingMapState = useSelector((state) => state.setting4);
 
   const [columns, setColumns] = useState([
     { id: 1, label: '1열', rowCount: '' },
@@ -437,6 +471,12 @@ export function Setting4() {
   ]);
 
   const [tableRows, setTableRows] = useState([]);
+
+  useEffect(() => {
+    if (seatingMapState?.columns?.length > 0) {
+      setColumns(seatingMapState.columns);
+    }
+  }, [seatingMapState]);
 
   const addColumn = () => {
     const newColumn = {
@@ -477,6 +517,7 @@ export function Setting4() {
 
   const beforeSetting = () => {
     navigate('/setting/studentInfo');
+    dispatch(seatingMap({ columns: columns }));
   };
 
   const nextSetting = () => {
@@ -587,6 +628,11 @@ export function Setting5() {
   const [countValue, setCountValue] = useState('');
   // 현재 선택한 상태 뭔지 저장
   const [selectedJobIndex, setSelectedJobIndex] = useState(null);
+  const jobListState = useSelector((state) => state.setting5);
+
+  useEffect(() => {
+    setJobsDisplay(jobListState?.jobsDisplay);
+  }, [jobListState]);
 
   const isCustomInput = selectedJob === '직접입력';
   const jobList = [
@@ -600,6 +646,7 @@ export function Setting5() {
   ];
   const beforeSetting = () => {
     navigate('/setting/seatingMap');
+    dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const nextSetting = () => {
     navigate('/setting/law');
@@ -841,19 +888,26 @@ export function Setting5() {
 export function Setting6() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const beforeSetting = () => {
-    navigate('/setting/jobList');
-  };
-  const nextSetting = () => {
-    navigate('/setting/taxLaw');
-    dispatch(basicLaw({ basicLaw: laws }));
-  };
 
   const [laws, setLaws] = useState([]); // 법 리스트
   const [detail, setDetail] = useState(''); // 법 내용
   const [correct, setCorrect] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [law, setLaw] = useState('');
+  const basicLawState = useSelector((state) => state.setting6);
+
+  useEffect(() => {
+    setLaws(basicLawState?.basicLaw);
+  }, [basicLawState]);
+
+  const beforeSetting = () => {
+    navigate('/setting/jobList');
+    dispatch(basicLaw({ basicLaw: laws }));
+  };
+  const nextSetting = () => {
+    navigate('/setting/taxLaw');
+    dispatch(basicLaw({ basicLaw: laws }));
+  };
 
   // 법 추가
   const handleAddLaw = () => {
@@ -933,7 +987,7 @@ export function Setting6() {
           style={{ imeMode: 'active' }}
         />
         {correct ? (
-          <button className="edit-btn" onClick={updateLaw}>
+          <button className="edit-btn" type="button" onClick={updateLaw}>
             수정
           </button>
         ) : (
@@ -968,9 +1022,16 @@ export function Setting7() {
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
-    { label: moneyUnit, value: moneyUnit },
-    { label: '%', value: '%' },
+    { label: `${moneyUnit} (화폐단위)`, value: moneyUnit },
+    { label: `% (월급기준)`, value: '%' },
   ];
+
+  const taxLawState = useSelector((state) => state.setting7);
+
+  useEffect(() => {
+    setTaxLawDisplay(taxLawState?.taxLaw);
+  }, [taxLawState]);
+
   const handleLawNameValue = (e) => {
     setLawNameValue(e.target.value);
   };
@@ -994,6 +1055,7 @@ export function Setting7() {
 
   const beforeSetting = () => {
     navigate('/setting/law');
+    dispatch(taxLaw({ taxLaw: taxLawDisplay, division: division }));
   };
   const nextSetting = () => {
     navigate('/setting/seatRental');
@@ -1152,8 +1214,24 @@ export function Setting7() {
 export function Setting8() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
+  const [taxName, setTaxName] = useState('');
+  const [fee, setFee] = useState('');
+
+  const setRentalFeeState = useSelector((state) => state.setting8);
+
+  useEffect(() => {
+    setTaxName(setRentalFeeState?.taxName);
+    setFee(setRentalFeeState?.fee);
+  }, [setRentalFeeState]);
   const beforeSetting = () => {
     navigate('/setting/taxLaw');
+    dispatch(
+      seatRentalFee({
+        taxName: taxName,
+        fee: fee,
+      })
+    );
   };
   const nextSetting = () => {
     navigate('/setting/fine');
@@ -1164,9 +1242,6 @@ export function Setting8() {
       })
     );
   };
-  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
-  const [taxName, setTaxName] = useState('');
-  const [fee, setFee] = useState('');
   return (
     <div className="setting-wrap">
       <div className="title-list">
@@ -1233,6 +1308,12 @@ export function Setting9() {
   const [isLoading, setIsLoading] = useState(false);
   const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
+  // const fineState = useSelector((state) => state.setting9);
+
+  // useEffect(() => {
+  //   setFineList(fineState?.fine);
+  // }, [fineState]);
+
   const beforeSetting = () => {
     navigate('/setting/seatRental');
   };

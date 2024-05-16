@@ -1,20 +1,15 @@
 //국민리스트
-import React from 'react';
+import { SetPeopleList } from '../components/PeopleList';
 import Template from '../components/Template';
-import { useSelector } from 'react-redux';
+import '../styles/background.scss';
+import '../styles/_input_common.scss';
+import '../styles/setting.scss';
+import '../styles/_button_common.scss';
 
-export function SetPeopleList() {
-  // const studentList = useSelector((state) => state.setting3.studentList);
-  // const
+export default function PeopleList({ position }) {
   return (
     <>
-      <Template
-        childrenBottom={
-          <>
-            <div></div>
-          </>
-        }
-      ></Template>
+      <Template childrenBottom={<SetPeopleList />} />
     </>
   );
 }

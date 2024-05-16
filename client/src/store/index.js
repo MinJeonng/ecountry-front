@@ -10,7 +10,7 @@ import {
   setting8Reducer,
   setting9Reducer,
 } from './settingReducer';
-
+import { peopleListReducer } from './peopleListReducer';
 const rootReducer = combineReducers({
   setting1: setting1Reducer,
   setting2: setting2Reducer,
@@ -21,6 +21,7 @@ const rootReducer = combineReducers({
   setting7: setting7Reducer,
   setting8: setting8Reducer,
   setting9: setting9Reducer,
+  peopleList: peopleListReducer,
 });
 
 export default rootReducer;

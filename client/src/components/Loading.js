@@ -26,9 +26,8 @@ export default function Loading({ countryid }) {
     const navigateTimer = setTimeout(() => {
       if (countryid === undefined) {
         navigate(`/user/country`);
-      } else {
-        navigate(`/${countryid}/manager`);
       }
+      navigate(`/user/countryList`);
     }, 7000);
 
     return () => {

@@ -117,9 +117,9 @@ export function AddInvestment({ position }) {
     setInvestmentList(filteredInvests);
     setInvestmentInfo('');
     setInvestmentName('');
-    setSelectedIndex(null);
     setUnit('');
     setValue('');
+    setSelectedIndex(null);
   };
   const newAddBtn = () => {
     setIsAddOpen(true);
@@ -159,7 +159,7 @@ export function AddInvestment({ position }) {
             <img
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={() => deleteBtn(index)}
+              onClick={deleteBtn(index)}
               alt="삭제"
             />
           </div>

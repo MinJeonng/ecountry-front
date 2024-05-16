@@ -16,10 +16,9 @@ import { SetInvestment } from './pages/Investment';
 import { SetAssembly } from './pages/Assembly';
 import { SetBoardPeople } from './pages/BoardPeople';
 import { SetNews } from './pages/News';
-import { SetPeopleList } from './pages/PeopleList';
+import PeopleList from './pages/PeopleList';
 import { SetSeat } from './pages/Seat';
 import { SetTaxService } from './pages/TaxService';
-
 import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
 
@@ -85,8 +84,8 @@ function App() {
           <Route path="/manager/investment" element={<SetInvestment />} />
           <Route path="/manager/assembly" element={<SetAssembly />} />
           <Route path="/manager/boardPeople" element={<SetBoardPeople />} />
-          <Route path="/manager/news" element={<SetNews />} />
-          <Route path="/manager/peopleList" element={<SetPeopleList />} />
+          <Route path="/manager/newslist" element={<SetNews />} />
+          <Route path="/manager/peopleList" element={<PeopleList />} />
           <Route path="/manager/seat" element={<SetSeat />} />
           <Route path="/manager/taxService" element={<SetTaxService />} />
 

@@ -399,10 +399,13 @@ export function Setting3() {
       ) : (
         <form className="box-style">
           <div>
-            <button onClick={downloadFile}>예시 파일 열기</button>
+            <button className="studentInfo-upload" onClick={downloadFile}>
+              예시 파일 다운
+            </button>
           </div>
 
           <input
+            className="studentInfo-input"
             type="file"
             onChange={handleFileChange}
             accept=".xlsx,.xls, .csv"
@@ -895,8 +898,34 @@ export function Setting6() {
           <li>국가에 필수인 기본법을 제정하세요&#46;</li>
         </ul>
       </div>
+      <ul>
+        {laws.map((law, index) => (
+          <li
+            className="law-display"
+            key={index}
+            onClick={() => {
+              handleEditLaw(index);
+            }}
+          >
+            {' '}
+            <div>
+              <div className="law-count">{index + 1}항.</div>
+              <div className="law-detail">{law.detail}</div>
+            </div>
+            <img
+              className="delete-btn"
+              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteLaw(index);
+              }}
+            />
+          </li>
+        ))}
+      </ul>
       <form className="box-style">
         <input
+          className="law-input"
           type="text"
           placeholder="내용"
           value={detail}
@@ -904,36 +933,15 @@ export function Setting6() {
           style={{ imeMode: 'active' }}
         />
         {correct ? (
-          <button onClick={updateLaw}>수정</button>
+          <button className="edit-btn" onClick={updateLaw}>
+            수정
+          </button>
         ) : (
-          <button type="button" onClick={handleAddLaw}>
+          <button className="add-btn" type="button" onClick={handleAddLaw}>
             추가
           </button>
         )}
       </form>
-      <ul>
-        {laws.map((law, index) => (
-          <li
-            key={index}
-            onClick={() => {
-              handleEditLaw(index);
-            }}
-          >
-            {index + 1}항.
-            <br />
-            {law.detail}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteLaw(index);
-              }}
-            >
-              삭제
-            </button>
-          </li>
-        ))}
-      </ul>
 
       <div className="navi-btn">
         <button className="next-button" onClick={beforeSetting}>
@@ -1056,7 +1064,23 @@ export function Setting7() {
           <li>국가에 필수인 세법을 제정하세요&#46;</li>
         </ul>
       </div>
-
+      <div>
+        {taxLawDisplay.map((taxLaw, index) => (
+          <div
+            className="display"
+            key={index}
+            onClick={() => selectInput(taxLaw, index)}
+          >
+            {taxLaw.name} {taxLaw.rate}
+            {taxLaw.label}
+            <img
+              className="deleteBtn"
+              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+              onClick={deleteBtn(index)}
+            />
+          </div>
+        ))}
+      </div>
       <form className="box-style">
         <div className="reset">
           <div className="set-title">세금명</div>
@@ -1110,23 +1134,7 @@ export function Setting7() {
           backgroundColor="#bacd92"
         ></ConfirmBtn>
       </form>
-      <div>
-        {taxLawDisplay.map((taxLaw, index) => (
-          <div
-            className="display"
-            key={index}
-            onClick={() => selectInput(taxLaw, index)}
-          >
-            {taxLaw.name} {taxLaw.rate}
-            {taxLaw.label}
-            <img
-              className="deleteBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={deleteBtn(index)}
-            />
-          </div>
-        ))}
-      </div>
+
       <form>
         <div className="navi-btn">
           <button className="next-button" type="submit" onClick={beforeSetting}>
@@ -1194,7 +1202,12 @@ export function Setting8() {
         </div>
         <div className="set-country">
           <div className="set-country-title set-title">부가 단위</div>
-          <input className="set-country-detail" type="text" value={moneyUnit} />
+          <input
+            className="set-country-detail"
+            type="text"
+            value={moneyUnit}
+            disabled
+          />
         </div>
       </form>
       <div className="navi-btn">
@@ -1453,7 +1466,12 @@ export function Setting9() {
 
             <div className="set-title">단위</div>
 
-            <input className="set-input" type="text" value={moneyUnit} />
+            <input
+              className="set-input"
+              type="text"
+              value={moneyUnit}
+              disabled
+            />
 
             <ConfirmBtn
               onClick={handleAddFine}

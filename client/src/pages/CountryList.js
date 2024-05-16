@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Template from '../components/Template';
@@ -9,6 +9,8 @@ export default function CountryList() {
   const goSetting = () => {
     navigate('/setting/schoolInfo');
   };
+
+  useEffect(() => {}, []);
 
   return (
     <Template

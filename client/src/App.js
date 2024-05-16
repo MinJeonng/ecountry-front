@@ -21,6 +21,7 @@ import { SetSeat } from './pages/Seat';
 import { SetTaxService } from './pages/TaxService';
 import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
+import { SetPeopleList } from './components/PeopleList';
 
 function App() {
   return (
@@ -86,7 +87,6 @@ function App() {
           <Route path="/:id/manager/peopleList" element={<SetPeopleList />} />
           <Route path="/:id/manager/seat" element={<SetSeat />} />
           <Route path="/:id/manager/taxService" element={<SetTaxService />} />
-
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

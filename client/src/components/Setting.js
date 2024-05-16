@@ -1320,12 +1320,9 @@ export function Setting9() {
   };
 
   const finishSetting = async () => {
-    setIsLoading(true);
     dispatch(Fine({ fine: fineList }));
-    console.log(fineList);
     try {
       // 국가 생성
-      console.log(setInfo);
       const res = await axios({
         method: 'POST',
         url: `http://localhost:8080/api/country`,
@@ -1341,8 +1338,7 @@ export function Setting9() {
           school: setInfo.setting1.schoolName,
         },
       });
-      setCountryID(res.data.result.id);
-      console.log('국가 생성 결과 : ' + res.data);
+      console.log('국가 생성 결과 : ' + res.data.success);
       // 학생 등록(수기)
       if (setInfo.setting3.studentList.length > 0) {
         const data2 = [];
@@ -1360,7 +1356,7 @@ export function Setting9() {
           url: `http://localhost:8080/api/student/${res.data.result.id}`,
           data: data2,
         });
-        console.log('학생 등록 결과 : ' + res2.data);
+        console.log('학생 등록 결과 : ' + res2.data.success);
       }
       // 자리 배치 등록
       const data3 = [];
@@ -1376,29 +1372,30 @@ export function Setting9() {
         url: `http://localhost:8080/api/seat`,
         data: data3,
       });
-      console.log('자리 배치 등록 결과 : ' + res3.data);
+      console.log('자리 배치 등록 결과 : ' + res3.data.success);
       // 직업 리스트 등록
       const data4 = [];
       setInfo.setting5.jobsDisplay.forEach((data) => {
         data4.push({
           limited: parseInt(data.count),
           name:
-            data.customValue === '직접입력'
+            data.selectValue === '직접입력'
               ? data.customValue
               : data.selectValue,
-          roll: data.roll,
+          roll: data.role,
           standard: data.standard,
-          salary: parseInt(data.salary),
-          skills: null,
+          salary: parseInt(data.salary.replaceAll(',', '')),
+          skills: [],
           countryId: res.data.result.id,
         });
       });
+      console.log(data4);
       const res4 = await axios({
         method: 'POST',
         url: `http://localhost:8080/api/job`,
         data: data4,
       });
-      console.log('직업 리스트 등록 결과 : ' + res4.data);
+      console.log('직업 리스트 등록 결과 : ' + res4.data.success);
       // 규칙 리스트 등록
       const data5 = [];
       setInfo.setting6.basicLaw.forEach((data) => {
@@ -1412,7 +1409,7 @@ export function Setting9() {
         url: `http://localhost:8080/api/rule`,
         data: data5,
       });
-      console.log('규칙 리스트 등록 결과 : ' + res5.data);
+      console.log('규칙 리스트 등록 결과 : ' + res5.data.success);
       // 세금 규칙 등록
       const data6 = [];
       setInfo.setting7.taxLaw.forEach((data) => {
@@ -1444,7 +1441,11 @@ export function Setting9() {
         url: `http://localhost:8080/api/tax`,
         data: data6,
       });
-      console.log('세금 규칙 등록 결과 : ' + res6.data);
+      console.log('세금 규칙 등록 결과 : ' + res6.data.success);
+      console.log('countryId : ' + countryId);
+      console.log('id값 : ' + res.data.result.id);
+      setCountryID(res.data.result.id);
+      setIsLoading(true);
     } catch (e) {
       alert('error');
       console.log(e);

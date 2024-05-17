@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './SettingBtn';
+import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import '../styles/setting.scss';
 import axios from 'axios';
 
@@ -160,10 +161,20 @@ export function AddSavings() {
     }
   };
 
-  const deleteBtn = (index) => (e) => {
+  const deleteBtn = async (e, accountId) => {
+    if (!window.confirm('적금 상품을 삭제하시겠습니까?')) {
+      return;
+    }
+    const res = await axios({
+      method: 'PATCH',
+      url: `http://localhost:8080/api/account/delete/${accountId}`,
+    });
+    console.log(res.data.message);
+    if (res.data.success) {
+      alert('삭제 완료되었습니다.');
+    }
+    getList();
     e.stopPropagation();
-    const filteredSavings = savingList.filter((_, i) => i !== index);
-    setSavingList(filteredSavings);
     setSavingName('');
     setInterestRate('');
     setSavingDeadLine('');
@@ -176,12 +187,6 @@ export function AddSavings() {
     setSavingName('');
     setInterestRate('');
     setSavingDeadLine('');
-  };
-
-  //db로 보내는 함수
-  // ? 이거 store가 필요한지?
-  const handleConfirm = () => {
-    //
   };
 
   return (
@@ -201,8 +206,11 @@ export function AddSavings() {
               isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
             } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
+            onClick={() => selectInput(saving, index)}
           >
-            {saving.name} D-{saving.dueDate}
+
+            {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
+            <Arrow stroke="#ddd" className="accArrBtn" />
             <button
               className="updateBtn"
               onClick={() => selectInput(saving, index)}
@@ -215,6 +223,7 @@ export function AddSavings() {
               onClick={deleteBtn(index)}
               alt="삭제"
             />
+
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">
@@ -222,9 +231,9 @@ export function AddSavings() {
                 <div className="set-title">적금 상품명</div>
                 <img
                   className="resetBtn"
-                  src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                  onClick={resetBtn}
-                  alt="초기화"
+                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                  onClick={(e) => deleteBtn(e, saving.id)}
+                  alt="삭제"
                 />
               </div>
               <input
@@ -323,11 +332,6 @@ export function AddSavings() {
               backgroundColor="#bacd92"
             ></ConfirmBtn>
           </form>
-          <ConfirmBtn
-            onClick={handleConfirm}
-            btnName="완료"
-            backgroundColor="#bacd92"
-          ></ConfirmBtn>
         </>
       )}
     </>

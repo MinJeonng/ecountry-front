@@ -8,9 +8,10 @@ $blue: #61759f;
   border: 1px solid $green;
   background-color: $green;
   width: 40%;
-  border-radius: 18px;
+  border-radius: 30px;
   margin-top: 20px;
   padding: 6px 15px;
+  line-height: 2;
 }
 
 @mixin blue-btn-style {
@@ -18,17 +19,19 @@ $blue: #61759f;
   font-weight: bold;
   border: 1px solid $blue;
   background-color: $blue;
-  border-radius: 16px;
+  border-radius: 30px;
   margin: 20px 0;
   padding: 6px 15px;
+  line-height: 2;
 }
 @mixin btn-style {
   color: #ffffff;
   font-weight: bold;
-  border-radius: 18px;
+  border-radius: 30px;
   margin-top: 20px;
   padding: 6px 15px;
   border: none;
+  line-height: 2;
 }
 
 .frist-next-button {
@@ -101,13 +104,18 @@ $blue: #61759f;
 }
 
 .updateBtn {
-  right: 100px;
+  display: block;
   position: absolute;
+  top: 50%;
+  right: 43px;
+  transform: translateY(-50%);
   cursor: pointer;
   text-align: center;
-  background: #ffffff;
-  border: 1px solid #ffffff;
+  background: #75a47f;
+  border: none;
   border-radius: 6px;
+  color: #fff;
+  padding: 4px 8px;
 }
 .resetBtn {
   width: 15px;
@@ -117,12 +125,23 @@ $blue: #61759f;
   cursor: pointer;
 }
 .deleteBtn {
+  position: absolute;
   width: 17px;
   height: 17px;
-  right: 60px;
-  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
   cursor: pointer;
-  margin-top: 4px;
+}
+.accArrBtn {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%) rotate(-90deg);
+  cursor: pointer;
+}
+.accordion-open .accArrBtn {
+  transform: translateY(-50%) rotate(90deg);
 }
 
 // 기본법 제정 btn

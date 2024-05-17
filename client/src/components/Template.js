@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const BgTop = styled.div`
   background: linear-gradient(to left, #75a47f, #bacd92);
-  height: 100vh;
+  height: 300px;
   position: relative;
 `;
 const PageName = styled.div`
@@ -11,15 +11,12 @@ const PageName = styled.div`
 `;
 
 const BgBottom = styled.div`
-  padding: 40px;
+  position: relative;
+  margin-top: -100px;
+  padding: 40px 30px 70px;
   background-color: #ffffff;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
-  position: absolute;
-  top: 200px;
-  left: 0;
-  right: 0;
-  bottom: 0;
 `;
 
 export default function Template({ childrenTop, childrenBottom }) {

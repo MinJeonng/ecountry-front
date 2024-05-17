@@ -22,6 +22,7 @@ const MainDashboardBox = styled.div`
     border-radius: 10px;
     padding: 20px;
     margin-right: 4px;
+    cursor: pointer;
   }
   img {
     width: 60px;

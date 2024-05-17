@@ -208,8 +208,22 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
+
             {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
             <Arrow stroke="#ddd" className="accArrBtn" />
+            <button
+              className="updateBtn"
+              onClick={() => selectInput(saving, index)}
+            >
+              수정
+            </button>
+            <img
+              className="deleteBtn"
+              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+              onClick={deleteBtn(index)}
+              alt="삭제"
+            />
+
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">

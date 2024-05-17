@@ -1046,20 +1046,20 @@ export function Setting7() {
 
   const handleSelectedUnit = (e) => {
     setSelectedUnit(e.target.value);
-    if (selectedUnit === moneyUnit) {
-      setDivision(1);
-    } else {
+    if (selectedUnit == '%') {
       setDivision(0);
+    } else {
+      setDivision(1);
     }
   };
 
   const beforeSetting = () => {
     navigate('/setting/law');
-    dispatch(taxLaw({ taxLaw: taxLawDisplay, division: division }));
+    dispatch(taxLaw({ taxLaw: taxLawDisplay }));
   };
   const nextSetting = () => {
     navigate('/setting/seatRental');
-    dispatch(taxLaw({ taxLaw: taxLawDisplay, division: division }));
+    dispatch(taxLaw({ taxLaw: taxLawDisplay }));
   };
   const resetBtn = () => {
     setLawNameValue('');

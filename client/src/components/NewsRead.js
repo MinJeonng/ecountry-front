@@ -4,13 +4,14 @@ import { ConfirmBtn } from './SettingBtn';
 import '../styles/setting.scss';
 import { useNavigate } from 'react-router-dom';
 
-export function SetNewsWrite() {
+export function SetNewsRead() {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
   const [newsTitle, setNewsTitle] = useState('');
   const [newsContent, setNewsContent] = useState('');
   const [formattedTime, setFormattedTime] = useState('');
   const [writeTime, setWriteTime] = useState('');
+  const [showBox, setShowBox] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -43,8 +44,26 @@ export function SetNewsWrite() {
       console.log(error);
     }
   };
+  const handleSelectBox = () => {
+    setShowBox(true);
+  };
   return (
     <form className="box-style">
+      <div>
+        <img
+          className="resetBtn"
+          src={`${process.env.PUBLIC_URL}/images/icon-setting.png`}
+          alt="Reset Button"
+          onClick={handleSelectBox}
+          style={{ fontSize: '15px', width: '5%' }}
+        />
+        {showBox && (
+          <div className="selectBox">
+            <button>Delete</button>
+            <button>Edit</button>
+          </div>
+        )}
+      </div>
       <div
         className="reset"
         style={{
@@ -72,7 +91,7 @@ export function SetNewsWrite() {
             overflow: 'hidden',
           }}
         >
-          {selectedImage ? (
+          {/* {selectedImage ? (
             <img
               src={URL.createObjectURL(selectedImage)}
               alt="Uploaded"
@@ -82,7 +101,7 @@ export function SetNewsWrite() {
             <div style={{ width: '100%', height: '100%' }}>
               이미지를 드롭하세요.
             </div>
-          )}
+          )} */}
         </label>
         <input
           id="fileInput"
@@ -117,13 +136,13 @@ export function SetNewsWrite() {
             borderRadius: '18px',
           }}
         />
-
+        <div style={{ height: '10%' }}></div>
         {/* 저장 버튼 */}
-        <ConfirmBtn
+        {/* <ConfirmBtn
           btnName="업데이트"
           backgroundColor="#61759f"
           onClick={handleNews}
-        ></ConfirmBtn>
+        ></ConfirmBtn> */}
       </div>
     </form>
   );

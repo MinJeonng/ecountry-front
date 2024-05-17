@@ -1,8 +1,9 @@
 //뉴스
 
+import Template from '../components/Template';
 import { SetNewsWrite } from '../components/NewsWrite';
 import { SetNewsDetail } from '../components/NewsDetail';
-import Template from '../components/Template';
+import { SetNewsRead } from '../components/NewsRead';
 
 export function SetNews({ position }) {
   return (
@@ -12,10 +13,9 @@ export function SetNews({ position }) {
           <>
             {/* 뉴스 리스트 */}
             {position == '리스트' && <SetNewsDetail />}
-            {/* <SetNewsList /> */}
             {/* 뉴스 작성 페이지 */}
             {position === '작성' && <SetNewsWrite />}
-            {/* <SetNewsDetail /> */}
+            {position === '읽기' && <SetNewsRead />}
           </>
         }
       />

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const SideBox = styled.div`
-  min-width: 320px;
   width: 100%;
   height: 100%;
 
@@ -13,7 +12,7 @@ const MainDashboardBox = styled.div`
   display: flex;
   justify-content: space-around;
   /* margin: 80px 80px 20px 80px; */
-  margin: 20px 10px;
+  margin-bottom: 20px;
   div {
     width: 170px;
     height: 170px;

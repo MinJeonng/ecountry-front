@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Template from '../components/Template';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 // 자리배치도
 export function SetSeat() {
+  const { id } = useParams();
+
+  // 열과 행의 정보를 담는 state
+  const [columns, setColumns] = useState([]);
+  const [tableRows, setTableRows] = useState([]);
+
+  const [editCell, setEditCell] = useState(null);
+
   // const [columns, setColumns] = useState([
   //   { id: 1, label: '1열' },
   //   { id: 2, label: '2열' },
@@ -24,11 +34,14 @@ export function SetSeat() {
   //   { columnId: 5, rowId: '2', value: '2' },
   // ]);
 
-  // 열과 행의 정보를 담는 state
-  const [columns, setColumns] = useState([]);
-  const [tableRows, setTableRows] = useState([]);
-
-  const [editCell, setEditCell] = useState(null);
+  const getSeat = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `http://localhost:8080/api/seat/${id}`,
+    });
+    console.log(res.data.result);
+    setColumns(res.data.result);
+  };
 
   const edit = (columnId, rowId, event) => {
     const newValue = event.target.value;
@@ -59,7 +72,18 @@ export function SetSeat() {
     }
   };
 
-  console.log('tableRows:', tableRows);
+  // 각 열의 자리수만큼 셀 생성
+  const makeSeat = (rowNum, colNum) => {
+    let result = [];
+    for (let i = 1; i <= colNum; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    getSeat();
+  }, []);
 
   return (
     <Template
@@ -69,9 +93,14 @@ export function SetSeat() {
           <form className="preview">
             {columns.map((column, columnIndex) => (
               <div className="seating-map" key={columnIndex}>
-                <div className="cloumn-num">{column.label}</div>
+                <div className="cloumn-num">{column.rowNum}열</div>
                 <div className="row-container">
-                  {tableRows
+                  {makeSeat(column.rowNum, column.colNum).map((col) => (
+                    <div key={col} className="cell-container">
+                      <input type="text" className="cell-input" value={col} />
+                    </div>
+                  ))}
+                  {/* {tableRows
                     .filter((row) => row.columnId === column.id)
                     .map((row, rowIndex) => (
                       <div key={rowIndex} className="cell-container">
@@ -97,7 +126,7 @@ export function SetSeat() {
                           </div>
                         )}
                       </div>
-                    ))}
+                    ))} */}
                 </div>
               </div>
             ))}

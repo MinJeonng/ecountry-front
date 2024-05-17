@@ -6,12 +6,7 @@
     height: auto;
     display: flex;
     box-sizing: border-box;
-    // margin-bottom: 20px;
-    // margin-left: 30px;
-    // margin: 30px auto;
-    margin: 0 auto;
-
-    padding: 30px;
+    margin: 30px 40px 10px 40px;
     justify-content: space-between;
     align-items: center;
     position: relative;
@@ -19,7 +14,30 @@
   .InfoPart1 {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    .MainProfileBox {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+    .countryUrl {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 10px 0 0 10px;
+      img {
+        width: 19px;
+        height: 19px;
+        cursor: pointer;
+      }
+      .countryLink {
+        display: block;
+        font-size: 15px;
+      }
+    }
   }
+
   .content {
     // border: 1px solid #d4fcd7;
     background-color: #d9d9d9;

@@ -19,7 +19,7 @@ export default function Login() {
         alert(res.data.message);
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
-          navigate('/user/country');
+          navigate('/country');
         } else {
         }
       });

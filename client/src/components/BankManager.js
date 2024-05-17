@@ -177,6 +177,13 @@ export function AddSavings() {
     setInterestRate('');
     setSavingDeadLine('');
   };
+
+  //db로 보내는 함수
+  // ? 이거 store가 필요한지?
+  const handleConfirm = () => {
+    //
+  };
+
   return (
     <>
       <div className="title-list">
@@ -271,50 +278,57 @@ export function AddSavings() {
       )}
 
       {isAddOpen && (
-        <form className="box-style">
-          <div className="reset">
-            <div className="set-title">적금 상품명</div>
-            <img
-              className="resetBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-              onClick={resetBtn}
-              alt="초기화"
+        <>
+          <form className="box-style">
+            <div className="reset">
+              <div className="set-title">적금 상품명</div>
+              <img
+                className="resetBtn"
+                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
+                onClick={resetBtn}
+                alt="초기화"
+              />
+            </div>
+            <input
+              className="set-input"
+              type="text"
+              value={savingName}
+              onChange={(e) => {
+                setSavingName(e.target.value);
+              }}
             />
-          </div>
-          <input
-            className="set-input"
-            type="text"
-            value={savingName}
-            onChange={(e) => {
-              setSavingName(e.target.value);
-            }}
-          />
-          <div className="set-title">적금 기간(생성일부터 ~까지)</div>
-          <input
-            className="set-input"
-            type="number"
-            min="0"
-            value={savingDeadLine}
-            onChange={(e) => {
-              setSavingDeadLine(e.target.value);
-            }}
-          />
-          <div className="set-title">금리 설정</div>
-          <input
-            className="set-input"
-            type="number"
-            min="0"
-            value={interestRate}
-            onChange={(e) => {
-              setInterestRate(e.target.value);
-            }}
-          />
+            <div className="set-title">적금 기간(생성일부터 ~까지)</div>
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={savingDeadLine}
+              onChange={(e) => {
+                setSavingDeadLine(e.target.value);
+              }}
+            />
+            <div className="set-title">금리 설정</div>
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={interestRate}
+              onChange={(e) => {
+                setInterestRate(e.target.value);
+              }}
+            />
+            <ConfirmBtn
+              onClick={handleAddSavings}
+              btnName="상품 등록"
+              backgroundColor="#bacd92"
+            ></ConfirmBtn>
+          </form>
           <ConfirmBtn
-            onClick={handleAddSavings}
-            btnName="상품 등록"
+            onClick={handleConfirm}
+            btnName="완료"
             backgroundColor="#bacd92"
           ></ConfirmBtn>
-        </form>
+        </>
       )}
     </>
   );

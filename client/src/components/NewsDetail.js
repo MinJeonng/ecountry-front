@@ -3,7 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 export function SetNewsDetail() {
-  const [news, setNews] = useState(null);
+  // const [news, setNews] = useState(null);
+  const [news, setNews] = useState([]);
 
   const getNews = async () => {
     try {

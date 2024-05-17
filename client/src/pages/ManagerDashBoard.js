@@ -59,20 +59,6 @@ export default function ManagerDashBoard() {
                   {/* {`/country/${country.id}`} */}
                 </div>
               </div>
-
-              <Button
-                style={{
-                  fontSize: '15px',
-                  backgroundColor: '#D9D9D9',
-                }}
-              >
-                <Link
-                  to="/setting/schoolInfo"
-                  style={{ color: 'black', fontWeight: '700' }}
-                >
-                  초기세팅수정
-                </Link>
-              </Button>
             </div>
           </>
         }

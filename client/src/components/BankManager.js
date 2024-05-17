@@ -202,7 +202,7 @@ export function AddSavings() {
             } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
           >
-            {saving.name}적금 D-{saving.dueDate}
+            {saving.name} D-{saving.dueDate}
             <button
               className="updateBtn"
               onClick={() => selectInput(saving, index)}

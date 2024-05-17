@@ -4,12 +4,9 @@ import '../styles/manager_dash.scss';
 import styled from 'styled-components';
 import ProfileImage from '../components/ProfileImage';
 import { Link, useLocation } from 'react-router-dom';
-import { Button } from 'antd';
 import Template from '../components/Template';
 import { ManagerMainHeader } from '../components/Headers';
 import MainProfile from '../components/MainProfile';
-import MainNews from '../components/MainNews';
-import { SetNewsList } from '../components/NewsDetail';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast, ToastContainer } from 'react-toastify';
@@ -64,8 +61,6 @@ export default function ManagerDashBoard() {
         }
         childrenBottom={
           <>
-            {/* <MainNews /> */}
-            {/* <SetNewsList /> */}
             <MainDashboard />
           </>
         }

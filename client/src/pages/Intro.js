@@ -18,10 +18,10 @@ export default function intro() {
         </div>
         <div className="button-wrap">
           <button className="big-button">
-            <Link to="/user/login">로그인</Link>
+            <Link to="/login">로그인</Link>
           </button>
           <button className="big-button">
-            <Link to="/user/signup">회원가입</Link>
+            <Link to="/signup">회원가입</Link>
           </button>
         </div>
       </div>

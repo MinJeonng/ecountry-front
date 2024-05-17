@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import Template from '../components/Template';
+import '../styles/seat.scss';
 
 // 자리배치도
 export function SetSeat() {
@@ -17,6 +18,27 @@ export function SetSeat() {
 
   const [selectCol, setSelectCol] = useState('');
 
+  const getSeat = () => {
+    const dummyColumns = [
+      { id: 1, rowNum: 1 },
+      { id: 2, rowNum: 2 },
+      { id: 3, rowNum: 3 },
+    ];
+
+    const dummyTableRows = [
+      { columnId: 1, rowId: '1', ownerId: '홍길동', studentsId: '임꺽정' },
+      { columnId: 1, rowId: '2', ownerId: '홍길동', studentsId: '홍길동' },
+      { columnId: 1, rowId: '3', ownerId: '', studentsId: '' },
+      { columnId: 2, rowId: '1', ownerId: '', studentsId: '' },
+      { columnId: 2, rowId: '2', ownerId: '', studentsId: '' },
+      { columnId: 3, rowId: '1', ownerId: '', studentsId: '' },
+      { columnId: 3, rowId: '2', ownerId: '', studentsId: '' },
+    ];
+
+    setColumns(dummyColumns);
+    setTableRows(dummyTableRows);
+  };
+
   // const getSeat = async () => {
   //   const res = await axios({
   //     method: 'GET',
@@ -26,42 +48,8 @@ export function SetSeat() {
   //   setColumns(res.data.result);
   // };
 
-  const getSeat = () => {
-    // 임시 데이터
-    const dummyColumns = [
-      { id: 1, rowNum: 1, colNum: 3 },
-      { id: 2, rowNum: 2, colNum: 3 },
-      { id: 3, rowNum: 3, colNum: 2 },
-    ];
-
-    const dummyTableRows = [
-      { columnId: 1, rowId: '1', ownerId: '홍길동', studentsId: '임꺽정' },
-      { columnId: 1, rowId: '2', ownerId: '홍길동', studentsId: '홍길동' },
-      { columnId: 1, rowId: '3', ownerId: '', studentsId: '1' },
-      { columnId: 2, rowId: '1', ownerId: '', studentsId: '1' },
-      { columnId: 2, rowId: '2', ownerId: '', studentsId: '1' },
-      { columnId: 2, rowId: '3', ownerId: '', studentsId: '1' },
-      { columnId: 3, rowId: '1', ownerId: '', studentsId: '1' },
-      { columnId: 3, rowId: '2', ownerId: '', studentsId: '1' },
-      { columnId: 3, rowId: '3', ownerId: '', studentsId: '1' },
-    ];
-
-    setColumns(dummyColumns);
-    setTableRows(dummyTableRows);
-  };
-
-  // 각 열의 자리수만큼 셀 생성
-  const makeSeat = (rowNum, colNum) => {
-    let result = [];
-    for (let i = 1; i <= colNum; i++) {
-      result.push(i);
-    }
-    return result;
-  };
-
   const edit = (columnId, rowId, event, type) => {
     const newValue = event.target.value;
-    // 변경된 값 반영
     const updatedTableRows = tableRows.map((row) => {
       if (row.columnId === columnId && row.rowId === rowId) {
         return { ...row, [type]: newValue };
@@ -76,10 +64,6 @@ export function SetSeat() {
     setIsEditing(true);
   };
 
-  const blur = () => {
-    setIsEditing(false);
-  };
-
   const userClick = () => {
     setEditType('student');
   };
@@ -89,7 +73,6 @@ export function SetSeat() {
   };
 
   const updateSeat = () => {
-    // 여기에서 수정된 값 업데이트 처리
     console.log('수정된 값:', tableRows);
   };
 
@@ -100,6 +83,7 @@ export function SetSeat() {
     }
 
     const maxRowIdInSelectedColumn = Math.max(
+      0,
       ...tableRows
         .filter((row) => row.columnId === parseInt(selectCol))
         .map((row) => parseInt(row.rowId))
@@ -117,8 +101,7 @@ export function SetSeat() {
 
   const addCol = () => {
     const newColumnId = columns.length + 1;
-    const newColNum = `${newColumnId}열`;
-    setColumns([...columns, { id: newColumnId, colNum: newColNum }]);
+    setColumns([...columns, { id: newColumnId, rowNum: newColumnId }]);
     console.log('새 열이 추가됨');
   };
 
@@ -126,101 +109,80 @@ export function SetSeat() {
     getSeat();
   }, []);
 
-  console.log('tableRows:', tableRows);
-
   return (
     <Template
       childrenTop={<div>자리 배치표</div>}
       childrenBottom={
         <div>
-          <div>
-            {/* 사용자 클릭 시 */}
-            <div onClick={userClick}>사용자</div>
-            {/* 소유주 클릭 시 */}
-            <div onClick={ownerClick}>소유주</div>
+          <div className="seat-title">
+            <button className="seat-user" onClick={userClick}>
+              사용자
+            </button>
+            <button className="seat-owner" onClick={ownerClick}>
+              소유주
+            </button>
           </div>
-          {/* 학생 ID 수정 폼 */}
           {editType === 'student' && (
             <form className="preview">
               {columns.map((column, columnIndex) => (
                 <div className="seating-map" key={columnIndex}>
                   <div className="column-num">{column.rowNum}열</div>
                   <div className="row-container">
-                    {makeSeat(column.rowNum, column.colNum).map((col) => (
-                      <div key={col} className="cell-container">
-                        <input
-                          type="text"
-                          className="cell-input"
-                          value={
-                            tableRows.find(
-                              (row) =>
-                                row.columnId === column.id &&
-                                row.rowId === col.toString()
-                            )?.studentsId || ''
-                          }
-                          onChange={(event) =>
-                            edit(column.id, col.toString(), event, 'studentsId')
-                          }
-                          onFocus={focus}
-                          onBlur={blur}
-                        />
-                      </div>
-                    ))}
+                    {tableRows
+                      .filter((row) => row.columnId === column.id)
+                      .map((row) => (
+                        <div key={row.rowId} className="cell-container">
+                          <input
+                            type="text"
+                            className="cell-input"
+                            value={row.studentsId || ''}
+                            onChange={(event) =>
+                              edit(column.id, row.rowId, event, 'studentsId')
+                            }
+                            onFocus={focus}
+                          />
+                        </div>
+                      ))}
                   </div>
                 </div>
               ))}
             </form>
           )}
-          {/* 학생 ID 수정 완료 버튼 */}
-          {isEditing && (
-            <button className="blue-btn" onClick={updateSeat}>
-              완료
-            </button>
-          )}
-          {/* 소유주 ID 수정 폼 */}
           {editType === 'owner' && (
             <form className="preview">
               {columns.map((column, columnIndex) => (
                 <div className="seating-map" key={columnIndex}>
                   <div className="column-num">{column.rowNum}열</div>
                   <div className="row-container">
-                    {makeSeat(column.rowNum, column.colNum).map((col) => (
-                      <div key={col} className="cell-container">
-                        <input
-                          type="text"
-                          className="cell-input"
-                          value={
-                            tableRows.find(
-                              (row) =>
-                                row.columnId === column.id &&
-                                row.rowId === col.toString()
-                            )?.ownerId || ''
-                          }
-                          onChange={(event) =>
-                            edit(column.id, col.toString(), event, 'ownerId')
-                          }
-                          onFocus={focus}
-                          onBlur={blur}
-                        />
-                      </div>
-                    ))}
+                    {tableRows
+                      .filter((row) => row.columnId === column.id)
+                      .map((row) => (
+                        <div key={row.rowId} className="cell-container">
+                          <input
+                            type="text"
+                            className="cell-input"
+                            value={row.ownerId || ''}
+                            onChange={(event) =>
+                              edit(column.id, row.rowId, event, 'ownerId')
+                            }
+                            onFocus={focus}
+                          />
+                        </div>
+                      ))}
                   </div>
                 </div>
               ))}
             </form>
           )}
-          {/* 소유주 ID 수정 완료 버튼 */}
           {isEditing && (
             <button className="blue-btn" onClick={updateSeat}>
               완료
             </button>
           )}
-
           <div className="editCell-input">
             <button className="cell-btn" onClick={addCol}>
               +
             </button>
-
             <div className="columnSelect-input">
               <label className="columSelect" htmlFor="columnSelect">
                 행 추가:{' '}

@@ -81,8 +81,10 @@ function App() {
             element={<SetInvestment position="투자 상품" />}
           />
 
-          <Route path="/:id/manager/assembly" element={<SetAssembly />} />
           <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
+          <Route path="/:id/manager/seat" element={<SetSeat />} />
+          <Route path="/:id/manager/taxService" element={<SetTaxService />} />
+
           <Route
             path="/:id/manager/news/:id"
             element={<SetNews position="리스트" />}
@@ -92,8 +94,7 @@ function App() {
             element={<SetNews position="작성" />}
           />
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
-          <Route path="/:id/manager/seat" element={<SetSeat />} />
-          <Route path="/:id/manager/taxService" element={<SetTaxService />} />
+          <Route path="/:id/assembly" element={<SetAssembly />} />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

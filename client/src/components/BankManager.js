@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './SettingBtn';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
@@ -65,7 +65,6 @@ export function AddSavings() {
 
     // sendList();
 
-
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
       updatedSaving[selectedIndex] = {
@@ -74,7 +73,6 @@ export function AddSavings() {
         interest: interestRate,
 
         dueDate: savingDeadLine,
-
       };
       setSavingList(updatedSaving);
     } else {
@@ -86,7 +84,6 @@ export function AddSavings() {
           interest: interestRate,
 
           dueDate: savingDeadLine,
-
         },
       ];
       setSavingList(newSavingList);
@@ -205,10 +202,8 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
-
             {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
             <Arrow stroke="#ddd" className="accArrBtn" />
-
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">

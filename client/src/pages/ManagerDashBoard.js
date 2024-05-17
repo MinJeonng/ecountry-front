@@ -35,7 +35,7 @@ export default function ManagerDashBoard() {
                   <CopyToClipboard
                     text={`${process.env.REACT_APP_BASEURL}${pathname}`}
                     onCopy={() =>
-                      toast('클립보드에 링크가 복사되었어요.', {
+                      toast('클립보드로 복사했습니다.', {
                         autoClose: 1300,
                       })
                     }

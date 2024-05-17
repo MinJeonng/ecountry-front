@@ -29,11 +29,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Intro />} />
-          <Route path="/user/login" element={<Login />} />
-          <Route path="/user/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
-          <Route path="/user/country" element={<NationBuilding />} />
-          <Route path="/user/countryList" element={<CountryList />} />
+          <Route path="/country" element={<NationBuilding />} />
+          <Route path="/countryList" element={<CountryList />} />
 
           <Route path="/setDone" element={<Loading />} />
 

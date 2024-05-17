@@ -16,7 +16,7 @@ const BgBottom = styled.div`
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   position: absolute;
-  top: 180px;
+  top: 200px;
   left: 0;
   right: 0;
   bottom: 0;

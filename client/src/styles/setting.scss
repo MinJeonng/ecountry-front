@@ -1,0 +1,276 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/variables';
+@import '../styles/input_common';
+
+@include mobile {
+  .setting-wrap {
+    padding-bottom: 40px;
+
+    .title-list {
+      font-size: 18px;
+      margin: 10px 0;
+
+      li {
+        margin-left: 20px;
+        list-style: disc;
+        font-size: 16px;
+        color: #777777;
+      }
+    }
+  }
+
+  .box-style {
+    @include boxStyle-common;
+
+    .select-student-id-title {
+      color: #a5a5a5;
+      font-size: 15px;
+    }
+    .select-title {
+      color: #a5a5a5;
+      font-size: 15px;
+    }
+
+    .select-school-name {
+      width: -webkit-fill-available;
+      @include select-common;
+    }
+    .select-name {
+      width: -webkit-fill-available;
+      @include select-common;
+    }
+
+    .select-student-id {
+      display: flex;
+      flex-direction: column;
+
+      select {
+        width: -webkit-fill-available;
+        @include select-common;
+      }
+    }
+    .select-id {
+      display: flex;
+      flex-direction: column;
+
+      select {
+        width: -webkit-fill-available;
+        @include select-common;
+      }
+    }
+  }
+
+  .set-country-title {
+    color: #a5a5a5;
+    font-size: 14px;
+  }
+  .set-title {
+    color: #a5a5a5;
+    font-size: 15px;
+  }
+
+  .set-country-detail {
+    width: -webkit-fill-available;
+    @include select-common;
+  }
+  .set-input {
+    width: -webkit-fill-available;
+    @include select-common;
+  }
+
+  .set-salary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .set-salary-text {
+      margin: 10px 0 20px 0;
+      font-size: 15px;
+      color: #5c5b5b;
+    }
+
+    select {
+      text-align: center;
+      @include select-common;
+    }
+  }
+
+  .container {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    .count {
+      padding-right: 20px;
+    }
+    .selectSalary {
+      margin-right: 10px;
+      width: 80px;
+    }
+    .unit {
+      font-size: 16px;
+      color: #a5a5a5;
+      position: absolute;
+      right: 30px;
+      margin-bottom: 10px;
+      pointer-events: none;
+    }
+  }
+  .input-textarea {
+    border: 1px solid #e9ae24;
+    border-radius: 4px;
+  }
+  .reset {
+    display: flex;
+    justify-content: space-between;
+  }
+  .display {
+    position: relative;
+    border-radius: 10px;
+    font-size: 16px;
+    text-align: start;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid #75a47f;
+  }
+  .accordion-open {
+    background: #75a47f;
+    color: #fff;
+  }
+
+  .studentInfo-upload {
+    margin: 10px 0 0 5px;
+  }
+
+  .studentInfo-input {
+    @include select-common;
+  }
+
+  // 자리 배치도
+  .seat-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .seat-colum {
+      font-size: 14px;
+    }
+
+    .seat-count-select {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 50%;
+
+      .seat-count-input {
+        width: -webkit-fill-available;
+        text-align: center;
+        @include select-common;
+      }
+
+      .unit {
+        font-size: 14px;
+      }
+    }
+  }
+}
+.add-remove-btn {
+  display: flex;
+}
+
+.preview {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid $deep-green;
+  border-radius: 16px;
+  background-color: $deep-green;
+  text-align: center;
+  margin: 10px 0;
+  overflow-x: scroll;
+
+  .seating-map {
+    padding: 15px;
+
+    .cloumn-num {
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .row-container {
+      display: flex;
+      flex-direction: column;
+
+      .cell {
+        border: 1px solid #ffffff;
+        padding: 10px 20px;
+        color: #ffffff;
+      }
+
+      .cell-input {
+        background-color: transparent;
+        border: 1px solid #ffffff;
+        color: #ffffff;
+        text-align: center;
+        padding: 10px 20px;
+        width: 80px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .cell-input:focus {
+        outline: 4px solid #f77137;
+        border: none;
+      }
+    }
+  }
+}
+
+.preview::-webkit-scrollbar {
+  width: 2px;
+}
+.preview::-webkit-scrollbar-thumb {
+  background-color: $green;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+.preview::-webkit-scrollbar-track {
+  background-color: $deep-green;
+  border-radius: 10px;
+}
+.title-list {
+  font-size: 18px;
+  margin-bottom: 20px;
+
+  li {
+    margin-left: 20px;
+    list-style: disc;
+    font-size: 16px;
+    color: #777777;
+  }
+}
+
+// 기본법 제정
+
+.law-input {
+  @include select-common;
+  width: -webkit-fill-available;
+}
+
+.law-display {
+  border-radius: 10px;
+  background: #d9d9d9;
+  font-size: 16px;
+  text-align: start;
+  padding: 5px 0 5px 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -1,0 +1,21 @@
+@import '../styles/variables';
+@import '../styles/input_common';
+
+@include mobile {
+  .user-login-title,
+  .user-signup-title {
+    color: #a5a5a5;
+    font-size: 14px;
+  }
+
+  .user-login,
+  .user-signup {
+    width: -webkit-fill-available;
+    @include select-common;
+  }
+
+  .pw-error {
+    font-size: 14px;
+    color: #e03232;
+  }
+}

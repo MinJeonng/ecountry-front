@@ -1,0 +1,64 @@
+@import '../styles/variables';
+
+@include mobile {
+  .managerInfo {
+    // width: calc(100% - 40px);
+    height: auto;
+    display: flex;
+    box-sizing: border-box;
+    margin: 30px 40px 10px 40px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  .InfoPart1 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .MainProfileBox {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+    .countryUrl {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 10px 0 0 10px;
+      img {
+        width: 19px;
+        height: 19px;
+        cursor: pointer;
+      }
+      .countryLink {
+        display: block;
+        font-size: 15px;
+      }
+    }
+  }
+
+  .content {
+    // border: 1px solid #d4fcd7;
+    background-color: #d9d9d9;
+    border-radius: 18px;
+    padding: 20px;
+    height: auto;
+
+    .newsHead {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .newsContent {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .registerBtn {
+      // border: 1px solid rgb(246, 193, 193);
+      border-radius: 4px;
+      background-color: #fff5d6;
+      padding: 5px;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@import '../styles/variables';
+.Contain {
+  min-width: 320px;
+
+  select {
+    background-image: url('../images/icon-select.png');
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* 화살표 위치 조정 */
+    background-size: 20px;
+    display: inline-block;
+    position: relative;
+    -webkit-appearance: none; /* Chrome, Safari에서 기본 화살표 제거 */
+    -moz-appearance: none; /* Firefox에서 기본 화살표 제거 */
+    appearance: none; /* 최신 브라우저에서 기본 화살표 제거 */
+    padding-right: 60px;
+  }
+  @include mobile {
+    a {
+      text-decoration: none;
+      color: #ffffff;
+      &.hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

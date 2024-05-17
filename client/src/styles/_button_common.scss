@@ -1,0 +1,161 @@
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@mixin button-style {
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid $green;
+  background-color: $green;
+  width: 40%;
+  border-radius: 30px;
+  margin-top: 20px;
+  padding: 6px 15px;
+  line-height: 2;
+}
+
+@mixin blue-btn-style {
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid $blue;
+  background-color: $blue;
+  border-radius: 30px;
+  margin: 20px 0;
+  padding: 6px 15px;
+  line-height: 2;
+}
+@mixin btn-style {
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 30px;
+  margin-top: 20px;
+  padding: 6px 15px;
+  border: none;
+  line-height: 2;
+}
+
+.frist-next-button {
+  @include button-style;
+  width: 100%;
+}
+
+.frist-next-button:hover {
+  border: 1px solid $deep-green;
+  background-color: $deep-green;
+}
+
+.navi-btn {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+
+  .next-button {
+    @include button-style;
+  }
+
+  .next-button:hover {
+    border: 1px solid $deep-green;
+    background-color: $deep-green;
+  }
+}
+
+.login-btn,
+.signup-btn {
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid $green;
+  background-color: $green;
+  width: 100%;
+  border-radius: 18px;
+  margin-top: 20px;
+  padding: 6px 15px;
+}
+
+.login-btn:hover,
+.signup-btn:hover,
+.big-button:hover {
+  border: 1px solid $deep-green;
+  background-color: $deep-green;
+  color: #093030;
+}
+
+.blue-btn {
+  @include blue-btn-style;
+  width: -webkit-fill-available;
+}
+.confirm-btn {
+  @include btn-style;
+  width: -webkit-fill-available;
+}
+
+.circle-btn {
+  border: 1px solid #bacd92;
+  background-color: #bacd92;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 10px auto;
+}
+
+.updateBtn {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 43px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  text-align: center;
+  background: #75a47f;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  padding: 4px 8px;
+}
+.resetBtn {
+  width: 15px;
+  height: 15px;
+  right: 30px;
+  position: absolute;
+  cursor: pointer;
+}
+.deleteBtn {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.accArrBtn {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%) rotate(-90deg);
+  cursor: pointer;
+}
+.accordion-open .accArrBtn {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+// 기본법 제정 btn
+.delete-btn {
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  margin-top: 4px;
+  margin-right: 10px;
+}
+
+.edit-btn,
+.add-btn {
+  @include blue-btn-style;
+  width: -webkit-fill-available;
+  text-align: center;
+}

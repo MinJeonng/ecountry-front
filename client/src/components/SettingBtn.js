@@ -1,0 +1,52 @@
+import styled from 'styled-components';
+import React, { useState } from 'react';
+import '../styles/_button_common.scss';
+
+const StyledConfirmBtn = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export function ConfirmBtn({ onClick, btnName, backgroundColor }) {
+  const handleClick = (e) => {
+    e.preventDefault(); // 기본 동작 방지
+    onClick(); // 부모 컴포넌트에서 전달된 onClick 함수 실행
+  };
+
+  return (
+    <>
+      <StyledConfirmBtn>
+        <button
+          className="confirm-btn"
+          onClick={handleClick}
+          type="button"
+          style={{ background: backgroundColor }}
+        >
+          {btnName}
+        </button>
+      </StyledConfirmBtn>
+    </>
+  );
+}
+
+export function NextBtn({ onClick, width, btnName }) {
+  const handleClick = (e) => {
+    e.preventDefault(); // 기본 동작 방지
+    onClick(); // 부모 컴포넌트에서 전달된 onClick 함수 실행
+  };
+  const buttonStyled = {
+    width: width,
+  };
+  return (
+    <>
+      <button
+        className="frist-next-button"
+        onClick={handleClick}
+        style={buttonStyled}
+        type="submit"
+      >
+        {btnName}
+      </button>
+    </>
+  );
+}

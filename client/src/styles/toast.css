@@ -1,0 +1,30 @@
+/* CustomToastify.css */
+.Toastify__toast--default {
+  background: #ffffff;
+  color: #363636;
+}
+
+.Toastify__toast--info {
+  background: #3498db;
+}
+
+.Toastify__toast--success {
+  background: #07bc0c;
+}
+
+.Toastify__toast--warning {
+  background: #f1c40f;
+}
+
+.Toastify__toast--error {
+  background: #e74c3c;
+}
+
+.Toastify__toast-body {
+  font-size: 16px;
+  text-align: center;
+}
+
+.Toastify__progress-bar--default {
+  background: #4cd137;
+}

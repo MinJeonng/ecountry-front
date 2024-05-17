@@ -74,9 +74,9 @@ export function SetNewsWrite() {
         >
           {selectedImage ? (
             <img
-              src={URL.createObjectURL(selectedImage)}
+              src={selectedImage}
               alt="Uploaded"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
             />
           ) : (
             <div style={{ width: '100%', height: '100%' }}>

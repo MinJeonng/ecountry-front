@@ -1,73 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 export function SetNewsDetail() {
-
-  const [newsList, setNewsList] = useState([]);
+  const { id } = useParams();
+  const [newsList, setNewsList] = useState([]); //임시
+  const [news, setNews] = useState([]); //db에서 불러오는 뉴스 리스트
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
 
+  const itemsPerPage = 3;
   const indexOfLastItem = Math.min(currentPage * itemsPerPage, newsList.length);
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = newsList.slice(indexOfFirstItem, indexOfLastItem);
-
+  const currentItems = newsList.slice(indexOfFirstItem, indexOfLastItem); //한페이지에 들어가는 뉴스들
   const totalPages = Math.ceil(newsList.length / itemsPerPage);
+
+  const getNews = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `http://localhost:8080/api/post/articles/${id}`,
+    });
+    setNews(res.data.result);
+  };
 
   const nextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-
   };
 
   const prevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
-  // const getNews = async () => {
-  //   try {
-  //     const res = await axios({
-  //       method: 'get',
-  //       url: `${process.env.REACT_APP_HOST}/api/rule`,
-  //     });
-  //     setNews(res.data); // 전체 데이터를 상태로 설정
-  //   } catch (error) {
-  //     console.error('뉴스를 가져오는데 실패했습니다.', error);
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   getNews();
-  // }, []);
+  useEffect(() => {
+    getNews();
+  }, []);
 
-  // useEffect(() => {
-  //   const mockData = {
-  //     success: true,
-  //     result: [
-  //       {
-  //         id: 1,
-  //         title: '뉴스 제목 1',
-  //         writeTime: '2024. 5. 16. 오후 03:46',
-  //         newsImage: `${process.env.PUBLIC_URL}/logo192.png`,
-  //         newsContent: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-  //       },
-  //       {
-  //         id: 2,
-  //         title: '뉴스 제목 2',
-  //         writeTime: '2024. 5. 16. 오후 03:46',
-  //         newsImage: `${process.env.PUBLIC_URL}/logo192.png`,
-  //         newsContent: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-  //       },
-  //       {
-  //         id: 3,
-  //         title: '뉴스 제목 3',
-  //         writeTime: '2024. 5. 16. 오후 03:46',
-  //         newsImage: `${process.env.PUBLIC_URL}/logo192.png`,
-  //         newsContent: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-  //       },
-  //     ],
-  //   };
-
-  //   setNews(mockData);
-  // }, []);
+  //임시 데이터
   useEffect(() => {
     const newsData = [
       {
@@ -127,9 +94,9 @@ export function SetNewsDetail() {
         <div className="newsHead" style={{ marginBottom: '10%' }}>
           뉴스
         </div>
-        {/* {news?.success ? (
+        {news ? (
           <div className="newsInfo">
-            {news.result.map((item) => (
+            {news.map((item) => (
               <div key={item.id}>
                 <span>{item.title}</span>
               </div>
@@ -146,7 +113,7 @@ export function SetNewsDetail() {
               등록하기
             </Link>
           </div>
-        )} */}
+        )}
         {currentItems.map((news, index) => (
           <>
             <div

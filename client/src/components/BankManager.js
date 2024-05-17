@@ -17,69 +17,54 @@ export function AddSavings() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
 
-  const getList = async () => {
-    const res = await axios({
-      method: 'GET',
-      url: `http://localhost:8080/api/account/${id}`,
-    });
-    setSavingList(res.data.result);
-  };
-  const sendList = async () => {
-    const res = await axios({
-      method: 'POST',
-      url: `http://localhost:8080/api/account`,
-      data: {
-        countryId: id,
-        name: savingName,
-        interest: interestRate,
-        dueDate: savingDeadLine,
-      },
-    });
-    console.log(res.data.message);
-    getList();
-  };
-  const updateFunc = async (accountId) => {
-    const res = await axios({
-      method: 'PATCH',
-      url: `http://localhost:8080/api/account`,
-      data: {
-        id: accountId,
-        name: savingName,
-        interest: interestRate,
-        dueDate: savingDeadLine,
-      },
-    });
-    getList();
-  };
+  // const getList = async () => {
+  //   const res = await axios({
+  //     method: 'GET',
+  //     url: `http://localhost:8080/api/account/${id}`,
+  //   });
+  //   setSavingList(res.data.result);
+  // };
+  // const sendList = async () => {
+  //   const res = await axios({
+  //     method: 'POST',
+  //     url: `http://localhost:8080/api/account`,
+  //     data: {
+  //       countryId: id,
+  //       name: savingName,
+  //       interest: interestRate,
+  //       dueDate: savingDeadLine,
+  //     },
+  //   });
+  //   console.log(res.data.message);
+  //   getList();
+  // };
+  // const updateFunc = async (accountId) => {
+  //   const res = await axios({
+  //     method: 'PATCH',
+  //     url: `http://localhost:8080/api/account`,
+  //     data: {
+  //       id: accountId,
+  //       name: savingName,
+  //       interest: interestRate,
+  //       dueDate: savingDeadLine,
+  //     },
+  //   });
+  //   getList();
+  // };
   useEffect(() => {
     // 등록 날짜를 오늘 날짜로 설정
     setRegisterDate(new Date());
-    getList();
+    // getList();
   }, []);
-
-  const calculateDDay = useCallback(() => {
-    const today = new Date();
-    const deadline = new Date(registerDate);
-    deadline.setDate(deadline.getDate() + parseInt(savingDeadLine)); // 만기 날짜
-
-    const diffTime = deadline - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    return `D-${diffDays}`;
-  }, [registerDate, savingDeadLine]);
-
-  useEffect(() => {
-    // savingDeadLine이 변경될 때마다 D-Day 계산
-    calculateDDay();
-  }, [savingDeadLine, calculateDDay]);
 
   const handleAddSavings = () => {
     if (!savingName || !savingDeadLine || !interestRate) {
       alert('모든 값을 입력해주세요');
       return;
     }
-    sendList();
-    const dDayForItem = calculateDDay();
+
+    // sendList();
+
 
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
@@ -87,7 +72,9 @@ export function AddSavings() {
         name: savingName,
         dueDate: savingDeadLine,
         interest: interestRate,
-        dDay: dDayForItem,
+
+        dueDate: savingDeadLine,
+
       };
       setSavingList(updatedSaving);
     } else {
@@ -97,7 +84,9 @@ export function AddSavings() {
           name: savingName,
           dueDate: savingDeadLine,
           interest: interestRate,
-          dDay: dDayForItem,
+
+          dueDate: savingDeadLine,
+
         },
       ];
       setSavingList(newSavingList);
@@ -108,25 +97,32 @@ export function AddSavings() {
     setSelectedIndex(null);
   };
   const selectInput = (saving, index) => {
-    setSavingName(saving.name);
-    setSavingDeadLine(saving.dueDate);
-    setInterestRate(saving.interest);
-    setSelectedIndex(index);
+    if (selectedIndex === index) {
+      setIsAccordionOpen(false);
+      setIsAddOpen(true);
+      setSelectedIndex(null);
+      setSavingName('');
+      setInterestRate('');
+      setSavingDeadLine('');
+    } else {
+      setSavingName(saving.name);
+      setSavingDeadLine(saving.dueDate);
+      setInterestRate(saving.interest);
+      setSelectedIndex(index);
 
-    // 아코디언 열기
-    setIsAccordionOpen(true); // 아코디언 열림 상태로 변경
-    setIsAddOpen(false);
+      setIsAccordionOpen(true);
+      setIsAddOpen(false);
+    }
   };
-  const handleCloseAccordion = () => {
-    const dDayForItem = calculateDDay();
 
+  const handleCloseAccordion = () => {
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
       updatedSaving[selectedIndex] = {
         name: savingName,
         dueDate: savingDeadLine,
         interest: interestRate,
-        dDay: dDayForItem,
+        dueDate: savingDeadLine,
       };
       setSavingList(updatedSaving);
     } else {
@@ -136,7 +132,7 @@ export function AddSavings() {
           name: savingName,
           dueDate: savingDeadLine,
           interest: interestRate,
-          dDay: dDayForItem,
+          dueDate: savingDeadLine,
         },
       ];
       setSavingList(newSavingList);
@@ -161,19 +157,20 @@ export function AddSavings() {
     }
   };
 
-  const deleteBtn = async (e, accountId) => {
-    if (!window.confirm('적금 상품을 삭제하시겠습니까?')) {
-      return;
-    }
-    const res = await axios({
-      method: 'PATCH',
-      url: `http://localhost:8080/api/account/delete/${accountId}`,
-    });
-    console.log(res.data.message);
-    if (res.data.success) {
-      alert('삭제 완료되었습니다.');
-    }
-    getList();
+  const deleteBtn = async (index) => (e) => {
+    // accountId 나중에 ()로 보내기
+    // if (!window.confirm('적금 상품을 삭제하시겠습니까?')) {
+    //   return;
+    // }
+    // const res = await axios({
+    //   method: 'PATCH',
+    //   url: `http://localhost:8080/api/account/delete/${accountId}`,
+    // });
+    // console.log(res.data.message);
+    // if (res.data.success) {
+    //   alert('삭제 완료되었습니다.');
+    // }
+    // getList();
     e.stopPropagation();
     setSavingName('');
     setInterestRate('');
@@ -208,8 +205,10 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
+
             {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
             <Arrow stroke="#ddd" className="accArrBtn" />
+
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">
@@ -218,7 +217,8 @@ export function AddSavings() {
                 <img
                   className="resetBtn"
                   src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                  onClick={(e) => deleteBtn(e, saving.id)}
+                  // onClick={(e) => deleteBtn(e, saving.id)}
+                  onClick={deleteBtn(index)}
                   alt="삭제"
                 />
               </div>
@@ -253,7 +253,7 @@ export function AddSavings() {
               <ConfirmBtn
                 onClick={() => {
                   handleCloseAccordion();
-                  updateFunc(saving.id);
+                  // updateFunc(saving.id);
                 }}
                 btnName="업데이트"
                 backgroundColor="#61759f"

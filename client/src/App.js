@@ -21,7 +21,6 @@ import { SetSeat } from './pages/Seat';
 import { SetTaxService } from './pages/TaxService';
 import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
-import { SetPeopleList } from './components/PeopleList';
 
 function App() {
   return (
@@ -90,6 +89,10 @@ function App() {
           <Route
             path="/:id/manager/news/write"
             element={<SetNews position="작성" />}
+          />
+          <Route
+            path="/:id/manager/news/read"
+            element={<SetNews position="읽기" />}
           />
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
           <Route path="/:id/manager/seat" element={<SetSeat />} />

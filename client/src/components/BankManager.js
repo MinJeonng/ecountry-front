@@ -30,8 +30,8 @@ export function AddSavings() {
       data: {
         countryId: id,
         name: savingName,
-        interest: savingDeadLine,
-        dueDate: interestRate,
+        interest: interestRate,
+        dueDate: savingDeadLine,
       },
     });
     console.log(res.data.message);

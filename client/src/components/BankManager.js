@@ -79,29 +79,29 @@ export function AddSavings() {
       return;
     }
     sendList();
-    // const dDayForItem = calculateDDay();
-    //
-    // if (selectedIndex !== null) {
-    //   const updatedSaving = [...savingList];
-    //   updatedSaving[selectedIndex] = {
-    //     name: savingName,
-    //     dueDate: savingDeadLine,
-    //     interest: interestRate,
-    //     dDay: dDayForItem,
-    //   };
-    //   setSavingList(updatedSaving);
-    // } else {
-    //   const newSavingList = [
-    //     ...savingList,
-    //     {
-    //       name: savingName,
-    //       dueDate: savingDeadLine,
-    //       interest: interestRate,
-    //       dDay: dDayForItem,
-    //     },
-    //   ];
-    //   setSavingList(newSavingList);
-    // }
+    const dDayForItem = calculateDDay();
+
+    if (selectedIndex !== null) {
+      const updatedSaving = [...savingList];
+      updatedSaving[selectedIndex] = {
+        name: savingName,
+        dueDate: savingDeadLine,
+        interest: interestRate,
+        dDay: dDayForItem,
+      };
+      setSavingList(updatedSaving);
+    } else {
+      const newSavingList = [
+        ...savingList,
+        {
+          name: savingName,
+          dueDate: savingDeadLine,
+          interest: interestRate,
+          dDay: dDayForItem,
+        },
+      ];
+      setSavingList(newSavingList);
+    }
     setSavingName('');
     setInterestRate('');
     setSavingDeadLine('');
@@ -208,22 +208,8 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
-
             {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
             <Arrow stroke="#ddd" className="accArrBtn" />
-            <button
-              className="updateBtn"
-              onClick={() => selectInput(saving, index)}
-            >
-              수정
-            </button>
-            <img
-              className="deleteBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={deleteBtn(index)}
-              alt="삭제"
-            />
-
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">

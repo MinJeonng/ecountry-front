@@ -25,9 +25,9 @@ export default function Loading({ countryid }) {
 
     const navigateTimer = setTimeout(() => {
       if (countryid === undefined) {
-        navigate(`/user/country`);
+        navigate(`/country`);
       }
-      navigate(`/user/countryList`);
+      navigate(`/countryList`);
     }, 7000);
 
     return () => {
@@ -73,7 +73,7 @@ export function SetDone() {
 export function SetFail() {
   return (
     <div className="spinner">
-      <img className="spinner-img" src="/images/icon-like.gif" alt="Fail" />
+      <img className="spinner-img" src="/images/icon-warning.gif" alt="Fail" />
       <div className="spinner-text">초기 설정 실패</div>
       <div className="spinner-text">국가를 다시 생성해주세요.</div>
     </div>

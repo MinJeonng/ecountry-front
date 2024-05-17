@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ConfirmBtn } from './SettingBtn';
 import '../styles/setting.scss';
-import { PageHeader } from './Headers';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export function AddInvestment({ position }) {
+  const { id } = useParams();
   const [investmentName, setInvestmentName] = useState('');
   const [value, setValue] = useState('');
   const [unit, setUnit] = useState('');
@@ -13,11 +15,48 @@ export function AddInvestment({ position }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
 
+  const getList = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `http://localhost:8080/api/invest/${id}`,
+    });
+    console.log(res.data.result);
+    setInvestmentList(res.data.result);
+  };
+
+  const sendinvest = async () => {
+    const res = await axios({
+      method: 'POST',
+      url: `http://localhost:8080/api/invest`,
+      data: [
+        {
+          name: investmentName,
+          unit,
+          info: investmentInfo,
+          countryId: id,
+        },
+      ],
+    });
+  };
+
+  const updateFunc = async (investId) => {
+    const res = await axios({
+      method: 'PATCH',
+      url: `http://localhost:8080/api/invest`,
+      data: {
+        id: investId,
+        info: investmentInfo,
+      },
+    });
+    getList();
+  };
+
   const handleAddInvestments = () => {
-    if (!investmentName || !value || !unit || !investmentInfo) {
+    if (!investmentName || !unit || !investmentInfo) {
       alert('모든 값을 입력해주세요');
       return;
     }
+    sendinvest();
     if (selectedIndex !== null) {
       const updatedInvestment = [...investmentList];
       updatedInvestment[selectedIndex] = {
@@ -47,17 +86,17 @@ export function AddInvestment({ position }) {
   };
 
   const selectInput = (invest, index) => {
-    setInvestmentInfo(invest.todayInfo);
+    setInvestmentInfo(invest.info);
     setInvestmentName(invest.name);
     setUnit(invest.unit);
-    setValue(invest.value);
+    // setValue(invest.value);
     setSelectedIndex(index);
 
     setIsAccordionOpen(true);
     setIsAddOpen(false);
   };
   const handleCloseAccordion = () => {
-    if (!investmentName || !value || !unit || !investmentInfo) {
+    if (!investmentName || !unit || !investmentInfo) {
       alert('모든 값을 입력해주세요');
       return;
     }
@@ -131,6 +170,9 @@ export function AddInvestment({ position }) {
     setValue('');
   };
 
+  useEffect(() => {
+    getList();
+  }, []);
   return (
     <>
       {/* <PageHeader>{position}</PageHeader> */}
@@ -211,7 +253,10 @@ export function AddInvestment({ position }) {
                 }}
               />
               <ConfirmBtn
-                onClick={() => handleCloseAccordion()}
+                onClick={() => {
+                  handleCloseAccordion();
+                  updateFunc(invest.id);
+                }}
                 btnName="업데이트"
                 backgroundColor="#61759f"
               ></ConfirmBtn>
@@ -248,7 +293,7 @@ export function AddInvestment({ position }) {
               setInvestmentName(e.target.value);
             }}
           />
-          <div className="set-title">값</div>
+          {/* <div className="set-title">값</div>
           <input
             className="set-input"
             type="number"
@@ -257,7 +302,7 @@ export function AddInvestment({ position }) {
             onChange={(e) => {
               setValue(e.target.value);
             }}
-          />
+          /> */}
           <div className="set-title">단위</div>
           <input
             className="set-input"

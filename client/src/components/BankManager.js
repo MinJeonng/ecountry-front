@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './SettingBtn';
 import '../styles/setting.scss';
+import axios from 'axios';
 
 export function AddSavings() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [savingName, setSavingName] = useState('');
   const [savingDeadLine, setSavingDeadLine] = useState('');
@@ -14,9 +16,44 @@ export function AddSavings() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
 
+  const getList = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `http://localhost:8080/api/account/${id}`,
+    });
+    setSavingList(res.data.result);
+  };
+  const sendList = async () => {
+    const res = await axios({
+      method: 'POST',
+      url: `http://localhost:8080/api/account`,
+      data: {
+        countryId: id,
+        name: savingName,
+        interest: interestRate,
+        dueDate: savingDeadLine,
+      },
+    });
+    console.log(res.data.message);
+    getList();
+  };
+  const updateFunc = async (accountId) => {
+    const res = await axios({
+      method: 'PATCH',
+      url: `http://localhost:8080/api/account`,
+      data: {
+        id: accountId,
+        name: savingName,
+        interest: interestRate,
+        dueDate: savingDeadLine,
+      },
+    });
+    getList();
+  };
   useEffect(() => {
     // 등록 날짜를 오늘 날짜로 설정
     setRegisterDate(new Date());
+    getList();
   }, []);
 
   const calculateDDay = useCallback(() => {
@@ -40,29 +77,30 @@ export function AddSavings() {
       alert('모든 값을 입력해주세요');
       return;
     }
-    const dDayForItem = calculateDDay();
-
-    if (selectedIndex !== null) {
-      const updatedSaving = [...savingList];
-      updatedSaving[selectedIndex] = {
-        name: savingName,
-        deadline: savingDeadLine,
-        rate: interestRate,
-        dDay: dDayForItem,
-      };
-      setSavingList(updatedSaving);
-    } else {
-      const newSavingList = [
-        ...savingList,
-        {
-          name: savingName,
-          deadline: savingDeadLine,
-          rate: interestRate,
-          dDay: dDayForItem,
-        },
-      ];
-      setSavingList(newSavingList);
-    }
+    sendList();
+    // const dDayForItem = calculateDDay();
+    //
+    // if (selectedIndex !== null) {
+    //   const updatedSaving = [...savingList];
+    //   updatedSaving[selectedIndex] = {
+    //     name: savingName,
+    //     dueDate: savingDeadLine,
+    //     interest: interestRate,
+    //     dDay: dDayForItem,
+    //   };
+    //   setSavingList(updatedSaving);
+    // } else {
+    //   const newSavingList = [
+    //     ...savingList,
+    //     {
+    //       name: savingName,
+    //       dueDate: savingDeadLine,
+    //       interest: interestRate,
+    //       dDay: dDayForItem,
+    //     },
+    //   ];
+    //   setSavingList(newSavingList);
+    // }
     setSavingName('');
     setInterestRate('');
     setSavingDeadLine('');
@@ -70,8 +108,8 @@ export function AddSavings() {
   };
   const selectInput = (saving, index) => {
     setSavingName(saving.name);
-    setSavingDeadLine(saving.deadline);
-    setInterestRate(saving.rate);
+    setSavingDeadLine(saving.dueDate);
+    setInterestRate(saving.interest);
     setSelectedIndex(index);
 
     // 아코디언 열기
@@ -85,8 +123,8 @@ export function AddSavings() {
       const updatedSaving = [...savingList];
       updatedSaving[selectedIndex] = {
         name: savingName,
-        deadline: savingDeadLine,
-        rate: interestRate,
+        dueDate: savingDeadLine,
+        interest: interestRate,
         dDay: dDayForItem,
       };
       setSavingList(updatedSaving);
@@ -95,8 +133,8 @@ export function AddSavings() {
         ...savingList,
         {
           name: savingName,
-          deadline: savingDeadLine,
-          rate: interestRate,
+          dueDate: savingDeadLine,
+          interest: interestRate,
           dDay: dDayForItem,
         },
       ];
@@ -139,6 +177,13 @@ export function AddSavings() {
     setInterestRate('');
     setSavingDeadLine('');
   };
+
+  //db로 보내는 함수
+  // ? 이거 store가 필요한지?
+  const handleConfirm = () => {
+    //
+  };
+
   return (
     <>
       <div className="title-list">
@@ -157,7 +202,7 @@ export function AddSavings() {
             } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
           >
-            {saving.name}적금 {saving.dDay}
+            {saving.name}적금 D-{saving.dueDate}
             <button
               className="updateBtn"
               onClick={() => selectInput(saving, index)}
@@ -211,7 +256,10 @@ export function AddSavings() {
                 }}
               />
               <ConfirmBtn
-                onClick={() => handleCloseAccordion()}
+                onClick={() => {
+                  handleCloseAccordion();
+                  updateFunc(saving.id);
+                }}
                 btnName="업데이트"
                 backgroundColor="#61759f"
               ></ConfirmBtn>
@@ -230,50 +278,57 @@ export function AddSavings() {
       )}
 
       {isAddOpen && (
-        <form className="box-style">
-          <div className="reset">
-            <div className="set-title">적금 상품명</div>
-            <img
-              className="resetBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-              onClick={resetBtn}
-              alt="초기화"
+        <>
+          <form className="box-style">
+            <div className="reset">
+              <div className="set-title">적금 상품명</div>
+              <img
+                className="resetBtn"
+                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
+                onClick={resetBtn}
+                alt="초기화"
+              />
+            </div>
+            <input
+              className="set-input"
+              type="text"
+              value={savingName}
+              onChange={(e) => {
+                setSavingName(e.target.value);
+              }}
             />
-          </div>
-          <input
-            className="set-input"
-            type="text"
-            value={savingName}
-            onChange={(e) => {
-              setSavingName(e.target.value);
-            }}
-          />
-          <div className="set-title">적금 기간(생성일부터 ~까지)</div>
-          <input
-            className="set-input"
-            type="number"
-            min="0"
-            value={savingDeadLine}
-            onChange={(e) => {
-              setSavingDeadLine(e.target.value);
-            }}
-          />
-          <div className="set-title">금리 설정</div>
-          <input
-            className="set-input"
-            type="number"
-            min="0"
-            value={interestRate}
-            onChange={(e) => {
-              setInterestRate(e.target.value);
-            }}
-          />
+            <div className="set-title">적금 기간(생성일부터 ~까지)</div>
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={savingDeadLine}
+              onChange={(e) => {
+                setSavingDeadLine(e.target.value);
+              }}
+            />
+            <div className="set-title">금리 설정</div>
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={interestRate}
+              onChange={(e) => {
+                setInterestRate(e.target.value);
+              }}
+            />
+            <ConfirmBtn
+              onClick={handleAddSavings}
+              btnName="상품 등록"
+              backgroundColor="#bacd92"
+            ></ConfirmBtn>
+          </form>
           <ConfirmBtn
-            onClick={handleAddSavings}
-            btnName="상품 등록"
+            onClick={handleConfirm}
+            btnName="완료"
             backgroundColor="#bacd92"
           ></ConfirmBtn>
-        </form>
+        </>
       )}
     </>
   );

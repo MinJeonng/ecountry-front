@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Template from './Template';
 
 const BoxStyle = styled.div`
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   left: 0;
   z-index: 100;

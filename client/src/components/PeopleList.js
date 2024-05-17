@@ -24,15 +24,29 @@ export function SetPeopleList() {
     setStudentList(storedList);
   }, [storedList]);
 
-  //추가
-  const handleAddSavings = () => {
+  const resetBtn = () => {
     if (
-      !studentName ||
-      !attendanceNumber ||
-      !rating ||
-      !job ||
-      !resetPassword
+      studentName !== '' ||
+      attendanceNumber !== '' ||
+      rating !== '' ||
+      job !== '' ||
+      selectedIndex !== null
     ) {
+      const isConfirmed = window.confirm('초기화 하시겠습니까?');
+      if (!isConfirmed) {
+        return;
+      }
+      setAttendanceNumber('');
+      setStudentName('');
+      setRating('');
+      setJob('');
+      setResetPassword('');
+      setSelectedIndex(null);
+    }
+  };
+  //추가
+  const handleAddPeopleList = () => {
+    if (!studentName || !attendanceNumber || !rating || !job) {
       alert('모든 값을 입력해주세요');
       return;
     }
@@ -67,6 +81,7 @@ export function SetPeopleList() {
     setRating('');
     setJob('');
     setResetPassword('');
+    setSelectedIndex(null);
   };
   //수정
   const selectInput = (student, index) => {
@@ -136,6 +151,7 @@ export function SetPeopleList() {
     setJob('');
     setResetPassword('');
   };
+
   const handleConfirm = () => {
     dispatch(
       peopleListInfo({
@@ -151,18 +167,16 @@ export function SetPeopleList() {
         <ul className="title-list">
           <li>국민리스트를 확인할 수 있습니다.</li>
           <li>국민 정보를 추가, 수정 및 삭제할 수 있습니다.</li>
+          <li>학생마다 비밀번호를 재설정 할 수 있습니다.</li>
         </ul>
       </div>
 
       {studentList.map((student, index) => (
         <>
           <div
-            className={`
-             ${
-               isAccordionOpen && selectedIndex === index
-                 ? 'accordion-open'
-                 : ''
-             } ${selectedIndex === index ? 'selected' : ''}`}
+            className={`display ${
+              isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
+            } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
           >
             {student.attendanceNumber} {student.studentName}
@@ -175,7 +189,7 @@ export function SetPeopleList() {
             <img
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={() => deleteBtn(index)}
+              onClick={deleteBtn(index)}
               alt="Delete Button"
             />
           </div>
@@ -186,7 +200,7 @@ export function SetPeopleList() {
                 <img
                   className="resetBtn"
                   src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                  onClick={handleCloseAccordion}
+                  onClick={resetBtn}
                   alt="Reset Button"
                 />
               </div>
@@ -239,8 +253,9 @@ export function SetPeopleList() {
                 }}
               />
               <ConfirmBtn
-                onClick={() => handleAddSavings()}
+                onClick={handleCloseAccordion}
                 btnName="업데이트"
+                backgroundColor="#61759f"
               ></ConfirmBtn>
             </form>
           )}
@@ -252,6 +267,7 @@ export function SetPeopleList() {
           onClick={newAddBtn}
           btnName="학생 등록"
           width={'40%'}
+          backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}
 
@@ -263,7 +279,7 @@ export function SetPeopleList() {
               <img
                 className="resetBtn"
                 src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                onClick={handleCloseAccordion}
+                onClick={resetBtn}
                 alt="Reset Button"
               />
             </div>
@@ -316,11 +332,16 @@ export function SetPeopleList() {
               }}
             />
             <ConfirmBtn
-              onClick={handleAddSavings}
+              onClick={handleAddPeopleList}
               btnName="국민 추가"
+              backgroundColor="#bacd92"
             ></ConfirmBtn>
           </form>
-          <ConfirmBtn onClick={handleConfirm} btnName="완료"></ConfirmBtn>
+          <ConfirmBtn
+            onClick={handleConfirm}
+            btnName="완료"
+            backgroundColor="#bacd92"
+          ></ConfirmBtn>
         </>
       )}
     </>

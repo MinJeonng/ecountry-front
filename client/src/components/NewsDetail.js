@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export function SetNewsDetail() {
@@ -7,6 +7,7 @@ export function SetNewsDetail() {
   // const [newsList, setNewsList] = useState([]); //임시
   const [news, setNews] = useState([]); //db에서 불러오는 뉴스 리스트
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   const itemsPerPage = 3;
   const indexOfLastItem = Math.min(currentPage * itemsPerPage, news.length);

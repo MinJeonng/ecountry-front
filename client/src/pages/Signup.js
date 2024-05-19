@@ -25,7 +25,7 @@ export default function Login() {
       .then((res) => {
         alert(res.data.message);
         if (res.data.success) {
-          navigate('/user/login');
+          navigate('/login');
         }
       });
   };

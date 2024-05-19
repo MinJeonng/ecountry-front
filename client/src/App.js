@@ -21,7 +21,6 @@ import { SetSeat } from './pages/Seat';
 import { SetTaxService } from './pages/TaxService';
 import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
-import { SetPeopleList } from './components/PeopleList';
 
 function App() {
   return (
@@ -29,11 +28,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Intro />} />
-          <Route path="/user/login" element={<Login />} />
-          <Route path="/user/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
-          <Route path="/user/country" element={<NationBuilding />} />
-          <Route path="/user/countryList" element={<CountryList />} />
+          <Route path="/country" element={<NationBuilding />} />
+          <Route path="/countryList" element={<CountryList />} />
 
           <Route path="/setDone" element={<Loading />} />
 
@@ -78,23 +77,22 @@ function App() {
           />
           <Route
             path="/:id/manager/investment"
-            element={<SetInvestment position="투자 상품" />}
+            element={<SetInvestment position="투자 상품 관리" />}
           />
 
           <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
-          <Route path="/:id/manager/seat" element={<SetSeat />} />
-          <Route path="/:id/manager/taxService" element={<SetTaxService />} />
 
-          <Route
-            path="/:id/manager/news/:id"
-            element={<SetNews position="리스트" />}
-          />
-          <Route
-            path="/:id/manager/news/write"
-            element={<SetNews position="작성" />}
-          />
+          <Route path="/:id/news" element={<SetNews position="리스트" />} />
+          <Route path="/:id/news/write" element={<SetNews position="작성" />} />
+          <Route path="/:id/news/read" element={<SetNews position="읽기" />} />
+
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
           <Route path="/:id/assembly" element={<SetAssembly />} />
+
+          <Route
+            path="/:id/investment"
+            element={<SetInvestment position="투자 상품 확인" />}
+          />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

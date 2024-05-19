@@ -15,7 +15,7 @@ export default function NationBuilding() {
             <Link to="/setting/schoolInfo">국가 생성</Link>
           </button>
           <button className="big-button">
-            <Link to="/user/countryList">국가 목록</Link>
+            <Link to="/countryList">국가 목록</Link>
           </button>
         </div>
       </div>

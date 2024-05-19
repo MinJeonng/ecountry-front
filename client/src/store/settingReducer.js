@@ -139,7 +139,6 @@ export const taxLaw = (info) => ({
 });
 const initalState7 = {
   taxLaw: [],
-  division: null,
 };
 export const setting7Reducer = (state = initalState7, action) => {
   switch (action.type) {
@@ -147,7 +146,6 @@ export const setting7Reducer = (state = initalState7, action) => {
       return {
         ...state,
         taxLaw: action.info.taxLaw,
-        division: action.info.division,
       };
     default:
       return state;

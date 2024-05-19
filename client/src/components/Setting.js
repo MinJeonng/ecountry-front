@@ -14,10 +14,12 @@ import {
   seatRentalFee,
   Fine,
 } from '../store/settingReducer';
+import { toast, ToastContainer } from 'react-toastify';
 import Loading from './Loading';
 
 import '../styles/_input_common.scss';
 import '../styles/background.scss';
+import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
 
 //Setting1 - 학교 / 반 / 번호 설정
@@ -231,6 +233,7 @@ export function Setting2() {
     </div>
   );
 }
+
 //Setting3 - 학생정보 / 비밀번호
 export function Setting3() {
   const dispatch = useDispatch();
@@ -238,12 +241,14 @@ export function Setting3() {
   const [directInput, setDirectInput] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [password, setPassword] = useState(null);
+  // const [password, setPassword] = useState('');
   const [attendees, setAttendees] = useState([]);
   const [attendanceNumber, setAttendanceNumber] = useState('');
   const [name, setName] = useState('');
   const [correct, setCorrect] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  // const [isAddOpen, setIsAddOpen] = useState(false);
 
   const studentInfoState = useSelector((state) => state.setting3);
 
@@ -276,12 +281,13 @@ export function Setting3() {
   };
 
   const handleCheck = () => {
-    if (attendanceNumber && name) {
+    if (attendanceNumber && name && password) {
       setAttendees([...attendees, { attendanceNumber, name }]);
       setAttendanceNumber('');
       setName('');
+      setPassword('');
     } else {
-      alert('출석번호와 이름을 모두 입력해주세요.');
+      toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
     }
   };
 
@@ -298,6 +304,7 @@ export function Setting3() {
     const { attendanceNumber, name } = attendees[index];
     setAttendanceNumber(attendanceNumber);
     setName(name);
+    // setPassword(password);
     setCorrect(true);
     setSelectedIndex(index);
   };
@@ -310,6 +317,11 @@ export function Setting3() {
     setName('');
     setSelectedIndex(null);
     setCorrect(!correct);
+  };
+  const newAddBtn = () => {
+    setAttendanceNumber('');
+    setName('');
+    setSelectedIndex(null);
   };
 
   // 파일이 선택되었을 때
@@ -333,130 +345,153 @@ export function Setting3() {
   };
 
   return (
-    <div className="setting-wrap">
-      <div className="title-list">
-        <div>학생 파일 업로드</div>
-        <ul className="title-list">
-          <li>
-            아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요&#46;
-          </li>
-          <li>
-            만약 엑셀 업로드가 불가할 경우 '직접 입력' 버튼을 눌러 학생 정보를
-            기입할 수 있습니다.
-          </li>
-        </ul>
-      </div>
-      <button className="blue-btn" onClick={() => setDirectInput(!directInput)}>
-        {directInput ? '파일 업로드' : '직접 입력'}
-      </button>
+    <>
+      <ToastContainer />
+      <div className="setting-wrap">
+        <div className="title-list">
+          <div>학생 파일 업로드</div>
+          <ul className="title-list">
+            <li>
+              아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요&#46;
+            </li>
+            <li>
+              만약 엑셀 업로드가 불가할 경우 '직접 입력' 버튼을 눌러 학생 정보를
+              기입할 수 있습니다.
+            </li>
+          </ul>
+        </div>
+        <button
+          className="blue-btn"
+          onClick={() => setDirectInput(!directInput)}
+        >
+          {directInput ? '파일 업로드' : '직접 입력'}
+        </button>
 
-      {directInput ? (
-        <div className="setting-wrap">
-          <div>
+        {directInput ? (
+          <div className="setting-wrap">
+            <div>
+              <div className="box-style">
+                <div className="set-title">비밀번호</div>
+                <ul className="title-list">
+                  <li>국민들의 초기 비밀번호를 설정하세요.(4자리)</li>
+                  <li>
+                    각각의 비밀번호는 국민 개인 계정에서 변경가능하며, 관리자
+                    페이지에서 재설정 가능합니다.
+                  </li>
+                </ul>
+                <input
+                  className="set-input"
+                  type="number"
+                  value={password}
+                  maxLength={4}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val.length <= 4) {
+                      setPassword(val);
+                    } else {
+                      toast.error('비밀번호는 4자리로 설정해주세요.');
+                    }
+                  }}
+                />
+              </div>
+              {attendees.length > 0 &&
+                attendees.map((attendee, index) => (
+                  <div className="display" key={index}>
+                    {attendee.attendanceNumber} - {attendee.name}
+                    <button
+                      className="updateBtn"
+                      onClick={() => correctAttendee(index)}
+                    >
+                      수정
+                    </button>
+                    <img
+                      className="deleteBtn"
+                      src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                      onClick={() => deleteAttendee(index)}
+                    ></img>
+                  </div>
+                ))}
+            </div>
+
             <div className="box-style">
-              <div className="set-title">비밀번호</div>
-              <ul className="title-list">
-                <li>국민들의 초기 비밀번호를 설정하세요.(4자리)</li>
-                <li>
-                  각각의 비밀번호는 국민 개인 계정에서 변경가능하며, 관리자
-                  페이지에서 재설정 가능합니다.
-                </li>
-              </ul>
+              <div className="set-title">출석번호</div>
               <input
                 className="set-input"
                 type="number"
-                value={password}
-                maxLength={4}
-                onChange={(e) => setPassword(e.target.value)}
+                value={attendanceNumber}
+                onChange={(e) => setAttendanceNumber(e.target.value)}
               />
-            </div>
-            {attendees.length > 0 &&
-              attendees.map((attendee, index) => (
-                <div className="display" key={index}>
-                  {attendee.attendanceNumber} - {attendee.name}
-                  <button
-                    className="updateBtn"
-                    onClick={() => correctAttendee(index)}
-                  >
-                    수정
-                  </button>
-                  <img
-                    className="deleteBtn"
-                    src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                    onClick={() => deleteAttendee(index)}
-                  ></img>
-                </div>
-              ))}
-          </div>
-          <div className="box-style">
-            <div className="set-title">출석번호</div>
-            <input
-              className="set-input"
-              type="number"
-              value={attendanceNumber}
-              onChange={(e) => setAttendanceNumber(e.target.value)}
-            />
-            <div className="set-title">이름</div>
-            <input
-              className="set-input"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            {correct ? ( //수정버튼
-              isEditing ? (
-                // correct가 true이고, isEditing도 true일 때
+              <div className="set-title">이름</div>
+              <input
+                className="set-input"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              {correct ? ( //수정버튼
+                isEditing ? (
+                  // correct가 true이고, isEditing도 true일 때
+                  <ConfirmBtn
+                    onClick={handleCheckBtn}
+                    btnName="확인"
+                    backgroundColor="#bacd92"
+                  />
+                ) : (
+                  // correct가 true이지만, isEditing은 false일 때
+                  <ConfirmBtn
+                    onClick={updateAttendee}
+                    btnName="수정"
+                    backgroundColor="#61759f"
+                  />
+                )
+              ) : (
+                // correct가 false일 때
                 <ConfirmBtn
-                  onClick={handleCheckBtn}
+                  onClick={handleCheck}
                   btnName="확인"
                   backgroundColor="#bacd92"
                 />
-              ) : (
-                // correct가 true이지만, isEditing은 false일 때
-                <ConfirmBtn
-                  onClick={updateAttendee}
-                  btnName="수정"
-                  backgroundColor="#bacd92"
-                />
-              )
-            ) : (
-              // correct가 false일 때
-              <ConfirmBtn
-                onClick={handleCheck}
-                btnName="확인"
-                backgroundColor="#bacd92"
-              />
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      ) : (
-        <form className="box-style">
-          <div>
-            <button className="studentInfo-upload" onClick={downloadFile}>
-              예시 파일 다운
-            </button>
-          </div>
+        ) : (
+          <form className="box-style">
+            <div>
+              <button className="studentInfo-upload" onClick={downloadFile}>
+                예시 파일 다운
+              </button>
+            </div>
 
-          <input
-            className="studentInfo-input"
-            type="file"
-            onChange={handleFileChange}
-            accept=".xlsx,.xls, .csv"
-          />
-          <ConfirmBtn
-            onClick={handleUpload}
-            btnName="업로드"
-            backgroundColor="#bacd92"
-          ></ConfirmBtn>
-        </form>
-      )}
-      <div className="navi-btn">
-        <button className="next-button" onClick={beforeSetting}>
-          이전
-        </button>
-        <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
+            <input
+              className="studentInfo-input"
+              type="file"
+              onChange={handleFileChange}
+              accept=".xlsx,.xls, .csv"
+            />
+            <ConfirmBtn
+              onClick={handleUpload}
+              btnName="업로드"
+              backgroundColor="#bacd92"
+            ></ConfirmBtn>
+          </form>
+        )}
+
+        {/* <ConfirmBtn
+          onClick={newAddBtn}
+          btnName="학생 등록"
+          width="40%"
+          
+          backgroundColor="#bacd92"
+        ></ConfirmBtn> */}
+
+        <div className="navi-btn">
+          <button className="next-button" onClick={beforeSetting}>
+            이전
+          </button>
+          <NextBtn onClick={nextSetting} width={'40%'} btnName="다음"></NextBtn>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 //Setting4 - 자리 배치도
@@ -1046,20 +1081,20 @@ export function Setting7() {
 
   const handleSelectedUnit = (e) => {
     setSelectedUnit(e.target.value);
-    if (selectedUnit === moneyUnit) {
-      setDivision(1);
-    } else {
+    if (selectedUnit == '%') {
       setDivision(0);
+    } else {
+      setDivision(1);
     }
   };
 
   const beforeSetting = () => {
     navigate('/setting/law');
-    dispatch(taxLaw({ taxLaw: taxLawDisplay, division: division }));
+    dispatch(taxLaw({ taxLaw: taxLawDisplay }));
   };
   const nextSetting = () => {
     navigate('/setting/seatRental');
-    dispatch(taxLaw({ taxLaw: taxLawDisplay, division: division }));
+    dispatch(taxLaw({ taxLaw: taxLawDisplay }));
   };
   const resetBtn = () => {
     setLawNameValue('');

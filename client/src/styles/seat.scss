@@ -1,0 +1,91 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/variables';
+
+@include mobile {
+  .seat-title {
+    display: flex;
+    justify-content: space-around;
+    margin: 0px 0px 25px 0px;
+
+    .seat-user,
+    .seat-owner {
+      border: 1px solid transparent;
+      background-color: transparent;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .seat-user:focus,
+    .seat-owner:focus {
+      color: $under-line;
+      border-bottom: 1px solid $under-line;
+    }
+  }
+
+  .editCell-btn {
+    display: flex;
+    justify-content: space-around;
+
+    .finish-btn,
+    .deletCell-btn {
+      color: #ffffff;
+      font-weight: bold;
+      border: 1px solid $green;
+      background-color: $green;
+      border-radius: 18px;
+      margin: 20px 0;
+      padding: 8px 22px;
+    }
+
+    .addColumn-btn,
+    .addRow-btn {
+      color: #ffffff;
+      font-weight: bold;
+      border: 1px solid $blue;
+      background-color: $blue;
+      border-radius: 16px;
+      margin: 20px 0;
+      padding: 6px 15px;
+    }
+  }
+
+  .editCell-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px 0;
+
+    .cell-btn {
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 18px;
+      border: 1px solid $blue;
+      background-color: $blue;
+      border-radius: 16px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .columnSelect-input {
+      display: flex;
+      align-items: center;
+
+      .columSelect {
+        margin-right: 10px;
+      }
+      #columnSelect {
+        border: none;
+        border-bottom: 1px solid #e9ae24;
+        background-color: transparent;
+        outline: none;
+        width: 80px;
+        padding: 0px 0px 0px 4px;
+        font-size: 14px;
+      }
+    }
+  }
+}

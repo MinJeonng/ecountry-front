@@ -14,6 +14,7 @@ import Loading from './components/Loading';
 import ManagerDashBoard from './pages/ManagerDashBoard';
 import SetInvestment from './pages/Investment';
 import { SetAssembly } from './pages/Assembly';
+import { AssemblyLawEdit } from './components/AssemblyLawEdit';
 import { SetBoardPeople } from './pages/BoardPeople';
 import { SetNews } from './pages/News';
 import PeopleList from './pages/PeopleList';
@@ -86,8 +87,21 @@ function App() {
           <Route path="/:id/news/write" element={<SetNews position="작성" />} />
           <Route path="/:id/news/read" element={<SetNews position="읽기" />} />
 
+          <Route path="/:id/menager/seatMap" element={<SetSeat />} />
+
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
-          <Route path="/:id/assembly" element={<SetAssembly />} />
+          <Route
+            path="/:id/assembly"
+            element={<SetAssembly position="법 리스트" />}
+          />
+          <Route
+            path="/:id/assembly/edit"
+            element={<SetAssembly position="법 개정" />}
+          />
+          <Route
+            path="/new/assembly/edit"
+            element={<AssemblyLawEdit position="법 제정" />}
+          />
 
           <Route
             path="/:id/investment"

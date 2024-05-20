@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './SettingBtn';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
@@ -17,40 +17,40 @@ export function AddSavings() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
 
-  // const getList = async () => {
-  //   const res = await axios({
-  //     method: 'GET',
-  //     url: `http://localhost:8080/api/account/${id}`,
-  //   });
-  //   setSavingList(res.data.result);
-  // };
-  // const sendList = async () => {
-  //   const res = await axios({
-  //     method: 'POST',
-  //     url: `http://localhost:8080/api/account`,
-  //     data: {
-  //       countryId: id,
-  //       name: savingName,
-  //       interest: interestRate,
-  //       dueDate: savingDeadLine,
-  //     },
-  //   });
-  //   console.log(res.data.message);
-  //   getList();
-  // };
-  // const updateFunc = async (accountId) => {
-  //   const res = await axios({
-  //     method: 'PATCH',
-  //     url: `http://localhost:8080/api/account`,
-  //     data: {
-  //       id: accountId,
-  //       name: savingName,
-  //       interest: interestRate,
-  //       dueDate: savingDeadLine,
-  //     },
-  //   });
-  //   getList();
-  // };
+  const getList = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/account/${id}`,
+    });
+    setSavingList(res.data.result);
+  };
+  const sendList = async () => {
+    const res = await axios({
+      method: 'POST',
+      url: `${process.env.REACT_APP_HOST}/api/account`,
+      data: {
+        countryId: id,
+        name: savingName,
+        interest: interestRate,
+        dueDate: savingDeadLine,
+      },
+    });
+    console.log(res.data.message);
+    getList();
+  };
+  const updateFunc = async (accountId) => {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${process.env.REACT_APP_HOST}/api/account`,
+      data: {
+        id: accountId,
+        name: savingName,
+        interest: interestRate,
+        dueDate: savingDeadLine,
+      },
+    });
+    getList();
+  };
   useEffect(() => {
     // 등록 날짜를 오늘 날짜로 설정
     setRegisterDate(new Date());
@@ -65,7 +65,6 @@ export function AddSavings() {
 
     // sendList();
 
-
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
       updatedSaving[selectedIndex] = {
@@ -74,7 +73,6 @@ export function AddSavings() {
         interest: interestRate,
 
         dueDate: savingDeadLine,
-
       };
       setSavingList(updatedSaving);
     } else {
@@ -86,7 +84,6 @@ export function AddSavings() {
           interest: interestRate,
 
           dueDate: savingDeadLine,
-
         },
       ];
       setSavingList(newSavingList);
@@ -157,20 +154,19 @@ export function AddSavings() {
     }
   };
 
-  const deleteBtn = async (index) => (e) => {
-    // accountId 나중에 ()로 보내기
-    // if (!window.confirm('적금 상품을 삭제하시겠습니까?')) {
-    //   return;
-    // }
-    // const res = await axios({
-    //   method: 'PATCH',
-    //   url: `http://localhost:8080/api/account/delete/${accountId}`,
-    // });
-    // console.log(res.data.message);
-    // if (res.data.success) {
-    //   alert('삭제 완료되었습니다.');
-    // }
-    // getList();
+  const deleteBtn = async (e, accountId) => {
+    if (!window.confirm('적금 상품을 삭제하시겠습니까?')) {
+      return;
+    }
+    const res = await axios({
+      method: 'PATCH',
+      url: `${process.env.REACT_APP_HOST}/api/account/delete/${accountId}`,
+    });
+    console.log(res.data.message);
+    if (res.data.success) {
+      alert('삭제 완료되었습니다.');
+    }
+    getList();
     e.stopPropagation();
     setSavingName('');
     setInterestRate('');
@@ -205,10 +201,8 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
-
             {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
             <Arrow stroke="#ddd" className="accArrBtn" />
-
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">

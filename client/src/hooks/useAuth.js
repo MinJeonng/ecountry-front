@@ -9,7 +9,7 @@ export default function useAuth() {
       try {
         const res = await axios({
           method: 'GET',
-          url: `http://localhost:8080/api/user/auth`,
+          url: `${process.env.REACT_APP_HOST}/api/user/auth`,
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

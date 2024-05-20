@@ -21,6 +21,10 @@ export function AddInvestment({ position }) {
     const res = await axios({
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/invest/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     console.log(res.data.result);
     setInvestmentList(res.data.result);
@@ -30,6 +34,10 @@ export function AddInvestment({ position }) {
     const res = await axios({
       method: 'POST',
       url: `${process.env.REACT_APP_HOST}/api/invest`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       data: [
         {
           name: investmentName,
@@ -57,6 +65,10 @@ export function AddInvestment({ position }) {
     const res = await axios({
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/invest/status/${investId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     console.log(res.data.result);
     setStatusList(res.data.result);
@@ -66,6 +78,10 @@ export function AddInvestment({ position }) {
     const res = await axios({
       method: 'POST',
       url: `${process.env.REACT_APP_HOST}/api/invest/status`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       data: {
         status: value,
         investId,
@@ -77,6 +93,10 @@ export function AddInvestment({ position }) {
     const res = await axios({
       method: 'DELETE',
       url: `${process.env.REACT_APP_HOST}/api/invest/status/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     getStatus(investId);
   };

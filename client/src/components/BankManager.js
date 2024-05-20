@@ -21,6 +21,10 @@ export function AddSavings() {
     const res = await axios({
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/account/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     setSavingList(res.data.result);
   };
@@ -28,6 +32,10 @@ export function AddSavings() {
     const res = await axios({
       method: 'POST',
       url: `${process.env.REACT_APP_HOST}/api/account`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       data: {
         countryId: id,
         name: savingName,
@@ -42,6 +50,10 @@ export function AddSavings() {
     const res = await axios({
       method: 'PATCH',
       url: `${process.env.REACT_APP_HOST}/api/account`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       data: {
         id: accountId,
         name: savingName,
@@ -161,6 +173,10 @@ export function AddSavings() {
     const res = await axios({
       method: 'PATCH',
       url: `${process.env.REACT_APP_HOST}/api/account/delete/${accountId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     console.log(res.data.message);
     if (res.data.success) {

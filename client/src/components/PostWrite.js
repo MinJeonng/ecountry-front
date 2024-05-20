@@ -120,6 +120,10 @@ function QuillEditor({ placeholder, value, ...rest }) {
   const getCategory = async () => {
     const res = await axios({
       method: 'GET',
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       url: `${process.env.REACT_APP_HOST}/api/blog/getCategory`,
       params: { memberId: user.id },
     });
@@ -133,6 +137,10 @@ function QuillEditor({ placeholder, value, ...rest }) {
     const findBlog = await axios({
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/blog/find`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       params: { memberId: user.id },
     });
     if (findBlog.data.result) {
@@ -155,6 +163,10 @@ function QuillEditor({ placeholder, value, ...rest }) {
       const res = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/post/write`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data,
       });
       if (res.data.success) {
@@ -170,6 +182,10 @@ function QuillEditor({ placeholder, value, ...rest }) {
     const res = await axios({
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/post/find`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       params: { id: postId },
     });
     const { categoryId, content, postTitle } = res.data.result;
@@ -236,6 +252,10 @@ function QuillEditor({ placeholder, value, ...rest }) {
       const res = await axios({
         method: 'GET',
         url: `${process.env.REACT_APP_HOST}/api/blog/find`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         params: { memberId: user.id },
       });
       setBlog(res.data.success);

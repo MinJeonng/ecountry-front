@@ -122,6 +122,8 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
       url: `${process.env.REACT_APP_HOST}/api/post/article`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
       },
       data: {
         postTitle: title,
@@ -139,6 +141,10 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
     const res = await axios({
       method: 'GET',
       url: `http://localhost:8080/api/post/article`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       params: { id: postId },
     });
     const { content, postTitle } = res.data.result;

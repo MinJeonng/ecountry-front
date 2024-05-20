@@ -58,6 +58,10 @@ export function SetNewsDetail() {
       const res = await axios({
         method: 'GET',
         url: `${process.env.REACT_APP_HOST}/api/post/articles/${id}`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
       });
       console.log(res.data.result);
       setNews(res.data.result);

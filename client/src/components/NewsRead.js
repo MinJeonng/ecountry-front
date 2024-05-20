@@ -27,6 +27,10 @@ export function SetNewsRead() {
       const res = await axios({
         method: 'GET',
         url: `${process.env.REACT_APP_HOST}/api/post/article/${newsId}`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
       });
       console.log(res.data.result);
       if (res.data.result.countryId == id) {
@@ -51,6 +55,10 @@ export function SetNewsRead() {
     const res = await axios({
       method: 'DELETE',
       url: `${process.env.REACT_APP_HOST}/api/post/article/${newsId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     if (res.data.success) {
       alert('뉴스 삭제가 완료되었습니다.');

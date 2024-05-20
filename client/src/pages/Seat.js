@@ -57,7 +57,7 @@ export function SetSeat() {
       return row;
     });
     setTableRows(updatedTableRows);
-    event.target.classList.add('focused');
+    setIsEditing(true); // 편집 중 상태로 설정
   };
 
   const focus = () => {
@@ -74,6 +74,7 @@ export function SetSeat() {
 
   const updateSeat = () => {
     console.log('수정된 값:', tableRows);
+    setIsEditing(false); // 편집 상태를 종료
   };
 
   const addRow = () => {
@@ -97,12 +98,14 @@ export function SetSeat() {
     };
     setTableRows([...tableRows, newTableRow]);
     console.log(`행이 ${selectCol}에 추가됨`);
+    setIsEditing(true); // 편집 중 상태로 설정
   };
 
   const addCol = () => {
     const newColumnId = columns.length + 1;
     setColumns([...columns, { id: newColumnId, rowNum: newColumnId }]);
     console.log('새 열이 추가됨');
+    setIsEditing(true); // 편집 중 상태로 설정
   };
 
   useEffect(() => {

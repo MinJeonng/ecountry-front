@@ -1,28 +1,13 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import Template from '../components/Template';
 
-import '../styles/login.scss';
-
-export default function Login() {
+export default function StudentLogin() {
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
   const navigate = useNavigate();
 
-  const loginFunc = async () => {
-    await axios
-      .post('http://localhost:8080/api/user/login', { userId, pw })
-      .then((res) => {
-        alert(res.data.message);
-        if (res.data.success) {
-          localStorage.setItem('token', res.data.result.token);
-          navigate('/country');
-        } else {
-        }
-      });
-  };
   return (
     <Template
       childrenBottom={
@@ -30,11 +15,11 @@ export default function Login() {
           <div>
             <div>로그인</div>
             <ul className="title-list">
-              <li>아이디와 비밀번호를 입력하세요.</li>
+              <li>이름과 비밀번호를 입력하세요.</li>
             </ul>
           </div>
           <form className="box-style">
-            <div className="user-login-title">아이디</div>
+            <div className="user-login-title">이름</div>
             <input
               className="user-login"
               type="text"
@@ -47,12 +32,16 @@ export default function Login() {
               maxLength={4}
               onChange={(e) => setPw(e.target.value)}
             ></input>
-            <button className="login-btn" type="button" onClick={loginFunc}>
+            <button className="login-btn" type="button">
               로그인
             </button>
           </form>
+          <div className="pwFind-info">
+            <div className="pwFind-text">비밀번호 잊은 사람은?</div>
+            <div className="pwFind-text">담임 선생님께!</div>
+          </div>
         </div>
       }
-    ></Template>
+    />
   );
 }

@@ -18,7 +18,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Loading from './Loading';
 
 import '../styles/_input_common.scss';
-import '../styles/background.scss';
+
 import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
 

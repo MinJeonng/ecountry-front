@@ -54,15 +54,14 @@ export function Setting1() {
     setSelectedClass(e.target.value);
   };
   const searchFunc = async () => {
-    console.log(schoolName);
-    console.log(
-      `${process.env.REACT_APP_HOST}/api/school?schoolName=${schoolName}`
-    );
     const res = await axios({
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/school?schoolName=${schoolName}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
-    console.log(res.data.result);
     setSchoolList(res.data.result);
     setOpenSearch(true);
   };
@@ -1400,6 +1399,8 @@ export function Setting9() {
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/country`,
         headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         data: {
@@ -1439,6 +1440,10 @@ export function Setting9() {
           // 국가 생성 후 return된 id 값으로 수정해야함
           // 비밀번호 값 추가
           url: `${process.env.REACT_APP_HOST}/api/student/${res.data.result.id}`,
+          headers: {
+            'Content-Type': `application/json`,
+            'ngrok-skip-browser-warning': '69420',
+          },
           data: data2,
         });
         console.log('학생 등록 결과 : ' + res2.data.success);
@@ -1455,6 +1460,10 @@ export function Setting9() {
       const res3 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/seat`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data3,
       });
       console.log('자리 배치 등록 결과 : ' + res3.data.success);
@@ -1478,6 +1487,10 @@ export function Setting9() {
       const res4 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/job`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data4,
       });
       console.log('직업 리스트 등록 결과 : ' + res4.data.success);
@@ -1492,6 +1505,10 @@ export function Setting9() {
       const res5 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/rule`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data5,
       });
       console.log('규칙 리스트 등록 결과 : ' + res5.data.success);
@@ -1524,6 +1541,10 @@ export function Setting9() {
       const res6 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/tax`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data6,
       });
       console.log('세금 규칙 등록 결과 : ' + res6.data.success);

@@ -10,6 +10,10 @@ export default function MainNews() {
       const res = await axios({
         method: 'get',
         url: `${process.env.REACT_APP_HOST}/api/rule`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
       });
       setNews(res.data); // 전체 데이터를 상태로 설정
     } catch (error) {

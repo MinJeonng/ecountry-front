@@ -11,6 +11,8 @@ export default function useAuth() {
           method: 'GET',
           url: `${process.env.REACT_APP_HOST}/api/user/auth`,
           headers: {
+            'Content-Type': `application/json`,
+            'ngrok-skip-browser-warning': '69420',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });

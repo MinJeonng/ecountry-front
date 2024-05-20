@@ -29,6 +29,10 @@ export function Setting1() {
   const [schoolName, setSchoolName] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
+  const [schoolList, setSchoolList] = useState([]);
+  const [openSearch, setOpenSearch] = useState(false);
+  const [schoolInfomation, setSchoolInfomation] = useState({});
+
   const grades = [1, 2, 3, 4, 5, 6];
   const schoolInfoState = useSelector((state) => state.setting1);
 
@@ -49,6 +53,23 @@ export function Setting1() {
   const classSelect = (e) => {
     setSelectedClass(e.target.value);
   };
+  const searchFunc = async () => {
+    console.log(schoolName);
+    console.log(
+      `${process.env.REACT_APP_HOST}/api/school?schoolName=${schoolName}`
+    );
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/school?schoolName=${schoolName}`,
+    });
+    console.log(res.data.result);
+    setSchoolList(res.data.result);
+    setOpenSearch(true);
+  };
+  const selectSchool = (index) => {
+    setSchoolName(schoolList[index].schoolName);
+    setSchoolInfomation(schoolList[index]);
+  };
 
   const nextSetting = () => {
     try {
@@ -59,9 +80,11 @@ export function Setting1() {
       navigate('/setting/countryInfo');
       dispatch(
         schoolInfo({
-          schoolName: schoolName,
+          schoolName: schoolInfomation.schoolName,
           schoolGrade: selectedGrade,
           schoolClass: selectedClass,
+          eduOfficeCode: schoolInfomation.eduOfficeCode,
+          schoolCode: schoolInfomation.schoolCode,
         })
       );
     } catch (error) {
@@ -88,6 +111,21 @@ export function Setting1() {
             onChange={inputSchoolName}
             style={{ imeMode: 'active' }}
           />
+          <button type="button" onClick={searchFunc}>
+            검색
+          </button>
+          {openSearch && schoolList.length === 0 ? (
+            <div>검색 결과가 없습니다.</div>
+          ) : (
+            <div>
+              {schoolList.map((data, index) => (
+                <div key={index} onClick={() => selectSchool(index)}>
+                  <p>{data.schoolName}</p>
+                  <p>{data.address}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="select-student-id">
@@ -1371,7 +1409,19 @@ export function Setting9() {
           unit: setInfo.setting2.moneyUnit,
           salaryDate: parseInt(setInfo.setting2.salaryDate),
           school: setInfo.setting1.schoolName,
+          eduOfficeCode: setInfo.setting1.eduOfficeCode,
+          schoolCode: setInfo.setting1.schoolCode,
         },
+      });
+      console.log({
+        name: setInfo.setting2.countryName,
+        grade: parseInt(setInfo.setting1.schoolGrade),
+        classroom: parseInt(setInfo.setting1.schoolClass),
+        unit: setInfo.setting2.moneyUnit,
+        salaryDate: parseInt(setInfo.setting2.salaryDate),
+        school: setInfo.setting1.schoolName,
+        eduOfficeCode: setInfo.setting1.eduOfficeCode,
+        schoolCode: setInfo.setting1.schoolCode,
       });
       console.log('국가 생성 결과 : ' + res.data.success);
       // 학생 등록(수기)

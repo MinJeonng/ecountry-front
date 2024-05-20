@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import '../styles/setting.scss';
 
@@ -18,6 +19,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  ChartDataLabels,
   Title,
   Tooltip,
   Legend
@@ -150,27 +152,32 @@ export function CheckInvestment() {
         },
       },
       y: {
+        display: false,
         grid: {
           display: false,
         },
         ticks: {
-          color: '#888888',
+          display: false,
         },
       },
     },
     plugins: {
       tooltip: {
-        enabled: true,
+        enabled: false,
         mode: 'index',
         intersect: false,
-        callbacks: {
-          label: function (context) {
-            return context.parsed.y; // 선 위의 온도만 표시
-          },
-        },
       },
       legend: {
         display: false,
+      },
+      datalabels: {
+        display: true,
+        align: 'end',
+        anchor: 'end',
+        color: '#36A2EB',
+        formatter: function (value) {
+          return value;
+        },
       },
     },
     elements: {
@@ -188,6 +195,11 @@ export function CheckInvestment() {
         data: amounts,
         borderColor: '#F99417',
         borderWidth: 2,
+        datalabels: {
+          align: 'end',
+          anchor: 'end',
+          color: '#888888',
+        },
       },
     ],
   };
@@ -272,13 +284,15 @@ export function CheckInvestment() {
             <div
               style={{
                 width: 280,
-                height: 200,
-                backgroundColor: 'rgb(254 239 244 / 80%)',
+                height: 185,
+                // backgroundColor: 'rgb(254 239 244 / 80%)',
                 borderRadius: '12px',
                 margin: '10px',
                 padding: '10px',
                 position: 'absolute',
-                left: '7px',
+                left: '28px',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
               <Line options={options} data={data} />

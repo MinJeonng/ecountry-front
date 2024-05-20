@@ -145,7 +145,7 @@ export function CheckInvestment() {
           color: 'white',
         },
         ticks: {
-          color: 'white',
+          color: '#888888',
           // fontSize: 14,
         },
       },
@@ -154,7 +154,7 @@ export function CheckInvestment() {
           display: false,
         },
         ticks: {
-          color: 'white',
+          color: '#888888',
         },
       },
     },
@@ -270,7 +270,16 @@ export function CheckInvestment() {
           {/* 차트 */}
           {height[index].height == '300px' && (
             <div
-              style={{ width: 600, height: 300, backgroundColor: '#666666' }}
+              style={{
+                width: 280,
+                height: 200,
+                backgroundColor: 'rgb(254 239 244 / 80%)',
+                borderRadius: '12px',
+                margin: '10px',
+                padding: '10px',
+                position: 'absolute',
+                left: '7px',
+              }}
             >
               <Line options={options} data={data} />
             </div>

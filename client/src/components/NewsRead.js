@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './SettingBtn';
 
 import '../styles/setting.scss';
+import axios from 'axios';
+import { GetTimeText } from '../hooks/Functions';
 
 export function SetNewsRead() {
+  const { id, newsId } = useParams();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(
     `${process.env.PUBLIC_URL}/logo192.png`
@@ -15,10 +18,48 @@ export function SetNewsRead() {
   );
   const [writeTime, setWriteTime] = useState('2024. 5. 16. 오후 03:46');
   const [showBox, setShowBox] = useState(false);
+  const [writer, setWriter] = useState('');
   const [formattedTime, setFormattedTime] = useState('');
   const [correction, setCorrection] = useState(false);
 
+  const getNews = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `http://localhost:8080/api/post/article/${newsId}`,
+      });
+      console.log(res.data.result);
+      if (res.data.result.countryId == id) {
+        const result = res.data.result;
+        setNewsTitle(result.title);
+        setNewsContent(result.content);
+        setWriteTime(GetTimeText(result.createdAt));
+        setWriter(result.writerName);
+      } else {
+        alert('유효하지 않은 접근입니다.');
+      }
+    } catch {
+      alert('해당 뉴스를 불러올수 없습니다.');
+      navigate(`/${id}/news`);
+    }
+  };
+
+  const deleteNews = async () => {
+    if (!window.confirm('뉴스를 삭제하시겠습니까?')) {
+      return;
+    }
+    const res = await axios({
+      method: 'DELETE',
+      url: `http://localhost:8080/api/post/article/${newsId}`,
+    });
+    if (res.data.success) {
+      alert('뉴스 삭제가 완료되었습니다.');
+      navigate(`/${id}/news`);
+    }
+  };
+
   useEffect(() => {
+    getNews();
     const intervalId = setInterval(() => {
       const currentTime = new Date();
       const newFormattedTime = `${currentTime.toLocaleDateString()} ${currentTime.toLocaleTimeString(
@@ -112,7 +153,7 @@ export function SetNewsRead() {
                     boxSizing: 'border-box',
                     color: 'white',
                   }}
-                  // onClick={handleDelete}
+                  onClick={deleteNews}
                 >
                   삭제
                 </div>

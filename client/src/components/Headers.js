@@ -38,13 +38,13 @@ export function ManagerMainHeader() {
       <BoxStyle className="headerBg">
         <header>
           {/* Ico안뜸 확인 */}
-          <IcoMenuRight
+          {/* <IcoMenuRight
             onClick={() => {
               console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu); // 로그 추가
               setShowSideMenu(true);
               console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
             }}
-          />
+          /> */}
         </header>
       </BoxStyle>
       {showSideMenu && <SideMenuComponent func={closeFunc} />}

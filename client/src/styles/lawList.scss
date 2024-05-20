@@ -1,0 +1,38 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/variables';
+
+@include mobile {
+  .top-title {
+    font-size: 18px;
+    font-weight: 800;
+    padding: 50px 20px;
+    color: #ffffff;
+  }
+  .law-list {
+    .law-list-items {
+      .law-list-item {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        border-radius: 18px;
+        padding: 20px;
+        align-items: flex-start;
+        border: 0.1px solid gray;
+
+        .law-title {
+          font-size: 16px;
+          font-weight: 800;
+          margin-bottom: 10px;
+        }
+
+        .law-content {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

@@ -10,19 +10,21 @@ const SideBox = styled.div`
 
 const MainDashboardBox = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
-  /* margin: 80px 80px 20px 80px; */
-  margin-bottom: 20px;
+  text-align: center;
+  gap: 10px;
+  margin-bottom: 15px;
   div {
-    width: 170px;
-    height: 170px;
-    /* width: 100%;
-    height: 100%; */
+    width: 160px;
+    height: 110px;
+    text-align: center;
     background-color: #f5f6fc;
     border-radius: 10px;
-    padding: 20px;
-    margin-right: 4px;
+    padding: 20px 0;
     cursor: pointer;
+    flex: 1;
+    min-width: 100px;
   }
   img {
     width: 60px;
@@ -31,11 +33,14 @@ const MainDashboardBox = styled.div`
   }
   p {
     display: flex;
-    justify-content: flex-start;
-    margin: 40px 0 0 8px;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 0;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 18px;
+    width: 100%;
   }
+
   .bankBox {
     background: #ffdddd;
   }
@@ -83,7 +88,7 @@ export function MainDashboard({ func }) {
     navigate('/:id/manager/boardPeople');
   };
   const handleNews = () => {
-    navigate('/:id/manager/news');
+    navigate('/:id/news');
   };
   const handlePeopleList = () => {
     navigate('/:id/manager/peopleList');
@@ -113,15 +118,9 @@ export function MainDashboard({ func }) {
               />
               <p>투자</p>
             </div>
-          </MainDashboardBox>
-          <MainDashboardBox>
-            {/* <div className="taxServiceBox" onClick={handleTaxService}>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
-                alt="국세청"
-              />
-              <p>국세청</p>
-            </div> */}
+            {/* </MainDashboardBox>
+          <MainDashboardBox> */}
+
             <div className="peopleListBox" onClick={handlePeopleList}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-create-list.png`}
@@ -136,8 +135,8 @@ export function MainDashboard({ func }) {
               />
               <p>국회</p>
             </div>
-          </MainDashboardBox>
-          <MainDashboardBox>
+            {/* </MainDashboardBox>
+          <MainDashboardBox> */}
             <div className="newsBox" onClick={handleNews}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-news.png`}
@@ -152,8 +151,8 @@ export function MainDashboard({ func }) {
               />
               <p>국민 신문고</p>
             </div>
-          </MainDashboardBox>
-          <MainDashboardBox>
+            {/* </MainDashboardBox>
+          <MainDashboardBox> */}
             <div className="seatBox" onClick={handleSeat}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-seat.png`}
@@ -168,8 +167,8 @@ export function MainDashboard({ func }) {
               />
               <p>급식표</p>
             </div>
-          </MainDashboardBox>
-          <MainDashboardBox>
+            {/* </MainDashboardBox>
+          <MainDashboardBox> */}
             <div className="scheduleBox">
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-schedule.png`}

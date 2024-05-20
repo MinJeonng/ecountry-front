@@ -1,8 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
 import '../styles/setting.scss';
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 export function CheckInvestment() {
+  //데이터
   // 투자 리스트 - 투자 상품 이름, 단위(ex.kg),
   const [products, setProducts] = useState([
     {
@@ -45,6 +67,34 @@ export function CheckInvestment() {
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     },
   ]);
+  //시간별 수치 변화 - 날짜, 수치 객체 배열
+  const [list, setList] = useState([
+    { date: '2024-05-20', amount: '1' },
+    { date: '2024-05-21', amount: '5' },
+    { date: '2024-05-22', amount: '10' },
+    { date: '2024-05-23', amount: '15' },
+    { date: '2024-05-24', amount: '15' },
+    { date: '2024-05-25', amount: '15' },
+    { date: '2024-05-26', amount: '15' },
+  ]);
+  //날짜 배열
+  const [labels, setLabels] = useState([]);
+  // 수치 배열
+  const [amounts, setAmounts] = useState([]);
+  //날짜 배열 - labels
+  useEffect(() => {
+    const formattedLabels = list.map((item) => {
+      const [year, month, day] = item.date.split('-');
+      return `${month} ${day}`;
+    });
+    setLabels(formattedLabels);
+  }, [list]);
+  //수치 배열 - amounts
+  useEffect(() => {
+    setAmounts(list.map((item) => item.amount));
+  }, [list]);
+  console.log(amounts);
+
   const [openStates, setOpenStates] = useState(
     Array(products.length).fill(false)
   ); // 각 제품에 대한 open 상태 배열
@@ -79,6 +129,67 @@ export function CheckInvestment() {
     }
     newHeight[index] = heightStyle;
     setHeight(newHeight);
+  };
+  //차트 커스텀
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false, // 가로세로 비율을 유지하지 않음
+    aspectRatio: 5,
+    interaction: {
+      intersect: false,
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+          color: 'white',
+        },
+        ticks: {
+          color: 'white',
+          // fontSize: 14,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: 'white',
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        enabled: true,
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+          label: function (context) {
+            return context.parsed.y; // 선 위의 온도만 표시
+          },
+        },
+      },
+      legend: {
+        display: false,
+      },
+    },
+    elements: {
+      point: {
+        radius: 0,
+      },
+    },
+  };
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'amount',
+        data: amounts,
+        borderColor: '#F99417',
+        borderWidth: 2,
+      },
+    ],
   };
 
   return (
@@ -156,6 +267,14 @@ export function CheckInvestment() {
             <div>최신 투자 정보</div>
             <div>{productInfo.filter((item) => item.id === 3)[0].info}</div>
           </div>
+          {/* 차트 */}
+          {height[index].height == '300px' && (
+            <div
+              style={{ width: 600, height: 300, backgroundColor: '#666666' }}
+            >
+              <Line options={options} data={data} />
+            </div>
+          )}
         </div>
       ))}
     </>

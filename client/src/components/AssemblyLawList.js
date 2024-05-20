@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import '../styles/lawList.scss';
 
 export function AssemblyLawList() {
   const [laws, setLaws] = useState([]);
-  const [detail, setDetail] = useState('');
+  // const [detail, setDetail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {

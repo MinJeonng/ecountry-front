@@ -84,7 +84,7 @@ function App() {
           />
 
           <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
-          <Route path="/:id/menager/seatMap" element={<SetSeat />} />
+          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
 
           {/* 공통 페이지 */}

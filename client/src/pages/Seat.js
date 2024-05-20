@@ -37,7 +37,7 @@ export function SetSeat() {
   const getSeat = async () => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/seat/${id}`,
+      url: `${process.env.REACT_APP_HOST}/api/seat/${id}`,
     });
     console.log(res.data.result);
     setColumns(res.data.result);

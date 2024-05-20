@@ -20,7 +20,7 @@ export function AddInvestment({ position }) {
   const getList = async () => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/invest/${id}`,
+      url: `${process.env.REACT_APP_HOST}/api/invest/${id}`,
     });
     console.log(res.data.result);
     setInvestmentList(res.data.result);
@@ -29,7 +29,7 @@ export function AddInvestment({ position }) {
   const sendinvest = async () => {
     const res = await axios({
       method: 'POST',
-      url: `http://localhost:8080/api/invest`,
+      url: `${process.env.REACT_APP_HOST}/api/invest`,
       data: [
         {
           name: investmentName,
@@ -44,7 +44,7 @@ export function AddInvestment({ position }) {
   const updateFunc = async (investId) => {
     const res = await axios({
       method: 'PATCH',
-      url: `http://localhost:8080/api/invest`,
+      url: `${process.env.REACT_APP_HOST}/api/invest`,
       data: {
         id: investId,
         info: investmentInfo,
@@ -56,7 +56,7 @@ export function AddInvestment({ position }) {
   const getStatus = async (investId) => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/invest/status/${investId}`,
+      url: `${process.env.REACT_APP_HOST}/api/invest/status/${investId}`,
     });
     console.log(res.data.result);
     setStatusList(res.data.result);
@@ -65,7 +65,7 @@ export function AddInvestment({ position }) {
   const sendStatus = async (investId) => {
     const res = await axios({
       method: 'POST',
-      url: `http://localhost:8080/api/invest/status`,
+      url: `${process.env.REACT_APP_HOST}/api/invest/status`,
       data: {
         status: value,
         investId,
@@ -76,7 +76,7 @@ export function AddInvestment({ position }) {
   const deleteStatus = async (id, investId) => {
     const res = await axios({
       method: 'DELETE',
-      url: `http://localhost:8080/api/invest/status/${id}`,
+      url: `${process.env.REACT_APP_HOST}/api/invest/status/${id}`,
     });
     getStatus(investId);
   };

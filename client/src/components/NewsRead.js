@@ -26,7 +26,7 @@ export function SetNewsRead() {
     try {
       const res = await axios({
         method: 'GET',
-        url: `http://localhost:8080/api/post/article/${newsId}`,
+        url: `${process.env.REACT_APP_HOST}/api/post/article/${newsId}`,
       });
       console.log(res.data.result);
       if (res.data.result.countryId == id) {
@@ -50,7 +50,7 @@ export function SetNewsRead() {
     }
     const res = await axios({
       method: 'DELETE',
-      url: `http://localhost:8080/api/post/article/${newsId}`,
+      url: `${process.env.REACT_APP_HOST}/api/post/article/${newsId}`,
     });
     if (res.data.success) {
       alert('뉴스 삭제가 완료되었습니다.');

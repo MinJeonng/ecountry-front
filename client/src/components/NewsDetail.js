@@ -57,7 +57,7 @@ export function SetNewsDetail() {
     try {
       const res = await axios({
         method: 'GET',
-        url: `http://localhost:8080/api/post/articles/${id}`,
+        url: `${process.env.REACT_APP_HOST}/api/post/articles/${id}`,
       });
       console.log(res.data.result);
       setNews(res.data.result);

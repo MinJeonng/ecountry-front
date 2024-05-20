@@ -17,7 +17,7 @@ export default function Login() {
     }
 
     await axios
-      .post('http://localhost:8080/api/user/signup', {
+      .post(`${process.env.REACT_APP_HOST}/api/user/signup`, {
         name: name,
         userId: userId,
         pw: pw,

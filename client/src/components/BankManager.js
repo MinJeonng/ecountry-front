@@ -20,14 +20,14 @@ export function AddSavings() {
   const getList = async () => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/account/${id}`,
+      url: `${process.env.REACT_APP_HOST}/api/account/${id}`,
     });
     setSavingList(res.data.result);
   };
   const sendList = async () => {
     const res = await axios({
       method: 'POST',
-      url: `http://localhost:8080/api/account`,
+      url: `${process.env.REACT_APP_HOST}/api/account`,
       data: {
         countryId: id,
         name: savingName,
@@ -41,7 +41,7 @@ export function AddSavings() {
   const updateFunc = async (accountId) => {
     const res = await axios({
       method: 'PATCH',
-      url: `http://localhost:8080/api/account`,
+      url: `${process.env.REACT_APP_HOST}/api/account`,
       data: {
         id: accountId,
         name: savingName,
@@ -167,7 +167,7 @@ export function AddSavings() {
     }
     const res = await axios({
       method: 'PATCH',
-      url: `http://localhost:8080/api/account/delete/${accountId}`,
+      url: `${process.env.REACT_APP_HOST}/api/account/delete/${accountId}`,
     });
     console.log(res.data.message);
     if (res.data.success) {

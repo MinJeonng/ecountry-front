@@ -119,7 +119,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
   const sendNews = async () => {
     const res = await axios({
       method: 'POST',
-      url: `http://localhost:8080/api/post/article`,
+      url: `${process.env.REACT_APP_HOST}/api/post/article`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },

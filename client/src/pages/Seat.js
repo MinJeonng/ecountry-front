@@ -12,7 +12,6 @@ export function SetSeat() {
   // 열과 행의 정보를 담는 state
   const [columns, setColumns] = useState([]);
   const [tableRows, setTableRows] = useState([]);
-
   const [editType, setEditType] = useState('student');
   const [isEditing, setIsEditing] = useState(false);
 

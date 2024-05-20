@@ -1360,7 +1360,7 @@ export function Setting9() {
       // 국가 생성
       const res = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/country`,
+        url: `${process.env.REACT_APP_HOST}/api/country`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -1388,7 +1388,7 @@ export function Setting9() {
           method: 'POST',
           // 국가 생성 후 return된 id 값으로 수정해야함
           // 비밀번호 값 추가
-          url: `http://localhost:8080/api/student/${res.data.result.id}`,
+          url: `${process.env.REACT_APP_HOST}/api/student/${res.data.result.id}`,
           data: data2,
         });
         console.log('학생 등록 결과 : ' + res2.data.success);
@@ -1404,7 +1404,7 @@ export function Setting9() {
       });
       const res3 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/seat`,
+        url: `${process.env.REACT_APP_HOST}/api/seat`,
         data: data3,
       });
       console.log('자리 배치 등록 결과 : ' + res3.data.success);
@@ -1427,7 +1427,7 @@ export function Setting9() {
       console.log(data4);
       const res4 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/job`,
+        url: `${process.env.REACT_APP_HOST}/api/job`,
         data: data4,
       });
       console.log('직업 리스트 등록 결과 : ' + res4.data.success);
@@ -1441,7 +1441,7 @@ export function Setting9() {
       });
       const res5 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/rule`,
+        url: `${process.env.REACT_APP_HOST}/api/rule`,
         data: data5,
       });
       console.log('규칙 리스트 등록 결과 : ' + res5.data.success);
@@ -1473,7 +1473,7 @@ export function Setting9() {
       console.log(data6);
       const res6 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/tax`,
+        url: `${process.env.REACT_APP_HOST}/api/tax`,
         data: data6,
       });
       console.log('세금 규칙 등록 결과 : ' + res6.data.success);

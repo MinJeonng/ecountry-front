@@ -14,7 +14,7 @@ export default function Login() {
 
   const loginFunc = async () => {
     await axios
-      .post('http://localhost:8080/api/user/login', { userId, pw })
+      .post(`${process.env.REACT_APP_HOST}/api/user/login`, { userId, pw })
       .then((res) => {
         alert(res.data.message);
         if (res.data.success) {

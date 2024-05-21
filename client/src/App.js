@@ -81,7 +81,18 @@ function App() {
             element={<SetInvestment position="투자 상품 관리" />}
           />
 
-          <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
+          <Route
+            path="/:id/boardPeople"
+            element={<SetBoardPeople position="리스트" />}
+          />
+          <Route
+            path="/:id/boardPeople/write"
+            element={<SetBoardPeople position="작성" />}
+          />
+          <Route
+            path="/:id/boardPeople/read/:contentId"
+            element={<SetBoardPeople position="읽기" />}
+          />
 
           <Route path="/:id/news" element={<SetNews position="리스트" />} />
           <Route path="/:id/news/write" element={<SetNews position="작성" />} />

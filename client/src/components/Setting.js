@@ -278,14 +278,13 @@ export function Setting3() {
   const [directInput, setDirectInput] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [password, setPassword] = useState(null);
-  // const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState(false);
   const [attendees, setAttendees] = useState([]);
   const [attendanceNumber, setAttendanceNumber] = useState('');
   const [name, setName] = useState('');
   const [correct, setCorrect] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  // const [isAddOpen, setIsAddOpen] = useState(false);
 
   const studentInfoState = useSelector((state) => state.setting3);
 
@@ -295,22 +294,30 @@ export function Setting3() {
   }, [studentInfoState]);
 
   const beforeSetting = () => {
-    navigate('/setting/countryInfo');
-    dispatch(
-      studentInfo({
-        password: password,
-        studentList: attendees,
-      })
-    );
+    if (password !== null) {
+      navigate('/setting/countryInfo');
+      dispatch(
+        studentInfo({
+          password: password,
+          studentList: attendees,
+        })
+      );
+    } else {
+      toast.error('학생들의 초기 비밀번호를 설정하세요', { autoClose: 1300 });
+    }
   };
   const nextSetting = () => {
-    navigate('/setting/seatingMap');
-    dispatch(
-      studentInfo({
-        password: password,
-        studentList: attendees,
-      })
-    );
+    if (password !== null) {
+      navigate('/setting/seatingMap');
+      dispatch(
+        studentInfo({
+          password: password,
+          studentList: attendees,
+        })
+      );
+    } else {
+      toast.error('학생들의 초기 비밀번호를 설정하세요', { autoClose: 1300 });
+    }
   };
 
   const handleCheckBtn = () => {
@@ -318,13 +325,28 @@ export function Setting3() {
   };
 
   const handleCheck = () => {
-    if (attendanceNumber && name && password) {
-      setAttendees([...attendees, { attendanceNumber, name }]);
-      setAttendanceNumber('');
-      setName('');
-      setPassword('');
+    if (password !== null) {
+      setCheckPassword(true);
+    }
+    if (checkPassword) {
+      if (attendanceNumber && name) {
+        setAttendees([...attendees, { attendanceNumber, name }]);
+        setAttendanceNumber('');
+        setName('');
+      } else {
+        toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
+      }
     } else {
-      toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
+      toast.error('학생들의 초기 비밀번호를 설정하세요', {
+        autoClose: 1300,
+      });
+    }
+  };
+  const handleCheckPassword = () => {
+    if (password == null) {
+      toast.error('비밀번호를 입력해주세요.', { autoClose: 1300 });
+    } else {
+      setCheckPassword(true);
     }
   };
 
@@ -429,6 +451,17 @@ export function Setting3() {
                       toast.error('비밀번호는 4자리로 설정해주세요.');
                     }
                   }}
+                />
+                {checkPassword && (
+                  <div style={{ fontSize: '10px', color: 'red' }}>
+                    비밀번호 설정이 완료되었습니다.
+                  </div>
+                )}
+
+                <ConfirmBtn
+                  onClick={handleCheckPassword}
+                  btnName="확인"
+                  backgroundColor="#bacd92"
                 />
               </div>
               {attendees.length > 0 &&
@@ -1094,7 +1127,7 @@ export function Setting7() {
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
-    { label: `${moneyUnit} (화폐단위)`, value: moneyUnit },
+    { label: `${moneyUnit} (화폐단위)`, value: 'moneyUnit' },
     { label: `% (월급기준)`, value: '%' },
   ];
 
@@ -1116,14 +1149,20 @@ export function Setting7() {
     setCustomUnit(e.target.value);
   };
 
-  const handleSelectedUnit = (e) => {
-    setSelectedUnit(e.target.value);
-    if (selectedUnit == '%') {
+  const handleSelectChange = (e) => {
+    // %는 0 moneyUnit은 1
+    const value = e.target.value;
+    setSelectedUnit(value);
+  };
+  useEffect(() => {
+    if (selectedUnit === '%') {
       setDivision(0);
+      console.log('%, 0');
     } else {
       setDivision(1);
+      console.log('unit, 1');
     }
-  };
+  }, [selectedUnit]);
 
   const beforeSetting = () => {
     navigate('/setting/law');
@@ -1250,7 +1289,7 @@ export function Setting7() {
           <select
             className="set-input"
             value={selectedUnit}
-            onChange={handleSelectedUnit}
+            onChange={handleSelectChange}
           >
             <option value="" disabled selected style={{ color: '#a5a5a5' }}>
               선택 및 입력해주세요

@@ -16,36 +16,43 @@ export function SetSeat() {
   const [isEditing, setIsEditing] = useState(false);
 
   const [selectCol, setSelectCol] = useState('');
+  const [studentList, setStudentList] = useState([
+    { id: 1, name: '어쩌구' },
+    { id: 2, name: '저쩌구' },
+  ]);
 
-  const getSeat = () => {
-    const dummyColumns = [
-      { id: 1, rowNum: 1 },
-      { id: 2, rowNum: 2 },
-      { id: 3, rowNum: 3 },
-    ];
-
-    const dummyTableRows = [
-      { columnId: 1, rowId: '1', ownerId: '홍길동', studentsId: '임꺽정' },
-      { columnId: 1, rowId: '2', ownerId: '홍길동', studentsId: '홍길동' },
-      { columnId: 1, rowId: '3', ownerId: '', studentsId: '' },
-      { columnId: 2, rowId: '1', ownerId: '', studentsId: '' },
-      { columnId: 2, rowId: '2', ownerId: '', studentsId: '' },
-      { columnId: 3, rowId: '1', ownerId: '', studentsId: '' },
-      { columnId: 3, rowId: '2', ownerId: '', studentsId: '' },
-    ];
-
-    setColumns(dummyColumns);
-    setTableRows(dummyTableRows);
+  const getStudent = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/student/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
   };
 
-  // const getSeat = async () => {
-  //   const res = await axios({
-  //     method: 'GET',
-  //     url: `http://localhost:8080/api/seat/${id}`,
-  //   });
-  //   console.log(res.data.result);
-  //   setColumns(res.data.result);
-  // };
+  const setSeatStatus = () => {
+    setTableRows([
+      ...tableRows,
+      {
+        rowNum: '몇열인지 넣어주기',
+        colNum: '몇번째줄인지',
+        studentId: '학생 아이디값',
+        isOwner: true,
+      },
+    ]);
+  };
+
+  const getSeat = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `http://localhost:8080/api/seat/${id}`,
+    });
+    console.log(res.data.result);
+    setColumns(res.data.result);
+  };
 
   const edit = (columnId, rowId, event, type) => {
     const newValue = event.target.value;

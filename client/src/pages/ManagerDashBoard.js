@@ -1,8 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import '../styles/manager_dash.scss';
-import styled from 'styled-components';
-import ProfileImage from '../components/ProfileImage';
 import { Link, useLocation } from 'react-router-dom';
 import Template from '../components/Template';
 import { ManagerMainHeader } from '../components/Headers';

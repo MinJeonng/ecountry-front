@@ -82,13 +82,22 @@ function App() {
             path="/:id/manager/investment"
             element={<SetInvestment position="투자 상품 관리" />}
           />
-
-          <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
           <Route path="/:id/menager/seatMap" element={<SetSeat />} />
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
 
           {/* 공통 페이지 */}
-
+          <Route
+            path="/:id/boardPeople"
+            element={<SetBoardPeople position="리스트" />}
+          />
+          <Route
+            path="/:id/boardPeople/write"
+            element={<SetBoardPeople position="작성" />}
+          />
+          <Route
+            path="/:id/boardPeople/read/:contentId"
+            element={<SetBoardPeople position="읽기" />}
+          />
           <Route path="/:id/login" element={<StudentLogin />} />
           <Route path="/:id/Mypage" element={<StudentMyPage />} />
           <Route path="/:id/news" element={<SetNews position="리스트" />} />
@@ -97,6 +106,8 @@ function App() {
             path="/:id/news/read/:newsId"
             element={<SetNews position="읽기" />}
           />
+          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
+          <Route path="/:id/manager/peopleList" element={<PeopleList />} />
 
           <Route
             path="/:id/assembly"

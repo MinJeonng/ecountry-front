@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../styles/background.scss';
 import '../styles/loading.scss';
 
 export default function Loading({ countryid }) {

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const SideBox = styled.div`
   width: 100%;
@@ -74,30 +74,31 @@ const MainDashboardBox = styled.div`
 `;
 
 export function MainDashboard({ func }) {
+  const { id } = useParams();
   const navigate = useNavigate();
   const handleBank = () => {
-    navigate('/:id/manager/bank');
+    navigate(`/${id}/manager/bank`);
   };
   const handleInvestment = () => {
-    navigate('/:id/manager/investment');
+    navigate(`/${id}/manager/investment`);
   };
   const handleAssembly = () => {
-    navigate('/:id/manager/assembly');
+    navigate(`/${id}/manager/assembly`);
   };
   const handleBoardPeople = () => {
-    navigate('/:id/manager/boardPeople');
+    navigate(`/${id}/manager/boardPeople`);
   };
   const handleNews = () => {
-    navigate('/:id/news');
+    navigate(`/${id}/news`);
   };
   const handlePeopleList = () => {
-    navigate('/:id/manager/peopleList');
+    navigate(`/${id}/manager/peopleList`);
   };
   const handleSeat = () => {
-    navigate('/:id/manager/seat');
+    navigate(`/${id}/manager/seat`);
   };
   const handleTaxService = () => {
-    navigate('/:id/manager/taxService');
+    navigate(`/${id}/manager/taxService`);
   };
   return (
     <>

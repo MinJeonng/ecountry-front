@@ -66,7 +66,7 @@ export function AddSavings() {
   useEffect(() => {
     // 등록 날짜를 오늘 날짜로 설정
     setRegisterDate(new Date());
-    // getList();
+    getList();
   }, []);
 
   const handleAddSavings = () => {
@@ -75,7 +75,7 @@ export function AddSavings() {
       return;
     }
 
-    // sendList();
+    sendList();
 
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
@@ -227,8 +227,7 @@ export function AddSavings() {
                 <img
                   className="resetBtn"
                   src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                  // onClick={(e) => deleteBtn(e, saving.id)}
-                  onClick={deleteBtn(index)}
+                  onClick={(e) => deleteBtn(e, saving.id)}
                   alt="삭제"
                 />
               </div>
@@ -263,7 +262,7 @@ export function AddSavings() {
               <ConfirmBtn
                 onClick={() => {
                   handleCloseAccordion();
-                  // updateFunc(saving.id);
+                  updateFunc(saving.id);
                 }}
                 btnName="업데이트"
                 backgroundColor="#61759f"

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-export default function useAuth({ id }) {
+// props값으로 countryId를 전달하면 사용 가능 여부를 반환
+export default function useAuth(id) {
   const [userInfo, setUserInfo] = useState(0);
   const [available, setAvaiable] = useState(false);
 
@@ -17,13 +18,13 @@ export default function useAuth({ id }) {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        console.log(res.data);
         // 토큰이 유효하지 않으면 localStorage 삭제
         res.data.success
           ? setUserInfo(res.data.result)
           : localStorage.removeItem('token');
 
         if (id && !res.data.result.isStudent) {
+          let result = res.data.result;
           const res2 = await axios({
             method: 'GET',
             url: `${process.env.REACT_APP_HOST}/api/user`,
@@ -33,11 +34,13 @@ export default function useAuth({ id }) {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           });
+          result.authority = false;
           res2.data.result.forEach((country) => {
             if (country.id == id) {
-              setAvaiable(true);
+              result.authority = true;
             }
           });
+          setUserInfo(result);
         } else if (id && res.data.result.isStudent) {
           const res3 = await axios({
             method: 'GET',
@@ -48,7 +51,6 @@ export default function useAuth({ id }) {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           });
-          console.log(res3);
         }
       } catch {
         localStorage.removeItem('token');

@@ -16,6 +16,7 @@ import 'react-quill/dist/quill.core.css';
 import '../styles/test.scss';
 
 import { storage } from '../config/Firebase';
+import useAuth from '../hooks/useAuth';
 
 // Quill.register('modules/imageResize', ImageResize);
 export const formats = [
@@ -109,65 +110,68 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const quillRef = useRef();
+  const [userInfo, setUserInfo] = useAuth(id);
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const [postId, setPostId] = useState();
+  const [postId, setPostId] = useState(0);
   //html형식 그대로 넣는거때매 필요
   const [fetchedContent, setFetchedContent] = useState('');
 
   //뉴스 추가
   const sendNews = async () => {
-    const res = await axios({
-      method: 'POST',
-      url: `${process.env.REACT_APP_HOST}/api/post/article`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': `application/json`,
-        'ngrok-skip-browser-warning': '69420',
-      },
-      data: {
-        postTitle: title,
-        content: content,
-        countryId: id,
-      },
-    });
-    if (res.data.success) {
-      toast('글이 등록되었습니다.');
-      // navigate(`${countryId}/news/read/${postId}`);
+    let data = {};
+    if (postId) {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/post/article`,
+        data: {
+          title: title,
+          content: content,
+          id: postId,
+        },
+      });
+      if (res.data.success) {
+        toast('글이 등록되었습니다.');
+      }
+    } else {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/post/article`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: {
+          title: title,
+          content: content,
+          countryId: id,
+        },
+      });
+      if (res.data.success) {
+        toast('글이 등록되었습니다.');
+      }
     }
   };
   //뉴스 조회
-  const getNews = async () => {
-    const res = await axios({
-      method: 'GET',
-      url: `http://localhost:8080/api/post/article`,
-      headers: {
-        'Content-Type': `application/json`,
-        'ngrok-skip-browser-warning': '69420',
-      },
-      params: { id: postId },
-    });
-    const { content, postTitle } = res.data.result;
-
-    document.querySelector('.ql-editor').innerHTML = content;
-    localStorage.removeItem('postId');
+  const getNews = async (newsId) => {
+    if (userInfo.authority) {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/post/article/${newsId}`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      setTitle(res.data.result.title);
+      document.querySelector('.ql-editor').innerHTML = res.data.result.content;
+      localStorage.removeItem('postId');
+    }
   };
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      // setUser();
-    } else {
-      // alert('로그인 후 이용해주세요.');
-      // navigate('/signup');
-      // return;
-    }
-    if (localStorage.getItem('postId')) {
-      setPostId(Number(localStorage.getItem('postId')));
-    }
-    if (quillRef.current) {
-      const editor = quillRef.current.getEditor();
-      const toolbar = editor.getModule('toolbar');
-      toolbar.addHandler('image', () => imageHandler(quillRef, storage));
-    }
+    setUserInfo();
+    console.log(userInfo);
   }, []);
   const handleNews = () => {
     if (!content.trim() || content.trim() === '<p><br></p>') {
@@ -175,15 +179,24 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
       return;
     }
     try {
-      //db에 들어가는 로직
       sendNews();
-      // navigate('/:id/manager/news/:id');
+      document.location.href = `/${id}/news`;
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {}, []); // mount 시에만 실행
+  useEffect(() => {
+    if (localStorage.getItem('postId')) {
+      getNews(localStorage.getItem('postId'));
+      setPostId(Number(localStorage.getItem('postId')));
+    }
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const toolbar = editor.getModule('toolbar');
+      toolbar.addHandler('image', () => imageHandler(quillRef, storage));
+    }
+  }, [userInfo]);
 
   return (
     <>

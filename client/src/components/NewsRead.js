@@ -19,8 +19,7 @@ export function SetNewsRead() {
   const [writeTime, setWriteTime] = useState('2024. 5. 16. 오후 03:46');
   const [showBox, setShowBox] = useState(false);
   const [writer, setWriter] = useState('');
-  const [formattedTime, setFormattedTime] = useState('');
-  const [correction, setCorrection] = useState(false);
+  const textareaRef = useRef(null);
 
   const getNews = async () => {
     try {
@@ -48,6 +47,11 @@ export function SetNewsRead() {
     }
   };
 
+  const editNews = () => {
+    localStorage.setItem('postId', newsId);
+    navigate(`/${id}/news/write`);
+  };
+
   const deleteNews = async () => {
     if (!window.confirm('뉴스를 삭제하시겠습니까?')) {
       return;
@@ -68,46 +72,19 @@ export function SetNewsRead() {
 
   useEffect(() => {
     getNews();
-    const intervalId = setInterval(() => {
-      const currentTime = new Date();
-      const newFormattedTime = `${currentTime.toLocaleDateString()} ${currentTime.toLocaleTimeString(
-        [],
-        {
-          hour: '2-digit',
-          minute: '2-digit',
-        }
-      )}`;
-      setFormattedTime(newFormattedTime);
-    }, 60000); // 1분(60초)마다 실행
-
-    return () => clearInterval(intervalId);
   }, []); // mount 시에만 실행
 
   const handleImageChange = (event) => {
     const imageFile = event.target.files[0];
     setSelectedImage(imageFile);
   };
-  const handleNews = () => {
-    setCorrection(false);
-    // try {
-    //   //작성시간
-    //   setWriteTime(formattedTime);
-    //   //db에 들어가는 로직
-    //   alert('글이 등록되었습니다.');
-    //   navigate('/:id/manager/news/:id');
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
+  const handleNews = () => {};
   //삭제, 수정 버튼
   const handleSelectBox = () => {
     setShowBox(!showBox);
   };
-  const textareaRef = useRef(null);
   useEffect(() => {
-    const textarea = textareaRef.current;
-    textarea.style.height = 'auto'; // 텍스트가 삭제될 때 높이 재조정을 위해 초기화
-    textarea.style.height = `${textarea.scrollHeight}px`; // 콘텐츠 높이에 맞춰 조정
+    document.querySelector('.newsContent').innerHTML = newsContent;
   }, [newsContent]);
 
   return (
@@ -172,7 +149,7 @@ export function SetNewsRead() {
                     boxSizing: 'border-box',
                     color: 'white',
                   }}
-                  onClick={() => setCorrection(true)}
+                  onClick={editNews}
                 >
                   수정
                 </div>
@@ -180,90 +157,29 @@ export function SetNewsRead() {
             )}
           </div>
         </div>
-        {/* <div style={{ marginBottom: '20px', fontSize: '11px' }}>
-          {formattedTime}
-        </div> */}
-        <label
-          htmlFor="fileInput"
-          style={{
-            border: 'none',
-            textAlign: 'center',
-            lineHeight: '200px',
-            cursor: 'pointer',
-            marginBottom: '20px',
-            position: 'relative',
-            borderRadius: '18px',
-            height: '200px',
-            display: 'inline-block',
-            overflow: 'hidden',
-          }}
-        >
-          {selectedImage ? (
-            <img
-              src={selectedImage}
-              alt="Uploaded"
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            />
-          ) : (
-            <div
-              style={{
-                width: '225px',
-                height: '200px',
-              }}
-            >
-              이미지가 없는 상태
-            </div>
-          )}
-        </label>
-        {correction && (
-          <input
-            id="fileInput"
-            type="file"
-            onChange={handleImageChange}
-            accept="image/*"
-            style={{ display: 'none' }}
-          />
-        )}
 
         {/* 뉴스 제목 */}
-        <input
-          type="text"
-          placeholder="뉴스 제목을 입력하세요."
-          value={newsTitle}
-          onChange={(e) => setNewsTitle(e.target.value)}
+        <div
           style={{
             marginBottom: '20px',
             padding: '10px',
             border: 'none',
             borderRadius: '18px',
           }}
-          disabled={!correction}
-        />
+        >
+          {newsTitle}
+        </div>
         {/* 뉴스 기사 */}
-        <textarea
-          ref={textareaRef}
-          placeholder="뉴스 기사를 입력하세요."
-          value={newsContent}
-          onChange={(e) => setNewsContent(e.target.value)}
+        <div
+          className="newsContent"
           style={{
             minHeight: '200px',
             padding: '10px',
             resize: 'none',
             border: 'none',
             borderRadius: '18px',
-            overflow: 'hidden',
           }}
-          disabled={!correction}
-        />
-        <div style={{ height: '10%' }}></div>
-        {/* 저장 버튼 */}
-        {correction && (
-          <ConfirmBtn
-            btnName="업데이트"
-            backgroundColor="#61759f"
-            onClick={handleNews}
-          ></ConfirmBtn>
-        )}
+        ></div>
       </div>
     </form>
   );

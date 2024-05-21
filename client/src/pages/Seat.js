@@ -21,7 +21,9 @@ export function SetSeat() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSeatMapVisible, setIsSeatMapVisible] = useState(false);
 
-const [selectCol, setSelectCol] = useState('');
+  const [tableRows, setTableRows] = useState();
+
+  const [selectCol, setSelectCol] = useState('');
   const [studentList, setStudentList] = useState([
     { id: 1, name: '어쩌구' },
     { id: 2, name: '저쩌구' },
@@ -59,8 +61,6 @@ const [selectCol, setSelectCol] = useState('');
     console.log(res.data.result);
     setColumns(res.data.result);
   };
-
-
 
   // 편집 함수
   const edit = (columnId, rowId, event, type) => {

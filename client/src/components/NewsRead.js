@@ -88,7 +88,7 @@ export function SetNewsRead() {
   }, [newsContent]);
 
   return (
-    <form className="box-style">
+    <>
       <div
         className="reset"
         style={{
@@ -157,30 +157,50 @@ export function SetNewsRead() {
             )}
           </div>
         </div>
-
         {/* 뉴스 제목 */}
         <div
           style={{
-            marginBottom: '20px',
-            padding: '10px',
             border: 'none',
             borderRadius: '18px',
+            color: '#666666',
+            fontSize: '20px',
+            paddingLeft: '5px',
+            marginTop: '30px',
+            marginBottom: '10px',
           }}
         >
           {newsTitle}
         </div>
-        {/* 뉴스 기사 */}
         <div
-          className="newsContent"
           style={{
-            minHeight: '200px',
-            padding: '10px',
-            resize: 'none',
-            border: 'none',
-            borderRadius: '18px',
+            display: 'flex',
+            flexDirection: 'row',
+            color: '#666666',
+            paddingLeft: '5px',
+            fontSize: '14px',
+            marginBottom: '10px',
           }}
+        >
+          <p>{writeTime}</p>
+          <p style={{ paddingLeft: '14px' }}>글쓴이 : {writer}</p>
+        </div>
+        <div
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10px' }}
         ></div>
+        {/* 뉴스 기사 */}
+        <div style={{ marginTop: '20px' }}>
+          <div
+            className="newsContent"
+            style={{
+              minHeight: '200px',
+              padding: '10px',
+              resize: 'none',
+              border: 'none',
+              color: '#666666',
+            }}
+          ></div>
+        </div>
       </div>
-    </form>
+    </>
   );
 }

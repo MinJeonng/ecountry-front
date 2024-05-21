@@ -96,6 +96,7 @@ export function BoardPeopleWrite() {
             position: 'relative',
           }}
         >
+          {/* 뉴스 제목 */}
           <div
             style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
           >

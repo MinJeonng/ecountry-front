@@ -26,7 +26,6 @@ export function SetNewsDetail() {
           'ngrok-skip-browser-warning': '69420',
         },
       });
-      console.log(res.data.result);
       setNews(res.data.result);
     } catch {
       // 프론트 완료 후 작성
@@ -61,14 +60,40 @@ export function SetNewsDetail() {
   const truncateText = (text, maxLength = 100) => {
     return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
   };
+  const handleWrite = () => {
+    navigate(`/${id}/news/write`);
+  };
 
   return (
     <>
       {/* <div className="content"> */}
       <div>
-        <div className="newsHead" style={{ marginBottom: '10%' }}>
-          뉴스
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div
+            className="newsHead"
+            style={{ color: '#666666', marginBottom: '10px' }}
+          >
+            뉴스
+          </div>
         </div>
+        <div
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+        ></div>
+        <p align="right" style={{ marginBottom: '10px', fontSize: '0.8rem' }}>
+          <button
+            onClick={handleWrite}
+            style={{
+              all: 'unset',
+              color: 'white',
+              backgroundColor: '#bacd92',
+              padding: '4px 10px 4px 10px',
+              borderRadius: '8px',
+            }}
+          >
+            작성
+          </button>
+        </p>
+
         {news.length !== 0 ? (
           <div className="newsInfo">
             {/* {news.map((item) => (
@@ -96,11 +121,11 @@ export function SetNewsDetail() {
               display: 'flex',
               flexDirection: 'row',
               position: 'relative',
-              marginBottom: '10px',
+              marginBottom: '5%',
               borderRadius: '18px',
-              padding: '5%',
+              padding: '4%',
               alignItems: 'center',
-              border: '0.1px solid gray',
+              border: '0.5px solid #e2d9d9',
             }}
             onClick={() => navigate(`/${id}/news/read/${news.id}`)}
           >
@@ -121,7 +146,7 @@ export function SetNewsDetail() {
             </p>
           </div>
         ))}
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <div style={{ marginTop: '10%', textAlign: 'center' }}>
           {/* 이전 페이지 그룹 버튼 */}
           <button
             onClick={() =>

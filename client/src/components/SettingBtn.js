@@ -7,7 +7,7 @@ const StyledConfirmBtn = styled.div`
   justify-content: center;
 `;
 
-export function ConfirmBtn({ onClick, btnName, backgroundColor }) {
+export function ConfirmBtn({ onClick, btnName, backgroundColor, width }) {
   const handleClick = (e) => {
     e.preventDefault(); // 기본 동작 방지
     onClick(); // 부모 컴포넌트에서 전달된 onClick 함수 실행
@@ -20,7 +20,7 @@ export function ConfirmBtn({ onClick, btnName, backgroundColor }) {
           className="confirm-btn"
           onClick={handleClick}
           type="button"
-          style={{ background: backgroundColor }}
+          style={{ background: backgroundColor, width: width }}
         >
           {btnName}
         </button>

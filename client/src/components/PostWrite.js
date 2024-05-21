@@ -1,15 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import ReactQuill, { Quill } from 'react-quill';
-import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
-import ImageResize from '@looop/quill-image-resize-module-react';
-import 'react-quill/dist/quill.snow.css';
-import 'react-quill/dist/quill.core.css'; // 이 위치로 옮겼습니다.
-import '../styles/test.scss';
-
+import { ConfirmBtn } from './SettingBtn';
+import { useNavigate, useParams } from 'react-router-dom';
+import ReactQuill, { Quill } from 'react-quill';
 import { storage } from '../config/Firebase';
-import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
+import { toast, ToastContainer } from 'react-toastify';
+// import ImageResize from '@looop/quill-image-resize-module-react';
+import ImageResize from 'quill-image-resize-module-react';
+import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css';
+import '../styles/setting.scss';
+import '../styles/test.scss';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -34,7 +37,9 @@ export const formats = [
   'width',
   'height',
   'float',
+  'code-block',
 ];
+
 const imageHandler = (quillRef, storage) => {
   const input = document.createElement('input');
   input.setAttribute('type', 'file');
@@ -45,9 +50,15 @@ const imageHandler = (quillRef, storage) => {
     const file = input.files[0];
     // 현재 커서 위치 저장
     const range = editor.getSelection();
-    // 서버에 올려질때까지 표시할 로딩 placeholder 삽입
-    editor.insertEmbed(range.index, 'image', `/images/loading.gif`);
 
+    // 이미지 파일을 배열에 저장
+    // imageFiles.push({ file, range });
+
+    //일단 리사이즈 후 저장
+    // const resizedImage = await resizeImage(file);
+    // imageFiles.push({ file: resizedImage, range });
+
+    editor.insertEmbed(range.index, 'image', `/images/loading2.gif`);
     try {
       // 파일명을 "image/Date.now()"로 저장
       const storageRef = ref(storage, `image/${Date.now()}`);
@@ -71,274 +82,184 @@ const imageHandler = (quillRef, storage) => {
 const modules = {
   toolbar: {
     container: [
-      [{ header: [1, 2, 3, 4, false] }], // header 설정
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'], // 굵기, 기울기, 밑줄 등 부가 tool 설정
+      [{ header: [1, 2, 3, 4, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [
         { list: 'ordered' },
         { list: 'bullet' },
         { indent: '-1' },
         { indent: '+1' },
-      ], // 리스트, 인덴트 설정
-      ['link', 'image'], // 링크, 이미지, 비디오 업로드 설정
-      [{ align: [] }, { color: [] }, { background: [] }], // 정렬, 글자 색, 글자 배경색 설정
-      ['clean'], // toolbar 설정 초기화 설정
+      ],
+      ['link', 'image'],
+      [{ align: [] }, { color: [] }, { background: [] }],
+      ['clean'],
     ],
-
-    // 핸들러 설정
     handlers: {
-      image: imageHandler, // 이미지 tool 사용에 대한 핸들러 설정
-    },
-
-    // 이미지 크기 조절
-    imageResize: {
-      displayStyles: {
-        backgroundColor: 'black',
-        border: 'none',
-        color: 'white',
+      image: function () {
+        imageHandler(this.quill, storage);
       },
-      modules: ['Resize', 'DisplaySize', 'Toolbar'],
     },
+  },
+  imageResize: {
+    displayStyles: {
+      backgroundColor: 'black',
+      border: 'none',
+      color: 'white',
+    },
+    parchment: Quill.import('parchment'),
+    modules: ['Resize', 'DisplaySize', 'Toolbar'],
   },
 };
 
-function QuillEditor({ placeholder, value, ...rest }) {
+export function SetPostWrite({ placeholder, value, ...rest }) {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const quillRef = useRef();
-  const [user, setUser] = useAuth();
-  const [blog, setBlog] = useState(false);
+  const quillRef = useRef(null);
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const [hashtag, setHashtag] = useState('');
-  const [category, setCategory] = useState('');
-  const [categoryList, setCategoryList] = useState([]);
   const [postId, setPostId] = useState();
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
-  }, []);
 
-  const getCategory = async () => {
+  //뉴스 추가
+  const sendNews = async () => {
     const res = await axios({
-      method: 'GET',
+      method: 'POST',
+      url: `${process.env.REACT_APP_HOST}/api/post/article`,
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
-      url: `${process.env.REACT_APP_HOST}/api/blog/getCategory`,
-      params: { memberId: user.id },
-    });
-    setCategoryList(res.data.result);
-  };
-  const addFunc = async () => {
-    if (!content.trim() || content.trim() === '<p><br></p>') {
-      alert('내용을 입력해주세요');
-      return;
-    }
-    const findBlog = await axios({
-      method: 'GET',
-      url: `${process.env.REACT_APP_HOST}/api/blog/find`,
-      headers: {
-        'Content-Type': `application/json`,
-        'ngrok-skip-browser-warning': '69420',
-      },
-      params: { memberId: user.id },
-    });
-    if (findBlog.data.result) {
-      const categoryId = () => {
-        if (category === 'none') {
-          return null;
-        }
-        return Number(category);
-      };
-      const data = {
+      data: {
         postTitle: title,
         content: content,
-        blogId: findBlog.data.result.id,
-        hashtag: hashtag.split(', ').filter((val) => val !== ''),
-        categoryId: categoryId(),
-      };
-      if (postId) {
-        data.id = postId;
-      }
-      const res = await axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_HOST}/api/post/write`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-        data,
-      });
-      if (res.data.success) {
-        alert('게시글 작성이 완료되었습니다.');
-        navigate(`/blog/${user.id}/${res.data.result.id}`);
-      }
-    } else {
-      alert('블로그 생성 후 게시글 작성이 가능합니다.');
-      navigate('/setting/blog');
+        countryId: id,
+      },
+    });
+    if (res.data.success) {
+      toast('글이 등록되었습니다.');
+      // navigate(`${countryId}/news/read/${postId}`);
     }
   };
-  const getPost = async () => {
+  //뉴스 조회
+  const getNews = async () => {
     const res = await axios({
       method: 'GET',
-      url: `${process.env.REACT_APP_HOST}/api/post/find`,
+      url: `http://localhost:8080/api/post/article`,
       headers: {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
       params: { id: postId },
     });
-    const { categoryId, content, postTitle } = res.data.result;
-    let newString;
-    res.data.result.hashtag.map((val, idx) => {
-      if (idx > 0) {
-        newString += `, ${val}`;
-        setHashtag(newString);
-      } else {
-        newString = val;
-        setHashtag(newString);
-      }
-      return;
-    });
-    setTitle(postTitle);
-    if (categoryId) {
-      setCategory(String(categoryId));
-    }
+    const { content, title } = res.data.result;
+
     document.querySelector('.ql-editor').innerHTML = content;
     localStorage.removeItem('postId');
-  };
-  const checkKeyCode = (e) => {
-    const kcode = e.keyCode;
-    if (kcode === 32) {
-      setHashtag(hashtag + ', #');
-    } else if (kcode === 13) {
-      setHashtag(hashtag + ', #');
-    }
-  };
-  const changeFunc = (e) => {
-    let newHashtag = e.target.value.replace(/\s$/, '');
-    setHashtag(newHashtag);
-  };
-  const focusFunc = () => {
-    if (!hashtag) {
-      setHashtag('#');
-    }
-  };
-  const focusOut = () => {
-    if (hashtag === '#') {
-      setHashtag('');
-    }
   };
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      setUser();
+      // setUser();
     } else {
-      alert('로그인 후 이용해주세요.');
-      navigate('/signup');
-      return;
+      // alert('로그인 후 이용해주세요.');
+      // navigate('/signup');
+      // return;
     }
     if (localStorage.getItem('postId')) {
       setPostId(Number(localStorage.getItem('postId')));
     }
+
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
       const toolbar = editor.getModule('toolbar');
       toolbar.addHandler('image', () => imageHandler(quillRef, storage));
     }
   }, []);
-  const getBlog = async () => {
-    if (user.id) {
-      const res = await axios({
-        method: 'GET',
-        url: `${process.env.REACT_APP_HOST}/api/blog/find`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-        params: { memberId: user.id },
-      });
-      setBlog(res.data.success);
+
+  //작성 누르면 넘어가는 이 부분 부탁드릴게요
+  const addFunc = () => {
+    if (!content.trim() || content.trim() === '<p><br></p>') {
+      alert('내용을 입력해주세요');
+      return;
+    }
+    try {
+      //db에 들어가는 로직
+      sendNews();
+      // navigate('/:id/manager/news/:id');
+    } catch (error) {
+      console.log(error);
     }
   };
-  useEffect(() => {
-    if (user.id) {
-      getBlog();
-      getCategory();
+
+  //보류
+  const resetBtn = () => {
+    const userConfirmed = window.confirm('취소하시겠습니까?');
+    if (userConfirmed) {
+      navigate(-1);
     }
-  }, [user]);
-  useEffect(() => {
-    if (user.id) {
-      if (!blog) {
-        alert('블로그 생성 후 게시글 작성이 가능합니다.');
-        navigate('/setting/blog');
-      }
-    }
-  }, [blog]);
-  useEffect(() => {
-    if (postId) {
-      getPost();
-    }
-  }, [postId]);
+  };
+
+  useEffect(() => {}, []); // mount 시에만 실행
+
   return (
     <>
-      <div
-        className="body"
-        style={innerWidth >= 1160 ? { padding: '0 20px' } : { padding: 0 }}
-      >
-        <div className="postHeader">
-          <button onClick={() => navigate(-1)}>취소</button>
-          <select
-            onChange={(e) => setCategory(e.target.value)}
-            value={category}
-          >
-            <option value="none">카테고리 없음</option>
-            {categoryList?.map((value) => (
-              <option key={value.id} value={value.id}>
-                {value.categoryName}
-              </option>
-            ))}
-          </select>
-          {title.trim().length && content.trim().length ? (
-            <button className="write on" onClick={addFunc}>
-              작성
-            </button>
-          ) : (
-            <button className="write" onClick={addFunc}>
-              작성
-            </button>
-          )}
+      <ToastContainer />
+      {/* 헤더 위로 올리기 */}
+      <div>뉴스 작성</div>
+      <form className="box-style">
+        <div
+          className="reset"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+          }}
+        >
+          <input
+            className="ql-snow ql-toolbar ql-title"
+            type="text"
+            placeholder="제목을 입력하세요."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            style={{
+              marginBottom: '10px',
+              border: 'none',
+            }}
+          />
+
+          <ReactQuill
+            style={{
+              height: 'fit-content',
+              border: 'none',
+              borderRadius: '18px',
+            }}
+            {...rest}
+            placeholder={placeholder}
+            theme="snow"
+            ref={quillRef}
+            value={content || ''}
+            onChange={setContent}
+            modules={modules}
+            formats={formats}
+          />
+          <div className="postBtn">
+            <ConfirmBtn
+              btnName="취소"
+              // onChange={resetBtn}
+              onClick={() => navigate(-1)}
+              backgroundColor="#bacd92"
+              width="40vw"
+            ></ConfirmBtn>
+
+            <ConfirmBtn
+              btnName="작성"
+              backgroundColor="#61759f"
+              onClick={addFunc}
+              width="40vw"
+            ></ConfirmBtn>
+          </div>
         </div>
-        <input
-          className="ql-snow ql-toolbar ql-title"
-          type="text"
-          placeholder="제목을 입력해주세요"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        ></input>
-        <ReactQuill
-          style={{ height: 'fit-content' }}
-          {...rest}
-          placeholder={placeholder}
-          theme="snow"
-          ref={quillRef}
-          value={content || ''}
-          onChange={setContent}
-          modules={modules}
-          formats={formats}
-        />
-        <input
-          className="hashtag"
-          type="text"
-          placeholder="해시태그를 입력해주세요(#제외 입력)"
-          value={hashtag}
-          onChange={changeFunc}
-          onKeyDown={checkKeyCode}
-          onFocus={focusFunc}
-          onBlur={focusOut}
-        />
-      </div>
+      </form>
     </>
   );
 }
-export default QuillEditor;

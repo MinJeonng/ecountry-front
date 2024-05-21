@@ -103,7 +103,7 @@ function App() {
             element={<SetBoardPeople position="읽기" />}
           />
           <Route path="/:id/login" element={<StudentLogin />} />
-          <Route path="/:id/Mypage" element={<StudentMyPage />} />
+          <Route path="/:id/mypage" element={<StudentMyPage />} />
           <Route path="/:id/news" element={<SetNews position="리스트" />} />
           <Route path="/:id/news/write" element={<SetNews position="작성" />} />
           <Route

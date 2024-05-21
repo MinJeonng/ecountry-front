@@ -120,7 +120,7 @@ export function SetSeat() {
 
   return (
     <Template
-      childrenTop={<div>자리 배치표</div>}
+      childrenTop={<div className="top-title">자리 배치표</div>}
       childrenBottom={
         <div>
           <div className="seat-title">

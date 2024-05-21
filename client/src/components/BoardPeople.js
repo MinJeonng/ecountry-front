@@ -6,24 +6,7 @@ import { GetTimeText } from '../hooks/Functions';
 export function BoardPeopleList() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [contents, setContents] = useState([
-    {
-      id: '1',
-      title: '신문고1',
-      content: `다음의 것을 제안합니다. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`,
-      createdAt: '2024-05-20 13:45:00',
-      writerId: 'Jihye',
-      writerName: '김지혜',
-    },
-    {
-      id: '2',
-      title: '신문고2',
-      content: `다음의 것을 제안합니다. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`,
-      createdAt: '2024-05-20 13:45:00',
-      writerId: 'Jihye',
-      writerName: '김지혜',
-    },
-  ]);
+  const [contents, setContents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [indexOfLastItem, setIndexOfLastItem] = useState(0);
@@ -66,50 +49,45 @@ export function BoardPeopleList() {
     <>
       {contents.length !== 0 ? (
         <div className="newsInfo">
-          {/* {news.map((item) => (
-              <div key={item.id}>
-                <span>{item.title}</span>
-              </div>
-            ))} */}
+          {currentItems.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                position: 'relative',
+                marginBottom: '10px',
+                borderRadius: '18px',
+                padding: '5%',
+                alignItems: 'center',
+                border: '0.1px solid gray',
+              }}
+              onClick={() => navigate(`/${id}/boardPeople/read/${item.id}`)}
+            >
+              <p style={{ marginLeft: '5%' }}>
+                <div>{item.title}</div>
+                <div style={{ fontSize: '11px' }}>
+                  {GetTimeText(item.createdAt)}
+                </div>
+                <div style={{ fontSize: '11px' }} className="textLimit">
+                  {item.content}
+                </div>
+              </p>
+            </div>
+          ))}
         </div>
       ) : (
         <div className="newsContent">
           <span>신문고 내 제안이 존재하지 않습니다..</span>
           <Link
             className="registerBtn"
-            to="/:id/boardPeople/write"
+            to={`/${id}/boardPeople/write`}
             style={{ color: 'black' }}
           >
             제안하기
           </Link>
         </div>
       )}
-      {currentItems.map((item, index) => (
-        <div
-          key={index}
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            position: 'relative',
-            marginBottom: '10px',
-            borderRadius: '18px',
-            padding: '5%',
-            alignItems: 'center',
-            border: '0.1px solid gray',
-          }}
-          onClick={() => navigate(`/${id}/boardPeople/read/${item.id}`)}
-        >
-          <p style={{ marginLeft: '5%' }}>
-            <div>{item.title}</div>
-            <div style={{ fontSize: '11px' }}>
-              {GetTimeText(item.createdAt)}
-            </div>
-            <div style={{ fontSize: '11px' }} className="textLimit">
-              {item.content}
-            </div>
-          </p>
-        </div>
-      ))}
       <div style={{ marginTop: '20px', textAlign: 'center' }}>
         {/* 이전 페이지 그룹 버튼 */}
         <button

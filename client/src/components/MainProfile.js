@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Avatar, Button } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
+import useAuth from '../hooks/useAuth';
+import { useParams } from 'react-router-dom';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -11,6 +13,8 @@ const Name = styled.div`
 `;
 
 export default function MainProfile() {
+  const { id } = useParams();
+  const [userInfo, setUserInfo] = useAuth(id);
   const [Image, setImage] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
   );
@@ -39,17 +43,21 @@ export default function MainProfile() {
   };
 
   const getUserName = async () => {
-    const userId = localStorage.getItem('userId');
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_HOST}/api/user/login`,
-        {
-          userId,
-        }
-      );
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/user/info`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log(res.data.success);
 
       if (res.data.success) {
-        setName(res.data.name);
+        console.log(res.data.result);
+        setName(res.data.result.name);
       } else {
         console.error(res.data.message);
       }
@@ -59,8 +67,15 @@ export default function MainProfile() {
   };
 
   useEffect(() => {
-    getUserName();
+    setUserInfo();
   }, []);
+
+  useEffect(() => {
+    console.log(userInfo);
+    if (userInfo.authority) {
+      getUserName();
+    }
+  }, [userInfo]);
 
   return (
     <>
@@ -80,9 +95,9 @@ export default function MainProfile() {
         onChange={onChange}
         ref={fileInput}
       />
-      {/* <Name>{name}</Name> */}
+      <Name>{name}</Name>
       {/* 이름 옆에 직업을 넣어주는 것도 고려 */}
-      <Name>홍길동</Name>
+      {/* <Name>홍길동</Name> */}
     </>
   );
 }

@@ -9,3 +9,23 @@ export function GetTimeText(time) {
   };
   return `${newTime.getFullYear()}. ${newTime.getMonth()}. ${newTime.getDate()} ${translateTime()}:${newTime.getMinutes()}`;
 }
+
+export function getThumbnail(html) {
+  if (html.includes('<img src="')) {
+    const [_, start] = html.split('<img src="');
+    const [imgUrl, __] = start.split('">');
+    return imgUrl;
+  }
+  return '/images/defaultImg.jpg';
+}
+
+export const htmlToText = (html) => {
+  let newHtml = html;
+  while (newHtml.includes('<')) {
+    const s = newHtml.indexOf('<');
+    const e = newHtml.indexOf('>') + 1;
+    const subString = newHtml.slice(s, e);
+    newHtml = newHtml.replaceAll(subString, '');
+  }
+  return newHtml;
+};

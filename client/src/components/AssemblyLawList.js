@@ -4,23 +4,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/lawList.scss';
 
 export function AssemblyLawList() {
-  const [laws, setLaws] = useState([]);
+  const [laws, setLaws] = useState([
+    { id: 1, detail: '법을 잘 지키자' },
+    { id: 2, detail: '약속을 잘 지키자' },
+    { id: 3, detail: '쿠쿠루삥뽕' },
+  ]);
   // const [detail, setDetail] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // 임시 법 데이터
-    const sampleLaws = [
-      { id: 1, detail: '법을 잘 지키자' },
-      { id: 2, detail: '약속을 잘 지키자' },
-      { id: 3, detail: '쿠쿠루삥뽕' },
-    ];
-
-    setLaws(sampleLaws);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleNewLaw = () => {
-    // "제정" 버튼을 클릭했을 때의 동작
+    // "제정" 버튼을 클릭했을 때
     navigate('/new/assembly/edit');
   };
 

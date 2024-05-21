@@ -47,6 +47,7 @@ export function AddInvestment({ position }) {
         },
       ],
     });
+    getList();
   };
 
   const updateFunc = async (investId) => {
@@ -87,6 +88,7 @@ export function AddInvestment({ position }) {
         investId,
       },
     });
+    getStatus(investId);
   };
 
   const deleteStatus = async (id, investId) => {
@@ -107,26 +109,6 @@ export function AddInvestment({ position }) {
       return;
     }
     sendinvest();
-    if (selectedIndex !== null) {
-      const updatedInvestment = [...investmentList];
-
-      updatedInvestment[selectedIndex] = {
-        name: investmentName,
-        unit: unit,
-        todayInfo: investmentInfo,
-      };
-      setInvestmentList(updatedInvestment);
-    } else {
-      const newInvestmentList = [
-        ...investmentList,
-        {
-          name: investmentName,
-          unit: unit,
-          todayInfo: investmentInfo,
-        },
-      ];
-      setInvestmentList(newInvestmentList);
-    }
     setInvestmentInfo('');
     setInvestmentName('');
     setSelectedIndex(null);
@@ -134,6 +116,7 @@ export function AddInvestment({ position }) {
   };
 
   const selectInput = (invest, index) => {
+    console.log(invest);
     getStatus(invest.id);
     setInvestmentInfo(invest.info);
     setInvestmentName(invest.name);
@@ -151,25 +134,6 @@ export function AddInvestment({ position }) {
     if (!investmentName || !unit || !investmentInfo) {
       alert('모든 값을 입력해주세요');
       return;
-    }
-    if (selectedIndex !== null) {
-      const updatedInvestment = [...investmentList];
-      updatedInvestment[selectedIndex] = {
-        name: investmentName,
-        unit: unit,
-        todayInfo: investmentInfo,
-      };
-      setInvestmentList(updatedInvestment);
-    } else {
-      const newInvestmentList = [
-        ...investmentList,
-        {
-          name: investmentName,
-          unit: unit,
-          todayInfo: investmentInfo,
-        },
-      ];
-      setInvestmentList(newInvestmentList);
     }
     setInvestmentInfo('');
     setInvestmentName('');
@@ -198,10 +162,23 @@ export function AddInvestment({ position }) {
     }
   };
 
-  const deleteBtn = (index) => (e) => {
+  const deleteBtn = async (e, id) => {
     e.stopPropagation();
-    const filteredInvests = investmentList.filter((_, i) => i !== index);
-    setInvestmentList(filteredInvests);
+    if (!window.confirm('삭제하시겠습니까?')) {
+      return;
+    }
+    const res = await axios({
+      method: 'DELETE',
+      url: `${process.env.REACT_APP_HOST}/api/invest/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    if (res.data.success) {
+      alert('삭제되었습니다.');
+    }
+    getList();
     setInvestmentInfo('');
     setInvestmentName('');
     setUnit('');
@@ -278,7 +255,7 @@ export function AddInvestment({ position }) {
             <img
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={deleteBtn(index)}
+              onClick={(e) => deleteBtn(e, invest.id)}
               alt="삭제"
             />
           </div>
@@ -344,7 +321,6 @@ export function AddInvestment({ position }) {
                 />
                 <ConfirmBtn
                   onClick={() => {
-                    handleAddValue();
                     sendStatus(invest.id);
                   }}
                   btnName="추가"

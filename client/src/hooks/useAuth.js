@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-export default function useAuth() {
+export default function useAuth({ id }) {
   const [userInfo, setUserInfo] = useState(0);
+  const [available, setAvaiable] = useState(false);
 
   const confirmAuth = async () => {
     if (localStorage.getItem('token')) {
@@ -21,6 +22,34 @@ export default function useAuth() {
         res.data.success
           ? setUserInfo(res.data.result)
           : localStorage.removeItem('token');
+
+        if (id && !res.data.result.isStudent) {
+          const res2 = await axios({
+            method: 'GET',
+            url: `${process.env.REACT_APP_HOST}/api/user`,
+            headers: {
+              'Content-Type': `application/json`,
+              'ngrok-skip-browser-warning': '69420',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+          res2.data.result.forEach((country) => {
+            if (country.id == id) {
+              setAvaiable(true);
+            }
+          });
+        } else if (id && res.data.result.isStudent) {
+          const res3 = await axios({
+            method: 'GET',
+            url: `${process.env.REACT_APP_HOST}/api/user/info`,
+            headers: {
+              'Content-Type': `application/json`,
+              'ngrok-skip-browser-warning': '69420',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+          console.log(res3);
+        }
       } catch {
         localStorage.removeItem('token');
       }

@@ -98,6 +98,8 @@ function App() {
             element={<SetNews position="읽기" />}
           />
 
+          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
+          <Route path="/:id/manager/peopleList" element={<PeopleList />} />
           <Route
             path="/:id/assembly"
             element={<SetAssembly position="법 리스트" />}

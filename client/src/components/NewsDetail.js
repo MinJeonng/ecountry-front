@@ -119,7 +119,7 @@ export function SetNewsDetail() {
             <span>뉴스가 존재하지 않습니다.</span>
             <Link
               className="registerBtn"
-              to="/:id/manager/news/write"
+              to={`/${id}/manager/news/write`}
               style={{ color: 'black' }}
             >
               등록하기

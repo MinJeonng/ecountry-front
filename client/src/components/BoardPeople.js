@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
 
 export function BoardPeopleList() {
-  // 데이터
-  // id : long,
-  // title : string,
-  // content : string,
-  // createdAt : timestamp,
-  // writerId : long,
-  // writerName : string
   const navigate = useNavigate();
   const { id } = useParams();
   const [contents, setContents] = useState([

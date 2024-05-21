@@ -111,7 +111,7 @@ const modules = {
   },
 };
 
-export function SetPostWrite({ placeholder, value, ...rest }) {
+export function Practice({ placeholder, value, ...rest }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const quillRef = useRef(null);

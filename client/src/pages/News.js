@@ -1,9 +1,10 @@
 //뉴스
 
 import Template from '../components/Template';
-import { SetPostWrite } from '../components/NewsWrite';
+import { SetPostWrite } from '../components/PostWrite';
 import { SetNewsDetail } from '../components/NewsDetail';
 import { SetNewsRead } from '../components/NewsRead';
+import { Practice } from '../components/Write_ex';
 
 export function SetNews({ position }) {
   return (
@@ -19,6 +20,7 @@ export function SetNews({ position }) {
                 placeholder={'뉴스 내용을 입력해주세요'}
                 value={undefined}
               />
+              // <Practice />
             )}
             {position === '읽기' && <SetNewsRead />}
           </>

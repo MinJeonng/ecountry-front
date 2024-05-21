@@ -32,6 +32,7 @@ export function Setting1() {
   const [schoolList, setSchoolList] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
   const [schoolInfomation, setSchoolInfomation] = useState({});
+  const [schoolAddress, setSchoolAddress] = useState('');
 
   const grades = [1, 2, 3, 4, 5, 6];
   const schoolInfoState = useSelector((state) => state.setting1);
@@ -43,6 +44,8 @@ export function Setting1() {
   }, [schoolInfoState]);
 
   const inputSchoolName = (event) => {
+    setSchoolList([]);
+    setSchoolAddress(null);
     setSchoolName(event.target.value);
   };
 
@@ -66,8 +69,10 @@ export function Setting1() {
     setOpenSearch(true);
   };
   const selectSchool = (index) => {
+    setOpenSearch(false);
     setSchoolName(schoolList[index].schoolName);
     setSchoolInfomation(schoolList[index]);
+    setSchoolAddress(schoolList[index].address);
   };
 
   const nextSetting = () => {
@@ -103,28 +108,87 @@ export function Setting1() {
       <form className="box-style">
         <div className="select-school">
           <div className="select-student-id-title set-title">초등학교</div>
-          <input
-            className="select-school-name"
-            type="text"
-            value={schoolName}
-            onChange={inputSchoolName}
-            style={{ imeMode: 'active' }}
-          />
-          <button type="button" onClick={searchFunc}>
-            검색
-          </button>
-          {openSearch && schoolList.length === 0 ? (
-            <div>검색 결과가 없습니다.</div>
-          ) : (
-            <div>
-              {schoolList.map((data, index) => (
-                <div key={index} onClick={() => selectSchool(index)}>
-                  <p>{data.schoolName}</p>
-                  <p>{data.address}</p>
-                </div>
-              ))}
+          <div style={{ marginBottom: '10px' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+              }}
+            >
+              <input
+                className="select-school-name"
+                type="text"
+                value={schoolName}
+                onChange={inputSchoolName}
+                style={{
+                  imeMode: 'active',
+                  marginRight: '10px',
+                  marginBottom: '0px',
+                }}
+              />
+              <button
+                type="button"
+                onClick={searchFunc}
+                style={{
+                  width: '50px',
+                  height: '43px',
+                  marginTop: '0',
+                  border: '1px solid #bacd92',
+                  borderRadius: '12px',
+                  color: '#ffffff',
+                  backgroundColor: '#bacd92',
+                  fontSize: '12px',
+                  marginBottom: '0px',
+                }}
+              >
+                검색
+              </button>
             </div>
-          )}
+            {schoolName && (
+              <>
+                <div
+                  style={{
+                    fontSize: '12px',
+                    color: '#555555',
+                    marginTop: '5px',
+                  }}
+                >
+                  {schoolAddress}
+                </div>
+              </>
+            )}
+          </div>
+          {openSearch &&
+            (schoolList.length === 0 ? (
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#666666',
+                  marginBottom: '20px',
+                }}
+              >
+                검색 결과가 없습니다.
+              </div>
+            ) : (
+              <div style={{ marginBottom: '10px' }}>
+                {schoolList.map((data, index) => (
+                  <div
+                    style={{
+                      marginBottom: '10px',
+                      padding: '5px',
+                      color: '#555555',
+                      borderBottom: '1px solid #bacd92',
+                    }}
+                    key={index}
+                    onClick={() => selectSchool(index)}
+                  >
+                    <p style={{ fontSize: '14px' }}>{data.schoolName}</p>
+                    <p style={{ fontSize: '12px' }}>{data.address}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
         </div>
 
         <div className="select-student-id">
@@ -1127,7 +1191,9 @@ export function Setting7() {
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
-    { label: `${moneyUnit} (화폐단위)`, value: 'moneyUnit' },
+
+    { label: `${moneyUnit} (화폐단위)`, value: `${moneyUnit}` },
+
     { label: `% (월급기준)`, value: '%' },
   ];
 

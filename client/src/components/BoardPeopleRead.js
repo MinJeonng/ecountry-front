@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
 import { ConfirmBtn } from './SettingBtn';
+import { ToastContainer, toast } from 'react-toastify';
 
 export function BoardPeopleRead() {
   // 데이터
@@ -12,23 +13,71 @@ export function BoardPeopleRead() {
   // createdAt : timestamp,
   // writerId : long,
   // writerName : string
+  const { id, contentId } = useParams();
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const handleWrite = () => {
-    try {
-      //db에 들어가는 로직
-      alert('글이 등록되었습니다.');
-      navigate('/:id/manager/news/:id');
-    } catch (error) {
-      console.log(error);
+  const [petitionInfo, setPetitionInfo] = useState();
+  const getPetiton = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/post/petition/${contentId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    if (res.data.success) {
+      if (res.data.result.countryId != id) {
+        // 잘못된 접근 알림 추가
+        console.log('접근 권한이 없습니다.');
+        toast('잘못된 접근입니다.');
+        // 홈으로 랜딩
+        return;
+      }
+      setPetitionInfo(res.data.result);
+    } else {
+      toast('신문고가 존재하지 않습니다.');
+      navigate(`/${id}/boardPeople`);
     }
   };
+
+  const updateFunc = () => {
+    localStorage.setItem('petitionId', contentId);
+    navigate(`/${id}/boardPeople/write`);
+  };
+
+  const deleteFunc = async () => {
+    if (!window.confirm('삭제하시겠습니까?')) {
+      return;
+    }
+    const res = await axios({
+      method: 'DELETE',
+      url: `${process.env.REACT_APP_HOST}/api/post/petition/${contentId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    if (res.data.success) {
+      toast('삭제 완료되었습니다.');
+      document.location.href = `/${id}/boardPeople`;
+    }
+  };
+
+  useEffect(() => {
+    getPetiton();
+  }, []);
+
   return (
     <>
-      <div style={{ color: '#666666', fontWeight: 'bolder' }}>
-        신문고 글쓰기
-      </div>
+      <ToastContainer />
+      <div style={{ color: '#666666', fontWeight: 'bolder' }}>신문고 내용</div>
+      <button type="button" onClick={updateFunc}>
+        임시 수정버튼
+      </button>
+      <button type="button" onClick={deleteFunc}>
+        임시 삭제 버튼
+      </button>
       <form className="box-style">
         <div
           className="reset"
@@ -38,54 +87,38 @@ export function BoardPeopleRead() {
             position: 'relative',
           }}
         >
-          {/* 뉴스 제목 */}
           <div
             style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
           >
-            <input
-              type="text"
-              placeholder="제목을 입력하세요."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+            <div
               style={{
                 padding: '10px',
                 border: 'none',
                 width: '100%',
                 boxSizing: 'border-box',
                 color: '#666666',
+                background: '#fff',
               }}
-              onFocus={(e) => (e.target.style.outline = 'none')}
-              onBlur={(e) => (e.target.style.outline = 'none')}
-            />
+            >
+              {petitionInfo?.title}
+            </div>
           </div>
-          {/* 뉴스 기사 */}
           <div
             style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
           >
-            <textarea
-              placeholder="제안하고자 하는 내용을 입력하세요."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
+            <div
               style={{
-                height: '200px',
-                padding: '10px',
-                resize: 'none',
+                padding: '10px 10px 40px',
                 border: 'none',
                 width: '100%',
                 boxSizing: 'border-box',
                 color: '#666666',
+                background: '#fff',
               }}
-              onFocus={(e) => (e.target.style.outline = 'none')}
-              onBlur={(e) => (e.target.style.outline = 'none')}
-            />
+            >
+              {petitionInfo?.content}
+            </div>
           </div>
-
-          {/* 저장 버튼 */}
-          <ConfirmBtn
-            btnName="업데이트"
-            backgroundColor="#bacd92"
-            onClick={handleWrite}
-          ></ConfirmBtn>
         </div>
       </form>
     </>

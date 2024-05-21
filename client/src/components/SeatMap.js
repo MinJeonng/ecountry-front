@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function SeatMap() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const seatingMapState = useSelector((state) => state.setting4);
 
   const [columns, setColumns] = useState([
     { id: 1, label: '1열', rowCount: '' },
     { id: 2, label: '2열', rowCount: '' },
   ]);
-
-  const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
     if (seatingMapState?.columns?.length > 0) {

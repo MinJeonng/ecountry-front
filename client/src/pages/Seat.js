@@ -12,22 +12,26 @@ export function SetSeat() {
 
   // 열과 행의 정보를 담는 state
   const [columns, setColumns] = useState([
-    { id: 1, columnId: 1, rowId: 1, studentsId: 'A', ownerId: 'X' },
-    { id: 2, columnId: 1, rowId: 2, studentsId: 'B', ownerId: 'Y' },
-    { id: 3, columnId: 2, rowId: 1, studentsId: 'C', ownerId: 'Z' },
+    { columnId: 1, label: '1열', rowCount: 5 },
+    { columnId: 2, label: '2열', rowCount: 4 },
+    { columnId: 3, label: '3열', rowCount: 6 },
   ]);
 
-  const [editType, setEditType] = useState('student');
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSeatMapVisible, setIsSeatMapVisible] = useState(false);
+  const [tableRows, setTableRows] = useState([]);
 
-  const [tableRows, setTableRows] = useState();
+  const [studentList, setStudentList] = useState([]);
 
-  const [selectCol, setSelectCol] = useState('');
-  const [studentList, setStudentList] = useState([
-    { id: 1, name: '어쩌구' },
-    { id: 2, name: '저쩌구' },
-  ]);
+  const setSeatStatus = (rowNum, colNum, studentId) => {
+    setTableRows([
+      ...tableRows,
+      {
+        rowNum: rowNum,
+        colNum: colNum,
+        studentId: studentId,
+        isOwner: true,
+      },
+    ]);
+  };
 
   const getStudent = async () => {
     const res = await axios({
@@ -39,35 +43,34 @@ export function SetSeat() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
-  };
-
-  const setSeatStatus = () => {
-    setTableRows([
-      ...tableRows,
-      {
-        rowNum: '몇열인지 넣어주기',
-        colNum: '몇번째줄인지',
-        studentId: '학생 아이디값',
-        isOwner: true,
-      },
-    ]);
+    console.log('Students:', res.data.result);
+    setStudentList(res.data.result);
   };
 
   const getSeat = async () => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/seat/${id}`,
+      url: `${process.env.REACT_APP_HOST}/api/seat/${id}`,
     });
-    console.log(res.data.result);
+
+    console.log('Columns:', res.data.result);
     setColumns(res.data.result);
   };
 
+  const [editType, setEditType] = useState('student');
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSeatMapVisible, setIsSeatMapVisible] = useState(false);
+
   // 편집 함수
-  const edit = (columnId, rowId, event, type) => {
+  const edit = (columnId, event, type) => {
     const newValue = event.target.value;
     const updatedColumns = columns.map((column) => {
-      if (column.columnId === columnId && column.rowId === rowId) {
-        return { ...column, [type]: newValue };
+      if (column.columnId === columnId) {
+        // 현재 열을 찾은 후
+        return {
+          ...column,
+          rowCount: type === 'rowCount' ? newValue : column.rowCount,
+        };
       }
       return column;
     });
@@ -97,6 +100,7 @@ export function SetSeat() {
 
   useEffect(() => {
     getSeat();
+    getStudent();
   }, []);
 
   const toggleSeatMap = () => {
@@ -109,13 +113,13 @@ export function SetSeat() {
   };
 
   const getStudentName = (studentId) => {
-    const student = columns.find((column) => column.studentsId === studentId);
-    return student ? student.studentsId : '';
+    const student = studentList.find((student) => student.id === studentId);
+    return student ? student.name : '';
   };
 
   const getOwnerName = (ownerId) => {
-    const owner = columns.find((column) => column.ownerId === ownerId);
-    return owner ? owner.ownerId : '';
+    const owner = studentList.find((student) => student.id === ownerId);
+    return owner ? owner.name : '';
   };
 
   return (
@@ -132,61 +136,63 @@ export function SetSeat() {
             </button>
           </div>
           <form className="preview">
-            {columns
-              .reduce((uniqueColumns, column) => {
-                if (!uniqueColumns.includes(column.columnId)) {
-                  uniqueColumns.push(column.columnId);
-                }
-                return uniqueColumns;
-              }, [])
-              .map((columnId) => (
-                <div className="seating-map" key={columnId}>
-                  <div className="column-num">{columnId}열</div>
-                  <div className="row-container">
-                    {columns
-                      .filter((column) => column.columnId === columnId)
-                      .map((row) => (
-                        <div key={row.rowId} className="cell-container">
-                          <select
-                            className="cell-input"
-                            value={
-                              editType === 'student'
-                                ? row.studentsId
-                                : row.ownerId || ''
-                            }
-                            onChange={(event) =>
-                              edit(
-                                row.columnId,
-                                row.rowId,
-                                event,
+            {columns &&
+              columns.length > 0 &&
+              columns
+                .reduce((uniqueColumns, column) => {
+                  if (!uniqueColumns.includes(column.columnId)) {
+                    uniqueColumns.push(column.columnId);
+                  }
+                  return uniqueColumns;
+                }, [])
+                .map((columnId, index) => (
+                  <div className="seating-map" key={index}>
+                    <div className="column-num">{columnId}열</div>
+                    <div className="row-container">
+                      {columns
+                        .filter((column) => column.columnId === columnId)
+                        .map((row, rowIndex) => (
+                          <div key={rowIndex} className="cell-container">
+                            <select
+                              className="cell-input"
+                              value={
                                 editType === 'student'
-                                  ? 'studentsId'
-                                  : 'ownerId'
-                              )
-                            }
-                            onFocus={focus}
-                          >
-                            <option value="">선택하세요</option>
-                            {columns.map((item) => (
-                              <option
-                                key={item.id}
-                                value={
+                                  ? row.studentsId
+                                  : row.ownerId || ''
+                              }
+                              onChange={(event) =>
+                                edit(
+                                  row.columnId,
+                                  row.rowId,
+                                  event,
                                   editType === 'student'
-                                    ? item.studentsId
-                                    : item.ownerId
-                                }
-                              >
-                                {editType === 'student'
-                                  ? getStudentName(item.studentsId)
-                                  : getOwnerName(item.ownerId)}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      ))}
+                                    ? 'studentsId'
+                                    : 'ownerId'
+                                )
+                              }
+                              onFocus={focus}
+                            >
+                              <option value="">선택하세요</option>
+                              {studentList.map((item) => (
+                                <option
+                                  key={item.id}
+                                  value={
+                                    editType === 'student'
+                                      ? item.studentsId
+                                      : item.ownerId
+                                  }
+                                >
+                                  {editType === 'student'
+                                    ? getStudentName(item.studentsId)
+                                    : getOwnerName(item.ownerId)}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
           </form>
           {isEditing && (
             <button className="blue-btn" onClick={updateSeat}>

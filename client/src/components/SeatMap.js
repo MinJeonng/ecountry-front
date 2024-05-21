@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 export default function SeatMap() {
   const seatingMapState = useSelector((state) => state.setting4);
@@ -39,16 +40,27 @@ export default function SeatMap() {
     );
   };
 
-  const nextSetting = () => {
-    // 적어도 하나의 열에 대해 rowCount가 설정되었는지 확인
-    const isAtLeastOneRowCountSet = columns.some(
-      (column) => column.rowCount !== ''
-    );
+  const saveSeatData = async () => {
+    const dataToSend = columns.map((column) => ({
+      rowNum: column.id,
+      colNum: column.rowCount,
+    }));
 
-    if (!isAtLeastOneRowCountSet) {
-      // 모든 열이 rowCount가 설정되지 않았다면 경고 메시지 표시
-      alert('최소 1열에 대해 자리 수를 입력해주세요.');
-      return;
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_HOST}/api/seat`,
+        dataToSend,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      );
+
+      console.log('자리 배치 등록 결과 :', res.data.success);
+    } catch (error) {
+      console.error('자리 배치 등록 실패 :', error);
     }
   };
 
@@ -91,7 +103,9 @@ export default function SeatMap() {
             </button>
           )}
         </div>
-        <button className="blue-btn">저장</button>
+        <button className="blue-btn" onClick={saveSeatData}>
+          저장
+        </button>
       </form>
     </div>
   );

@@ -5,10 +5,7 @@ import axios from 'axios';
 import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 
-import '../styles/seat.scss';
-
-// 자리배치도
-export function SetSeat() {
+export default function SetSeatMap() {
   const { id } = useParams();
 
   const [columns, setColumns] = useState([]);
@@ -33,30 +30,31 @@ export function SetSeat() {
         newSeat,
       ].sort((a, b) => a.colNum - b.colNum)
     );
-    setIsEditing(true);
+    setIsEditing(true); // 수정이 이루어졌음을 표시
   };
 
-  // const getStudent = async () => {
+  //   const getStudent = async () => {
+  //     // 가짜 학생 데이터
+  //     const fakeStudentData = [
+  //       { id: 1, name: 'John Doe' },
+  //       { id: 2, name: 'Jane Doe' },
+  //       { id: 3, name: 'Alice Smith' },
+  //       { id: 4, name: 'Bob Johnson' },
+  //     ];
 
-  //   const fakeStudentData = [
-  //     { id: 1, name: 'John Doe' },
-  //     { id: 2, name: 'Jane Doe' },
-  //     { id: 3, name: 'Alice Smith' },
-  //     { id: 4, name: 'Bob Johnson' },
-  //   ];
+  //     // 가짜 데이터를 사용하여 학생 목록 설정
+  //     setStudentList(fakeStudentData);
+  //   };
 
-  //   setStudentList(fakeStudentData);
-  // };
+  //   const getSeat = async () => {
+  //     const fakeColumns = [
+  //       { columnId: 1, label: '1열', rowCount: 2 },
+  //       { columnId: 2, label: '2열', rowCount: 1 },
+  //       { columnId: 3, label: '3열', rowCount: 3 },
+  //     ];
 
-  // const getSeat = async () => {
-  //   const fakeColumns = [
-  //     { columnId: 1, label: '1열', rowCount: 2 },
-  //     { columnId: 2, label: '2열', rowCount: 1 },
-  //     { columnId: 3, label: '3열', rowCount: 3 },
-  //   ];
-
-  //   setColumns(fakeColumns);
-  // };
+  //     setColumns(fakeColumns);
+  //   };
 
   const getStudent = async () => {
     const res = await axios({
@@ -118,37 +116,36 @@ export function SetSeat() {
               columns.map((column, columnIndex) => (
                 <div className="seating-map" key={columnIndex}>
                   <div className="column-num">{column.label}</div>{' '}
+                  {/* 수정: cloumn-num -> column-num */}
                   <div className="row-container">
-                    {Array.from({ length: column.rowCount }).map(
-                      (_, rowIndex) => (
-                        <div key={rowIndex}>
-                          <select
-                            className="cell-input"
-                            value={
-                              tableRows.find(
-                                (row) =>
-                                  row.colNum === column.columnId &&
-                                  row.rowNum === rowIndex
-                              )?.studentId || ''
-                            }
-                            onChange={(e) =>
-                              setSeatStatus(
-                                column.columnId,
-                                rowIndex,
-                                parseInt(e.target.value)
-                              )
-                            }
-                          >
-                            <option value="">선택하세요</option>
-                            {studentList.map((item) => (
-                              <option key={item.id} value={item.id}>
-                                {item.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      )
-                    )}
+                    {Array.from({ length: column.rowCount }, (_, rowIndex) => (
+                      <div key={rowIndex}>
+                        <select
+                          className="cell-input"
+                          value={
+                            tableRows.find(
+                              (row) =>
+                                row.colNum === column.columnId &&
+                                row.rowNum === rowIndex
+                            )?.studentId || ''
+                          }
+                          onChange={(e) =>
+                            setSeatStatus(
+                              column.columnId,
+                              rowIndex,
+                              parseInt(e.target.value)
+                            )
+                          }
+                        >
+                          <option value="">선택하세요</option>
+                          {studentList.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))
@@ -162,38 +159,36 @@ export function SetSeat() {
             {columns && columns.length > 0 ? (
               columns.map((column, columnIndex) => (
                 <div className="seating-map" key={columnIndex}>
-                  <div className="column-num">{column.label}</div>{' '}
+                  <div className="column-num">{column.label}</div>
                   <div className="row-container">
-                    {Array.from({ length: column.rowCount }).map(
-                      (_, rowIndex) => (
-                        <div key={rowIndex}>
-                          <select
-                            className="cell-input"
-                            value={
-                              tableRows.find(
-                                (row) =>
-                                  row.colNum === column.columnId &&
-                                  row.rowNum === rowIndex
-                              )?.studentId || ''
-                            }
-                            onChange={(e) =>
-                              setSeatStatus(
-                                column.columnId,
-                                rowIndex,
-                                parseInt(e.target.value)
-                              )
-                            }
-                          >
-                            <option value="">선택하세요</option>
-                            {studentList.map((item) => (
-                              <option key={item.id} value={item.id}>
-                                {item.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      )
-                    )}
+                    {Array.from({ length: column.rowCount }, (_, rowIndex) => (
+                      <div key={rowIndex}>
+                        <select
+                          className="cell-input"
+                          value={
+                            tableRows.find(
+                              (row) =>
+                                row.colNum === column.columnId &&
+                                row.rowNum === rowIndex
+                            )?.studentId || ''
+                          }
+                          onChange={(e) =>
+                            setSeatStatus(
+                              column.columnId,
+                              rowIndex,
+                              parseInt(e.target.value)
+                            )
+                          }
+                        >
+                          <option value="">선택하세요</option>
+                          {studentList.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))
@@ -202,7 +197,7 @@ export function SetSeat() {
             )}
           </div>
 
-          {isEditing && (
+          {isEditing && ( // 수정이 이루어졌을 때만 완료 버튼 보여주기
             <button className="blue-btn" onClick={updateSeat}>
               완료
             </button>

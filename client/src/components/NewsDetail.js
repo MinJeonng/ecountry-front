@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { GetTimeText } from '../hooks/Functions';
+import { GetTimeText, getThumbnail, htmlToText } from '../hooks/Functions';
 
 export function SetNewsDetail() {
   const { id } = useParams();
@@ -82,7 +82,7 @@ export function SetNewsDetail() {
             <span>뉴스가 존재하지 않습니다.</span>
             <Link
               className="registerBtn"
-              to={`/${id}/manager/news/write`}
+              to={`/${id}/news/write`}
               style={{ color: 'black' }}
             >
               등록하기
@@ -105,8 +105,8 @@ export function SetNewsDetail() {
             onClick={() => navigate(`/${id}/news/read/${news.id}`)}
           >
             <img
-              src="/images/icon-diagram-process.gif"
-              style={{ width: '10%', height: '10%' }}
+              src={getThumbnail(news.content)}
+              style={{ width: '30%', height: 'auto' }}
               alt="News Image"
             />
 
@@ -116,7 +116,7 @@ export function SetNewsDetail() {
                 {GetTimeText(news.createdAt)}
               </div>
               <div style={{ fontSize: '11px' }} className="textLimit">
-                {news.content}
+                {htmlToText(news.content)}
               </div>
             </p>
           </div>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { GetTimeText } from '../hooks/Functions';
 import { ConfirmBtn } from './SettingBtn';
 
 export function BoardPeopleWrite() {
@@ -31,7 +30,7 @@ export function BoardPeopleWrite() {
             position: 'relative',
           }}
         >
-          {/* 뉴스 제목 */}
+          {/* 제목 */}
           <div
             style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
           >

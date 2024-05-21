@@ -212,24 +212,33 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
           }}
         >
           {/* 뉴스 제목 */}
-          <input
-            className="ql-snow ql-toolbar ql-title"
-            type="text"
-            placeholder="제목을 입력하세요."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{
-              marginBottom: '10px',
-              border: 'none',
-            }}
-          />
+          <div
+            style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
+          >
+            <input
+              className="ql-snow ql-toolbar ql-title"
+              type="text"
+              placeholder="뉴스 제목을 입력하세요."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              style={{
+                padding: '10px',
+                border: 'none',
+                boxSizing: 'border-box',
+                color: '#666666',
+              }}
+              onFocus={(e) => (e.target.style.outline = 'none')}
+              onBlur={(e) => (e.target.style.outline = 'none')}
+            />
+          </div>
           {/* 뉴스 기사 */}
           <ReactQuill
             style={{
               height: '300px',
               resize: 'none',
               border: 'none',
-              borderRadius: '18px',
+              marginBottom: '20px',
+              boxSizing: 'border-box',
             }}
             {...rest}
             placeholder={placeholder}

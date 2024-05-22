@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Template from '../components/Template';
 
 export default function StudentLogin() {
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
-  const navigate = useNavigate();
 
   return (
     <Template

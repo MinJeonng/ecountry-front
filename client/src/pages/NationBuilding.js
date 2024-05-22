@@ -11,12 +11,13 @@ export default function NationBuilding() {
           <span className="logo-title">자라나라 경제나라</span>
         </div>
         <div className="button-wrap2">
-          <button className="big-button">
-            <Link to="/setting/schoolInfo">국가 생성</Link>
-          </button>
-          <button className="big-button">
-            <Link to="/countryList">국가 목록</Link>
-          </button>
+          <Link to="/setting/schoolInfo">
+            <button className="big-button">국가 생성</button>
+          </Link>
+
+          <Link to="/countryList">
+            <button className="big-button">국가 목록</button>
+          </Link>
         </div>
       </div>
     </div>

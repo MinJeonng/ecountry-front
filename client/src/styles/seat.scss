@@ -19,11 +19,18 @@ $blue: #61759f;
       font-weight: bold;
     }
 
-    .seat-user:focus,
-    .seat-owner:focus {
+    .seat-user.active,
+    .seat-owner.active {
       color: $under-line;
       border-bottom: 1px solid $under-line;
     }
+  }
+
+  .non-seat {
+    margin-top: 20px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 14px;
   }
 
   .editCell-btn {

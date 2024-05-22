@@ -30,13 +30,13 @@ export function BoardPeopleRead() {
       if (res.data.result.countryId != id) {
         // 잘못된 접근 알림 추가
         console.log('접근 권한이 없습니다.');
-        toast('잘못된 접근입니다.');
+        toast.error('잘못된 접근입니다.', { autoClose: 1300 });
         // 홈으로 랜딩
         return;
       }
       setPetitionInfo(res.data.result);
     } else {
-      toast('신문고가 존재하지 않습니다.');
+      toast.error('신문고가 존재하지 않습니다.', { autoClose: 1300 });
       navigate(`/${id}/boardPeople`);
     }
   };
@@ -59,7 +59,7 @@ export function BoardPeopleRead() {
       },
     });
     if (res.data.success) {
-      toast('삭제 완료되었습니다.');
+      toast.error('삭제 완료되었습니다.', { autoClose: 1300 });
       document.location.href = `/${id}/boardPeople`;
     }
   };
@@ -106,18 +106,33 @@ export function BoardPeopleRead() {
           <div
             style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
           >
-            <div
-              style={{
-                padding: '10px 10px 40px',
-                border: 'none',
-                width: '100%',
-                boxSizing: 'border-box',
-                color: '#666666',
-                background: '#fff',
-              }}
-            >
-              {petitionInfo?.content}
-            </div>
+            {petitionInfo?.isSecret ? (
+              <div
+                style={{
+                  padding: '10px 10px 40px',
+                  border: 'none',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  color: '#666666',
+                  background: '#fff',
+                }}
+              >
+                비밀글 입니다.
+              </div>
+            ) : (
+              <div
+                style={{
+                  padding: '10px 10px 40px',
+                  border: 'none',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  color: '#666666',
+                  background: '#fff',
+                }}
+              >
+                {petitionInfo?.content}
+              </div>
+            )}
           </div>
         </div>
       </form>

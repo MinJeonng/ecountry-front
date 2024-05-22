@@ -11,6 +11,11 @@ export function BoardPeopleWrite() {
   const [content, setContent] = useState('');
   const [isSecret, setIsSecret] = useState(false);
   const [petitionId, setPetitionId] = useState();
+  const handleIsSecret = (e) => {
+    console.log(e);
+    setIsSecret(!isSecret);
+    console.log(isSecret);
+  };
   const handleWrite = async () => {
     try {
       if (petitionId) {
@@ -96,9 +101,27 @@ export function BoardPeopleWrite() {
             position: 'relative',
           }}
         >
+          {/* 뉴스 제목 */}
           <div
             style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
           >
+            <p
+              align="right"
+              style={{
+                marginBottom: '20px',
+                fontSize: '0.9rem',
+                color: '#666666',
+              }}
+            >
+              <label>
+                <input
+                  type="checkbox"
+                  checked={isSecret}
+                  onChange={(e) => handleIsSecret(e)}
+                />
+                비밀글
+              </label>
+            </p>
             <input
               type="text"
               placeholder="제목을 입력하세요."

@@ -14,7 +14,6 @@ import Loading from './components/Loading';
 import ManagerDashBoard from './pages/ManagerDashBoard';
 import SetInvestment from './pages/Investment';
 import { SetAssembly } from './pages/Assembly';
-import { AssemblyLawEdit } from './components/AssemblyLawEdit';
 import { SetBoardPeople } from './pages/BoardPeople';
 import { SetNews } from './pages/News';
 import PeopleList from './pages/PeopleList';
@@ -25,6 +24,8 @@ import NOTFOUND from './pages/NOTFOUND';
 import StudentLogin from './pages/StudentLogin';
 import StudentMyPage from './pages/StudentMyPage';
 import { CommonMain } from './pages/CommonMain';
+import ChatBot from './pages/ChatBot';
+
 
 function App() {
   return (
@@ -115,22 +116,16 @@ function App() {
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
 
           <Route
-            path="/:id/assembly"
-            element={<SetAssembly position="법 리스트" />}
-          />
-          <Route
-            path="/:id/assembly/edit"
-            element={<SetAssembly position="법 개정" />}
-          />
-          <Route
-            path="/new/assembly/edit"
-            element={<AssemblyLawEdit position="법 제정" />}
+            path="/:id/manager/assembly"
+            element={<SetAssembly position="국회" />}
           />
 
           <Route
             path="/:id/investment"
             element={<SetInvestment position="투자 상품 확인" />}
           />
+
+          <Route path="/:id/chatbot" element={<ChatBot />} />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

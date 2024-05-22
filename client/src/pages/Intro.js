@@ -17,12 +17,13 @@ export default function intro() {
           <span className="logo-title">자라나라 경제나라</span>
         </div>
         <div className="button-wrap">
-          <button className="big-button">
-            <Link to="/login">로그인</Link>
-          </button>
-          <button className="big-button">
-            <Link to="/signup">회원가입</Link>
-          </button>
+          <Link to="/login">
+            <button className="big-button">로그인</button>
+          </Link>
+
+          <Link to="/signup">
+            <button className="big-button">회원가입</button>
+          </Link>
         </div>
       </div>
     </div>

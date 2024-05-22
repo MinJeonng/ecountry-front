@@ -26,7 +26,9 @@ export default function OwnerSeatMap({
                     }
                     onChange={selectChangeOwner(column.columnId, rowIndex)}
                   >
-                    <option value="">선택하세요</option>
+                    <option className="cell-input-value" value="">
+                      소유자
+                    </option>
                     {studentList.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}

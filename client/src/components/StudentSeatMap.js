@@ -26,9 +26,11 @@ export default function StudentSeatMap({
                     }
                     onChange={selectChangeUser(column.columnId, rowIndex)}
                   >
-                    <option value="">선택하세요</option>
+                    <option className="cell-input-value" value="">
+                      사용자
+                    </option>
                     {studentList.map((item) => (
-                      <option key={item.id} value={item.id}>
+                      <option className="cell-input-value" key={item.id} value={item.id}>
                         {item.name}
                       </option>
                     ))}

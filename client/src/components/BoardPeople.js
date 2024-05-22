@@ -8,6 +8,7 @@ export function BoardPeopleList() {
   const { id } = useParams();
   const [contents, setContents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 10;
   const [indexOfLastItem, setIndexOfLastItem] = useState(0);
   const [indexOfFirstItem, setIndexOfFirstItem] = useState(0);
@@ -47,46 +48,97 @@ export function BoardPeopleList() {
 
   return (
     <>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div
+          className="newsHead"
+          style={{ color: '#666666', marginBottom: '10px' }}
+        >
+          신문고
+        </div>
+      </div>
+      <div
+        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+      ></div>
       {contents.length !== 0 ? (
-        <div className="newsInfo">
-          {currentItems.map((item, index) => (
-            <div
-              key={index}
+        <>
+          <p align="right" style={{ marginBottom: '20px', fontSize: '0.8rem' }}>
+            <Link
+              className="registerBtn"
+              to={`/${id}/boardPeople/write`}
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                position: 'relative',
+                color: 'white',
+                backgroundColor: '#bacd92',
+                padding: '4px 10px 4px 10px',
+                borderRadius: '8px',
                 marginBottom: '10px',
-                borderRadius: '18px',
-                padding: '5%',
-                alignItems: 'center',
-                border: '0.1px solid gray',
               }}
-              onClick={() => navigate(`/${id}/boardPeople/read/${item.id}`)}
             >
-              <p style={{ marginLeft: '5%' }}>
-                <div>{item.title}</div>
-                <div style={{ fontSize: '11px' }}>
-                  {GetTimeText(item.createdAt)}
-                </div>
-                <div style={{ fontSize: '11px' }} className="textLimit">
-                  {item.content}
-                </div>
-              </p>
-            </div>
-          ))}
-        </div>
+              제안하기
+            </Link>
+          </p>
+          <div className="newsInfo">
+            {currentItems.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  position: 'relative',
+                  marginBottom: '10px',
+                  borderRadius: '18px',
+                  padding: '5%',
+                  alignItems: 'center',
+                  border: '0.1px solid gray',
+                }}
+                onClick={() => navigate(`/${id}/boardPeople/read/${item.id}`)}
+              >
+                <p style={{ marginLeft: '5%' }}>
+                  <div>{item.title}</div>
+                  <div style={{ fontSize: '11px' }}>
+                    {GetTimeText(item.createdAt)}
+                  </div>
+                  {item.isSecret ? (
+                    <div style={{ fontSize: '11px' }} className="textLimit">
+                      비밀글입니다.
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: '11px' }} className="textLimit">
+                      {item.content}
+                    </div>
+                  )}
+                </p>
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
-        <div className="newsContent">
-          <span>신문고 내 제안이 존재하지 않습니다..</span>
-          <Link
-            className="registerBtn"
-            to={`/${id}/boardPeople/write`}
-            style={{ color: 'black' }}
+        <>
+          <div
+            style={{
+              color: '#666666',
+              marginBottom: '10px',
+              fontSize: '13px',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
           >
-            제안하기
-          </Link>
-        </div>
+            <span>신문고 내 제안이 존재하지 않습니다</span>
+
+            <Link
+              className="registerBtn"
+              to={`/${id}/boardPeople/write`}
+              style={{
+                color: 'white',
+                backgroundColor: '#bacd92',
+                padding: '4px 10px 4px 10px',
+                borderRadius: '8px',
+                marginBottom: '10px',
+              }}
+            >
+              제안하기
+            </Link>
+          </div>
+        </>
       )}
       <div style={{ marginTop: '20px', textAlign: 'center' }}>
         {/* 이전 페이지 그룹 버튼 */}

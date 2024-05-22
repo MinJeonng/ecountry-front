@@ -1,0 +1,31 @@
+@import '../styles/variables';
+
+@include mobile {
+  .mainProfile {
+    position: relative;
+    left: 20px;
+    margin-top: 40px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  table {
+    border-collapse: collapse;
+    margin-bottom: 40px;
+  }
+  th,
+  td {
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #247d9b;
+
+    vertical-align: top;
+    vertical-align: bottom;
+    vertical-align: middle;
+  }
+  .period {
+    font-weight: 600;
+  }
+}

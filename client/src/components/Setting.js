@@ -358,17 +358,13 @@ export function Setting3() {
   }, [studentInfoState]);
 
   const beforeSetting = () => {
-    if (password !== null) {
-      navigate('/setting/countryInfo');
-      dispatch(
-        studentInfo({
-          password: password,
-          studentList: attendees,
-        })
-      );
-    } else {
-      toast.error('학생들의 초기 비밀번호를 설정하세요', { autoClose: 1300 });
-    }
+    navigate('/setting/countryInfo');
+    dispatch(
+      studentInfo({
+        password: password,
+        studentList: attendees,
+      })
+    );
   };
   const nextSetting = () => {
     if (password !== null) {
@@ -797,6 +793,7 @@ export function Setting5() {
   const [countValue, setCountValue] = useState('');
   // 현재 선택한 상태 뭔지 저장
   const [selectedJobIndex, setSelectedJobIndex] = useState(null);
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const jobListState = useSelector((state) => state.setting5);
 
   useEffect(() => {
@@ -996,13 +993,16 @@ export function Setting5() {
             />
           )}
           <div className="set-title">급여</div>
-          <input
-            className="set-input"
-            type="text"
-            min="0"
-            value={inputValue}
-            onChange={handleInputChange}
-          />
+          <div className="container">
+            <input
+              className="set-input"
+              type="text"
+              min="0"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+            <span className="unit">{moneyUnit}</span>
+          </div>
           <div className="set-title">인원수</div>
           <div className="container">
             <input
@@ -1191,7 +1191,6 @@ export function Setting7() {
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
-
     { label: `${moneyUnit} (화폐단위)`, value: `${moneyUnit}` },
 
     { label: `% (월급기준)`, value: '%' },
@@ -1392,7 +1391,7 @@ export function Setting8() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
-  const [taxName, setTaxName] = useState('');
+  const [taxName, setTaxName] = useState('자리 임대료');
   const [fee, setFee] = useState('');
 
   const setRentalFeeState = useSelector((state) => state.setting8);
@@ -1435,10 +1434,11 @@ export function Setting8() {
             className="set-country-detail"
             type="text"
             value={taxName}
-            onChange={(e) => {
-              setTaxName(e.target.value);
-            }}
+            // onChange={(e) => {
+            //   setTaxName(e.target.value);
+            // }}
             style={{ imeMode: 'active' }}
+            disabled
           />
         </div>
         <div className="set-country">

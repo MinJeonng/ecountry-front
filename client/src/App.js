@@ -24,6 +24,7 @@ import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
 import StudentLogin from './pages/StudentLogin';
 import StudentMyPage from './pages/StudentMyPage';
+import { CommonMain } from './pages/CommonMain';
 
 function App() {
   return (
@@ -83,13 +84,13 @@ function App() {
             element={<SetInvestment position="투자 상품 관리" />}
           />
 
-
           <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
           <Route path="/:id/manager/seatMap" element={<SetSeat />} />
 
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
 
           {/* 공통 페이지 */}
+          <Route path="/:id/main" element={<CommonMain />} />
           <Route
             path="/:id/boardPeople"
             element={<SetBoardPeople position="리스트" />}

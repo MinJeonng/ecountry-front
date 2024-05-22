@@ -12,8 +12,8 @@ const PageName = styled.div`
 
 const BgBottom = styled.div`
   position: relative;
-  margin-top: -100px;
-  padding: 40px 30px 70px;
+  margin-top: -130px;
+  padding: 40px 30px 90px;
   background-color: #ffffff;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;

@@ -6,6 +6,7 @@ const SideBox = styled.div`
   height: 100%;
 
   box-sizing: border-box;
+  overflow: scroll;
 `;
 
 const MainDashboardBox = styled.div`
@@ -15,6 +16,7 @@ const MainDashboardBox = styled.div`
   text-align: center;
   gap: 10px;
   margin-bottom: 15px;
+
   div {
     width: 160px;
     height: 110px;
@@ -76,100 +78,83 @@ const MainDashboardBox = styled.div`
 export function MainDashboard({ func }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const handleBank = () => {
-    navigate(`/${id}/manager/bank`);
-  };
-  const handleInvestment = () => {
-    navigate(`/${id}/manager/investment`);
-  };
-  const handleAssembly = () => {
-    navigate(`/${id}/manager/assembly`);
-  };
-  const handleBoardPeople = () => {
-    navigate(`/${id}/boardPeople`);
-  };
-  const handleNews = () => {
-    navigate(`/${id}/news`);
-  };
-  const handlePeopleList = () => {
-    navigate(`/${id}/manager/peopleList`);
-  };
-  const handleSeat = () => {
-    navigate(`/${id}/manager/seat`);
-  };
-  const handleTaxService = () => {
-    navigate(`/${id}/manager/taxService`);
-  };
+
   return (
     <>
       <SideBox>
         <div className="sideBox">
           <MainDashboardBox>
-            <div className="bankBox" onClick={handleBank}>
+            <div
+              className="bankBox"
+              onClick={() => navigate(`/${id}/manager/bank`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-bank.png`}
                 alt="은행"
               />
               <p>은행</p>
             </div>
-            <div className="investmentBox" onClick={handleInvestment}>
+            <div
+              className="investmentBox"
+              onClick={() => navigate(`/${id}/manager/investment`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-investmentPng.png`}
                 alt="투자"
               />
               <p>투자</p>
             </div>
-            {/* </MainDashboardBox>
-          <MainDashboardBox> */}
 
-            <div className="peopleListBox" onClick={handlePeopleList}>
+            <div
+              className="peopleListBox"
+              onClick={() => navigate(`/${id}/manager/peopleList`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-create-list.png`}
                 alt="국민 리스트"
               />
               <p>국민 리스트</p>
             </div>
-            <div className="assemblyBox" onClick={handleAssembly}>
+            <div
+              className="assemblyBox"
+              onClick={() => navigate(`/${id}/assembly`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-capitol.png`}
                 alt="국회"
               />
               <p>국회</p>
             </div>
-            {/* </MainDashboardBox>
-          <MainDashboardBox> */}
-            <div className="newsBox" onClick={handleNews}>
+
+            <div className="newsBox" onClick={() => navigate(`/${id}/news`)}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-news.png`}
                 alt="뉴스"
               />
               <p>뉴스</p>
             </div>
-            <div className="boardPeopleBox" onClick={handleBoardPeople}>
+            <div
+              className="boardPeopleBox"
+              onClick={() => navigate(`/${id}/boardPeople`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-board.png`}
                 alt="국민 신문고"
               />
               <p>국민 신문고</p>
             </div>
-            {/* </MainDashboardBox>
-          <MainDashboardBox> */}
-            <div className="seatBox" onClick={handleSeat}>
+
+            <div
+              className="seatBox"
+              onClick={() => navigate(`/${id}/manager/seatMap`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-seat.png`}
                 alt="자리 배치도"
               />
               <p>자리 배치도</p>
             </div>
-            <div className="menuBox">
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-menu.png`}
-                alt="급식표"
-              />
-              <p>급식표</p>
-            </div>
-            {/* </MainDashboardBox>
-          <MainDashboardBox> */}
+
             <div className="scheduleBox">
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-schedule.png`}

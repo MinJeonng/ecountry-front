@@ -7,12 +7,39 @@ import { useParams } from 'react-router-dom';
 
 const Name = styled.div`
   box-sizing: border-box;
-  font-size: 30px;
+  font-size: 25px;
   color: #333;
-  font-weight: bold;
+  font-weight: 700;
 `;
 
-export default function MainProfile() {
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: flex-start;
+`;
+
+const ProfileName = styled.div`
+  position: relative;
+  top: 5px;
+  left: 20px;
+  font-size: 25px;
+  color: #333;
+  font-weight: 700;
+`;
+const LogoutBtn = styled.button`
+  position: relative;
+  left: 20px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  font-size: 13px;
+  color: #6184c7;
+  padding: 3px 10px;
+  margin-top: 5px;
+`;
+
+export function MainProfile() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
   const [Image, setImage] = useState(
@@ -97,7 +124,64 @@ export default function MainProfile() {
       />
       <Name>{name}</Name>
       {/* 이름 옆에 직업을 넣어주는 것도 고려 */}
-      {/* <Name>홍길동</Name> */}
     </>
+  );
+}
+
+export function GetName() {
+  const { id } = useParams();
+  const [userInfo, setUserInfo] = useAuth(id);
+  const [name, setName] = useState('');
+  const getUserName = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/user/info`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log(res.data.success);
+
+      if (res.data.success) {
+        console.log(res.data.result);
+        setName(res.data.result.name);
+      } else {
+        console.error(res.data.message);
+      }
+    } catch (error) {
+      console.error('로그인 요청 실패:', error);
+    }
+  };
+  const logoutFunc = () => {
+    if (!window.confirm('로그아웃 하시겠습니까?')) {
+      return;
+    }
+    localStorage.removeItem('token');
+    window.location.href = `/${id}/login`;
+  };
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      setUserInfo();
+    }
+  }, []);
+
+  useEffect(() => {
+    setUserInfo();
+  }, []);
+
+  useEffect(() => {
+    console.log(userInfo);
+    if (userInfo.authority) {
+      getUserName();
+    }
+  }, [userInfo]);
+  return (
+    <ProfileContainer>
+      <ProfileName>{name}</ProfileName>
+      <LogoutBtn onClick={logoutFunc}>로그아웃</LogoutBtn>
+    </ProfileContainer>
   );
 }

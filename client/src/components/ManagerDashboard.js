@@ -86,7 +86,7 @@ export function MainDashboard({ func }) {
     navigate(`/${id}/manager/assembly`);
   };
   const handleBoardPeople = () => {
-    navigate(`/${id}/manager/boardPeople`);
+    navigate(`/${id}/boardPeople`);
   };
   const handleNews = () => {
     navigate(`/${id}/news`);

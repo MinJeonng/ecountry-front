@@ -136,7 +136,7 @@ export function CheckInvestment() {
   const options = {
     responsive: true,
     maintainAspectRatio: false, // 가로세로 비율을 유지하지 않음
-    aspectRatio: 5,
+    aspectRatio: 4,
     interaction: {
       intersect: false,
     },

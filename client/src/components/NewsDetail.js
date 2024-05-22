@@ -4,12 +4,11 @@ import axios from 'axios';
 import { GetTimeText, getThumbnail, htmlToText } from '../hooks/Functions';
 
 export function SetNewsDetail() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [news, setNews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate();
 
-  // 뉴스 관련
   const itemsPerPage = 3;
   const [indexOfLastItem, setIndexOfLastItem] = useState(0);
   const [indexOfFirstItem, setIndexOfFirstItem] = useState(0);

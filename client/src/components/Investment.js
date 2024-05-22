@@ -10,9 +10,12 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import axios from 'axios';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import '../styles/setting.scss';
+import { useParams } from 'react-router-dom';
+import { GetTimeText } from '../hooks/Functions';
 
 ChartJS.register(
   CategoryScale,
@@ -26,6 +29,7 @@ ChartJS.register(
 );
 
 export function CheckInvestment() {
+  const { id } = useParams();
   //데이터
   // 투자 리스트 - 투자 상품 이름, 단위(ex.kg),
   const [products, setProducts] = useState([
@@ -33,51 +37,36 @@ export function CheckInvestment() {
       id: 1,
       name: '선생님 몸무게',
       unit: 'kg',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     },
     {
       id: 2,
       name: '미세먼지 농도',
       unit: '㎍/㎥',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     },
     {
       id: 3,
       name: '미세먼지 농도',
       unit: '㎍/㎥',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     },
     {
       id: 4,
       name: '미세먼지 농도',
       unit: '㎍/㎥',
-    },
-  ]);
-  //투자 리스트 - 투자 정보(id로 연결)
-  const [productInfo, setProductInfo] = useState([
-    {
-      id: 1,
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-    },
-    {
-      id: 2,
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-    },
-    {
-      id: 3,
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-    },
-    {
-      id: 4,
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     },
   ]);
   //시간별 수치 변화 - 날짜, 수치 객체 배열
   const [list, setList] = useState([
-    { date: '2024-05-20', amount: '1' },
-    { date: '2024-05-21', amount: '5' },
-    { date: '2024-05-22', amount: '10' },
-    { date: '2024-05-23', amount: '15' },
-    { date: '2024-05-24', amount: '15' },
-    { date: '2024-05-25', amount: '15' },
-    { date: '2024-05-26', amount: '15' },
+    { createdAt: '2024-05-20', status: '1' },
+    { createdAt: '2024-05-21', status: '5' },
+    { createdAt: '2024-05-22', status: '10' },
+    { createdAt: '2024-05-23', status: '15' },
+    { createdAt: '2024-05-24', status: '15' },
+    { createdAt: '2024-05-25', status: '15' },
+    { createdAt: '2024-05-26', status: '15' },
   ]);
   //날짜 배열
   const [labels, setLabels] = useState([]);
@@ -86,14 +75,14 @@ export function CheckInvestment() {
   //날짜 배열 - labels
   useEffect(() => {
     const formattedLabels = list.map((item) => {
-      const [year, month, day] = item.date.split('-');
-      return `${month} ${day}`;
+      const newDate = new Date(item.createdAt);
+      return `${newDate.getMonth()}/${newDate.getDate()}`;
     });
     setLabels(formattedLabels);
   }, [list]);
   //수치 배열 - amounts
   useEffect(() => {
-    setAmounts(list.map((item) => item.amount));
+    setAmounts(list.map((item) => item.status));
   }, [list]);
   console.log(amounts);
 
@@ -204,6 +193,36 @@ export function CheckInvestment() {
     ],
   };
 
+  const getInvest = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/invest/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setProducts(res.data.result);
+  };
+
+  const getStatus = async (investId) => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/invest/status/${investId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setList(res.data.result);
+  };
+
+  useEffect(() => {
+    getInvest();
+  }, []);
+
   return (
     <>
       <div style={{ color: '#777777', marginBottom: '10px' }}>투자 리스트</div>
@@ -216,9 +235,11 @@ export function CheckInvestment() {
             padding: '10px',
             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
             marginBottom: '30px',
-            ...height[index],
           }}
-          onClick={() => handleProductClick(index)}
+          onClick={() => {
+            handleProductClick(index);
+            getStatus(product.id);
+          }}
         >
           <div
             style={{
@@ -277,7 +298,7 @@ export function CheckInvestment() {
             style={{ color: '#777777', fontSize: '11px', marginTop: '10px' }}
           >
             <div>최신 투자 정보</div>
-            <div>{productInfo.filter((item) => item.id === 3)[0].info}</div>
+            <div>{product.info}</div>
           </div>
           {/* 차트 */}
           {height[index].height == '300px' && (
@@ -287,10 +308,10 @@ export function CheckInvestment() {
                 height: 185,
                 // backgroundColor: 'rgb(254 239 244 / 80%)',
                 borderRadius: '12px',
-                margin: '10px',
-                padding: '10px',
-                position: 'absolute',
-                left: '28px',
+                // margin: '10px',
+                // padding: '10px',
+                // position: 'absolute',
+                // left: '28px',
                 display: 'flex',
                 alignItems: 'center',
               }}

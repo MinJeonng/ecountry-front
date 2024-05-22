@@ -114,16 +114,8 @@ function App() {
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
 
           <Route
-            path="/:id/assembly"
-            element={<SetAssembly position="법 리스트" />}
-          />
-          <Route
-            path="/:id/assembly/edit"
-            element={<SetAssembly position="법 개정" />}
-          />
-          <Route
-            path="/new/assembly/edit"
-            element={<AssemblyLawEdit position="법 제정" />}
+            path="/:id/manager/assembly"
+            element={<SetAssembly position="국회" />}
           />
 
           <Route

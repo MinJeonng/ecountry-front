@@ -11,8 +11,10 @@ export function BoardPeopleWrite() {
   const [content, setContent] = useState('');
   const [isSecret, setIsSecret] = useState(false);
   const [petitionId, setPetitionId] = useState();
-  const handleIsSecret = () => {
+  const handleIsSecret = (e) => {
+    console.log(e);
     setIsSecret(!isSecret);
+    console.log(isSecret);
   };
   const handleWrite = async () => {
     try {
@@ -115,7 +117,7 @@ export function BoardPeopleWrite() {
                 <input
                   type="checkbox"
                   checked={isSecret}
-                  onChange={handleIsSecret}
+                  onChange={(e) => handleIsSecret(e)}
                 />
                 비밀글
               </label>

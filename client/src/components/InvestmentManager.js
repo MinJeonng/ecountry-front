@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ConfirmBtn } from './SettingBtn';
-import '../styles/setting.scss';
 import { useParams } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
 
-export function AddInvestment({ position }) {
+import '../styles/setting.scss';
+
+export function AddInvestment() {
   const { id } = useParams();
   const [investmentName, setInvestmentName] = useState('');
   const [value, setValue] = useState('');
@@ -16,6 +19,13 @@ export function AddInvestment({ position }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [statusList, setStatusList] = useState([]);
+  const endOfListRef = useRef(null);
+
+  useEffect(() => {
+    if (endOfListRef.current) {
+      endOfListRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [statusList]);
 
   const getList = async () => {
     const res = await axios({
@@ -90,8 +100,11 @@ export function AddInvestment({ position }) {
     });
     getStatus(investId);
   };
-
-  const deleteStatus = async (id, investId) => {
+  //투자 정보 삭제 data.id, invest.id, data.createdAt,data.status, invest.unit
+  const deleteStatus = async (id, investId, createdAt, status, unit) => {
+    if (!window.confirm(`${status}${unit} 삭제하시겠습니까?`)) {
+      return;
+    }
     const res = await axios({
       method: 'DELETE',
       url: `${process.env.REACT_APP_HOST}/api/invest/status/${id}`,
@@ -105,7 +118,7 @@ export function AddInvestment({ position }) {
 
   const handleAddInvestments = () => {
     if (!investmentName || !unit || !investmentInfo) {
-      alert('모든 값을 입력해주세요');
+      toast.error('모든 값을 입력해주세요', { autoClose: 1300 });
       return;
     }
     sendinvest();
@@ -114,27 +127,31 @@ export function AddInvestment({ position }) {
     setSelectedIndex(null);
     setUnit('');
   };
-
+  //투자 상품 클릭시 업데이트 아코디언 열리게
   const selectInput = (invest, index) => {
-    console.log(invest);
-    getStatus(invest.id);
-    setInvestmentInfo(invest.info);
-    setInvestmentName(invest.name);
-    setUnit(invest.unit);
-    const selectedValue =
-      investValueList[index] !== undefined ? investValueList[index] : '';
-    setValue(selectedValue);
+    if (selectedIndex === index) {
+      handleCloseAccordion();
+    } else {
+      // console.log(invest.id);
+      getStatus(invest.id);
+      setInvestmentInfo('');
+      setInvestmentName(invest.name);
+      setUnit(invest.unit);
+      // const selectedValue =
+      //   investValueList[index] !== undefined ? investValueList[index] : '';
+      // setValue(selectedValue);
 
-    setSelectedIndex(index);
-    setIsAccordionOpen(true);
-    setIsAddOpen(false);
-  };
-
-  const handleCloseAccordion = () => {
-    if (!investmentName || !unit || !investmentInfo) {
-      alert('모든 값을 입력해주세요');
-      return;
+      setSelectedIndex(index);
+      setIsAccordionOpen(true);
+      setIsAddOpen(false);
     }
+  };
+  //아코디언 닫히게
+  const handleCloseAccordion = () => {
+    // if (!investmentInfo) {
+    //   toast.error('최신 투자 정보를 입력하세요', { autoClose: 1300 });
+    //   return;
+    // }
     setInvestmentInfo('');
     setInvestmentName('');
     setSelectedIndex(null);
@@ -143,22 +160,27 @@ export function AddInvestment({ position }) {
     setIsAccordionOpen(false);
     setIsAddOpen(true);
   };
-  const resetBtn = () => {
-    if (
-      investmentInfo !== '' ||
-      investmentName !== '' ||
-      selectedIndex !== null ||
-      unit !== ''
-    ) {
-      const isConfirmed = window.confirm('초기화 하시겠습니까?');
-      if (!isConfirmed) {
-        return;
-      }
+  //최신 투자 정보 업데이트
+  const handleInvestmentInfo = (investId) => {
+    if (!investmentInfo) {
+      toast.error('최신 투자 정보를 입력하세요', { autoClose: 1300 });
+      return;
+    }
+    updateFunc(investId); //DB로 최신 투자 정보 업데이트
+    setInvestmentInfo('');
+  };
 
-      setInvestmentInfo('');
-      setInvestmentName('');
-      setSelectedIndex(null);
-      setUnit('');
+  const deleteInvestmentInfo = async (investId) => {
+    const res = await axios({
+      method: 'DELETE',
+      url: `${process.env.REACT_APP_HOST}/api/invest/${investId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    if (res.data.success) {
+      alert('삭제되었습니다.');
     }
   };
 
@@ -167,6 +189,7 @@ export function AddInvestment({ position }) {
     if (!window.confirm('삭제하시겠습니까?')) {
       return;
     }
+    deleteInvestmentInfo(id);
     const res = await axios({
       method: 'DELETE',
       url: `${process.env.REACT_APP_HOST}/api/invest/${id}`,
@@ -182,9 +205,11 @@ export function AddInvestment({ position }) {
     setInvestmentInfo('');
     setInvestmentName('');
     setUnit('');
-
     setSelectedIndex(null);
+    setIsAccordionOpen(false);
+    setIsAddOpen(true);
   };
+
   const newAddBtn = () => {
     setIsAddOpen(true);
     setIsAccordionOpen(false);
@@ -229,7 +254,7 @@ export function AddInvestment({ position }) {
 
   return (
     <>
-      {/* <PageHeader>{position}</PageHeader> */}
+      <ToastContainer />
       <div className="title-list">
         <div>투자 상품 관리</div>
         <ul className="title-list">
@@ -244,34 +269,43 @@ export function AddInvestment({ position }) {
               isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
             } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
+            onClick={() => selectInput(invest, index)}
+            style={{ fontSize: '14px', color: '#666666' }}
           >
             {invest.name}
-            <button
-              className="updateBtn"
-              onClick={() => selectInput(invest, index)}
-            >
-              수정
-            </button>
-            <img
-              className="deleteBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={(e) => deleteBtn(e, invest.id)}
-              alt="삭제"
-            />
+            <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <>
+              <form
+                style={{
+                  backgroundColor: 'none',
+                  zIndex: '10',
+                  width: '-webkit-fill-available',
+                  margin: '10px',
+                  padding: '5px',
+                  position: 'relative',
+                }}
+              >
+                <img
+                  className="resetBtn"
+                  style={{ position: 'absolute', right: 0 }}
+                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                  onClick={(e) => deleteBtn(e, invest.id)}
+                  alt="삭제"
+                />
+              </form>
               <form className="box-style">
-                <div className="reset">
-                  <img
-                    className="resetBtn"
-                    src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                    onClick={resetBtn}
-                    alt="초기화"
-                  />
+                <div className="set-title">투자정보 업데이트</div>
+                <div
+                  style={{
+                    color: '#666666',
+                    fontSize: '12px',
+                    paddingTop: '5px',
+                  }}
+                >
+                  최신 투자정보 | {invest.info}
                 </div>
-
-                <div className="set-title">오늘의 투자정보</div>
                 <input
                   className="set-input"
                   type="text"
@@ -282,33 +316,78 @@ export function AddInvestment({ position }) {
                 />
                 <ConfirmBtn
                   onClick={() => {
-                    handleCloseAccordion();
-                    updateFunc(invest.id);
+                    handleInvestmentInfo(invest.id);
                   }}
                   btnName="업데이트"
-                  backgroundColor="#61759f"
+                  backgroundColor="rgb(140 159 198)"
                 ></ConfirmBtn>
               </form>
-              <div>이전 현황</div>
-              {statusList.length === 0 ? (
-                <div>이전 현황이 없습니다.</div>
-              ) : (
-                <div>
-                  {statusList.map((data) => (
-                    <div>
-                      {getDate(data.createdAt)} : {data.status}
-                      {invest.unit}
-                      <button
-                        type="button"
-                        onClick={() => deleteStatus(data.id, invest.id)}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
               <form className="box-style">
+                <div className="set-title">이전 현황</div>
+                {statusList.length === 0 ? (
+                  <div
+                    style={{
+                      color: '#666666',
+                      fontSize: '12px',
+                      paddingTop: '5px',
+                    }}
+                  >
+                    이전 현황이 없습니다.
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      marginTop: '15px',
+                      marginBottom: '15px',
+                      padding: '5px',
+                      borderBottom: '1px solid #e9ae24',
+                      maxHeight: '80px',
+                      overflowX: 'scroll',
+                      boxSizing: 'border-box',
+                      color: '#666666',
+                      fontSize: '12px',
+                    }}
+                  >
+                    {statusList.map((data) => (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          marginBottom: '3px',
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: '#666666',
+                            fontSize: '12px',
+                          }}
+                        >
+                          {getDate(data.createdAt)} {'   '}
+                          {data.status}
+                          {invest.unit}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            deleteStatus(
+                              data.id,
+                              invest.id,
+                              data.createdAt,
+                              data.status,
+                              invest.unit
+                            )
+                          }
+                          style={{ all: 'unset' }}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    ))}
+                    {/* <div ref={endOfListRef} /> */}
+                  </div>
+                )}
+
                 <div className="set-title">값</div>
                 <input
                   className="set-input"
@@ -323,20 +402,18 @@ export function AddInvestment({ position }) {
                   onClick={() => {
                     sendStatus(invest.id);
                   }}
-                  btnName="추가"
-                  backgroundColor="#bacd92"
+                  btnName="업데이트"
+                  backgroundColor="rgb(140 159 198)"
                 ></ConfirmBtn>
               </form>
             </>
           )}
         </>
       ))}
-
       {isAccordionOpen && (
         <ConfirmBtn
           onClick={() => newAddBtn()}
-          btnName="상품 등록"
-          width={'40%'}
+          btnName="추가"
           backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}
@@ -346,12 +423,6 @@ export function AddInvestment({ position }) {
           <form className="box-style">
             <div className="reset">
               <div className="set-title">투자 상품명</div>
-              <img
-                className="resetBtn"
-                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                onClick={resetBtn}
-                alt="초기화"
-              />
             </div>
             <input
               className="set-input"

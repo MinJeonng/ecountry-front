@@ -24,6 +24,7 @@ import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
 import StudentLogin from './pages/StudentLogin';
 import StudentMyPage from './pages/StudentMyPage';
+import ChatBot from './pages/ChatBot';
 
 function App() {
   return (
@@ -83,7 +84,6 @@ function App() {
             element={<SetInvestment position="투자 상품 관리" />}
           />
 
-
           <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} />
           <Route path="/:id/manager/seatMap" element={<SetSeat />} />
 
@@ -130,6 +130,8 @@ function App() {
             path="/:id/investment"
             element={<SetInvestment position="투자 상품 확인" />}
           />
+
+          <Route path="/:id/chatbot" element={<ChatBot />} />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

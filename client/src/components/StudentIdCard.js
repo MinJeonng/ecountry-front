@@ -5,7 +5,7 @@ export default function StudentIdCard() {
     <div className="idCard-wrap">
       <div className="idCard-title">신분증</div>
       <div className="idCard-list">
-        <div>이미지</div>
+        <div className="idCard-img">이미지</div>
         <div className="idCard-detail">
           <div className="idCard-detail-title">홍길동</div>
           <div className="idCard-detail-list">

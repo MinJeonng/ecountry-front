@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Template from '../components/Template';
 import '../styles/studentMypage.scss';
+
+import Template from '../components/Template';
 import StudentIdCard from '../components/StudentIdCard';
 
 export default function StudentMyPage() {

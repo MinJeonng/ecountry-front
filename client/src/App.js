@@ -23,9 +23,7 @@ import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
 import StudentLogin from './pages/StudentLogin';
 import StudentMyPage from './pages/StudentMyPage';
-import { CommonMain } from './pages/CommonMain';
 import ChatBot from './pages/ChatBot';
-
 
 function App() {
   return (
@@ -91,7 +89,6 @@ function App() {
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
 
           {/* 공통 페이지 */}
-          <Route path="/:id/main" element={<CommonMain />} />
           <Route
             path="/:id/boardPeople"
             element={<SetBoardPeople position="리스트" />}

@@ -19,18 +19,34 @@ $blue: #61759f;
     .idCard-list {
       display: flex;
       justify-content: center;
-      margin-top: 15px;
+      margin: 15px 0;
+
+      .idCard-img {
+        width: 30%;
+        height: 30%;
+        border-radius: 16px;
+      }
 
       .idCard-detail {
         display: flex;
         flex-direction: column;
         margin-left: 50px;
+        justify-content: space-between;
 
-        .idCard-detail-title {
+        .idCard-detail-name {
+          font-weight: 800;
         }
 
         .idCard-detail-list {
+          display: flex;
+          font-size: 14px;
+          justify-content: space-between;
+          align-items: center;
+
           .idCard-detail-title {
+            padding-right: 10px;
+            margin-right: 10px;
+            border-right: 2px solid #101010;
           }
 
           .idCard-detail-content {

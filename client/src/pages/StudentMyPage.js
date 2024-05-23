@@ -2,7 +2,7 @@ import React from 'react';
 
 import Template from '../components/Template';
 import '../styles/studentMypage.scss';
-import StudentIdCard from '../components/StudentIdCard';
+import { StudentIdCard } from '../components/StudentIdCard';
 import { PageHeader } from '../components/Headers';
 
 export default function StudentMyPage() {

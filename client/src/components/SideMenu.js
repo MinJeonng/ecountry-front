@@ -110,7 +110,7 @@ export function SideMenuComponent({ func }) {
             alt="닫기"
           />
           <DashboardBox>
-            <div className="bankBox" onClick={() => navigate(``)}>
+            <div className="bankBox" onClick={() => navigate(`/${id}/bank`)}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-bank.png`}
                 alt="은행"
@@ -132,7 +132,10 @@ export function SideMenuComponent({ func }) {
               />
               <p>국민 리스트</p>
             </div>
-            <div className="assemblyBox" onClick={() => navigate(``)}>
+            <div
+              className="assemblyBox"
+              onClick={() => navigate(`/${id}/assembly`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-capitol.png`}
                 alt="국회"
@@ -140,7 +143,7 @@ export function SideMenuComponent({ func }) {
               <p>국회</p>
             </div>
 
-            <div className="newsBox" onClick={() => navigate(``)}>
+            <div className="newsBox" onClick={() => navigate(`/${id}/news`)}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-news.png`}
                 alt="뉴스"
@@ -176,7 +179,7 @@ export function SideMenuComponent({ func }) {
               />
               <p>시간표</p>
             </div> */}
-            <div className="mypage" onClick={navigate(`/${id}/mypage`)}>
+            <div className="mypage" onClick={() => navigate(`/${id}/mypage`)}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-user.png`}
                 alt="마이페이지"

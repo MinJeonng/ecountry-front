@@ -5,6 +5,7 @@ import Template from '../components/Template';
 import '../styles/_input_common.scss';
 import '../styles/setting.scss';
 import '../styles/_button_common.scss';
+import { PageHeader } from '../components/Headers';
 
 export default function SetInvestment({ position }) {
   return (
@@ -12,27 +13,7 @@ export default function SetInvestment({ position }) {
       <Template
         childrenTop={
           <>
-            {position === '투자 상품 확인' && (
-              <>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '90px',
-                    left: '30px',
-                    color: 'white',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
-                    style={{ width: '22%' }}
-                  ></img>
-                  <div style={{ fontSize: '17px' }}> 투자</div>
-                </div>
-              </>
-            )}
+            <PageHeader>{position}</PageHeader>
           </>
         }
         childrenBottom={

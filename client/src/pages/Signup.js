@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Template from '../components/Template';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { PageHeader } from '../components/Headers';
 
 export default function Login() {
   const [name, setName] = useState('');
@@ -32,10 +33,11 @@ export default function Login() {
 
   return (
     <Template
+      childrenTop={<PageHeader>{'회원가입'}</PageHeader>}
       childrenBottom={
         <div className="setting-wrap">
           <div>
-            <div>회원가입</div>
+            {/* <div>회원가입</div> */}
             <ul className="title-list">
               <li>본인의 계정을 생성하세요.</li>
               <li>이름과 4자리의 비밀번호를 작성하세요.</li>

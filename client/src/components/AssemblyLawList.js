@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { ConfirmBtn } from './SettingBtn';
+
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
+import { PageHeader } from '../components/Headers';
 
 export default function SetSeatMap() {
   const { id } = useParams();
@@ -102,7 +103,7 @@ export default function SetSeatMap() {
 
   return (
     <Template
-      childrenTop={<div className="top-title">자리 배치표</div>}
+      childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
       childrenBottom={
         <>
           <div className="seat-title">

@@ -80,10 +80,8 @@ export function MainProfile() {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log(res.data.success);
 
       if (res.data.success) {
-        console.log(res.data.result);
         setName(res.data.result.name);
       } else {
         console.error(res.data.message);
@@ -98,7 +96,6 @@ export function MainProfile() {
   }, []);
 
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo.authority) {
       getUserName();
     }
@@ -143,10 +140,8 @@ export function GetName() {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log(res.data.success);
 
       if (res.data.success) {
-        console.log(res.data.result);
         setName(res.data.result.name);
       } else {
         console.error(res.data.message);
@@ -173,7 +168,6 @@ export function GetName() {
   }, []);
 
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo.authority) {
       getUserName();
     }

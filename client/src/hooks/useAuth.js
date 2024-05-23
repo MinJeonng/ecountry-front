@@ -42,6 +42,7 @@ export default function useAuth(id) {
           });
           setUserInfo(result);
         } else if (id && res.data.result.isStudent) {
+          let result = res.data.result;
           const res3 = await axios({
             method: 'GET',
             url: `${process.env.REACT_APP_HOST}/api/user/info`,
@@ -51,6 +52,8 @@ export default function useAuth(id) {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           });
+          result.authority = res3.data.result.countryId == id;
+          setUserInfo(result);
         }
       } catch {
         localStorage.removeItem('token');

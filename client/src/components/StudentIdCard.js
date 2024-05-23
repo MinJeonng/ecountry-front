@@ -14,6 +14,7 @@ const Name = styled.div`
 
 export function StudentIdCard() {
   const { id } = useParams();
+
   const [userInfo, setUserInfo] = useAuth(id);
   const [Image, setImage] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
@@ -21,8 +22,10 @@ export function StudentIdCard() {
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
   const [job, setJob] = useState(null);
+  const [rating, setRating] = useState('');
 
   const fileInput = useRef(null);
+
   const onChange = (e) => {
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
@@ -33,6 +36,7 @@ export function StudentIdCard() {
       );
       return;
     }
+
     //화면에 프로필 사진 표시
     const reader = new FileReader();
     reader.onload = () => {
@@ -43,7 +47,7 @@ export function StudentIdCard() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const getUserName = async () => {
+  const getUserInfo = async () => {
     try {
       const res = await axios({
         method: 'GET',
@@ -57,13 +61,15 @@ export function StudentIdCard() {
       console.log(res.data.success);
 
       if (res.data.success) {
-        console.log(res.data.result);
-        setName(res.data.result.name);
+        const user = res.data.result;
+        setName(user.name);
+        setJob(user.job);
+        setRating(user.rating);
       } else {
         console.error(res.data.message);
       }
     } catch (error) {
-      console.error('로그인 요청 실패:', error);
+      console.error('사용자 정보 요청 실패:', error);
     }
   };
 
@@ -72,9 +78,8 @@ export function StudentIdCard() {
   }, []);
 
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo.authority) {
-      getUserName();
+      getUserInfo();
     }
   }, [userInfo]);
 
@@ -103,11 +108,11 @@ export function StudentIdCard() {
           <Name>{name}</Name>
           <div className="idCard-detail-list">
             <div className="idCard-detail-title">직업</div>
-            <div className="idCard-detail-content">직업종류</div>
+            <div className="idCard-detail-content">{job}</div>
           </div>
           <div className="idCard-detail-list">
             <div className="idCard-detail-title">신용등급</div>
-            <div className="idCard-detail-content">1등급</div>
+            <div className="idCard-detail-content">{rating}등급</div>
           </div>
         </div>
       </div>

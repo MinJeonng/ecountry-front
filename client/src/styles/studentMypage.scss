@@ -6,11 +6,45 @@ $blue: #61759f;
 @import '../styles/variables';
 
 @include mobile {
+  // 비밀번호 변경
+  .new-password {
+    border: none;
+    border-bottom: 1px solid $under-line;
+    background-color: transparent;
+    outline: none;
+    padding: 5px;
+    margin-right: 10px;
+  }
+
+  .change-btn,
+  .cancelChange-btn {
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #61759f;
+    background-color: #61759f;
+    border-radius: 18px;
+    padding: 6px 15px;
+    margin: 0 6px;
+  }
+
+  .changePassword-btn {
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #61759f;
+    background-color: #61759f;
+    border-radius: 18px;
+    padding: 6px 15px;
+  }
+
+  // id 카드
+
   .idCard-wrap {
     border: 1px solid #a5a5a5;
     border-radius: 16px;
     padding: 20px;
     background-color: #fffcf2;
+    width: 280px;
+    margin: 30px auto;
 
     .idCard-title {
       text-align: center;
@@ -54,11 +88,98 @@ $blue: #61759f;
             margin-right: 10px;
             border-right: 2px solid #101010;
           }
-
-          .idCard-detail-content {
-          }
         }
       }
+    }
+  }
+
+  // 월급 명세서
+  .payStub-wrap {
+    .payStub-title {
+      font-weight: 800;
+    }
+
+    .payStub-month-navi {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 0;
+
+      .month-btn {
+        width: 30%;
+        font-size: 20px;
+        font-weight: 800;
+        border: 1px solid transparent;
+        background-color: transparent;
+      }
+
+      .month-btn:active {
+        box-shadow: 0px 0px 5px #444;
+      }
+    }
+
+    .payStub-receipt {
+      border: 1px solid #b9c0be;
+      border-radius: 6px;
+      padding: 20px;
+      height: 300px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+
+      .payStub-receipt-title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      .payStub-item {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+
+        .payStub-img {
+          width: 16px;
+          margin-bottom: 6px;
+        }
+
+        .payStub-item-title,
+        .payStub-item-value {
+          font-size: 12px;
+          border-left: 2px solid #e2e8f0;
+          padding-left: 20px;
+          margin-left: 7px;
+        }
+      }
+
+      .payStub-total {
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .total,
+        .total-pay,
+        .unit {
+          font-size: 14px;
+          margin-left: 10px;
+        }
+      }
+    }
+
+    .payStub-receipt::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .payStub-receipt::-webkit-scrollbar-thumb {
+      background: #d9d9d9; /* 스크롤바 색상 */
+      border-radius: 12px; /* 스크롤바 둥근 테두리 */
+    }
+
+    .payStub-receipt::-webkit-scrollbar-track {
+      background: transparent; /*스크롤바 뒷 배경 색상*/
+      border-radius: 12px;
     }
   }
 }

@@ -26,13 +26,22 @@ const ProfileName = styled.div`
   font-weight: 700;
 `;
 const LogoutBtn = styled.button`
-  border-radius: 5px;
+  border-radius: 19px;
   border: none;
   text-align: center;
   font-size: 13px;
-  color: #6184c7;
+  color: #606060;
   padding: 3px 10px;
   margin-top: 5px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  img {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 export function MainProfile() {
@@ -172,7 +181,13 @@ export function GetName() {
   return (
     <ProfileContainer>
       <ProfileName>{name}</ProfileName>
-      <LogoutBtn onClick={logoutFunc}>로그아웃</LogoutBtn>
+      <LogoutBtn onClick={logoutFunc}>
+        로그아웃
+        <img
+          src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+          alt="복사"
+        />
+      </LogoutBtn>
     </ProfileContainer>
   );
 }

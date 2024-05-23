@@ -4,6 +4,8 @@ import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import '../styles/setting.scss';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export function AddSavings() {
   const { id } = useParams();
@@ -86,6 +88,7 @@ export function AddSavings() {
 
         dueDate: savingDeadLine,
       };
+
       setSavingList(updatedSaving);
     } else {
       const newSavingList = [
@@ -98,12 +101,16 @@ export function AddSavings() {
           dueDate: savingDeadLine,
         },
       ];
+
       setSavingList(newSavingList);
     }
     setSavingName('');
     setInterestRate('');
     setSavingDeadLine('');
     setSelectedIndex(null);
+    toast('적금 상품이 등록되었습니다.', {
+      autoClose: 1300,
+    });
   };
   const selectInput = (saving, index) => {
     if (selectedIndex === index) {
@@ -152,6 +159,9 @@ export function AddSavings() {
     setSelectedIndex(null);
     setIsAccordionOpen(false); // 아코디언 닫힘 상태로 변경
     setIsAddOpen(true);
+    toast('적금 상품이 수정되었습니다.', {
+      autoClose: 1300,
+    });
   };
   const resetBtn = () => {
     if (savingName !== '' || savingDeadLine !== '' || selectedIndex !== null) {
@@ -200,11 +210,11 @@ export function AddSavings() {
 
   return (
     <>
+      <ToastContainer />
       <div className="title-list">
-        <div>적금 상품 생성</div>
         <ul className="title-list">
           <li>적금 상품을 생성할 수 있습니다.</li>
-          <li>생성 후 삭제 및 수정 불가합니다.</li>
+          <li>생성 후 수정이 불가하오니 유의해주시기 바랍니다.</li>
         </ul>
       </div>
 
@@ -217,7 +227,7 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
-            {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
+            {saving.name} D-{saving.dueDate} (금리 {saving.interest}%)
             <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
           {isAccordionOpen && selectedIndex === index && (
@@ -250,15 +260,18 @@ export function AddSavings() {
                 }}
               />
               <div className="set-title">금리 설정</div>
-              <input
-                className="set-input"
-                type="number"
-                min="0"
-                value={interestRate}
-                onChange={(e) => {
-                  setInterestRate(e.target.value);
-                }}
-              />
+              <div className="container">
+                <input
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={interestRate}
+                  onChange={(e) => {
+                    setInterestRate(e.target.value);
+                  }}
+                />
+                <span className="unit">%</span>
+              </div>
               <ConfirmBtn
                 onClick={() => {
                   handleCloseAccordion();
@@ -276,7 +289,7 @@ export function AddSavings() {
         <ConfirmBtn
           onClick={() => newAddBtn()}
           btnName="상품 등록"
-          width={'40%'}
+          // width={'80%'}
           backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}
@@ -312,19 +325,23 @@ export function AddSavings() {
               }}
             />
             <div className="set-title">금리 설정</div>
-            <input
-              className="set-input"
-              type="number"
-              min="0"
-              value={interestRate}
-              onChange={(e) => {
-                setInterestRate(e.target.value);
-              }}
-            />
+            <div className="container">
+              <input
+                className="set-input"
+                type="number"
+                min="0"
+                value={interestRate}
+                onChange={(e) => {
+                  setInterestRate(e.target.value);
+                }}
+              />
+              <span className="unit">%</span>
+            </div>
             <ConfirmBtn
               onClick={handleAddSavings}
               btnName="상품 등록"
               backgroundColor="#bacd92"
+              width="100%"
             ></ConfirmBtn>
           </form>
         </>

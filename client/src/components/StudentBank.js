@@ -264,8 +264,8 @@ export function OwnAccount() {
       {/* {bothDivisionsExist && (
         <div>0,1둘다 존재</div>
       )} */}
-      <CheckingAccount />
-      <SavingAccount />
+      {/* <CheckingAccount />
+      <SavingAccount /> */}
     </>
   );
 }

@@ -125,6 +125,7 @@ export function GetName() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
   const [name, setName] = useState('');
+
   const getUserName = async () => {
     try {
       const res = await axios({

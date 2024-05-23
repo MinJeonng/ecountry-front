@@ -22,6 +22,7 @@ export default function StudentLogin() {
     });
     if (res.data.success) {
       localStorage.setItem('token', res.data.result.token);
+      window.location.href = `/${id}/main`;
     }
   };
 

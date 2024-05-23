@@ -12,21 +12,32 @@ const MyAccount = styled.div`
   height: auto;
   padding: 30px;
 `;
+const SavingComponent = styled.div`
+  border: none;
+  border-radius: 10px;
+  background: #edeef1;
+  height: auto;
+  padding: 30px;
+  margin-top: 20px;
+`;
 const AccountName = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  gap: 5px;
+
   span {
     font-weight: 500;
     color: #666666;
     font-size: 16px;
+    gap: 5px;
   }
   .accountName {
     font-weight: 500;
     color: #000;
     font-size: 16px;
+    gap: 5px;
+    display: flex;
   }
 `;
 const Balance = styled.div`
@@ -58,6 +69,7 @@ const TransferBtn = styled.button`
   transition: background-color 0.3s;
 `;
 
+//입출금통장
 function CheckingAccount({ account }) {
   const [isAccordion, setIsAccordion] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -85,7 +97,9 @@ function CheckingAccount({ account }) {
       <MyAccount>
         <AccountName>
           {/* account.accountName */}
-          <span className="accountName">입출금</span> <span>통장</span>
+          <div className="accountName">
+            입출금<span>통장</span>
+          </div>
         </AccountName>
         <Balance>
           {/* 단위 불러오는 api도 필요 */}
@@ -135,8 +149,78 @@ function CheckingAccount({ account }) {
     </>
   );
 }
+
+//적금통장
 function SavingAccount({ account }) {
-  return <>{/* ~~~~{account.id} */}</>;
+  const [isAccordion, setIsAccordion] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+  const [user, setUser] = useState('');
+  const [savingAmount, setSavingAmount] = useState('');
+
+  const handleBtn = () => {
+    setIsAccordion(!isAccordion);
+    setIsClicked(!isClicked);
+  };
+  const handleSaving = () => {
+    //
+  };
+  return (
+    <>
+      <SavingComponent>
+        <AccountName>
+          {/* account.accountName */}
+          <div className="accountName">
+            ~~적금<span>통장</span>
+          </div>
+          {/* 적금 며칠남았는지 그것도 */}
+          <span>D-~`</span>
+        </AccountName>
+        <Balance>
+          {/* 단위 불러오는 api도 필요 */}
+          {/* account.balance */}
+          <span>1400 미소</span>
+        </Balance>
+        <Btn>
+          <TransferBtn onClick={handleBtn} clicked={isClicked}>
+            적금하기
+          </TransferBtn>
+          <TransferBtn onClick={() => navigator('')}>거래내역</TransferBtn>
+        </Btn>
+      </SavingComponent>
+      {isAccordion && (
+        <form className="box-style">
+          <div className="set-title">예금주</div>
+          {/* 적금 예금주는 본인만 뜨게? */}
+          <select
+            id="name"
+            className="set-input"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
+          >
+            <option value="" selected disabled></option>
+          </select>
+          <div className="set-title">이체 금액</div>
+          <div className="container">
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={savingAmount}
+              onChange={(e) => setSavingAmount(e.target.value)}
+            />
+            {/* 나중에 끝에 단위도 붙여주기 */}
+            {/* <span className='unit'></span> */}
+          </div>
+          <ConfirmBtn
+            onClick={handleSaving}
+            btnName="적금"
+            width="100%"
+            backgroundColor="#61759f"
+          ></ConfirmBtn>
+        </form>
+      )}
+    </>
+  );
 }
 
 export function OwnAccount() {
@@ -181,6 +265,7 @@ export function OwnAccount() {
         <div>0,1둘다 존재</div>
       )} */}
       <CheckingAccount />
+      <SavingAccount />
     </>
   );
 }

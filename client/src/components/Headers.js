@@ -14,16 +14,17 @@ const CommonHeader = styled.div`
 const AlarmHeader = styled.div`
   gap: 10px;
   display: flex;
-  position: relative;
+  /* position: relative;
   top: 25px;
-  right: 20px;
+  right: 20px; */
+  padding-right: 30px;
+  padding-top: 25px;
 `;
 const BoxStyle = styled.div`
-  position: relative;
-  top: 25px;
   z-index: 100;
   width: 100%;
-  left: 20px;
+  padding-top: 25px;
+  padding-left: 30px;
   /* right: 20px; */
 `;
 const HeaderStyle = styled.header`
@@ -40,9 +41,8 @@ const HeaderStyle = styled.header`
 const PageHeaderBox = styled.div`
   display: flex;
   align-items: center;
-  position: relative;
-  top: 40px;
-  left: 20px;
+  padding-top: 40px;
+  padding-left: 20px;
 `;
 const Text = styled.div`
   color: #fff;

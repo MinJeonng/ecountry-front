@@ -20,16 +20,12 @@ const ProfileContainer = styled.div`
 `;
 
 const ProfileName = styled.div`
-  position: relative;
-  top: 5px;
-  left: 20px;
+  padding-top: 5px;
   font-size: 25px;
   color: #333;
   font-weight: 700;
 `;
 const LogoutBtn = styled.button`
-  position: relative;
-  left: 20px;
   border-radius: 5px;
   border: none;
   text-align: center;

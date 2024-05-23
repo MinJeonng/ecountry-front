@@ -1,24 +1,65 @@
-
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
 
 import '../styles/setting.scss';
+import axios from 'axios';
 // import '../styles/lawList.scss';
 
 export function AssemblyLawList() {
-  const [laws, setLaws] = useState([
-    { id: 1, detail: '법을 잘 지키자' },
-    { id: 2, detail: '약속을 잘 지키자' },
-    { id: 3, detail: '쿠쿠루삥뽕' },
-  ]);
+  const { id } = useParams();
+  const [laws, setLaws] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [selectedId, setSelectedId] = useState('');
   const [selectedDetail, setSelectedDetail] = useState('');
+
+  const getRules = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/rule/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setLaws(res.data.result);
+  };
+
+  const updateRule = async (ruleId) => {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${process.env.REACT_APP_HOST}/api/rule`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+      data: { id: ruleId, rule: selectedDetail },
+    });
+    if (res.data.success) {
+      alert('규칙 수정이 완료되었습니다.');
+      getRules();
+    }
+  };
+
+  const addRule = async () => {
+    const res = await axios({
+      method: 'POST',
+      url: `${process.env.REACT_APP_HOST}/api/rule`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+      data: [{ countryId: id, rule: selectedDetail }],
+    });
+    getRules();
+  };
+
+  const deleteRule = async () => {};
 
   const selectInput = (law, index) => {
     if (selectedIndex === index) {
@@ -30,7 +71,7 @@ export function AssemblyLawList() {
     } else {
       setSelectedIndex(index);
       setSelectedId(law.id);
-      setSelectedDetail(law.detail);
+      setSelectedDetail(law.rule);
 
       setIsAccordionOpen(true);
       setIsAddOpen(false);
@@ -64,17 +105,8 @@ export function AssemblyLawList() {
       toast.error('내용을 모두 입력하세요', { autoClose: 1300 });
     }
 
-    // sendList();
+    addRule();
 
-    const newLaws = [
-      ...laws,
-      {
-        id: laws.length + 1,
-        detail: selectedDetail,
-      },
-    ];
-    console.log(newLaws);
-    setLaws(newLaws);
     setSelectedDetail('');
     setSelectedIndex(null);
   };
@@ -84,6 +116,10 @@ export function AssemblyLawList() {
     }
   };
 
+  useEffect(() => {
+    getRules();
+  }, []);
+
   return (
     <>
       <ToastContainer />
@@ -92,7 +128,7 @@ export function AssemblyLawList() {
           className="newsHead"
           style={{ color: '#666666', marginBottom: '10px' }}
         >
-          국세청
+          기본 법
         </div>
       </div>
       <div
@@ -112,8 +148,8 @@ export function AssemblyLawList() {
                   onClick={() => selectInput(law, index)}
                   style={{ fontSize: '13px' }}
                 >
-                  <p>{law.id}항.</p>
-                  <p>{law.detail}</p>
+                  <p>{index + 1}항.</p>
+                  <p>{law.rule}</p>
                   <Arrow stroke="#ddd" className="accArrBtn" />
                 </div>
                 {isAccordionOpen && selectedIndex === index && (
@@ -139,7 +175,7 @@ export function AssemblyLawList() {
                     <ConfirmBtn
                       onClick={() => {
                         handleCloseAccordion();
-                        // updateFunc(saving.id);
+                        updateRule(law.id);
                       }}
                       btnName="업데이트"
                       backgroundColor="#61759f"

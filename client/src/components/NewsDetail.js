@@ -107,11 +107,9 @@ export function SetNewsDetail() {
             }}
             onClick={() => navigate(`/${id}/news/read/${news.id}`)}
           >
-            <img
-              src={getThumbnail(news.content)}
-              style={{ width: '30%', height: 'auto' }}
-              alt="News Image"
-            />
+            <div style={{ width: '30%', height: '30%' }}>
+              <img src={getThumbnail(news.content)} alt="News Image" />
+            </div>
 
             <p style={{ marginLeft: '5%' }}>
               <div>{news.title}</div>

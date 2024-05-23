@@ -112,7 +112,7 @@ export function SetNewsRead() {
               src={`${process.env.PUBLIC_URL}/images/icon-setting.png`}
               alt="Reset Button"
               onClick={handleSelectBox}
-              style={{ width: '30px', height: '30px', right: '0' }}
+              style={{ width: '20px', height: '20px', right: '0' }}
             />
             {showBox && (
               <div
@@ -120,15 +120,13 @@ export function SetNewsRead() {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  width: '40px',
                   position: 'absolute',
-                  top: '27px',
-                  right: '7px',
-                  fontSize: '13px',
+                  fontSize: '14px',
                   textAlign: 'center',
-                  background: 'rgba(117, 117, 117, 0.5)',
-                  borderRadius: '12px',
-                  padding: '10px',
+                  margin: '10px',
+                  boxSizing: 'border-box',
+                  top: '9px',
+                  color: '#5f6368',
                 }}
               >
                 <div
@@ -136,7 +134,9 @@ export function SetNewsRead() {
                     flex: 1,
                     width: '100%',
                     boxSizing: 'border-box',
-                    color: 'white',
+                    borderBottom: '1px solid rgb(163 167 172)',
+                    margin: 4,
+                    marginBottom: 4,
                   }}
                   onClick={deleteNews}
                 >
@@ -147,7 +147,8 @@ export function SetNewsRead() {
                     flex: 1,
                     width: '100%',
                     boxSizing: 'border-box',
-                    color: 'white',
+                    borderBottom: '1px solid rgb(163 167 172)',
+                    padding: 4,
                   }}
                   onClick={editNews}
                 >
@@ -199,6 +200,22 @@ export function SetNewsRead() {
               color: '#666666',
             }}
           ></div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+          <button
+            onClick={() => navigate(`/${id}/news`)}
+            style={{
+              all: 'unset',
+              margin: 10,
+              color: 'rgb(102, 102, 102)',
+              fontWeight: 500,
+              border: '1.2px solid #bacd92',
+              borderRadius: 8,
+              padding: '5px 15px',
+            }}
+          >
+            목록
+          </button>
         </div>
       </div>
     </>

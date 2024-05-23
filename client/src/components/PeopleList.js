@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
 import { peopleListInfo } from '../store/peopleListReducer';
 
 import '../styles/setting.scss';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export function SetPeopleList() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const storedList = useSelector((state) => state.peopleList.studentList);
+  const { id } = useParams();
   const [studentName, setStudentName] = useState(''); //이름
   const [attendanceNumber, setAttendanceNumber] = useState(''); //출석번호
   const [rating, setRating] = useState(''); //신용등급
@@ -19,10 +19,73 @@ export function SetPeopleList() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
+  const [jobList, setJobList] = useState([]); // 직업 리스트
 
-  useEffect(() => {
-    setStudentList(storedList);
-  }, [storedList]);
+  const getInfo = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/student/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setStudentList(res.data.result);
+    const res2 = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/job/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res2.data.result);
+    setJobList(res2.data.result);
+  };
+
+  const updateStudent = async (studentId) => {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${process.env.REACT_APP_HOST}/api/student/${id}`,
+      data: [
+        {
+          id: studentId,
+          name: studentName,
+          rollNumber: attendanceNumber,
+          pw: resetPassword ? resetPassword : null,
+          rating,
+          jobId: job,
+        },
+      ],
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    if (res.data.success) {
+      handleCloseAccordion();
+      getInfo();
+    }
+  };
+
+  const addStudent = async () => {
+    const res = await axios({
+      method: 'POST',
+      url: `${process.env.REACT_APP_HOST}/api/student/${id}`,
+      data: [
+        {
+          name: studentName,
+          rollNumber: attendanceNumber,
+          pw: resetPassword,
+        },
+      ],
+    });
+    if (res.data.success) {
+      toast('국민 추가가 완료되었습니다.');
+    }
+    getInfo();
+  };
 
   const resetBtn = () => {
     if (
@@ -46,36 +109,11 @@ export function SetPeopleList() {
   };
   //추가
   const handleAddPeopleList = () => {
-    if (!studentName || !attendanceNumber || !rating || !job) {
+    if (!studentName || !attendanceNumber || !resetPassword) {
       alert('모든 값을 입력해주세요');
       return;
     }
-
-    //selectedIndex가 값이 있을때
-    if (selectedIndex !== null) {
-      const updatedList = [...studentList];
-      updatedList[selectedIndex] = {
-        attendanceNumber: attendanceNumber,
-        studentName: studentName,
-        rating: rating,
-        job: job,
-        resetPassword: resetPassword,
-      };
-      setStudentList(updatedList);
-    } else {
-      //새로운 학생 추가
-      const newList = [
-        ...studentList,
-        {
-          attendanceNumber: attendanceNumber,
-          studentName: studentName,
-          rating: rating,
-          job: job,
-          resetPassword: resetPassword,
-        },
-      ];
-      setStudentList(newList);
-    }
+    addStudent();
     setAttendanceNumber('');
     setStudentName('');
     setRating('');
@@ -85,10 +123,10 @@ export function SetPeopleList() {
   };
   //수정
   const selectInput = (student, index) => {
-    setAttendanceNumber(student.attendanceNumber);
-    setStudentName(student.studentName);
+    setAttendanceNumber(student.rollNumber);
+    setStudentName(student.name);
     setRating(student.rating);
-    setJob(student.job);
+    setJob(student.jobId);
     setResetPassword('');
     setIsAccordionOpen(true);
     setIsAddOpen(false);
@@ -96,29 +134,6 @@ export function SetPeopleList() {
   };
 
   const handleCloseAccordion = () => {
-    if (selectedIndex !== null) {
-      const updatedList = [...studentList];
-      updatedList[selectedIndex] = {
-        attendanceNumber: attendanceNumber,
-        studentName: studentName,
-        rating: rating,
-        job: job,
-        resetPassword: resetPassword,
-      };
-      setStudentList(updatedList);
-    } else {
-      const newList = [
-        ...studentList,
-        {
-          attendanceNumber: attendanceNumber,
-          studentName: studentName,
-          rating: rating,
-          job: job,
-          resetPassword: resetPassword,
-        },
-      ];
-      setStudentList(newList);
-    }
     setSelectedIndex(null);
     setAttendanceNumber('');
     setStudentName('');
@@ -131,8 +146,7 @@ export function SetPeopleList() {
 
   const deleteBtn = (index) => (e) => {
     e.stopPropagation();
-    const filteredList = studentList.filter((_, i) => i !== index);
-    setStudentList(filteredList);
+    // 삭제 로직 추가
     setAttendanceNumber('');
     setStudentName('');
     setRating('');
@@ -152,13 +166,11 @@ export function SetPeopleList() {
     setResetPassword('');
   };
 
-  const handleConfirm = () => {
-    dispatch(
-      peopleListInfo({
-        peopleList: studentList,
-      })
-    );
-  };
+  const handleConfirm = () => {};
+
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   return (
     <>
@@ -171,7 +183,7 @@ export function SetPeopleList() {
         </ul>
       </div>
 
-      {studentList.map((student, index) => (
+      {studentList?.map((student, index) => (
         <>
           <div
             className={`display ${
@@ -179,7 +191,7 @@ export function SetPeopleList() {
             } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
           >
-            {student.attendanceNumber} {student.studentName}
+            {student.rollNumber}번 {student.name}
             <button
               className="updateBtn"
               onClick={() => selectInput(student, index)}
@@ -233,15 +245,18 @@ export function SetPeopleList() {
                 }}
               />
               <div className="set-title">직업</div>
-              <input
-                className="set-input"
-                type="number"
-                min="0"
+              <select
+                id="job"
                 value={job}
-                onChange={(e) => {
-                  setJob(e.target.value);
-                }}
-              />
+                onChange={(e) => setJob(e.target.value)}
+              >
+                <option value="">무직</option>
+                {jobList.map((data) => (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
+                ))}
+              </select>
               <div className="set-title">비밀번호 재설정</div>
               <input
                 className="set-input"
@@ -253,7 +268,9 @@ export function SetPeopleList() {
                 }}
               />
               <ConfirmBtn
-                onClick={handleCloseAccordion}
+                onClick={() => {
+                  updateStudent(student.id);
+                }}
                 btnName="업데이트"
                 backgroundColor="#61759f"
               ></ConfirmBtn>
@@ -301,27 +318,7 @@ export function SetPeopleList() {
                 setAttendanceNumber(e.target.value);
               }}
             />
-            <div className="set-title">신용등급</div>
-            <input
-              className="set-input"
-              type="number"
-              min="0"
-              value={rating}
-              onChange={(e) => {
-                setRating(e.target.value);
-              }}
-            />
-            <div className="set-title">직업</div>
-            <input
-              className="set-input"
-              type="number"
-              min="0"
-              value={job}
-              onChange={(e) => {
-                setJob(e.target.value);
-              }}
-            />
-            <div className="set-title">비밀번호 재설정</div>
+            <div className="set-title">초기 비밀번호</div>
             <input
               className="set-input"
               type="number"

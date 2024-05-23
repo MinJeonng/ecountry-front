@@ -7,6 +7,7 @@ import { PageHeader } from '../components/Headers';
 
 export default function StudentLogin() {
   const { id } = useParams();
+  const [rollNumber, setRollNumber] = useState();
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
 
@@ -18,7 +19,7 @@ export default function StudentLogin() {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
-      data: { name: userId, pw },
+      data: { rollNumber, name: userId, pw },
     });
     if (res.data.success) {
       localStorage.setItem('token', res.data.result.token);
@@ -38,6 +39,12 @@ export default function StudentLogin() {
             </ul>
           </div>
           <form className="box-style">
+            <div className="user-login-title">출석번호</div>
+            <input
+              className="user-login"
+              type="number"
+              onChange={(e) => setRollNumber(e.target.value)}
+            ></input>
             <div className="user-login-title">이름</div>
             <input
               className="user-login"

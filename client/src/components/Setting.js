@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
-import { ConfirmBtn, NextBtn } from './SettingBtn';
+import { ConfirmBtn, NextBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   schoolInfo,

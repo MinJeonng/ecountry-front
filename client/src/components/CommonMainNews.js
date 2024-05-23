@@ -6,6 +6,9 @@ import Swipe from 'react-easy-swipe';
 import dogImage from '../images/dog.png';
 import moonImage from '../images/moon.jpeg';
 import busImage from '../images/mainBus.jpeg';
+import { getThumbnail } from '../hooks/Functions';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const Container = styled.div`
   width: 100%;
@@ -63,31 +66,13 @@ const Image = styled.img`
   margin-bottom: 10px;
 `;
 export default function CommonMainNews() {
-  // 임시 데이터
-  const initialNewsList = [
-    {
-      id: 1,
-      title:
-        '첫 번째 뉴스 제목을 하고있어요 잘되나요 확인중이에요 라라러라라라라라라',
-      image: dogImage,
-    },
-    {
-      id: 2,
-      title: '두 번째 뉴스 제목',
-      image: moonImage,
-    },
-    {
-      id: 3,
-      title: '세 번째 뉴스 제목',
-      image: busImage,
-    },
-  ];
-
-  const [newsList, SetNewsList] = useState(initialNewsList);
+  const { id } = useParams();
+  const [newsList, setNewsList] = useState([]);
   const [positionx, setPositionx] = useState(0);
   const [imgCount, setImgCount] = useState(1);
   const [endSwipe, setEndSwipe] = useState(false);
 
+  const navigate = useNavigate();
   const onSwipeMove = (position) => {
     setEndSwipe(false);
     if (newsList.length === 1) {
@@ -114,7 +99,21 @@ export default function CommonMainNews() {
     setPositionx(0);
     setEndSwipe(true);
   };
-  // useEffect(() => {});
+  const getNews = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/post/articles/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setNewsList(res.data.result);
+  };
+  useEffect(() => {
+    getNews();
+  }, []);
 
   return (
     <Container>
@@ -124,15 +123,18 @@ export default function CommonMainNews() {
           positionx={positionx}
           endSwipe={endSwipe}
         >
-          {newsList.map((post) => (
-            <ImageContainer key={post.id}>
-              <Image src={post.image} alt={post.title} />
+          {newsList?.map((post) => (
+            <ImageContainer
+              key={post.id}
+              onClick={() => navigate(`/${id}/news/read/${post.id}`)}
+            >
+              <Image src={getThumbnail(post.content)} alt={post.title} />
               <h4>{post.title}</h4>
             </ImageContainer>
           ))}
         </StyledImgDiv>
       </Swipe>
-      {newsList.length > 1 && (
+      {newsList?.length > 1 && (
         <ImageCounterWrapper>
           {newsList.map((post, index) => {
             return (

@@ -20,16 +20,12 @@ const ProfileContainer = styled.div`
 `;
 
 const ProfileName = styled.div`
-  position: relative;
-  top: 5px;
-  left: 20px;
+  padding-top: 5px;
   font-size: 25px;
   color: #333;
   font-weight: 700;
 `;
 const LogoutBtn = styled.button`
-  position: relative;
-  left: 20px;
   border-radius: 5px;
   border: none;
   text-align: center;
@@ -80,10 +76,8 @@ export function MainProfile() {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log(res.data.success);
 
       if (res.data.success) {
-        console.log(res.data.result);
         setName(res.data.result.name);
       } else {
         console.error(res.data.message);
@@ -98,7 +92,6 @@ export function MainProfile() {
   }, []);
 
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo.authority) {
       getUserName();
     }
@@ -132,6 +125,7 @@ export function GetName() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
   const [name, setName] = useState('');
+
   const getUserName = async () => {
     try {
       const res = await axios({
@@ -143,10 +137,8 @@ export function GetName() {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log(res.data.success);
 
       if (res.data.success) {
-        console.log(res.data.result);
         setName(res.data.result.name);
       } else {
         console.error(res.data.message);
@@ -173,7 +165,6 @@ export function GetName() {
   }, []);
 
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo.authority) {
       getUserName();
     }

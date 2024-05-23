@@ -1,12 +1,13 @@
 import Template from '../components/Template';
 import { AssemblyLawList } from '../components/AssemblyLawList';
+import { PageHeader } from '../components/Headers';
 
 //국회
 export function SetAssembly({ position }) {
   return (
     <>
       <Template
-        childrenTop={<div className="top-title">국회</div>}
+        childrenTop={<PageHeader>{position}</PageHeader>}
         childrenBottom={
           <>
             {/* 법 리스트 */}

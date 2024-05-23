@@ -1,5 +1,8 @@
+
 import { useEffect, useState, useRef } from 'react';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
+import '../styles/setting.scss';
+
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';

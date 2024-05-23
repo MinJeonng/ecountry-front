@@ -8,6 +8,7 @@ import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
 import OwnerSeatMap from './OwnerSeatMap';
+import { PageHeader } from '../components/Headers';
 
 // 자리배치도
 export function SetSeat() {
@@ -54,20 +55,14 @@ export function SetSeat() {
     setIsEditing(true);
   };
 
-  // const getSeat = async () => {
-  //   const fakeColumns = [
-  //     { columnId: 1, label: '1열', rowCount: 2 },
-  //     { columnId: 2, label: '2열', rowCount: 1 },
-  //     { columnId: 3, label: '3열', rowCount: 3 },
-  //   ];
-
-  //   setColumns(fakeColumns);
-  // };
-
   const getSeat = async () => {
     const res = await axios({
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/seat/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
 
     console.log('Columns:', res.data.result);
@@ -147,7 +142,7 @@ export function SetSeat() {
 
   return (
     <Template
-      childrenTop={<div className="top-title">자리 배치표</div>}
+      childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
       childrenBottom={
         <>
           <div className="seat-title">
@@ -189,13 +184,10 @@ export function SetSeat() {
           )}
 
           <button className="blue-btn" onClick={toggleEdit}>
-            수정
+            자리 배치 수정
           </button>
           {isSeatMapVisible && (
             <div className="seat-map-container">
-              <button className="blue-btn" onClick={deleteAll}>
-                삭제
-              </button>
               {/* 배치표 추가 */}
               <SeatMap columns={columns} />
             </div>

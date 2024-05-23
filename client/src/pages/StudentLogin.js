@@ -1,17 +1,38 @@
 import React, { useState } from 'react';
 
 import Template from '../components/Template';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { PageHeader } from '../components/Headers';
 
 export default function StudentLogin() {
+  const { id } = useParams();
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
 
+  const loginFunc = async () => {
+    const res = await axios({
+      method: 'POST',
+      url: `${process.env.REACT_APP_HOST}/api/student/user/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+      data: { name: userId, pw },
+    });
+    if (res.data.success) {
+      localStorage.setItem('token', res.data.result.token);
+      window.location.href = `/${id}/main`;
+    }
+  };
+
   return (
     <Template
+      childrenTop={<PageHeader>{'국민 로그인'}</PageHeader>}
       childrenBottom={
         <div className="setting-wrap">
           <div>
-            <div>로그인</div>
+            {/* <div>로그인</div> */}
             <ul className="title-list">
               <li>이름과 비밀번호를 입력하세요.</li>
             </ul>
@@ -30,7 +51,7 @@ export default function StudentLogin() {
               maxLength={4}
               onChange={(e) => setPw(e.target.value)}
             ></input>
-            <button className="login-btn" type="button">
+            <button className="login-btn" type="button" onClick={loginFunc}>
               로그인
             </button>
           </form>

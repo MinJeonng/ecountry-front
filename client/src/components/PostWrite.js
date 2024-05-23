@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactQuill, { Quill } from 'react-quill';
 import { storage } from '../config/Firebase';
@@ -13,6 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 import '../styles/setting.scss';
 import '../styles/test.scss';
+import useAuth from '../hooks/useAuth';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -115,50 +116,70 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const quillRef = useRef(null);
+  const [userInfo, setUserInfo] = useAuth(id);
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const [postId, setPostId] = useState();
+  const [postId, setPostId] = useState(0);
 
   //뉴스 추가
   const sendNews = async () => {
-    const res = await axios({
-      method: 'POST',
-      url: `${process.env.REACT_APP_HOST}/api/post/article`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': `application/json`,
-        'ngrok-skip-browser-warning': '69420',
-      },
-      data: {
-        postTitle: title,
-        content: content,
-        countryId: id,
-      },
-    });
-    if (res.data.success) {
-      toast('글이 등록되었습니다.');
-      // navigate(`${countryId}/news/read/${postId}`);
+    if (postId) {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/post/article`,
+        data: {
+          title: title,
+          content: content,
+          id: postId,
+        },
+      });
+      if (res.data.success) {
+        toast('글이 등록되었습니다.');
+      }
+    } else {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/post/article`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: {
+          title: title,
+          content: content,
+          countryId: id,
+        },
+      });
+      if (res.data.success) {
+        toast('글이 등록되었습니다.');
+      }
     }
   };
   //뉴스 조회
   const getNews = async () => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/post/article`,
+      url: `${process.env.REACT_APP_HOST}/api/post/article/${postId}`,
       headers: {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
-      params: { id: postId },
     });
-    const { content, title } = res.data.result;
-
-    document.querySelector('.ql-editor').innerHTML = content;
-    localStorage.removeItem('postId');
+    if (res.data.success) {
+      console.log(res.data.result);
+      setTitle(res.data.result.title);
+      setContent(res.data.result.content);
+      document.querySelector('.ql-editor').innerHTML = res.data.result.content;
+      localStorage.removeItem('postId');
+    } else {
+      setPostId(0);
+    }
   };
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
+      // 사용자 인증 후 권한이 없으면 작성 불가
       // setUser();
     } else {
       // alert('로그인 후 이용해주세요.');
@@ -185,7 +206,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
     try {
       //db에 들어가는 로직
       sendNews();
-      // navigate('/:id/manager/news/:id');
+      navigate(`/${id}/news`);
     } catch (error) {
       console.log(error);
     }
@@ -199,13 +220,26 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
     }
   };
 
-  useEffect(() => {}, []); // mount 시에만 실행
+  useEffect(() => {
+    if (localStorage.getItem('postId')) {
+      getNews(localStorage.getItem('postId'));
+      setPostId(Number(localStorage.getItem('postId')));
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    setUserInfo();
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const toolbar = editor.getModule('toolbar');
+      toolbar.addHandler('image', () => imageHandler(quillRef, storage));
+    }
+  }, []);
 
   return (
     <>
       <ToastContainer />
-      {/* 헤더 위로 올리기 */}
-      <div>뉴스 작성</div>
+
       <form className="box-style">
         <div
           className="reset"
@@ -245,7 +279,6 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
           <div className="postBtn">
             <ConfirmBtn
               btnName="취소"
-              // onChange={resetBtn}
               onClick={() => navigate(-1)}
               backgroundColor="#bacd92"
               width="40vw"

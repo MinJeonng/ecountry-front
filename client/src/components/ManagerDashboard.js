@@ -4,9 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const SideBox = styled.div`
   width: 100%;
   height: 100%;
-
   box-sizing: border-box;
-  overflow: scroll;
 `;
 
 const MainDashboardBox = styled.div`
@@ -18,7 +16,8 @@ const MainDashboardBox = styled.div`
   margin-bottom: 15px;
 
   div {
-    width: 160px;
+    /* width: 160px; */
+    flex: 1 1 160px;
     height: 110px;
     text-align: center;
     background-color: #f5f6fc;

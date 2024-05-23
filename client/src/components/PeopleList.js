@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
 import { peopleListInfo } from '../store/peopleListReducer';
 
@@ -163,7 +163,7 @@ export function SetPeopleList() {
   return (
     <>
       <div className="title-list">
-        <div>국민 리스트</div>
+        {/* <div>국민 리스트</div> */}
         <ul className="title-list">
           <li>국민리스트를 확인할 수 있습니다.</li>
           <li>국민 정보를 추가, 수정 및 삭제할 수 있습니다.</li>

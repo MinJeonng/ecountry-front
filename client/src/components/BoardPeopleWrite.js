@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 
 export function BoardPeopleWrite() {
   const { id } = useParams();

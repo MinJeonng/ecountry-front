@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 
 import '../styles/setting.scss';
 import axios from 'axios';

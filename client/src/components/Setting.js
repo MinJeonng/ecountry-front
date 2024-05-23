@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
-import { ConfirmBtn, NextBtn } from './SettingBtn';
+import { ConfirmBtn, NextBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   schoolInfo,
@@ -802,8 +802,7 @@ export function Setting5() {
 
   const isCustomInput = selectedJob === '직접입력';
   const jobList = [
-    { label: '은행원1(월급지급)', value: '은행원1(월급지급)' },
-    { label: '은행원2(적금관리)', value: '은행원2(적금관리)' },
+    { label: '은행원', value: '은행원' },
     { label: '기자', value: '기자' },
     { label: '국세청', value: '국세청' },
     { label: '신용등급관리위원회', value: '신용등급관리위원회' },
@@ -1486,11 +1485,6 @@ export function Setting9() {
   const [countryId, setCountryID] = useState();
   const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
-  // const fineState = useSelector((state) => state.setting9);
-
-  // useEffect(() => {
-  //   setFineList(fineState?.fine);
-  // }, [fineState]);
 
   const beforeSetting = () => {
     navigate('/setting/seatRental');
@@ -1519,17 +1513,7 @@ export function Setting9() {
           schoolCode: setInfo.setting1.schoolCode,
         },
       });
-      console.log({
-        name: setInfo.setting2.countryName,
-        grade: parseInt(setInfo.setting1.schoolGrade),
-        classroom: parseInt(setInfo.setting1.schoolClass),
-        unit: setInfo.setting2.moneyUnit,
-        salaryDate: parseInt(setInfo.setting2.salaryDate),
-        school: setInfo.setting1.schoolName,
-        eduOfficeCode: setInfo.setting1.eduOfficeCode,
-        schoolCode: setInfo.setting1.schoolCode,
-      });
-      console.log('국가 생성 결과 : ' + res.data.success);
+
       // 학생 등록(수기)
       if (setInfo.setting3.studentList.length > 0) {
         const data2 = [];
@@ -1551,7 +1535,6 @@ export function Setting9() {
           },
           data: data2,
         });
-        console.log('학생 등록 결과 : ' + res2.data.success);
       }
       // 자리 배치 등록
       const data3 = [];
@@ -1588,7 +1571,6 @@ export function Setting9() {
           countryId: res.data.result.id,
         });
       });
-      console.log(data4);
       const res4 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/job`,
@@ -1598,7 +1580,6 @@ export function Setting9() {
         },
         data: data4,
       });
-      console.log('직업 리스트 등록 결과 : ' + res4.data.success);
       // 규칙 리스트 등록
       const data5 = [];
       setInfo.setting6.basicLaw.forEach((data) => {
@@ -1616,7 +1597,6 @@ export function Setting9() {
         },
         data: data5,
       });
-      console.log('규칙 리스트 등록 결과 : ' + res5.data.success);
       // 세금 규칙 등록
       const data6 = [];
       setInfo.setting7.taxLaw.forEach((data) => {
@@ -1642,7 +1622,6 @@ export function Setting9() {
           countryId: res.data.result.id,
         });
       });
-      console.log(data6);
       const res6 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/tax`,
@@ -1652,9 +1631,6 @@ export function Setting9() {
         },
         data: data6,
       });
-      console.log('세금 규칙 등록 결과 : ' + res6.data.success);
-      console.log('countryId : ' + countryId);
-      console.log('id값 : ' + res.data.result.id);
       setCountryID(res.data.result.id);
       setIsLoading(true);
     } catch (e) {

@@ -1,11 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
 
 import '../styles/setting.scss';
-import '../styles/lawList.scss';
+// import '../styles/lawList.scss';
 
 export function AssemblyLawList() {
   const [laws, setLaws] = useState([
@@ -18,7 +19,6 @@ export function AssemblyLawList() {
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [selectedId, setSelectedId] = useState('');
   const [selectedDetail, setSelectedDetail] = useState('');
-  const navigate = useNavigate();
 
   const selectInput = (law, index) => {
     if (selectedIndex === index) {
@@ -92,7 +92,7 @@ export function AssemblyLawList() {
           className="newsHead"
           style={{ color: '#666666', marginBottom: '10px' }}
         >
-          기본법
+          국세청
         </div>
       </div>
       <div

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GetTimeText, getThumbnail, htmlToText } from '../hooks/Functions';
+import { NewPostBtn } from './Btns';
 
 export function SetNewsDetail() {
   const navigate = useNavigate();
@@ -59,10 +60,6 @@ export function SetNewsDetail() {
   const truncateText = (text, maxLength = 100) => {
     return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
   };
-  const handleWrite = () => {
-    navigate(`/${id}/news/write`);
-  };
-
   return (
     <>
       {/* <div className="content"> */}
@@ -70,7 +67,10 @@ export function SetNewsDetail() {
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div
             className="newsHead"
-            style={{ color: '#666666', marginBottom: '10px' }}
+            style={{
+              color: '#666666',
+              marginBottom: '10px',
+            }}
           >
             뉴스
           </div>
@@ -78,20 +78,6 @@ export function SetNewsDetail() {
         <div
           style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
         ></div>
-        <p align="right" style={{ marginBottom: '10px', fontSize: '0.8rem' }}>
-          <button
-            onClick={handleWrite}
-            style={{
-              all: 'unset',
-              color: 'white',
-              backgroundColor: '#bacd92',
-              padding: '4px 10px 4px 10px',
-              borderRadius: '8px',
-            }}
-          >
-            작성
-          </button>
-        </p>
 
         {news.length !== 0 ? (
           <div className="newsInfo">
@@ -102,15 +88,8 @@ export function SetNewsDetail() {
             ))} */}
           </div>
         ) : (
-          <div className="newsContent">
+          <div className="newsContent nonePost">
             <span>뉴스가 존재하지 않습니다.</span>
-            <Link
-              className="registerBtn"
-              to={`/${id}/news/write`}
-              style={{ color: 'black' }}
-            >
-              등록하기
-            </Link>
           </div>
         )}
         {currentItems.map((news, index) => (
@@ -191,6 +170,7 @@ export function SetNewsDetail() {
             &gt;
           </button>
         </div>
+        <NewPostBtn navigate={navigate} path={`/${id}/news/write`} />
       </div>
     </>
   );

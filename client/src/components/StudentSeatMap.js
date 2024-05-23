@@ -11,7 +11,7 @@ export default function StudentSeatMap({
       {columns && columns.length > 0 ? (
         columns.map((column, columnIndex) => (
           <div className="seating-map" key={columnIndex}>
-            <div className="column-num">{column.label}</div>{' '}
+            <div className="column-num">{column.rowNum}열</div>{' '}
             <div className="row-container">
               {Array.from({ length: column.colNum }).map((_, rowIndex) => (
                 <div key={rowIndex}>
@@ -26,7 +26,7 @@ export default function StudentSeatMap({
                     onChange={selectChangeUser(columnIndex, rowIndex)}
                   >
                     <option className="cell-input-value" value="">
-                      사용자
+                      {rowIndex + 1}
                     </option>
                     {studentList.map((item) => (
                       <option

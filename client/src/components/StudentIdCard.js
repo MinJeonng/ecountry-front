@@ -1,8 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, Button } from 'antd';
+import { Avatar } from 'antd';
+import styled from 'styled-components';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
-export function MainProfile() {
+const Name = styled.div`
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #333;
+  font-weight: 700;
+`;
+
+export function StudentIdCard() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
   const [Image, setImage] = useState(
@@ -10,6 +20,7 @@ export function MainProfile() {
   );
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
+  const [job, setJob] = useState(null);
 
   const fileInput = useRef(null);
   const onChange = (e) => {
@@ -68,41 +79,28 @@ export function MainProfile() {
   }, [userInfo]);
 
   return (
-    <>
-      <Avatar
-        src={Image}
-        style={{ marginRight: '10px', cursor: 'pointer' }}
-        size={64}
-        onClick={() => {
-          fileInput.current.click();
-        }}
-      />
-      <input
-        type="file"
-        style={{ display: 'none' }}
-        accept="image/jpg,image/png,image/jpeg"
-        name="profile_img"
-        onChange={onChange}
-        ref={fileInput}
-      />
-      <Name>{name}</Name>
-      {/* 이름 옆에 직업을 넣어주는 것도 고려 */}
-    </>
-  );
-}
-
-export function StudentIdCard() {
-  return (
     <div className="idCard-wrap">
       <div className="idCard-title">신분증</div>
       <div className="idCard-list">
-        <img
-          className="idCard-img"
-          src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
-          alt="기본이미지"
+        <Avatar
+          src={Image}
+          style={{ cursor: 'pointer' }}
+          size={70}
+          onClick={() => {
+            fileInput.current.click();
+          }}
         />
+        <input
+          type="file"
+          style={{ display: 'none' }}
+          accept="image/jpg,image/png,image/jpeg"
+          name="profile_img"
+          onChange={onChange}
+          ref={fileInput}
+        />
+
         <div className="idCard-detail">
-          <div className="idCard-detail-name">홍길동</div>
+          <Name>{name}</Name>
           <div className="idCard-detail-list">
             <div className="idCard-detail-title">직업</div>
             <div className="idCard-detail-content">직업종류</div>

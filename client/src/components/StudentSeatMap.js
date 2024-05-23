@@ -13,24 +13,27 @@ export default function StudentSeatMap({
           <div className="seating-map" key={columnIndex}>
             <div className="column-num">{column.label}</div>{' '}
             <div className="row-container">
-              {Array.from({ length: column.rowCount }).map((_, rowIndex) => (
+              {Array.from({ length: column.colNum }).map((_, rowIndex) => (
                 <div key={rowIndex}>
                   <select
                     className="cell-input"
                     value={
                       studentTableRows.find(
                         (row) =>
-                          row.colNum === column.columnId &&
-                          row.rowNum === rowIndex
+                          row.colNum === columnIndex && row.rowNum === rowIndex
                       )?.studentId || ''
                     }
-                    onChange={selectChangeUser(column.columnId, rowIndex)}
+                    onChange={selectChangeUser(columnIndex, rowIndex)}
                   >
                     <option className="cell-input-value" value="">
                       사용자
                     </option>
                     {studentList.map((item) => (
-                      <option className="cell-input-value" key={item.id} value={item.id}>
+                      <option
+                        className="cell-input-value"
+                        key={item.id}
+                        value={item.id}
+                      >
                         {item.name}
                       </option>
                     ))}

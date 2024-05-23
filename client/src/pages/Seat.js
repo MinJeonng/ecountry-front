@@ -8,6 +8,7 @@ import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
 import OwnerSeatMap from './OwnerSeatMap';
+import { PageHeader } from '../components/Headers';
 
 // 자리배치도
 export function SetSeat() {
@@ -147,7 +148,7 @@ export function SetSeat() {
 
   return (
     <Template
-      childrenTop={<div className="top-title">자리 배치표</div>}
+      childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
       childrenBottom={
         <>
           <div className="seat-title">

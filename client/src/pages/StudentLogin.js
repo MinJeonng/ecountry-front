@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Template from '../components/Template';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { PageHeader } from '../components/Headers';
 
 export default function StudentLogin() {
   const { id } = useParams();
@@ -26,10 +27,11 @@ export default function StudentLogin() {
 
   return (
     <Template
+      childrenTop={<PageHeader>{'국민 로그인'}</PageHeader>}
       childrenBottom={
         <div className="setting-wrap">
           <div>
-            <div>로그인</div>
+            {/* <div>로그인</div> */}
             <ul className="title-list">
               <li>이름과 비밀번호를 입력하세요.</li>
             </ul>

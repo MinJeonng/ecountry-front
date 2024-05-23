@@ -791,14 +791,22 @@ export function Setting5() {
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
   const [countValue, setCountValue] = useState('');
-  // 현재 선택한 상태 뭔지 저장
-  const [selectedJobIndex, setSelectedJobIndex] = useState(null);
+  const [selectedJobIndex, setSelectedJobIndex] = useState([]);
+  const [jobSkill, setJobSkill] = useState([]); //skill 번호
+  const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const jobListState = useSelector((state) => state.setting5);
-
+  console.log(jobSkill);
   useEffect(() => {
     setJobsDisplay(jobListState?.jobsDisplay);
   }, [jobListState]);
+
+  useEffect(() => {
+    if (selectedJobSkill !== '') {
+      setJobSkill([...jobSkill, Number(selectedJobSkill)]);
+    }
+    setSelectedJobSkill('');
+  }, [selectedJobSkill]);
 
   const isCustomInput = selectedJob === '직접입력';
   const jobList = [
@@ -809,12 +817,20 @@ export function Setting5() {
     { label: '국회', value: '국회' },
     { label: '직접입력', value: '직접입력' },
   ];
+  const jobSkillList = [
+    { label: '월급 지급', value: 0 },
+    { label: '적금 관리(가입/해지)', value: 1 },
+    { label: '뉴스 작성', value: 2 },
+    { label: '세금 징수', value: 3 },
+    { label: '신용 관리', value: 4 },
+    { label: '법 관리 ', value: 5 },
+  ];
   const beforeSetting = () => {
     navigate('/setting/seatingMap');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const nextSetting = () => {
-    navigate('/setting/law');
+    navigate('/setting/jobRole');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const handleCountValue = (e) => {
@@ -824,7 +840,6 @@ export function Setting5() {
     const value = e.target.value;
     setSelectedJob(value);
   };
-
   const handleCustomInputChange = (e) => {
     setCustomJob(e.target.value);
   };
@@ -834,7 +849,9 @@ export function Setting5() {
   const handleJobRoleChange = (e) => {
     setJobRoleValue(e.target.value);
   };
-
+  const handleSelectJobSkill = (e) => {
+    setSelectedJobSkill(e.target.value);
+  };
   const addJob = () => {
     if (
       !(customJob || selectedJob) ||
@@ -858,6 +875,7 @@ export function Setting5() {
         role: jobRoleValue,
         count: countValue,
         salary: inputValue,
+        skills: jobSkill,
       };
       setJobsDisplay(updatedJobs);
     } else {
@@ -871,6 +889,7 @@ export function Setting5() {
           role: jobRoleValue,
           count: countValue,
           salary: inputValue,
+          skills: jobSkill,
         },
       ];
       setJobsDisplay(newJobsDisplay);
@@ -883,10 +902,12 @@ export function Setting5() {
     setJobRoleValue('');
     setCountValue('');
     handleInputChange({ target: { value: '' } });
+    setJobSkill([]);
     setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
   };
 
   const selectInput = (job, index) => {
+    console.log(job);
     setSelectedJob(job.selectValue);
     setCustomJob(job.customValue);
     setStandardValue(job.standard);
@@ -894,6 +915,7 @@ export function Setting5() {
     setCountValue(job.count);
     handleInputChange({ target: { value: job.salary.replace(/,/g, '') } }); //숫자만 추출해 전달
     setSelectedJobIndex(index);
+    setJobSkill([job.skills]);
     // console.log(setCustomJob(value));
   };
 
@@ -919,6 +941,11 @@ export function Setting5() {
     setJobRoleValue('');
     setCountValue('');
     handleInputChange({ target: { value: '' } });
+  };
+  const deleteSkill = (index) => {
+    const updatedSkill = [...jobSkill];
+    updatedSkill.splice(index, 1);
+    setJobSkill(updatedSkill);
   };
 
   return (
@@ -967,6 +994,16 @@ export function Setting5() {
               onClick={resetBtn}
             />
           </div>
+          {isCustomInput && (
+            <input
+              type="text"
+              className="set-input"
+              value={customJob}
+              onChange={handleCustomInputChange}
+              placeholder="직업을 입력해주세요"
+              style={{ imeMode: 'active' }}
+            />
+          )}
           <select
             className="set-input"
             value={selectedJob}
@@ -981,16 +1018,50 @@ export function Setting5() {
               </option>
             ))}
           </select>
-          {isCustomInput && (
-            <input
-              type="text"
-              className="set-input"
-              value={customJob}
-              onChange={handleCustomInputChange}
-              placeholder="직업을 입력해주세요"
-              style={{ imeMode: 'active' }}
-            />
-          )}
+          <div className="set-title">직업의 역할(복수선택 가능)</div>
+          <select
+            className="set-input"
+            value={selectedJobSkill}
+            onChange={handleSelectJobSkill}
+            style={{ marginBottom: '0px' }}
+          >
+            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+              선택해주세요
+            </option>
+            {jobSkillList.map((skill) => (
+              <option key={skill.value} value={skill.value}>
+                {skill.label}
+              </option>
+            ))}
+          </select>
+          <div style={{ fontSize: '12px', margin: '5px' }}>
+            {jobSkill.length == 0 ? (
+              <div style={{ marginBottom: '20px' }}></div>
+            ) : (
+              <>
+                {jobSkill.map((skill, index) => (
+                  <div
+                    style={{
+                      margin: '5px',
+                      padding: '2px',
+                      borderBottom: '1px solid rgb(186, 205, 146)',
+                      width: 'fit-content',
+                      display: 'inline-table',
+                    }}
+                    key={index}
+                    onClick={() => deleteSkill(index)}
+                  >
+                    {jobSkillList[skill]?.label}
+                    <span style={{ paddingLeft: '4px' }}>x</span>
+                  </div>
+                ))}
+              </>
+            )}
+
+            {/* {selectedJobSkill !== '' && (
+              
+            )} */}
+          </div>
           <div className="set-title">급여</div>
           <div className="container">
             <input
@@ -1069,7 +1140,7 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    navigate('/setting/jobList');
+    navigate('/setting/jobRole');
     dispatch(basicLaw({ basicLaw: laws }));
   };
   const nextSetting = () => {
@@ -1773,5 +1844,38 @@ export function Setting9() {
         </div>
       )}
     </div>
+  );
+}
+//Setting10 - 직업 역할 정하기
+export function Setting10() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const jobListState = useSelector((state) => state.setting5); //직업 리스트
+  console.log(jobListState);
+  const [jobList, setJobList] = useState([]); //직업 이름 리스트
+  const [roleList, setRoleList] = useState([]); // 역할 리스트
+
+  const beforeSetting = () => {
+    navigate('/setting/jobList');
+    dispatch();
+  };
+  const nextSetting = () => {
+    navigate('/setting/law');
+    dispatch();
+  };
+
+  return (
+    <>
+      <form className="box-style"></form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </>
   );
 }

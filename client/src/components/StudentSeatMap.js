@@ -1,34 +1,51 @@
-import React from 'react';
-
 export default function StudentSeatMap({
   columns,
-  studentTableRows,
-  selectChangeUser,
-  studentList,
+  seatlist,
+  changelist,
+  studentlist,
+  isuser,
 }) {
+  const getId = (row, col) => {
+    let result = '';
+    if (seatlist.length > 0) {
+      seatlist.forEach((seat) => {
+        if (seat.rowNum == row && seat.colNum == col) {
+          if (isuser) {
+            if (seat.studentId) {
+              result = seat.studentId;
+            }
+          } else {
+            if (seat.ownerId) {
+              result = seat.ownerId;
+            }
+          }
+        }
+      });
+    }
+    console.log(`${row}, ${col}, ${result}`);
+    return result;
+  };
+
   return (
     <div className="preview">
       {columns && columns.length > 0 ? (
-        columns.map((column, columnIndex) => (
-          <div className="seating-map" key={columnIndex}>
+        columns?.map((column) => (
+          <div className="seating-map" key={column.rowNum}>
             <div className="column-num">{column.rowNum}열</div>{' '}
             <div className="row-container">
-              {Array.from({ length: column.colNum }).map((_, rowIndex) => (
-                <div key={rowIndex}>
+              {Array.from({ length: column.colNum })?.map((_, columnIndex) => (
+                <div key={columnIndex}>
                   <select
                     className="cell-input"
-                    value={
-                      studentTableRows.find(
-                        (row) =>
-                          row.colNum === columnIndex && row.rowNum === rowIndex
-                      )?.studentId || ''
+                    value={getId(column.rowNum, columnIndex + 1) || ''}
+                    onChange={(e) =>
+                      changelist(column.rowNum, columnIndex + 1, e.target.value)
                     }
-                    onChange={selectChangeUser(columnIndex, rowIndex)}
                   >
                     <option className="cell-input-value" value="">
-                      {rowIndex + 1}
+                      {columnIndex + 1}
                     </option>
-                    {studentList.map((item) => (
+                    {studentlist?.map((item) => (
                       <option
                         className="cell-input-value"
                         key={item.id}

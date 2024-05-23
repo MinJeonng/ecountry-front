@@ -25,7 +25,7 @@ import StudentLogin from './pages/StudentLogin';
 import StudentMyPage from './pages/StudentMyPage';
 import ChatBot from './pages/ChatBot';
 import StudentBank from './pages/StudentBank';
-
+import { CommonMain } from './pages/CommonMain';
 
 function App() {
   return (
@@ -99,6 +99,7 @@ function App() {
           />
 
           {/* 공통 페이지 */}
+          <Route path="/:id/main" element={<CommonMain />} />
           <Route
             path="/:id/boardPeople"
             element={<SetBoardPeople position="신문고" />}

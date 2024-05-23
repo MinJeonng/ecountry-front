@@ -13,24 +13,27 @@ export default function OwnerSeatMap({
           <div className="seating-map" key={columnIndex}>
             <div className="column-num">{column.label}</div>{' '}
             <div className="row-container">
-              {Array.from({ length: column.rowCount }).map((_, rowIndex) => (
+              {Array.from({ length: column.colNum }).map((_, rowIndex) => (
                 <div key={rowIndex}>
                   <select
                     className="cell-input"
                     value={
                       ownerTableRows.find(
                         (row) =>
-                          row.colNum === column.columnId &&
-                          row.rowNum === rowIndex
+                          row.colNum === columnIndex && row.rowNum === rowIndex
                       )?.studentId || ''
                     }
-                    onChange={selectChangeOwner(column.columnId, rowIndex)}
+                    onChange={selectChangeOwner(columnIndex, rowIndex)}
                   >
                     <option className="cell-input-value" value="">
                       소유자
                     </option>
                     {studentList.map((item) => (
-                      <option key={item.id} value={item.id}>
+                      <option
+                        className="cell-input-value"
+                        key={item.id}
+                        value={item.id}
+                      >
                         {item.name}
                       </option>
                     ))}

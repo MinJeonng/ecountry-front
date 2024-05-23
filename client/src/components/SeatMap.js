@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 export default function SeatMap() {
+  const { id } = useParams();
   const seatingMapState = useSelector((state) => state.setting4);
 
   const [columns, setColumns] = useState([
@@ -42,13 +44,14 @@ export default function SeatMap() {
 
   const saveSeatData = async () => {
     const dataToSend = columns.map((column) => ({
+      countryId: id,
       rowNum: column.id,
       colNum: column.rowCount,
     }));
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_HOST}/api/seat`,
+        `${process.env.REACT_APP_HOST}/api/seat/update`,
         dataToSend,
         {
           headers: {
@@ -67,9 +70,12 @@ export default function SeatMap() {
   return (
     <div className="setting-wrap">
       <div className="title-list">
-        <div>자리 배치도</div>
+        <div>자리 배치 수정</div>
         <ul className="title-list">
           <li>교실 내의 자리 배치를 설정하세요&#46;</li>
+          <li>
+            자리 배치 변경 시 기존의 학생 자리 설정 정보는 모두 사라집니다&#46;
+          </li>
         </ul>
       </div>
 
@@ -104,7 +110,7 @@ export default function SeatMap() {
           )}
         </div>
         <button className="blue-btn" onClick={saveSeatData}>
-          저장
+          수정
         </button>
       </form>
     </div>

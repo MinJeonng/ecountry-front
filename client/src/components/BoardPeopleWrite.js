@@ -11,10 +11,8 @@ export function BoardPeopleWrite() {
   const [content, setContent] = useState('');
   const [isSecret, setIsSecret] = useState(false);
   const [petitionId, setPetitionId] = useState();
-  const handleIsSecret = (e) => {
-    console.log(e);
+  const handleIsSecret = () => {
     setIsSecret(!isSecret);
-    console.log(isSecret);
   };
   const handleWrite = async () => {
     try {
@@ -75,6 +73,7 @@ export function BoardPeopleWrite() {
       setTitle(res.data.result.title);
       setContent(res.data.result.content);
       setIsSecret(res.data.result.isSecret);
+      localStorage.removeItem('petitionId');
     }
   };
   useEffect(() => {
@@ -87,6 +86,9 @@ export function BoardPeopleWrite() {
       getPetiton();
     }
   }, [petitionId]);
+  useEffect(() => {
+    console.log(isSecret);
+  }, [isSecret]);
   return (
     <>
       <div style={{ color: '#666666', fontWeight: 'bolder' }}>
@@ -117,7 +119,7 @@ export function BoardPeopleWrite() {
                 <input
                   type="checkbox"
                   checked={isSecret}
-                  onChange={(e) => handleIsSecret(e)}
+                  onChange={handleIsSecret}
                 />
                 비밀글
               </label>

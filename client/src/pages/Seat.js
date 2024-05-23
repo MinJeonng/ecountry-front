@@ -15,45 +15,10 @@ export function SetSeat() {
   const { id } = useParams();
 
   const [columns, setColumns] = useState([]);
-  const [studentsTableRows, setStudentsTableRows] = useState([]);
-  const [ownersTableRows, setOwnersTableRows] = useState([]);
-
   const [studentList, setStudentList] = useState([]);
-
-  const [isEditing, setIsEditing] = useState(false);
   const [showStudentMap, setShowStudentMap] = useState(true);
   const [isSeatMapVisible, setIsSeatMapVisible] = useState(false);
-
-  const setSeatStatus = (columnId, rowIndex, studentId, isOwner) => {
-    const newSeat = {
-      colNum: columnId,
-      rowNum: rowIndex,
-      studentId: studentId,
-      isOwner: isOwner, // 소유하고 있으면 true, 소유하지 않았으면 false
-    };
-
-    if (isOwner) {
-      setOwnersTableRows((prevRows) => {
-        return [
-          ...prevRows.filter(
-            (seat) => !(seat.colNum === columnId && seat.rowNum === rowIndex)
-          ),
-          newSeat,
-        ].sort((a, b) => a.colNum - b.colNum);
-      });
-    } else {
-      setStudentsTableRows((prevRows) => {
-        return [
-          ...prevRows.filter(
-            (seat) => !(seat.colNum === columnId && seat.rowNum === rowIndex)
-          ),
-          newSeat,
-        ].sort((a, b) => a.colNum - b.colNum);
-      });
-    }
-
-    setIsEditing(true);
-  };
+  const [seatList, setSeatList] = useState([]);
 
   const getSeat = async () => {
     const res = await axios({
@@ -67,6 +32,19 @@ export function SetSeat() {
 
     console.log('Columns:', res.data.result);
     setColumns(res.data.result);
+  };
+
+  const getStatus = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/seat/status/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    setSeatList(res.data.result);
+    console.log('seatList : ', res.data.result);
   };
 
   const getStudent = async () => {
@@ -83,61 +61,88 @@ export function SetSeat() {
     setStudentList(res.data.result);
   };
 
-  const updateSeat = () => {
-    // 학생들의 자리 정보와 소유주들의 자리 정보
-    const finalSeatRows = [...studentsTableRows, ...ownersTableRows];
-
-    // 중복된 항목 제거
-    const uniqueSeatRows = finalSeatRows.filter((seat, index, self) => {
-      const isUnique =
-        self.findIndex(
-          (s) =>
-            s.colNum === seat.colNum &&
-            s.rowNum === seat.rowNum &&
-            s.studentId === seat.studentId
-        ) === index;
-      return isUnique;
-    });
-
-    uniqueSeatRows.sort((a, b) => {
-      if (a.colNum !== b.colNum) {
-        return a.colNum - b.colNum;
+  const changeList = async (row, col, studentId) => {
+    let isExist = false;
+    let data = [];
+    seatList.map((seat) => {
+      if (seat.rowNum == row && seat.colNum == col) {
+        isExist = true;
+        if (showStudentMap) {
+          data = [
+            {
+              id: seat.id,
+              ownerId: seat.ownerId,
+              studentId: studentId,
+              rowNum: row,
+              colNum: col,
+            },
+          ];
+        } else {
+          data = [
+            {
+              id: seat.id,
+              ownerId: studentId,
+              studentId: seat.studentId,
+              rowNum: row,
+              colNum: col,
+            },
+          ];
+        }
       }
-
-      return a.rowNum - b.rowNum;
     });
-
-    // 최종 배열 출력
-    console.log('최종 배열:', uniqueSeatRows);
-
-    setIsEditing(false);
-    setIsSeatMapVisible(false);
-  };
-
-  const selectChangeUser = (columnId, rowIndex) => (e) => {
-    const studentId = parseInt(e.target.value);
-    const isOwner = false;
-    setSeatStatus(columnId, rowIndex, studentId, isOwner);
-  };
-
-  const selectChangeOwner = (columnId, rowIndex) => (e) => {
-    const studentId = parseInt(e.target.value);
-    const isOwner = true;
-    setSeatStatus(columnId, rowIndex, studentId, isOwner);
+    if (!isExist) {
+      if (showStudentMap) {
+        data = [
+          {
+            ownerId: null,
+            studentId: studentId,
+            rowNum: row,
+            colNum: col,
+            countryId: id,
+          },
+        ];
+      } else {
+        data = [
+          {
+            ownerId: studentId,
+            studentId: null,
+            rowNum: row,
+            colNum: col,
+            countryId: id,
+          },
+        ];
+      }
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/seat/status`,
+        data,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+    } else {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/seat/status`,
+        data,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+    }
+    getStatus();
   };
 
   const toggleEdit = () => {
     setIsSeatMapVisible(!isSeatMapVisible);
   };
 
-  const deleteAll = () => {
-    setColumns([]);
-    setIsSeatMapVisible(false);
-  };
-
   useEffect(() => {
     getSeat();
     getStudent();
+    getStatus();
   }, []);
 
   return (
@@ -160,28 +165,13 @@ export function SetSeat() {
             </button>
           </div>
 
-          {showStudentMap ? (
-            // 사용자
-            <StudentSeatMap
-              columns={columns}
-              studentTableRows={studentsTableRows}
-              selectChangeUser={selectChangeUser}
-              studentList={studentList}
-            />
-          ) : (
-            // 소유자
-            <OwnerSeatMap
-              columns={columns}
-              ownerTableRows={ownersTableRows}
-              selectChangeOwner={selectChangeOwner}
-              studentList={studentList}
-            />
-          )}
-          {isEditing && (
-            <button className="blue-btn" onClick={updateSeat}>
-              완료
-            </button>
-          )}
+          <StudentSeatMap
+            columns={columns}
+            seatlist={seatList}
+            changelist={changeList}
+            studentlist={studentList}
+            isuser={showStudentMap}
+          />
 
           <button className="blue-btn" onClick={toggleEdit}>
             자리 배치 수정

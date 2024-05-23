@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactQuill, { Quill } from 'react-quill';
 import { storage } from '../config/Firebase';
@@ -204,8 +204,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
   return (
     <>
       <ToastContainer />
-      {/* 헤더 위로 올리기 */}
-      <div>뉴스 작성</div>
+
       <form className="box-style">
         <div
           className="reset"

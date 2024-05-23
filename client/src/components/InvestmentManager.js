@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 import '../styles/setting.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';

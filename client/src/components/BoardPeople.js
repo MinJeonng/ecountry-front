@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
+import { NewPostBtn } from './Btns';
 
 export function BoardPeopleList() {
   const navigate = useNavigate();
@@ -113,30 +114,8 @@ export function BoardPeopleList() {
         </>
       ) : (
         <>
-          <div
-            style={{
-              color: '#666666',
-              marginBottom: '10px',
-              fontSize: '13px',
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
+          <div className="nonePost">
             <span>신문고 내 제안이 존재하지 않습니다</span>
-
-            <Link
-              className="registerBtn"
-              to={`/${id}/boardPeople/write`}
-              style={{
-                color: 'white',
-                backgroundColor: '#bacd92',
-                padding: '4px 10px 4px 10px',
-                borderRadius: '8px',
-                marginBottom: '10px',
-              }}
-            >
-              제안하기
-            </Link>
           </div>
         </>
       )}
@@ -185,6 +164,7 @@ export function BoardPeopleList() {
         >
           &gt;
         </button>
+        <NewPostBtn navigate={navigate} path={`/${id}/boardPeople/write`} />
       </div>
     </>
   );

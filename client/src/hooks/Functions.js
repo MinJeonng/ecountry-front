@@ -64,3 +64,16 @@ export const compareTime = (prevTime, nowTime) => {
     return false;
   }
 };
+
+export const handleKeyDownNext = (e, refName) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    refName.current.focus();
+  }
+};
+
+export const handleKeyDown = (e, func) => {
+  if (e.key === 'Enter') {
+    func();
+  }
+};

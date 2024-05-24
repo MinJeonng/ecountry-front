@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -11,6 +11,7 @@ export default function Login() {
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
   const navigate = useNavigate();
+  const passwordRef = useRef(null);
 
   const loginFunc = async () => {
     await axios
@@ -24,6 +25,20 @@ export default function Login() {
         }
       });
   };
+
+  const handleKeyDownNext = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      passwordRef.current.focus();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      loginFunc();
+    }
+  };
+
   return (
     <Template
       childrenTop={
@@ -45,13 +60,16 @@ export default function Login() {
               className="user-login"
               type="text"
               onChange={(e) => setUserId(e.target.value)}
+              onKeyDown={handleKeyDownNext}
             ></input>
             <div className="user-login-title">비밀번호</div>
             <input
+              ref={passwordRef}
               className="user-login"
               type="password"
               maxLength={4}
               onChange={(e) => setPw(e.target.value)}
+              onKeyDown={handleKeyDown}
             ></input>
             <button className="login-btn" type="button" onClick={loginFunc}>
               로그인

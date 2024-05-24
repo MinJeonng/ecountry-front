@@ -31,31 +31,28 @@ export default function ChatBot() {
   ];
 
   const addChat = (newChat) => {
-    const newList = [];
-    chatList.map((chat) => {
-      console.log(typeof compareTime(chat.chatDate, newChat.chatDate));
-      if (
-        compareTime(chat.chatDate, newChat.chatDate) &&
-        chat.type === newChat.type
-      ) {
-        newList.push({ type: chat.type, chatMsg: chat.chatMsg, chatDate: '' });
-      } else {
-        newList.push(chat);
-      }
-    });
-    setChatList([...newList, newChat]);
+    const newList = [...chatList];
+    const lastEl = newList[newList.length - 1];
+    if (
+      compareTime(lastEl.chatDate, newChat.chatDate) &&
+      lastEl.type === newChat.type
+    ) {
+      newList[newList.length - 1].chatMsg.push(newChat.chatMsg[0]);
+    } else {
+      newList.push(newChat);
+    }
+    setChatList(newList);
   };
 
   useEffect(() => {
     setUserInfo();
-    console.log(userInfo);
   }, []);
   useEffect(() => {
     if (userInfo) {
       setChatList([
         {
           type: 'you',
-          chatMsg: '상담 내용을 선택하세요',
+          chatMsg: ['상담 내용을 선택하세요'],
           chatDate: new Date(),
         },
         {

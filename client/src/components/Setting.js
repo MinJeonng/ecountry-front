@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn, NextBtn } from './Btns';
@@ -33,6 +33,8 @@ export function Setting1() {
   const [openSearch, setOpenSearch] = useState(false);
   const [schoolInfomation, setSchoolInfomation] = useState({});
   const [schoolAddress, setSchoolAddress] = useState('');
+
+  const inputRef = useRef(null);
 
   const grades = [1, 2, 3, 4, 5, 6];
   const schoolInfoState = useSelector((state) => state.setting1);
@@ -96,6 +98,18 @@ export function Setting1() {
     }
   };
 
+  const handleSearchSchool = (e) => {
+    if (e.key === 'Enter') {
+      searchFunc();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      nextSetting();
+    }
+  };
+
   return (
     <div className="setting-wrap">
       <div className="title-list">
@@ -121,6 +135,7 @@ export function Setting1() {
                 type="text"
                 value={schoolName}
                 onChange={inputSchoolName}
+                onKeyDown={handleSearchSchool}
                 style={{
                   imeMode: 'active',
                   marginRight: '10px',
@@ -210,6 +225,7 @@ export function Setting1() {
             type="number"
             value={selectedClass}
             onChange={classSelect}
+            onKeyDown={handleKeyDown}
             style={{ imeMode: 'active' }}
           />
         </div>
@@ -227,6 +243,7 @@ export function Setting2() {
   const [moneyUnit, setMoneyUnit] = useState('');
   const [salaryDate, setSalaryDate] = useState('');
   const countryInfoState = useSelector((state) => state.setting2);
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     setCountryName(countryInfoState?.countryName);
@@ -274,6 +291,15 @@ export function Setting2() {
     setSalaryDate(e.target.value);
   };
 
+  const handleKeyDown = (index, e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
+    }
+  };
+
   return (
     <div className="setting-wrap">
       <div className="title-list">
@@ -290,6 +316,8 @@ export function Setting2() {
             type="text"
             value={countryName}
             onChange={handleCountryName}
+            onKeyDown={(e) => handleKeyDown(0, e)}
+            ref={(el) => (inputRefs.current[0] = el)}
             style={{ imeMode: 'active' }}
             lang="ko"
           />
@@ -301,6 +329,8 @@ export function Setting2() {
           type="text"
           value={moneyUnit}
           onChange={handleMoneyUnit}
+          onKeyDown={(e) => handleKeyDown(1, e)}
+          ref={(el) => (inputRefs.current[1] = el)}
           style={{ imeMode: 'active' }}
         />
 

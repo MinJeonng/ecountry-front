@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
 import { ConfirmBtn } from './Btns';
 import { ToastContainer, toast } from 'react-toastify';
+import useAuth from '../hooks/useAuth';
 
 export function BoardPeopleRead() {
   // 데이터
@@ -14,8 +15,10 @@ export function BoardPeopleRead() {
   // writerId : long,
   // writerName : string
   const { id, contentId } = useParams();
+  const [userInfo, setUserInfo] = useAuth(id);
   const navigate = useNavigate();
   const [petitionInfo, setPetitionInfo] = useState();
+  const [isShow, setIsShow] = useState(false);
   const getPetiton = async () => {
     const res = await axios({
       method: 'GET',
@@ -35,6 +38,14 @@ export function BoardPeopleRead() {
         return;
       }
       setPetitionInfo(res.data.result);
+      setIsShow(!res.data.result.isSecret);
+      if (userInfo.isStudent) {
+        if (userInfo.id == petitionInfo.writerId) {
+          setIsShow(true);
+        }
+      } else {
+        setIsShow(true);
+      }
     } else {
       toast.error('신문고가 존재하지 않습니다.', { autoClose: 1300 });
       navigate(`/${id}/boardPeople`);
@@ -65,7 +76,18 @@ export function BoardPeopleRead() {
   };
 
   useEffect(() => {
-    getPetiton();
+    if (userInfo.authority) {
+      if (!userInfo.authority) {
+        alert('접근 권한이 없습니다.');
+        navigate('/');
+      } else {
+        getPetiton();
+      }
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    setUserInfo();
   }, []);
 
   return (
@@ -106,7 +128,7 @@ export function BoardPeopleRead() {
           <div
             style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
           >
-            {petitionInfo?.isSecret ? (
+            {!isShow ? (
               <div
                 style={{
                   padding: '10px 10px 40px',

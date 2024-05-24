@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -13,6 +13,7 @@ export default function Login() {
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
   const navigate = useNavigate();
+  const passwordRef = useRef(null);
 
   const loginFunc = async () => {
     await axios
@@ -29,6 +30,20 @@ export default function Login() {
         }
       });
   };
+
+  const handleKeyDownNext = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      passwordRef.current.focus();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      loginFunc();
+    }
+  };
+
   return (
     <>
       <ToastContainer />
@@ -62,5 +77,6 @@ export default function Login() {
         }
       ></Template>
     </>
+
   );
 }

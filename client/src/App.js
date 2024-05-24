@@ -18,7 +18,6 @@ import { SetBoardPeople } from './pages/BoardPeople';
 import { SetNews } from './pages/News';
 import PeopleList from './pages/PeopleList';
 import { SetSeat } from './pages/Seat';
-import { SetTaxService } from './pages/TaxService';
 import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
 import StudentLogin from './pages/StudentLogin';
@@ -26,6 +25,9 @@ import StudentMyPage from './pages/StudentMyPage';
 import ChatBot from './pages/ChatBot';
 import StudentBank from './pages/StudentBank';
 import { CommonMain } from './pages/CommonMain';
+import Revenu from './pages/Revenu';
+import { ChangePassword } from './components/ChangePassword';
+import JobList from './pages/JobList';
 
 function App() {
   return (
@@ -97,6 +99,7 @@ function App() {
             path="/:id/manager/assembly"
             element={<SetAssembly position="국회" />}
           />
+          <Route path="/:id/manager/jobList" element={<JobList />} />
 
           {/* 공통 페이지 */}
           <Route path="/:id/main" element={<CommonMain />} />
@@ -127,6 +130,7 @@ function App() {
           {/* 학생 페이지 */}
           <Route path="/:id/login" element={<StudentLogin />} />
           <Route path="/:id/mypage" element={<StudentMyPage />} />
+          <Route path="/:id/changePw" element={<ChangePassword />} />
 
           <Route
             path="/:id/investment"
@@ -139,6 +143,12 @@ function App() {
           />
 
           <Route path="/:id/chatbot" element={<ChatBot />} />
+
+          <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
+          <Route
+            path="/:id/revenue/collect"
+            element={<Revenu position="과태료징수" />}
+          />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as ArrowLeft } from '../images/ico-arr-left.svg';
-import { ReactComponent as ArrowUp } from '../images/icon-arrow-up.svg';
 import { ReactComponent as IconHome } from '../images/icon-home.svg';
 import { ReactComponent as IconSend } from '../images/icon-send.svg';
 import styled from 'styled-components';
@@ -19,8 +18,9 @@ const HeaderStyle = styled.div`
   height: 60px;
   line-height: 60px;
   border-bottom: 1px solid #ddd;
-  padding: 0 20px;
+  padding: 0 20px 0 16px;
   box-sizing: border-box;
+  z-index: 10000;
   .headerLeft {
     display: flex;
     align-items: center;
@@ -33,35 +33,60 @@ const ContentStyle = styled.div`
   background: rgb(252, 255, 224);
   width: 100%;
   min-height: 100vh;
-  padding: 80px 20px ${(props) => props.bottomsize + 'px'};
+  padding: 80px 20px ${(props) => props.bottomsize + 'px'} 55px;
   box-sizing: border-box;
   .chatBox {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 10px;
-    .chatMsg {
-      padding: 10px;
-      max-width: 60vw;
-      word-break: break-all;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-    }
-    .chatDate {
-      font-size: 12px;
-      padding: 0 0 3px 10px;
-      color: #999;
-    }
-    &.me {
-      justify-content: end;
+    position: relative;
+    .chatMsgBox {
+      display: flex;
+      align-items: flex-end;
       .chatMsg {
-        order: 2;
-        background: #75a47f;
-        color: #fff;
+        margin-bottom: 10px;
+        padding: 10px;
+        max-width: 55vw;
+        word-break: break-all;
+        background: #fff;
+        border-radius: 20px;
+        border-top-left-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+        width: fit-content;
       }
       .chatDate {
-        order: 1;
-        padding: 0 10px 3px 0;
+        font-size: 12px;
+        padding: 0 0 13px 10px;
+        color: #999;
+      }
+    }
+    &.you {
+      &::before {
+        content: '챗봇';
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -40px;
+        display: block;
+        width: 35px;
+        height: 35px;
+        background: #777;
+        border-radius: 50%;
+      }
+    }
+    &.me {
+      .chatMsgBox {
+        justify-content: end;
+        .chatMsg {
+          order: 2;
+          background: #75a47f;
+          color: #fff;
+          border-radius: 20px;
+          border-bottom-right-radius: 4px;
+        }
+        .chatDate {
+          order: 1;
+          padding: 0 10px 13px 0;
+        }
       }
     }
   }
@@ -71,11 +96,12 @@ const ContentStyle = styled.div`
     gap: 10px;
     margin-bottom: 10px;
     .menuBtn {
-      background: #75a47f;
-      border: none;
-      color: #fff;
+      background: #fff;
+      border: 1.5px solid #ddd;
+      color: #75a47f;
       padding: 4px 8px;
-      border-radius: 6px;
+      border-radius: 20px;
+      font-weight: 500;
     }
   }
 `;
@@ -142,20 +168,10 @@ export function ChatBotHeader() {
   );
 }
 
-export function ChatBotMsg({ type, chatmsg, chatdate }) {
-  console.log(getOnlyTime(chatdate));
-  return (
-    <div className={`chatBox ${type}`}>
-      <div className="chatMsg">{chatmsg}</div>
-      <p className="chatDate">{getOnlyTime(chatdate)}</p>
-    </div>
-  );
-}
-
 export function ChatBotContent({ bottomsize, chatlist, addfunc }) {
   const scrollRef = useRef(null);
   const clickFunc = (msg) => {
-    addfunc({ type: 'me', chatMsg: msg, chatDate: new Date() });
+    addfunc({ type: 'me', chatMsg: [msg], chatDate: new Date() });
   };
   const scrollBottom = () => {
     if (scrollRef.current) {
@@ -174,8 +190,18 @@ export function ChatBotContent({ bottomsize, chatlist, addfunc }) {
       {chatlist.map((chat, index) =>
         chat.type === 'me' || chat.type === 'you' ? (
           <div key={index} className={`chatBox ${chat.type}`}>
-            <div className="chatMsg">{chat.chatMsg}</div>
-            <p className="chatDate">{getOnlyTime(chat.chatDate)}</p>
+            {chat.chatMsg.map((msg, index) =>
+              chat.chatMsg.length - 1 !== index ? (
+                <div className="chatMsgBox">
+                  <div className="chatMsg">{msg}</div>
+                </div>
+              ) : (
+                <div className="chatMsgBox">
+                  <div className="chatMsg">{msg}</div>
+                  <p className="chatDate">{getOnlyTime(chat.chatDate)}</p>
+                </div>
+              )
+            )}
           </div>
         ) : (
           <div className="menuList" key={index}>
@@ -210,7 +236,7 @@ export function ChatBotFooter({ sizefunc, addfunc }) {
   const addChat = () => {
     addfunc({
       type: 'me',
-      chatMsg: msg,
+      chatMsg: [msg],
       chatDate: new Date(),
     });
     setMsg('');

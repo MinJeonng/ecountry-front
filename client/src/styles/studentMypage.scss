@@ -16,15 +16,21 @@ $blue: #61759f;
     margin-right: 10px;
   }
 
-  .change-btn,
-  .cancelChange-btn {
-    color: #ffffff;
-    font-weight: bold;
-    border: 1px solid #61759f;
-    background-color: #61759f;
-    border-radius: 18px;
-    padding: 6px 15px;
-    margin: 0 6px;
+  .btns {
+    display: flex;
+    justify-content: space-between;
+
+    .change-btn,
+    .cancelChange-btn {
+      color: #ffffff;
+      font-weight: bold;
+      border: 1px solid $deep-green;
+      background-color: $deep-green;
+      border-radius: 18px;
+      padding: 6px 15px;
+      margin: 10px 0;
+      width: 45%;
+    }
   }
 
   .changePassword-btn {
@@ -139,6 +145,7 @@ $blue: #61759f;
       .total-pay {
         font-size: 14px;
         margin-left: 10px;
+        font-weight: 700;
       }
     }
   }

@@ -1,25 +1,46 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import '../styles/manager_dash.scss';
-import styled from 'styled-components';
-import ProfileImage from '../components/ProfileImage';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from 'antd';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import Template from '../components/Template';
-import { ManagerMainHeader } from '../components/Headers';
-import MainProfile from '../components/MainProfile';
-import MainNews from '../components/MainNews';
-import { SetNewsList } from '../components/NewsDetail';
+import { MainProfile } from '../components/MainProfile';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 // import '..styles/toast.css';
+import '../styles/manager_dash.scss';
 
 import { MainDashboard } from '../components/ManagerDashboard';
+import styled from 'styled-components';
+
+const LogoutBtn = styled.button`
+  border-radius: 19px;
+  border: none;
+  text-align: center;
+  font-size: 13px;
+  color: #606060;
+  padding: 3px 10px;
+  margin-top: 5px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  img {
+    width: 16px;
+    height: 16px;
+  }
+`;
 
 export default function ManagerDashBoard() {
   const { pathname } = useLocation();
+  const { id } = useParams();
+
+  const logoutFunc = () => {
+    if (!window.confirm('로그아웃 하시겠습니까?')) {
+      return;
+    }
+    localStorage.removeItem('token');
+    window.location.href = `/login`;
+  };
   return (
     <>
       <Template
@@ -27,7 +48,6 @@ export default function ManagerDashBoard() {
           <>
             {/* 토스트는 최상위에다가만 표시 */}
             <ToastContainer />
-            <ManagerMainHeader />
             <div className="managerInfo">
               <div className="InfoPart1">
                 <div className="MainProfileBox">
@@ -36,9 +56,10 @@ export default function ManagerDashBoard() {
                 <div className="countryUrl">
                   {/* 링크 수정 필요 */}
                   <CopyToClipboard
-                    text={`${process.env.REACT_APP_BASEURL}${pathname}`}
+                    text={`http://localhost:3000/${id}/main`}
+                    // text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
                     onCopy={() =>
-                      toast('클립보드에 링크가 복사되었어요.', {
+                      toast('클립보드로 복사했습니다.', {
                         autoClose: 1300,
                       })
                     }
@@ -50,22 +71,26 @@ export default function ManagerDashBoard() {
                   </CopyToClipboard>
 
                   <Link
-                    to={`/country`}
+                    to={`http://localhost:3000/${id}/main`}
                     className="countryLink"
                     style={{ color: '#777' }}
                   >
-                    국가 url(밑에 있는걸로)
+                    {`http://localhost:3000/${id}/main`}
                   </Link>
-                  {/* {`/country/${country.id}`} */}
                 </div>
               </div>
+              <LogoutBtn onClick={logoutFunc}>
+                로그아웃
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+                  alt="복사"
+                />
+              </LogoutBtn>
             </div>
           </>
         }
         childrenBottom={
           <>
-            {/* <MainNews /> */}
-            {/* <SetNewsList /> */}
             <MainDashboard />
           </>
         }

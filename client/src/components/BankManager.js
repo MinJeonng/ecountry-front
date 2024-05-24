@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ConfirmBtn } from './SettingBtn';
+import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import '../styles/setting.scss';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export function AddSavings() {
   const { id } = useParams();
@@ -20,14 +22,22 @@ export function AddSavings() {
   const getList = async () => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/account/${id}`,
+      url: `${process.env.REACT_APP_HOST}/api/account/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     setSavingList(res.data.result);
   };
   const sendList = async () => {
     const res = await axios({
       method: 'POST',
-      url: `http://localhost:8080/api/account`,
+      url: `${process.env.REACT_APP_HOST}/api/account`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       data: {
         countryId: id,
         name: savingName,
@@ -41,7 +51,11 @@ export function AddSavings() {
   const updateFunc = async (accountId) => {
     const res = await axios({
       method: 'PATCH',
-      url: `http://localhost:8080/api/account`,
+      url: `${process.env.REACT_APP_HOST}/api/account`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
       data: {
         id: accountId,
         name: savingName,
@@ -57,68 +71,13 @@ export function AddSavings() {
     getList();
   }, []);
 
-  const calculateDDay = useCallback(() => {
-    const today = new Date();
-    const deadline = new Date(registerDate);
-    deadline.setDate(deadline.getDate() + parseInt(savingDeadLine)); // 만기 날짜
-
-    const diffTime = deadline - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    return `D-${diffDays}`;
-  }, [registerDate, savingDeadLine]);
-
-  useEffect(() => {
-    // savingDeadLine이 변경될 때마다 D-Day 계산
-    calculateDDay();
-  }, [savingDeadLine, calculateDDay]);
-
   const handleAddSavings = () => {
     if (!savingName || !savingDeadLine || !interestRate) {
       alert('모든 값을 입력해주세요');
       return;
     }
-    sendList();
-    // const dDayForItem = calculateDDay();
-    //
-    // if (selectedIndex !== null) {
-    //   const updatedSaving = [...savingList];
-    //   updatedSaving[selectedIndex] = {
-    //     name: savingName,
-    //     dueDate: savingDeadLine,
-    //     interest: interestRate,
-    //     dDay: dDayForItem,
-    //   };
-    //   setSavingList(updatedSaving);
-    // } else {
-    //   const newSavingList = [
-    //     ...savingList,
-    //     {
-    //       name: savingName,
-    //       dueDate: savingDeadLine,
-    //       interest: interestRate,
-    //       dDay: dDayForItem,
-    //     },
-    //   ];
-    //   setSavingList(newSavingList);
-    // }
-    setSavingName('');
-    setInterestRate('');
-    setSavingDeadLine('');
-    setSelectedIndex(null);
-  };
-  const selectInput = (saving, index) => {
-    setSavingName(saving.name);
-    setSavingDeadLine(saving.dueDate);
-    setInterestRate(saving.interest);
-    setSelectedIndex(index);
 
-    // 아코디언 열기
-    setIsAccordionOpen(true); // 아코디언 열림 상태로 변경
-    setIsAddOpen(false);
-  };
-  const handleCloseAccordion = () => {
-    const dDayForItem = calculateDDay();
+    sendList();
 
     if (selectedIndex !== null) {
       const updatedSaving = [...savingList];
@@ -126,7 +85,60 @@ export function AddSavings() {
         name: savingName,
         dueDate: savingDeadLine,
         interest: interestRate,
-        dDay: dDayForItem,
+
+        dueDate: savingDeadLine,
+      };
+
+      setSavingList(updatedSaving);
+    } else {
+      const newSavingList = [
+        ...savingList,
+        {
+          name: savingName,
+          dueDate: savingDeadLine,
+          interest: interestRate,
+
+          dueDate: savingDeadLine,
+        },
+      ];
+
+      setSavingList(newSavingList);
+    }
+    setSavingName('');
+    setInterestRate('');
+    setSavingDeadLine('');
+    setSelectedIndex(null);
+    toast('적금 상품이 등록되었습니다.', {
+      autoClose: 1300,
+    });
+  };
+  const selectInput = (saving, index) => {
+    if (selectedIndex === index) {
+      setIsAccordionOpen(false);
+      setIsAddOpen(true);
+      setSelectedIndex(null);
+      setSavingName('');
+      setInterestRate('');
+      setSavingDeadLine('');
+    } else {
+      setSavingName(saving.name);
+      setSavingDeadLine(saving.dueDate);
+      setInterestRate(saving.interest);
+      setSelectedIndex(index);
+
+      setIsAccordionOpen(true);
+      setIsAddOpen(false);
+    }
+  };
+
+  const handleCloseAccordion = () => {
+    if (selectedIndex !== null) {
+      const updatedSaving = [...savingList];
+      updatedSaving[selectedIndex] = {
+        name: savingName,
+        dueDate: savingDeadLine,
+        interest: interestRate,
+        dueDate: savingDeadLine,
       };
       setSavingList(updatedSaving);
     } else {
@@ -136,7 +148,7 @@ export function AddSavings() {
           name: savingName,
           dueDate: savingDeadLine,
           interest: interestRate,
-          dDay: dDayForItem,
+          dueDate: savingDeadLine,
         },
       ];
       setSavingList(newSavingList);
@@ -147,6 +159,9 @@ export function AddSavings() {
     setSelectedIndex(null);
     setIsAccordionOpen(false); // 아코디언 닫힘 상태로 변경
     setIsAddOpen(true);
+    toast('적금 상품이 수정되었습니다.', {
+      autoClose: 1300,
+    });
   };
   const resetBtn = () => {
     if (savingName !== '' || savingDeadLine !== '' || selectedIndex !== null) {
@@ -167,7 +182,11 @@ export function AddSavings() {
     }
     const res = await axios({
       method: 'PATCH',
-      url: `http://localhost:8080/api/account/delete/${accountId}`,
+      url: `${process.env.REACT_APP_HOST}/api/account/delete/${accountId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     console.log(res.data.message);
     if (res.data.success) {
@@ -191,11 +210,11 @@ export function AddSavings() {
 
   return (
     <>
+      <ToastContainer />
       <div className="title-list">
-        <div>적금 상품 생성</div>
         <ul className="title-list">
           <li>적금 상품을 생성할 수 있습니다.</li>
-          <li>생성 후 삭제 및 수정 불가합니다.</li>
+          <li>생성 후 수정이 불가하오니 유의해주시기 바랍니다.</li>
         </ul>
       </div>
 
@@ -208,22 +227,8 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
-
-            {saving.name} D-{saving.dueDate}(금리 {saving.interest}%)
+            {saving.name} D-{saving.dueDate} (금리 {saving.interest}%)
             <Arrow stroke="#ddd" className="accArrBtn" />
-            <button
-              className="updateBtn"
-              onClick={() => selectInput(saving, index)}
-            >
-              수정
-            </button>
-            <img
-              className="deleteBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={deleteBtn(index)}
-              alt="삭제"
-            />
-
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">
@@ -255,15 +260,18 @@ export function AddSavings() {
                 }}
               />
               <div className="set-title">금리 설정</div>
-              <input
-                className="set-input"
-                type="number"
-                min="0"
-                value={interestRate}
-                onChange={(e) => {
-                  setInterestRate(e.target.value);
-                }}
-              />
+              <div className="container">
+                <input
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={interestRate}
+                  onChange={(e) => {
+                    setInterestRate(e.target.value);
+                  }}
+                />
+                <span className="unit">%</span>
+              </div>
               <ConfirmBtn
                 onClick={() => {
                   handleCloseAccordion();
@@ -281,7 +289,7 @@ export function AddSavings() {
         <ConfirmBtn
           onClick={() => newAddBtn()}
           btnName="상품 등록"
-          width={'40%'}
+          // width={'80%'}
           backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}
@@ -317,19 +325,23 @@ export function AddSavings() {
               }}
             />
             <div className="set-title">금리 설정</div>
-            <input
-              className="set-input"
-              type="number"
-              min="0"
-              value={interestRate}
-              onChange={(e) => {
-                setInterestRate(e.target.value);
-              }}
-            />
+            <div className="container">
+              <input
+                className="set-input"
+                type="number"
+                min="0"
+                value={interestRate}
+                onChange={(e) => {
+                  setInterestRate(e.target.value);
+                }}
+              />
+              <span className="unit">%</span>
+            </div>
             <ConfirmBtn
               onClick={handleAddSavings}
               btnName="상품 등록"
               backgroundColor="#bacd92"
+              width="100%"
             ></ConfirmBtn>
           </form>
         </>

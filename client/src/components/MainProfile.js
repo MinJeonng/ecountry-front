@@ -2,15 +2,51 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Avatar, Button } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
+import useAuth from '../hooks/useAuth';
+import { useParams } from 'react-router-dom';
 
 const Name = styled.div`
   box-sizing: border-box;
-  font-size: 30px;
+  font-size: 25px;
   color: #333;
-  font-weight: bold;
+  font-weight: 700;
 `;
 
-export default function MainProfile() {
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: flex-start;
+`;
+
+const ProfileName = styled.div`
+  padding-top: 5px;
+  font-size: 25px;
+  color: #333;
+  font-weight: 700;
+`;
+const LogoutBtn = styled.button`
+  border-radius: 19px;
+  border: none;
+  text-align: center;
+  font-size: 13px;
+  color: #606060;
+  padding: 3px 10px;
+  margin-top: 5px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  img {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export function MainProfile() {
+  const { id } = useParams();
+  const [userInfo, setUserInfo] = useAuth(id);
   const [Image, setImage] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
   );
@@ -39,17 +75,19 @@ export default function MainProfile() {
   };
 
   const getUserName = async () => {
-    const userId = localStorage.getItem('userId');
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_HOST}/api/user/login`,
-        {
-          userId,
-        }
-      );
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/user/info`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
       if (res.data.success) {
-        setName(res.data.name);
+        setName(res.data.result.name);
       } else {
         console.error(res.data.message);
       }
@@ -59,8 +97,14 @@ export default function MainProfile() {
   };
 
   useEffect(() => {
-    getUserName();
+    setUserInfo();
   }, []);
+
+  useEffect(() => {
+    if (userInfo.authority) {
+      getUserName();
+    }
+  }, [userInfo]);
 
   return (
     <>
@@ -80,9 +124,70 @@ export default function MainProfile() {
         onChange={onChange}
         ref={fileInput}
       />
-      {/* <Name>{name}</Name> */}
+      <Name>{name}</Name>
       {/* 이름 옆에 직업을 넣어주는 것도 고려 */}
-      <Name>홍길동</Name>
     </>
+  );
+}
+
+export function GetName() {
+  const { id } = useParams();
+  const [userInfo, setUserInfo] = useAuth(id);
+  const [name, setName] = useState('');
+
+  const getUserName = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/user/info`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (res.data.success) {
+        setName(res.data.result.name);
+      } else {
+        console.error(res.data.message);
+      }
+    } catch (error) {
+      console.error('로그인 요청 실패:', error);
+    }
+  };
+  const logoutFunc = () => {
+    if (!window.confirm('로그아웃 하시겠습니까?')) {
+      return;
+    }
+    localStorage.removeItem('token');
+    window.location.href = `/${id}/login`;
+  };
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      setUserInfo();
+    }
+  }, []);
+
+  useEffect(() => {
+    setUserInfo();
+  }, []);
+
+  useEffect(() => {
+    if (userInfo.authority) {
+      getUserName();
+    }
+  }, [userInfo]);
+  return (
+    <ProfileContainer>
+      <ProfileName>{name}</ProfileName>
+      <LogoutBtn onClick={logoutFunc}>
+        로그아웃
+        <img
+          src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+          alt="복사"
+        />
+      </LogoutBtn>
+    </ProfileContainer>
   );
 }

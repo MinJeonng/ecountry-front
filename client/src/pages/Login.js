@@ -4,8 +4,8 @@ import axios from 'axios';
 
 import Template from '../components/Template';
 
-import '../styles/background.scss';
 import '../styles/login.scss';
+import { PageHeader } from '../components/Headers';
 
 export default function Login() {
   const [userId, setUserId] = useState('');
@@ -14,7 +14,7 @@ export default function Login() {
 
   const loginFunc = async () => {
     await axios
-      .post('http://localhost:8080/api/user/login', { userId, pw })
+      .post(`${process.env.REACT_APP_HOST}/api/user/login`, { userId, pw })
       .then((res) => {
         alert(res.data.message);
         if (res.data.success) {
@@ -26,14 +26,19 @@ export default function Login() {
   };
   return (
     <Template
+      childrenTop={
+        <>
+          <PageHeader>{'관리자 로그인'}</PageHeader>
+        </>
+      }
       childrenBottom={
         <div className="setting-wrap">
-          <div>
+          {/* <div>
             <div>로그인</div>
             <ul className="title-list">
               <li>아이디와 비밀번호를 입력하세요.</li>
             </ul>
-          </div>
+          </div> */}
           <form className="box-style">
             <div className="user-login-title">아이디</div>
             <input

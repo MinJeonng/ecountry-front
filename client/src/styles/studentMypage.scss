@@ -1,0 +1,42 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/variables';
+
+@include mobile {
+  .idCard-wrap {
+    border: 1px solid #a5a5a5;
+    border-radius: 16px;
+    padding: 20px;
+    background-color: #fffcf2;
+
+    .idCard-title {
+      text-align: center;
+    }
+
+    .idCard-list {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+
+      .idCard-detail {
+        display: flex;
+        flex-direction: column;
+        margin-left: 50px;
+
+        .idCard-detail-title {
+        }
+
+        .idCard-detail-list {
+          .idCard-detail-title {
+          }
+
+          .idCard-detail-content {
+          }
+        }
+      }
+    }
+  }
+}

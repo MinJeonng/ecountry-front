@@ -24,3 +24,41 @@
     }
   }
 }
+
+.textLimit {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+img {
+  max-width: 100%;
+}
+.nonePost {
+  border: 1px solid rgb(186, 205, 146);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+
+  span {
+    font-weight: 700;
+    color: #666666;
+  }
+}
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(0.99);
+}
+
+button:active {
+  transform: scale(0.98);
+  //배경이 하얀색이면 백그라운드 색상이 회색으로 변하게 해서 좀 더 선택되는 느낌을 주기 ..토스처럼
+  // transform: translateY(2px);
+  // // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 2px 4px rgb(219, 221, 213);
+}

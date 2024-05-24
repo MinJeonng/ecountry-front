@@ -1,30 +1,56 @@
 import { useEffect, useState } from 'react';
 import { ReactComponent as IcoMenuRight } from '../images/icon-sideMenu.svg';
 import { ReactComponent as ArrowLeft } from '../images/ico-arr-left.svg';
+import { ReactComponent as Alarm } from '../images/icon-alarm.svg';
 import styled from 'styled-components';
 import { SideMenuComponent } from './SideMenu';
 import { useNavigate } from 'react-router-dom';
 import Template from './Template';
 
+const CommonHeader = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const AlarmHeader = styled.div`
+  gap: 10px;
+  display: flex;
+  /* position: relative;
+  top: 25px;
+  right: 20px; */
+  padding-right: 30px;
+  padding-top: 25px;
+`;
 const BoxStyle = styled.div`
-  /* position: sticky; */
-  top: 0;
-  left: 0;
   z-index: 100;
-  padding: 25px 0 0 30px;
+  width: 100%;
+  padding-top: 25px;
+  padding-left: 30px;
+  /* right: 20px; */
+`;
+const HeaderStyle = styled.header`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  text-align: center;
+  button {
+    border: none;
+    background: none;
+  }
 `;
 
 const PageHeaderBox = styled.div`
   display: flex;
   align-items: center;
-  position: sticky;
+  padding-top: 40px;
+  padding-left: 20px;
 `;
 const Text = styled.div`
   color: #fff;
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: 700;
 `;
 
-export function ManagerMainHeader() {
+export function CommonMainHeader() {
   const [showSideMenu, setShowSideMenu] = useState(false);
   useEffect(() => {
     console.log('showSideMenu 상태 변경됨:', showSideMenu);
@@ -34,27 +60,26 @@ export function ManagerMainHeader() {
   };
 
   return (
-    <>
+    <CommonHeader>
       <BoxStyle className="headerBg">
-        <header>
-          {/* Ico안뜸 확인 */}
+        <HeaderStyle>
           <IcoMenuRight
             onClick={() => {
-              console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu); // 로그 추가
+              console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu);
               setShowSideMenu(true);
               console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
             }}
           />
-        </header>
+        </HeaderStyle>
       </BoxStyle>
       {showSideMenu && <SideMenuComponent func={closeFunc} />}
-    </>
+      <AlarmHeader>
+        <Alarm />
+      </AlarmHeader>
+    </CommonHeader>
   );
 }
-//각 페이지마다 이전 페이지로 돌아가기 위한..
-// < 은행 이거 만들어서 childrenTop에 적용하기!!!!
 
-//changeFill 다가가면 border약간 티나게 바뀌기
 export function PageHeader({ children }) {
   const navigate = useNavigate();
   return (
@@ -62,14 +87,12 @@ export function PageHeader({ children }) {
       childrenTop={
         <>
           <PageHeaderBox>
-            <header>
-              <ArrowLeft
-                onClick={() => navigate(-1)}
-                className="changeFill"
-                style={{ width: '15px' }}
-              />
+            <HeaderStyle>
+              <button onClick={() => navigate(-1)}>
+                <ArrowLeft stroke={'#fff'} />
+              </button>
               <Text>{children}</Text>
-            </header>
+            </HeaderStyle>
           </PageHeaderBox>
         </>
       }

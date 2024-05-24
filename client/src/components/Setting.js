@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
-import { ConfirmBtn, NextBtn } from './SettingBtn';
+import { ConfirmBtn, NextBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   schoolInfo,
@@ -18,7 +18,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Loading from './Loading';
 
 import '../styles/_input_common.scss';
-import '../styles/background.scss';
+
 import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
 
@@ -29,6 +29,11 @@ export function Setting1() {
   const [schoolName, setSchoolName] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
+  const [schoolList, setSchoolList] = useState([]);
+  const [openSearch, setOpenSearch] = useState(false);
+  const [schoolInfomation, setSchoolInfomation] = useState({});
+  const [schoolAddress, setSchoolAddress] = useState('');
+
   const grades = [1, 2, 3, 4, 5, 6];
   const schoolInfoState = useSelector((state) => state.setting1);
 
@@ -39,6 +44,8 @@ export function Setting1() {
   }, [schoolInfoState]);
 
   const inputSchoolName = (event) => {
+    setSchoolList([]);
+    setSchoolAddress(null);
     setSchoolName(event.target.value);
   };
 
@@ -48,6 +55,24 @@ export function Setting1() {
 
   const classSelect = (e) => {
     setSelectedClass(e.target.value);
+  };
+  const searchFunc = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/school?schoolName=${schoolName}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    setSchoolList(res.data.result);
+    setOpenSearch(true);
+  };
+  const selectSchool = (index) => {
+    setOpenSearch(false);
+    setSchoolName(schoolList[index].schoolName);
+    setSchoolInfomation(schoolList[index]);
+    setSchoolAddress(schoolList[index].address);
   };
 
   const nextSetting = () => {
@@ -59,9 +84,11 @@ export function Setting1() {
       navigate('/setting/countryInfo');
       dispatch(
         schoolInfo({
-          schoolName: schoolName,
+          schoolName: schoolInfomation.schoolName,
           schoolGrade: selectedGrade,
           schoolClass: selectedClass,
+          eduOfficeCode: schoolInfomation.eduOfficeCode,
+          schoolCode: schoolInfomation.schoolCode,
         })
       );
     } catch (error) {
@@ -81,13 +108,87 @@ export function Setting1() {
       <form className="box-style">
         <div className="select-school">
           <div className="select-student-id-title set-title">초등학교</div>
-          <input
-            className="select-school-name"
-            type="text"
-            value={schoolName}
-            onChange={inputSchoolName}
-            style={{ imeMode: 'active' }}
-          />
+          <div style={{ marginBottom: '10px' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+              }}
+            >
+              <input
+                className="select-school-name"
+                type="text"
+                value={schoolName}
+                onChange={inputSchoolName}
+                style={{
+                  imeMode: 'active',
+                  marginRight: '10px',
+                  marginBottom: '0px',
+                }}
+              />
+              <button
+                type="button"
+                onClick={searchFunc}
+                style={{
+                  width: '50px',
+                  height: '43px',
+                  marginTop: '0',
+                  border: '1px solid #bacd92',
+                  borderRadius: '12px',
+                  color: '#ffffff',
+                  backgroundColor: '#bacd92',
+                  fontSize: '12px',
+                  marginBottom: '0px',
+                }}
+              >
+                검색
+              </button>
+            </div>
+            {schoolName && (
+              <>
+                <div
+                  style={{
+                    fontSize: '12px',
+                    color: '#555555',
+                    marginTop: '5px',
+                  }}
+                >
+                  {schoolAddress}
+                </div>
+              </>
+            )}
+          </div>
+          {openSearch &&
+            (schoolList.length === 0 ? (
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#666666',
+                  marginBottom: '20px',
+                }}
+              >
+                검색 결과가 없습니다.
+              </div>
+            ) : (
+              <div style={{ marginBottom: '10px' }}>
+                {schoolList.map((data, index) => (
+                  <div
+                    style={{
+                      marginBottom: '10px',
+                      padding: '5px',
+                      color: '#555555',
+                      borderBottom: '1px solid #bacd92',
+                    }}
+                    key={index}
+                    onClick={() => selectSchool(index)}
+                  >
+                    <p style={{ fontSize: '14px' }}>{data.schoolName}</p>
+                    <p style={{ fontSize: '12px' }}>{data.address}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
         </div>
 
         <div className="select-student-id">
@@ -241,14 +342,13 @@ export function Setting3() {
   const [directInput, setDirectInput] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [password, setPassword] = useState(null);
-  // const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState(false);
   const [attendees, setAttendees] = useState([]);
   const [attendanceNumber, setAttendanceNumber] = useState('');
   const [name, setName] = useState('');
   const [correct, setCorrect] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  // const [isAddOpen, setIsAddOpen] = useState(false);
 
   const studentInfoState = useSelector((state) => state.setting3);
 
@@ -267,13 +367,17 @@ export function Setting3() {
     );
   };
   const nextSetting = () => {
-    navigate('/setting/seatingMap');
-    dispatch(
-      studentInfo({
-        password: password,
-        studentList: attendees,
-      })
-    );
+    if (password !== null) {
+      navigate('/setting/seatingMap');
+      dispatch(
+        studentInfo({
+          password: password,
+          studentList: attendees,
+        })
+      );
+    } else {
+      toast.error('학생들의 초기 비밀번호를 설정하세요', { autoClose: 1300 });
+    }
   };
 
   const handleCheckBtn = () => {
@@ -281,13 +385,28 @@ export function Setting3() {
   };
 
   const handleCheck = () => {
-    if (attendanceNumber && name && password) {
-      setAttendees([...attendees, { attendanceNumber, name }]);
-      setAttendanceNumber('');
-      setName('');
-      setPassword('');
+    if (password !== null) {
+      setCheckPassword(true);
+    }
+    if (checkPassword) {
+      if (attendanceNumber && name) {
+        setAttendees([...attendees, { attendanceNumber, name }]);
+        setAttendanceNumber('');
+        setName('');
+      } else {
+        toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
+      }
     } else {
-      toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
+      toast.error('학생들의 초기 비밀번호를 설정하세요', {
+        autoClose: 1300,
+      });
+    }
+  };
+  const handleCheckPassword = () => {
+    if (password == null) {
+      toast.error('비밀번호를 입력해주세요.', { autoClose: 1300 });
+    } else {
+      setCheckPassword(true);
     }
   };
 
@@ -392,6 +511,17 @@ export function Setting3() {
                       toast.error('비밀번호는 4자리로 설정해주세요.');
                     }
                   }}
+                />
+                {checkPassword && (
+                  <div style={{ fontSize: '10px', color: 'red' }}>
+                    비밀번호 설정이 완료되었습니다.
+                  </div>
+                )}
+
+                <ConfirmBtn
+                  onClick={handleCheckPassword}
+                  btnName="확인"
+                  backgroundColor="#bacd92"
                 />
               </div>
               {attendees.length > 0 &&
@@ -661,30 +791,46 @@ export function Setting5() {
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
   const [countValue, setCountValue] = useState('');
-  // 현재 선택한 상태 뭔지 저장
-  const [selectedJobIndex, setSelectedJobIndex] = useState(null);
+  const [selectedJobIndex, setSelectedJobIndex] = useState([]);
+  const [jobSkill, setJobSkill] = useState([]); //skill 번호
+  const [selectedJobSkill, setSelectedJobSkill] = useState('');
+  const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const jobListState = useSelector((state) => state.setting5);
-
+  console.log(jobSkill);
   useEffect(() => {
     setJobsDisplay(jobListState?.jobsDisplay);
   }, [jobListState]);
 
+  useEffect(() => {
+    if (selectedJobSkill !== '') {
+      setJobSkill([...jobSkill, Number(selectedJobSkill)]);
+    }
+    setSelectedJobSkill('');
+  }, [selectedJobSkill]);
+
   const isCustomInput = selectedJob === '직접입력';
   const jobList = [
-    { label: '은행원1(월급지급)', value: '은행원1(월급지급)' },
-    { label: '은행원2(적금관리)', value: '은행원2(적금관리)' },
+    { label: '은행원', value: '은행원' },
     { label: '기자', value: '기자' },
     { label: '국세청', value: '국세청' },
     { label: '신용등급관리위원회', value: '신용등급관리위원회' },
     { label: '국회', value: '국회' },
     { label: '직접입력', value: '직접입력' },
   ];
+  const jobSkillList = [
+    { label: '월급 지급', value: 0 },
+    { label: '적금 관리(가입/해지)', value: 1 },
+    { label: '뉴스 작성', value: 2 },
+    { label: '세금 징수', value: 3 },
+    { label: '신용 관리', value: 4 },
+    { label: '법 관리 ', value: 5 },
+  ];
   const beforeSetting = () => {
     navigate('/setting/seatingMap');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const nextSetting = () => {
-    navigate('/setting/law');
+    navigate('/setting/jobRole');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const handleCountValue = (e) => {
@@ -694,7 +840,6 @@ export function Setting5() {
     const value = e.target.value;
     setSelectedJob(value);
   };
-
   const handleCustomInputChange = (e) => {
     setCustomJob(e.target.value);
   };
@@ -704,7 +849,9 @@ export function Setting5() {
   const handleJobRoleChange = (e) => {
     setJobRoleValue(e.target.value);
   };
-
+  const handleSelectJobSkill = (e) => {
+    setSelectedJobSkill(e.target.value);
+  };
   const addJob = () => {
     if (
       !(customJob || selectedJob) ||
@@ -728,6 +875,7 @@ export function Setting5() {
         role: jobRoleValue,
         count: countValue,
         salary: inputValue,
+        skills: jobSkill,
       };
       setJobsDisplay(updatedJobs);
     } else {
@@ -741,6 +889,7 @@ export function Setting5() {
           role: jobRoleValue,
           count: countValue,
           salary: inputValue,
+          skills: jobSkill,
         },
       ];
       setJobsDisplay(newJobsDisplay);
@@ -753,10 +902,12 @@ export function Setting5() {
     setJobRoleValue('');
     setCountValue('');
     handleInputChange({ target: { value: '' } });
+    setJobSkill([]);
     setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
   };
 
   const selectInput = (job, index) => {
+    console.log(job);
     setSelectedJob(job.selectValue);
     setCustomJob(job.customValue);
     setStandardValue(job.standard);
@@ -764,6 +915,7 @@ export function Setting5() {
     setCountValue(job.count);
     handleInputChange({ target: { value: job.salary.replace(/,/g, '') } }); //숫자만 추출해 전달
     setSelectedJobIndex(index);
+    setJobSkill([job.skills]);
     // console.log(setCustomJob(value));
   };
 
@@ -789,6 +941,11 @@ export function Setting5() {
     setJobRoleValue('');
     setCountValue('');
     handleInputChange({ target: { value: '' } });
+  };
+  const deleteSkill = (index) => {
+    const updatedSkill = [...jobSkill];
+    updatedSkill.splice(index, 1);
+    setJobSkill(updatedSkill);
   };
 
   return (
@@ -837,6 +994,16 @@ export function Setting5() {
               onClick={resetBtn}
             />
           </div>
+          {isCustomInput && (
+            <input
+              type="text"
+              className="set-input"
+              value={customJob}
+              onChange={handleCustomInputChange}
+              placeholder="직업을 입력해주세요"
+              style={{ imeMode: 'active' }}
+            />
+          )}
           <select
             className="set-input"
             value={selectedJob}
@@ -851,24 +1018,61 @@ export function Setting5() {
               </option>
             ))}
           </select>
-          {isCustomInput && (
-            <input
-              type="text"
-              className="set-input"
-              value={customJob}
-              onChange={handleCustomInputChange}
-              placeholder="직업을 입력해주세요"
-              style={{ imeMode: 'active' }}
-            />
-          )}
-          <div className="set-title">급여</div>
-          <input
+          <div className="set-title">직업의 역할(복수선택 가능)</div>
+          <select
             className="set-input"
-            type="text"
-            min="0"
-            value={inputValue}
-            onChange={handleInputChange}
-          />
+            value={selectedJobSkill}
+            onChange={handleSelectJobSkill}
+            style={{ marginBottom: '0px' }}
+          >
+            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+              선택해주세요
+            </option>
+            {jobSkillList.map((skill) => (
+              <option key={skill.value} value={skill.value}>
+                {skill.label}
+              </option>
+            ))}
+          </select>
+          <div style={{ fontSize: '12px', margin: '5px' }}>
+            {jobSkill.length == 0 ? (
+              <div style={{ marginBottom: '20px' }}></div>
+            ) : (
+              <>
+                {jobSkill.map((skill, index) => (
+                  <div
+                    style={{
+                      margin: '5px',
+                      padding: '2px',
+                      borderBottom: '1px solid rgb(186, 205, 146)',
+                      width: 'fit-content',
+                      display: 'inline-table',
+                    }}
+                    key={index}
+                    onClick={() => deleteSkill(index)}
+                  >
+                    {jobSkillList[skill]?.label}
+                    <span style={{ paddingLeft: '4px' }}>x</span>
+                  </div>
+                ))}
+              </>
+            )}
+
+            {/* {selectedJobSkill !== '' && (
+              
+            )} */}
+          </div>
+          <div className="set-title">급여</div>
+          <div className="container">
+            <input
+              className="set-input"
+              type="text"
+              min="0"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+            <span className="unit">{moneyUnit}</span>
+          </div>
           <div className="set-title">인원수</div>
           <div className="container">
             <input
@@ -936,7 +1140,7 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    navigate('/setting/jobList');
+    navigate('/setting/jobRole');
     dispatch(basicLaw({ basicLaw: laws }));
   };
   const nextSetting = () => {
@@ -1057,7 +1261,8 @@ export function Setting7() {
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const isCustomUnit = selectedUnit === '화폐단위(직접입력)';
   const unitList = [
-    { label: `${moneyUnit} (화폐단위)`, value: moneyUnit },
+    { label: `${moneyUnit} (화폐단위)`, value: `${moneyUnit}` },
+
     { label: `% (월급기준)`, value: '%' },
   ];
 
@@ -1079,14 +1284,20 @@ export function Setting7() {
     setCustomUnit(e.target.value);
   };
 
-  const handleSelectedUnit = (e) => {
-    setSelectedUnit(e.target.value);
-    if (selectedUnit == '%') {
+  const handleSelectChange = (e) => {
+    // %는 0 moneyUnit은 1
+    const value = e.target.value;
+    setSelectedUnit(value);
+  };
+  useEffect(() => {
+    if (selectedUnit === '%') {
       setDivision(0);
+      console.log('%, 0');
     } else {
       setDivision(1);
+      console.log('unit, 1');
     }
-  };
+  }, [selectedUnit]);
 
   const beforeSetting = () => {
     navigate('/setting/law');
@@ -1213,7 +1424,7 @@ export function Setting7() {
           <select
             className="set-input"
             value={selectedUnit}
-            onChange={handleSelectedUnit}
+            onChange={handleSelectChange}
           >
             <option value="" disabled selected style={{ color: '#a5a5a5' }}>
               선택 및 입력해주세요
@@ -1250,7 +1461,7 @@ export function Setting8() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
-  const [taxName, setTaxName] = useState('');
+  const [taxName, setTaxName] = useState('자리 임대료');
   const [fee, setFee] = useState('');
 
   const setRentalFeeState = useSelector((state) => state.setting8);
@@ -1293,10 +1504,11 @@ export function Setting8() {
             className="set-country-detail"
             type="text"
             value={taxName}
-            onChange={(e) => {
-              setTaxName(e.target.value);
-            }}
+            // onChange={(e) => {
+            //   setTaxName(e.target.value);
+            // }}
             style={{ imeMode: 'active' }}
+            disabled
           />
         </div>
         <div className="set-country">
@@ -1344,11 +1556,6 @@ export function Setting9() {
   const [countryId, setCountryID] = useState();
   const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
-  // const fineState = useSelector((state) => state.setting9);
-
-  // useEffect(() => {
-  //   setFineList(fineState?.fine);
-  // }, [fineState]);
 
   const beforeSetting = () => {
     navigate('/setting/seatRental');
@@ -1360,8 +1567,10 @@ export function Setting9() {
       // 국가 생성
       const res = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/country`,
+        url: `${process.env.REACT_APP_HOST}/api/country`,
         headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         data: {
@@ -1371,9 +1580,11 @@ export function Setting9() {
           unit: setInfo.setting2.moneyUnit,
           salaryDate: parseInt(setInfo.setting2.salaryDate),
           school: setInfo.setting1.schoolName,
+          eduOfficeCode: setInfo.setting1.eduOfficeCode,
+          schoolCode: setInfo.setting1.schoolCode,
         },
       });
-      console.log('국가 생성 결과 : ' + res.data.success);
+
       // 학생 등록(수기)
       if (setInfo.setting3.studentList.length > 0) {
         const data2 = [];
@@ -1388,10 +1599,13 @@ export function Setting9() {
           method: 'POST',
           // 국가 생성 후 return된 id 값으로 수정해야함
           // 비밀번호 값 추가
-          url: `http://localhost:8080/api/student/${res.data.result.id}`,
+          url: `${process.env.REACT_APP_HOST}/api/student/${res.data.result.id}`,
+          headers: {
+            'Content-Type': `application/json`,
+            'ngrok-skip-browser-warning': '69420',
+          },
           data: data2,
         });
-        console.log('학생 등록 결과 : ' + res2.data.success);
       }
       // 자리 배치 등록
       const data3 = [];
@@ -1404,7 +1618,11 @@ export function Setting9() {
       });
       const res3 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/seat`,
+        url: `${process.env.REACT_APP_HOST}/api/seat`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data3,
       });
       console.log('자리 배치 등록 결과 : ' + res3.data.success);
@@ -1424,13 +1642,15 @@ export function Setting9() {
           countryId: res.data.result.id,
         });
       });
-      console.log(data4);
       const res4 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/job`,
+        url: `${process.env.REACT_APP_HOST}/api/job`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data4,
       });
-      console.log('직업 리스트 등록 결과 : ' + res4.data.success);
       // 규칙 리스트 등록
       const data5 = [];
       setInfo.setting6.basicLaw.forEach((data) => {
@@ -1441,10 +1661,13 @@ export function Setting9() {
       });
       const res5 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/rule`,
+        url: `${process.env.REACT_APP_HOST}/api/rule`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data5,
       });
-      console.log('규칙 리스트 등록 결과 : ' + res5.data.success);
       // 세금 규칙 등록
       const data6 = [];
       setInfo.setting7.taxLaw.forEach((data) => {
@@ -1470,15 +1693,15 @@ export function Setting9() {
           countryId: res.data.result.id,
         });
       });
-      console.log(data6);
       const res6 = await axios({
         method: 'POST',
-        url: `http://localhost:8080/api/tax`,
+        url: `${process.env.REACT_APP_HOST}/api/tax`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
         data: data6,
       });
-      console.log('세금 규칙 등록 결과 : ' + res6.data.success);
-      console.log('countryId : ' + countryId);
-      console.log('id값 : ' + res.data.result.id);
       setCountryID(res.data.result.id);
       setIsLoading(true);
     } catch (e) {
@@ -1621,5 +1844,38 @@ export function Setting9() {
         </div>
       )}
     </div>
+  );
+}
+//Setting10 - 직업 역할 정하기
+export function Setting10() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const jobListState = useSelector((state) => state.setting5); //직업 리스트
+  console.log(jobListState);
+  const [jobList, setJobList] = useState([]); //직업 이름 리스트
+  const [roleList, setRoleList] = useState([]); // 역할 리스트
+
+  const beforeSetting = () => {
+    navigate('/setting/jobList');
+    dispatch();
+  };
+  const nextSetting = () => {
+    navigate('/setting/law');
+    dispatch();
+  };
+
+  return (
+    <>
+      <form className="box-style"></form>
+      <div className="navi-btn">
+        <button className="next-button" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
+    </>
   );
 }

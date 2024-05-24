@@ -1,0 +1,86 @@
+#root .ql-container {
+  background: #fefcfc;
+  border: none;
+  border-bottom: 1px solid #e2e7e2;
+  height: 400px;
+}
+
+/* Snow Theme */
+#root .ql-snow.ql-toolbar {
+  display: block;
+  background: #f6f7f9;
+  font-family: 'NanumSquareNeo-Variable';
+  border: none;
+  border-bottom: 1px solid #e2e7e2;
+
+  &.ql-title {
+    position: relative;
+    padding: 0 20px;
+    height: 50px;
+    margin: 0;
+    font-size: 14px;
+    background: #fff;
+    width: 100%;
+  }
+}
+#root .ql-toolbar {
+  // position: fixed;
+  top: 0;
+}
+#root .ql-editor {
+  // min-height: 60vh;
+  padding: 20px;
+  color: #333;
+  strong {
+    font-weight: 700;
+  }
+  em {
+    font-style: italic;
+  }
+  u {
+    text-decoration: underline;
+  }
+}
+.postHeader {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 70px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #e2e7e2;
+  select {
+    border: none;
+    text-align: center;
+    font-weight: 700;
+    cursor: pointer;
+    option {
+      line-height: 40px;
+    }
+  }
+  .write {
+    color: #ddd;
+    &.on {
+      color: #fbc02d;
+      font-weight: 700;
+    }
+  }
+  @media (min-width: 1160px) {
+    top: 70px;
+  }
+}
+
+@media screen and (min-width: 1160px) {
+  .createPost {
+    width: 1200px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+  }
+}
+.postBtn {
+  margin-top: 190px;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}

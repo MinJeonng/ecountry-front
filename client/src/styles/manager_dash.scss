@@ -2,39 +2,40 @@
 
 @include mobile {
   .managerInfo {
-    // width: calc(100% - 40px);
-    height: auto;
     display: flex;
     box-sizing: border-box;
-    margin: 30px 40px 10px 40px;
+    padding: 40px 30px 0 30px;
     justify-content: space-between;
-    align-items: center;
-    position: relative;
   }
+
   .InfoPart1 {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-direction: column;
-    .MainProfileBox {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
+  }
+
+  .MainProfileBox {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .countryUrl {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 10px;
+    img {
+      width: 19px;
+      height: 19px;
+      cursor: pointer;
     }
-    .countryUrl {
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin: 10px 0 0 10px;
-      img {
-        width: 19px;
-        height: 19px;
-        cursor: pointer;
-      }
-      .countryLink {
-        display: block;
-        font-size: 15px;
-      }
+    .countryLink {
+      display: block;
+      font-size: 15px;
+      margin-left: 2px;
     }
   }
 

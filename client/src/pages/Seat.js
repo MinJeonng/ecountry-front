@@ -1,142 +1,188 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+import '../styles/seat.scss';
 
 import Template from '../components/Template';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import SeatMap from '../components/SeatMap';
+import StudentSeatMap from '../components/StudentSeatMap';
+import OwnerSeatMap from './OwnerSeatMap';
+import { PageHeader } from '../components/Headers';
+
 // 자리배치도
 export function SetSeat() {
   const { id } = useParams();
 
-  // 열과 행의 정보를 담는 state
   const [columns, setColumns] = useState([]);
-  const [tableRows, setTableRows] = useState([]);
-
-  const [editCell, setEditCell] = useState(null);
-
-  // const [columns, setColumns] = useState([
-  //   { id: 1, label: '1열' },
-  //   { id: 2, label: '2열' },
-  //   { id: 3, label: '3열' },
-  //   { id: 4, label: '4열' },
-  //   { id: 5, label: '5열' },
-  // ]);
-  // const [tableRows, setTableRows] = useState([
-  //   { columnId: 1, rowId: '1', value: '홍길동' },
-  //   { columnId: 1, rowId: '2', value: '임꺽정' },
-  //   { columnId: 1, rowId: '3', value: '3' },
-  //   { columnId: 2, rowId: '1', value: '1' },
-  //   { columnId: 2, rowId: '2', value: '2' },
-  //   { columnId: 3, rowId: '1', value: '1' },
-  //   { columnId: 3, rowId: '2', value: '2' },
-  //   { columnId: 4, rowId: '1', value: '1' },
-  //   { columnId: 4, rowId: '2', value: '2' },
-  //   { columnId: 5, rowId: '1', value: '1' },
-  //   { columnId: 5, rowId: '2', value: '2' },
-  // ]);
+  const [studentList, setStudentList] = useState([]);
+  const [showStudentMap, setShowStudentMap] = useState(true);
+  const [isSeatMapVisible, setIsSeatMapVisible] = useState(false);
+  const [seatList, setSeatList] = useState([]);
 
   const getSeat = async () => {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:8080/api/seat/${id}`,
+      url: `${process.env.REACT_APP_HOST}/api/seat/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
-    console.log(res.data.result);
+
+    console.log('Columns:', res.data.result);
     setColumns(res.data.result);
   };
 
-  const edit = (columnId, rowId, event) => {
-    const newValue = event.target.value;
-    // 변경된 값 반영
-    const updateTableRows = tableRows.map((row) => {
-      if (row.columnId === columnId && row.rowId === rowId) {
-        return { ...row, value: newValue };
-      }
-      return row;
+  const getStatus = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/seat/status/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
-    setTableRows(updateTableRows);
+    setSeatList(res.data.result);
+    console.log('seatList : ', res.data.result);
   };
 
-  // 수정 중인 셀의 정보를 설정
-  const startEdit = (columnId, rowId) => {
-    setEditCell({ columnId, rowId });
+  const getStudent = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/student/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    console.log('Students:', res.data.result);
+    setStudentList(res.data.result);
   };
 
-  // 수정이 완료되면 값을 업데이트
-  const finishEdit = () => {
-    if (editCell) {
-      setEditCell(null);
-      // 수정한 값만 업데이트
-      const editedRow = tableRows.find(
-        (row) =>
-          row.columnId === editCell.columnId && row.rowId === editCell.rowId
-      );
+  const changeList = async (row, col, studentId) => {
+    let isExist = false;
+    let data = [];
+    seatList.map((seat) => {
+      if (seat.rowNum == row && seat.colNum == col) {
+        isExist = true;
+        if (showStudentMap) {
+          data = [
+            {
+              id: seat.id,
+              ownerId: seat.ownerId,
+              studentId: studentId,
+              rowNum: row,
+              colNum: col,
+            },
+          ];
+        } else {
+          data = [
+            {
+              id: seat.id,
+              ownerId: studentId,
+              studentId: seat.studentId,
+              rowNum: row,
+              colNum: col,
+            },
+          ];
+        }
+      }
+    });
+    if (!isExist) {
+      if (showStudentMap) {
+        data = [
+          {
+            ownerId: null,
+            studentId: studentId,
+            rowNum: row,
+            colNum: col,
+            countryId: id,
+          },
+        ];
+      } else {
+        data = [
+          {
+            ownerId: studentId,
+            studentId: null,
+            rowNum: row,
+            colNum: col,
+            countryId: id,
+          },
+        ];
+      }
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/seat/status`,
+        data,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+    } else {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/seat/status`,
+        data,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
     }
+    getStatus();
   };
 
-  // 각 열의 자리수만큼 셀 생성
-  const makeSeat = (rowNum, colNum) => {
-    let result = [];
-    for (let i = 1; i <= colNum; i++) {
-      result.push(i);
-    }
-    return result;
+  const toggleEdit = () => {
+    setIsSeatMapVisible(!isSeatMapVisible);
   };
 
   useEffect(() => {
     getSeat();
+    getStudent();
+    getStatus();
   }, []);
 
   return (
     <Template
-      childrenTop={<div>자리 배치표</div>}
+      childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
       childrenBottom={
-        <div>
-          <form className="preview">
-            {columns.map((column, columnIndex) => (
-              <div className="seating-map" key={columnIndex}>
-                <div className="cloumn-num">{column.rowNum}열</div>
-                <div className="row-container">
-                  {makeSeat(column.rowNum, column.colNum).map((col) => (
-                    <div key={col} className="cell-container">
-                      <input type="text" className="cell-input" value={col} />
-                    </div>
-                  ))}
-                  {/* {tableRows
-                    .filter((row) => row.columnId === column.id)
-                    .map((row, rowIndex) => (
-                      <div key={rowIndex} className="cell-container">
-                        {editCell &&
-                        editCell.columnId === column.id &&
-                        editCell.rowId === row.rowId ? (
-                          // 수정 중인 셀일 경우
-                          <input
-                            type="text"
-                            className="cell-input"
-                            value={row.value}
-                            onChange={(event) =>
-                              edit(column.id, row.rowId, event)
-                            }
-                          />
-                        ) : (
-                          // 수정 중이 아닌 셀일 경우
-                          <div
-                            className="cell-input"
-                            onClick={() => startEdit(column.id, row.rowId)}
-                          >
-                            {row.value}
-                          </div>
-                        )}
-                      </div>
-                    ))} */}
-                </div>
-              </div>
-            ))}
-          </form>
-          {editCell && (
-            <button className="blue-btn" onClick={finishEdit}>
-              완료
+        <>
+          <div className="seat-title">
+            <button
+              className={`seat-user ${showStudentMap ? 'active' : ''}`}
+              onClick={() => setShowStudentMap(true)}
+            >
+              사용자
             </button>
+            <button
+              className={`seat-owner ${!showStudentMap ? 'active' : ''}`}
+              onClick={() => setShowStudentMap(false)}
+            >
+              소유자
+            </button>
+          </div>
+
+          <StudentSeatMap
+            columns={columns}
+            seatlist={seatList}
+            changelist={changeList}
+            studentlist={studentList}
+            isuser={showStudentMap}
+          />
+
+          <button className="blue-btn" onClick={toggleEdit}>
+            자리 배치 수정
+          </button>
+          {isSeatMapVisible && (
+            <div className="seat-map-container">
+              {/* 배치표 추가 */}
+              <SeatMap columns={columns} />
+            </div>
           )}
-        </div>
+        </>
       }
     />
   );

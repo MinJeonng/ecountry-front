@@ -18,8 +18,10 @@ export default function CountryList() {
     const getList = async () => {
       const res = await axios({
         method: 'GET',
-        url: `http://localhost:8080/api/user`,
+        url: `${process.env.REACT_APP_HOST}/api/user`,
         headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });

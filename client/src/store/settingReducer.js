@@ -16,6 +16,8 @@ const initalState1 = {
   schoolName: null,
   schoolGrade: null,
   schoolClass: null,
+  eduOfficeCode: null,
+  schoolCode: null,
 };
 export const setting1Reducer = (state = initalState1, action) => {
   switch (action.type) {
@@ -25,6 +27,8 @@ export const setting1Reducer = (state = initalState1, action) => {
         schoolName: action.info.schoolName,
         schoolGrade: action.info.schoolGrade,
         schoolClass: action.info.schoolClass,
+        eduOfficeCode: action.info.eduOfficeCode,
+        schoolCode: action.info.schoolCode,
       };
     default:
       return state;

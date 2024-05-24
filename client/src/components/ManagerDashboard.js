@@ -48,9 +48,7 @@ const MainDashboardBox = styled.div`
   .investmentBox {
     background: #fff6dd;
   }
-  .taxServiceBox {
-    background: #ddeecc;
-  }
+
   .assemblyBox {
     background: #ddeeff;
   }
@@ -71,6 +69,9 @@ const MainDashboardBox = styled.div`
   }
   .scheduleBox {
     background: #eeffdd;
+  }
+  .jobListBox {
+    background: #e8e8f7;
   }
 `;
 
@@ -116,13 +117,23 @@ export function MainDashboard({ func }) {
             </div>
             <div
               className="assemblyBox"
-              onClick={() => navigate(`/${id}/assembly`)}
+              onClick={() => navigate(`/${id}/manager/assembly`)}
             >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-capitol.png`}
                 alt="국회"
               />
               <p>국회</p>
+            </div>
+            <div
+              className="jobListBox"
+              onClick={() => navigate(`/${id}/manager/jobList`)}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-job.png`}
+                alt="직업설정"
+              />
+              <p>직업 설정</p>
             </div>
 
             <div className="newsBox" onClick={() => navigate(`/${id}/news`)}>
@@ -142,16 +153,6 @@ export function MainDashboard({ func }) {
               />
               <p>국민 신문고</p>
             </div>
-            <div
-              className="taxServiceBox"
-              onClick={() => navigate(`/${id}/taxService`)}
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
-                alt="국세청"
-              />
-              <p>국세청</p>
-            </div>
 
             <div
               className="seatBox"
@@ -164,13 +165,6 @@ export function MainDashboard({ func }) {
               <p>자리 배치도</p>
             </div>
 
-            <div className="scheduleBox">
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-schedule.png`}
-                alt="시간표"
-              />
-              <p>시간표</p>
-            </div>
             <div style={{ visibility: 'hidden' }}>
               <img />
               <p></p>

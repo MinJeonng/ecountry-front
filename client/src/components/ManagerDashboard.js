@@ -142,6 +142,16 @@ export function MainDashboard({ func }) {
               />
               <p>국민 신문고</p>
             </div>
+            <div
+              className="taxServiceBox"
+              onClick={() => navigate(`/${id}/taxService`)}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
+                alt="국세청"
+              />
+              <p>국세청</p>
+            </div>
 
             <div
               className="seatBox"

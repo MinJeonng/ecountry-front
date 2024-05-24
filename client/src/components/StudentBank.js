@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import '../styles/setting.scss';
 import { ConfirmBtn } from './Btns';
@@ -72,44 +72,17 @@ const TransferBtn = styled.button`
 `;
 
 //입출금통장
-function CheckingAccount({ account }) {
-  const { id } = useParams();
+function CheckingAccount({ account, unit }) {
+  const { id, accountId } = useParams(); // 지금 id는 나라id
+  const navigate = useNavigate();
   const [isAccordion, setIsAccordion] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const [user, setUser] = useState(''); //내 통장
-  const [amount, setAmount] = useState(''); //내 잔액
+  // const [user, setUser] = useState(''); //내 통장, 보내는 사람
+  // const [amount, setAmount] = useState(''); //내 잔액
   const [depositUser, setDepositUser] = useState(''); //받는 사람
   const [transferAmount, setTransferAmount] = useState(''); //이체금액
   const [transList, setTransList] = useState([]); //이체가능리스트
-
-  const handleTransfer = async () => {
-    // 이체하시겠습니까? alert 문 하고 그다음에 이체되게..
-    //그때 alert에 이름 나오고 ~님에게 이체하겠냐 물어보기
-    if (depositUser && transferAmount) {
-      const isConfirmed = window.confirm(
-        `${depositUser}님에게 ${transferAmount}를 이체하시겠습니까?`
-      );
-      if (isConfirmed) {
-        try {
-          const res = await axios({
-            method: 'POST',
-            url: `${process.env.REACT_APP_HOST}/api/bank`,
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': '69420',
-            },
-          });
-          // if(res.data.re)
-        } catch {}
-
-        // toast('이체가 완료되었습니다.', {
-        //   autoClose: 1300,
-        // });
-      }
-    } else {
-      alert('이체 정보를 모두 입력해주세요.');
-    }
-  };
+  const [memo, setMemo] = useState('');
 
   //이체 가능 리스트
   const transferList = async () => {
@@ -136,9 +109,70 @@ function CheckingAccount({ account }) {
     transferList();
   }, []);
 
+  //이체하기
+  const handleTransfer = async () => {
+    if (depositUser && transferAmount) {
+      // // 나중에 단위 불러오면 밑에다가 alert에 추가
+      // const selectedUser = transList.find((user) => user.id === depositUser);
+      // if (!selectedUser) {
+      //   console.log(transList);
+      //   console.log('받는사람 못찾음');
+      //   return;
+      // }
+      //받는사람 name을 저장할 걸 만들어야할듯
+      const isConfirmed = window.confirm(
+        `${depositUser}님에게 ${transferAmount}를 이체하시겠습니까?`
+      );
+      if (isConfirmed) {
+        try {
+          const res = await axios({
+            method: 'POST',
+            url: `${process.env.REACT_APP_HOST}/api/bank`,
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
+            },
+            data: {
+              transaction: parseInt(transferAmount),
+              memo: memo,
+              depositId: depositUser, //받는사람
+              withdrawId: account.id, //보내는사람
+            },
+          });
+          if (res.data.success) {
+            toast('이체가 완료되었습니다.', {
+              autoClose: 1300,
+            });
+
+            // toast가 닫힌 직후 페이지를 새로고침
+            setTimeout(() => {
+              window.location.reload();
+            }, 1400);
+            setDepositUser('');
+            setMemo('');
+            setTransferAmount('');
+            console.log('success', res.data.success);
+          } else {
+            console.log(res.data.message);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else {
+      alert('이체 정보를 모두 입력해주세요.');
+    }
+  };
+
   const handleBtn = () => {
     setIsAccordion(!isAccordion);
     setIsClicked(!isClicked);
+  };
+  const handleDepositUserChange = (e) => {
+    const userId = e.target.value;
+    setDepositUser(userId);
+    // const selectedUser = transList.find((user) => user.id === userId);
+    // setSelectedUserName(selectedUser ? selectedUser.name : '');
   };
   return (
     <>
@@ -154,13 +188,19 @@ function CheckingAccount({ account }) {
         <Balance>
           {/* 단위 불러오는 api도 필요 */}
           {/* account.balance */}
-          <span>{account.balance} 미소</span>
+          <span>
+            {account.balance} {unit.unit}
+          </span>
         </Balance>
         <Btn>
           <TransferBtn onClick={handleBtn} clicked={isClicked}>
             이체하기
           </TransferBtn>
-          <TransferBtn onClick={() => navigator('')}>거래내역</TransferBtn>
+          <TransferBtn
+            onClick={() => navigate(`/${id}/bank/history/${account.id}`)}
+          >
+            거래내역
+          </TransferBtn>
         </Btn>
       </MyAccount>
       {isAccordion && (
@@ -171,14 +211,17 @@ function CheckingAccount({ account }) {
             id="name"
             className="set-input"
             value={depositUser}
-            onChange={(e) => setDepositUser(e.target.value)}
+            onChange={handleDepositUserChange}
           >
-            <option value="" selected disabled></option>
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
+              예금주를 선택하세요.
+            </option>
             {transList.map((student) => {
-              <option key={student.id} value={student.id}>
-                {/* 나중에 출석번호까지 db업데이트되면 */}
-                {student.name}
-              </option>;
+              return (
+                <option key={student.id} value={student.id}>
+                  {student.rollNumber}번 {student.name}
+                </option>
+              );
             })}
           </select>
           <div className="set-title">이체 금액</div>
@@ -191,8 +234,15 @@ function CheckingAccount({ account }) {
               onChange={(e) => setTransferAmount(e.target.value)}
             />
             {/* 나중에 끝에 단위도 붙여주기 */}
-            {/* <span className='unit'></span> */}
+            <span className="unit">{unit.unit}</span>
           </div>
+          <div className="set-title">메모 (필요하면 작성하세요)</div>
+          <input
+            className="set-input"
+            type="text"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+          />
           <ConfirmBtn
             onClick={handleTransfer}
             btnName="이체"
@@ -207,6 +257,7 @@ function CheckingAccount({ account }) {
 
 //적금통장
 function SavingAccount({ account }) {
+  const navigate = useNavigate();
   const [isAccordion, setIsAccordion] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [user, setUser] = useState('');
@@ -232,15 +283,14 @@ function SavingAccount({ account }) {
           <span>D-~`</span>
         </AccountName>
         <Balance>
-          {/* 단위 불러오는 api도 필요 */}
-          {/* {account.balance} */}
+          {/* {account.balance} {unit.unit}*/}
           <span>0 미소</span>
         </Balance>
         <Btn>
           <TransferBtn onClick={handleBtn} clicked={isClicked}>
             적금하기
           </TransferBtn>
-          <TransferBtn onClick={() => navigator('')}>거래내역</TransferBtn>
+          <TransferBtn onClick={() => navigate('')}>거래내역</TransferBtn>
         </Btn>
       </SavingComponent>
       {isAccordion && (
@@ -255,7 +305,7 @@ function SavingAccount({ account }) {
               onChange={(e) => setSavingAmount(e.target.value)}
             />
             {/* 나중에 끝에 단위도 붙여주기 */}
-            {/* <span className='unit'></span> */}
+            {/* <span className='unit'>{unit.unit}</span> */}
           </div>
           <ConfirmBtn
             onClick={handleSaving}
@@ -272,14 +322,37 @@ function SavingAccount({ account }) {
 export function OwnAccount() {
   const { id } = useParams();
   const [accounts, setAccounts] = useState([]);
+  const [unit, setUnit] = useState('');
   // const [bothDivisionsExist, setBothDivisionsExist] = useState(false);
+
+  const getUnit = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/bank/unit/${id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        console.log(res.data.result);
+        setUnit(res.data.result);
+      }
+    } catch (error) {
+      console.log('화폐단위 불러오는데 실패', error);
+    }
+  };
+  useEffect(() => {
+    getUnit();
+  }, []);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const res = await axios({
           method: 'GET',
-          url: `${process.env.REACT_APP_HOST}/api/bank/${id}`,
+          url: `${process.env.REACT_APP_HOST}/api/bank`,
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -306,23 +379,22 @@ export function OwnAccount() {
       }
     };
     getData();
-  }, [id]);
+  }, []);
   return (
     <>
       {accounts.map((account) => (
         <div key={account.id}>
           {account.division === '입출금통장' && (
-            <CheckingAccount account={account} />
+            <CheckingAccount account={account} unit={unit} />
           )}
           {account.division === '적금통장' && (
-            <SavingAccount account={account} />
+            <SavingAccount account={account} unit={unit} />
           )}
         </div>
       ))}
       {/* {bothDivisionsExist && (
         <div>0,1둘다 존재</div>
       )} */}
-      {/* <CheckingAccount /> */}
       <SavingAccount />
     </>
   );

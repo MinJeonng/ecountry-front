@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './Btns';
+import axios from 'axios';
 
 export default function JobListManager() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [inputValue, handleInputChange] = useCommaInput();
 
   const [selectedJob, setSelectedJob] = useState('');
@@ -16,6 +18,8 @@ export default function JobListManager() {
   const [selectedJobIndex, setSelectedJobIndex] = useState([]);
   const [jobSkill, setJobSkill] = useState([]); //skill 번호
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
+  const [unit, setUnit] = useState('');
+
   //   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   //   const jobListState = useSelector((state) => state.setting5);
   //   useEffect(() => {
@@ -168,18 +172,31 @@ export default function JobListManager() {
     setJobSkill(updatedSkill);
   };
 
+  //단위 불러오기
+  const getUnit = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/bank/unit/${id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        console.log(res.data.result);
+        setUnit(res.data.result);
+      }
+    } catch (error) {
+      console.log('화폐단위 불러오는데 실패', error);
+    }
+  };
+  useEffect(() => {
+    getUnit();
+  }, []);
+
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>직업 리스트</div>
-        <div
-          style={{
-            borderBottom: '2px solid #bacd92',
-            marginBottom: '10%',
-            marginTop: '5%',
-          }}
-        ></div>
-      </div>
       <div>
         {jobsDisplay.map((job, index) => (
           <div
@@ -291,7 +308,7 @@ export default function JobListManager() {
               value={inputValue}
               onChange={handleInputChange}
             />
-            <span className="unit">moneyUnit</span>
+            <span className="unit">{unit.unit}</span>
           </div>
           <div className="set-title">인원수</div>
           <div className="container">

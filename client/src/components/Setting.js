@@ -194,7 +194,7 @@ export function Setting1() {
         <div className="select-student-id">
           <div className="select-student-id-title set-title">학년</div>
           <select id="grade" value={selectedGrade} onChange={gradeSelect}>
-            <option value="" disabled selected>
+            <option value="" disabled>
               학년 선택
             </option>
             {grades.map((grade, index) => (
@@ -314,7 +314,7 @@ export function Setting2() {
               value={salaryDate}
               onChange={handleSalaryDate}
             >
-              <option value="" selected disabled></option>
+              <option value="" disabled></option>
               {days.map((day) => (
                 <option key={day} value={day}>
                   {day}
@@ -1009,7 +1009,7 @@ export function Setting5() {
             value={selectedJob}
             onChange={handleSelectChange}
           >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
               선택해주세요
             </option>
             {jobList.map((job) => (
@@ -1025,7 +1025,7 @@ export function Setting5() {
             onChange={handleSelectJobSkill}
             style={{ marginBottom: '0px' }}
           >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
               선택해주세요
             </option>
             {jobSkillList.map((skill) => (
@@ -1426,7 +1426,7 @@ export function Setting7() {
             value={selectedUnit}
             onChange={handleSelectChange}
           >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
               선택 및 입력해주세요
             </option>
             {unitList.map((taxLaw) => (

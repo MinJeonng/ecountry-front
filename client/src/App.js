@@ -133,6 +133,10 @@ function App() {
             element={<SetInvestment position="투자 상품 확인" />}
           />
           <Route path="/:id/bank" element={<StudentBank position="은행" />} />
+          <Route
+            path="/:id/bank/history/:accountId"
+            element={<StudentBank position="거래 내역" />}
+          />
 
           <Route path="/:id/chatbot" element={<ChatBot />} />
 

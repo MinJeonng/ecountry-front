@@ -2,8 +2,8 @@
 
 @include mobile {
   .mainProfile {
-    padding-left: 30px;
-    margin-top: 50px;
+    padding-left: 40px;
+    margin-top: 20px;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -12,6 +12,7 @@
   table {
     border-collapse: collapse;
     margin-bottom: 40px;
+    width: 100%;
   }
   th,
   td {

@@ -27,6 +27,7 @@ import StudentBank from './pages/StudentBank';
 import { CommonMain } from './pages/CommonMain';
 import Revenu from './pages/Revenu';
 import { ChangePassword } from './components/ChangePassword';
+import JobList from './pages/JobList';
 
 function App() {
   return (
@@ -98,6 +99,7 @@ function App() {
             path="/:id/manager/assembly"
             element={<SetAssembly position="국회" />}
           />
+          <Route path="/:id/manager/jobList" element={<JobList />} />
 
           {/* 공통 페이지 */}
           <Route path="/:id/main" element={<CommonMain />} />

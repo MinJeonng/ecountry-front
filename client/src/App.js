@@ -18,7 +18,6 @@ import { SetBoardPeople } from './pages/BoardPeople';
 import { SetNews } from './pages/News';
 import PeopleList from './pages/PeopleList';
 import { SetSeat } from './pages/Seat';
-import { SetTaxService } from './pages/TaxService';
 import Test from './pages/Test';
 import NOTFOUND from './pages/NOTFOUND';
 import StudentLogin from './pages/StudentLogin';
@@ -26,6 +25,7 @@ import StudentMyPage from './pages/StudentMyPage';
 import ChatBot from './pages/ChatBot';
 import StudentBank from './pages/StudentBank';
 import { CommonMain } from './pages/CommonMain';
+import Revenu from './pages/Revenu';
 import { ChangePassword } from './components/ChangePassword';
 
 function App() {
@@ -137,6 +137,12 @@ function App() {
           <Route path="/:id/bank" element={<StudentBank position="은행" />} />
 
           <Route path="/:id/chatbot" element={<ChatBot />} />
+
+          <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
+          <Route
+            path="/:id/revenue/collect"
+            element={<Revenu position="과태료징수" />}
+          />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

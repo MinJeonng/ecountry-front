@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Template from '../components/Template';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ export default function Login() {
   const [pw, setPw] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
   const navigate = useNavigate();
+  const inputRefs = useRef([]);
 
   const signupFunc = async () => {
     if (pw !== confirmPw) {
@@ -31,6 +32,17 @@ export default function Login() {
       });
   };
 
+  const handleKeyDown = (index, e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus();
+      } else {
+        signupFunc();
+      }
+    }
+  };
+
   return (
     <Template
       childrenTop={<PageHeader>{'회원가입'}</PageHeader>}
@@ -49,12 +61,16 @@ export default function Login() {
               className="user-signup"
               type="text"
               onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(0, e)}
+              ref={(el) => (inputRefs.current[0] = el)}
             ></input>
             <div className="user-signup-title">아이디</div>
             <input
               className="user-signup"
               type="text"
               onChange={(e) => setUserId(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(1, e)}
+              ref={(el) => (inputRefs.current[1] = el)}
             ></input>
             <div className="user-signup-title">비밀번호</div>
             <input
@@ -62,6 +78,8 @@ export default function Login() {
               type="password"
               maxLength={4}
               onChange={(e) => setPw(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(2, e)}
+              ref={(el) => (inputRefs.current[2] = el)}
             ></input>
             <div className="user-signup-title">비밀번호 확인</div>
             <input
@@ -69,6 +87,8 @@ export default function Login() {
               type="password"
               maxLength={4}
               onChange={(e) => setConfirmPw(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(3, e)}
+              ref={(el) => (inputRefs.current[3] = el)}
             ></input>
             {confirmPw === pw || (
               <div className="pw-error">비밀번호가 일치하지 않습니다.</div>

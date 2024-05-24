@@ -26,6 +26,7 @@ import StudentMyPage from './pages/StudentMyPage';
 import ChatBot from './pages/ChatBot';
 import StudentBank from './pages/StudentBank';
 import { CommonMain } from './pages/CommonMain';
+import { ChangePassword } from './components/ChangePassword';
 
 function App() {
   return (
@@ -127,6 +128,7 @@ function App() {
           {/* 학생 페이지 */}
           <Route path="/:id/login" element={<StudentLogin />} />
           <Route path="/:id/mypage" element={<StudentMyPage />} />
+          <Route path="/:id/changePw" element={<ChangePassword />} />
 
           <Route
             path="/:id/investment"

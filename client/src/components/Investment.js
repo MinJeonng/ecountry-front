@@ -58,7 +58,7 @@ export function CheckInvestment() {
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     },
   ]);
-  //시간별 수치 변화 - 날짜, 수치 객체 배열
+  // //시간별 수치 변화 - 날짜, 수치 객체 배열
   const [list, setList] = useState([
     { createdAt: '2024-05-20', status: '1' },
     { createdAt: '2024-05-21', status: '5' },
@@ -226,6 +226,25 @@ export function CheckInvestment() {
   return (
     <>
       <div style={{ color: '#777777', marginBottom: '10px' }}>투자 리스트</div>
+      <div
+        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+      ></div>
+      {products.length == 0 && (
+        <p align="right" style={{ marginBottom: '20px', fontSize: '0.8rem' }}>
+          <div
+            className="registerBtn"
+            style={{
+              color: 'white',
+              backgroundColor: '#bacd92',
+              padding: '4px 10px 4px 10px',
+              borderRadius: '8px',
+              marginBottom: '10px',
+            }}
+          >
+            투자 상품이 존재하지 않습니다.
+          </div>
+        </p>
+      )}
       {products.map((product, index) => (
         <div
           key={index}

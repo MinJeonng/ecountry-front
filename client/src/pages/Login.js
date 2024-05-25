@@ -33,7 +33,13 @@ export default function Login() {
   };
 
   return (
+<<<<<<< HEAD
     <Template
+=======
+    <>
+      <ToastContainer />
+      <Template
+>>>>>>> a32822cea01dd63b48fbfd6c44e7e8531985d67a
       childrenTop={
         <>
           <PageHeader>{'관리자 로그인'}</PageHeader>
@@ -71,5 +77,9 @@ export default function Login() {
         </div>
       }
     ></Template>
+<<<<<<< HEAD
+=======
+    </>
+>>>>>>> a32822cea01dd63b48fbfd6c44e7e8531985d67a
   );
 }

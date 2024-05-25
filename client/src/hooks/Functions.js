@@ -46,7 +46,6 @@ export const getOnlyTime = (time) => {
       .toString()
       .padStart(2, '0')}:${newTime.getMinutes()}`;
   }
-  console.log(result);
   return result;
 };
 
@@ -60,10 +59,21 @@ export const compareTime = (prevTime, nowTime) => {
     prevDate.getHours() === nowDate.getHours() &&
     prevDate.getMinutes() === nowDate.getMinutes()
   ) {
-    console.log(true);
     return true;
   } else {
-    console.log(false);
     return false;
+  }
+};
+
+export const handleKeyDownNext = (e, refName) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    refName.current.focus();
+  }
+};
+
+export const handleKeyDown = (e, func) => {
+  if (e.key === 'Enter') {
+    func();
   }
 };

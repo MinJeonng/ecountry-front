@@ -22,7 +22,6 @@ export default function StudentSeatMap({
         }
       });
     }
-    console.log(`${row}, ${col}, ${result}`);
     return result;
   };
 

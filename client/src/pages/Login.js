@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -6,26 +6,40 @@ import Template from '../components/Template';
 
 import '../styles/login.scss';
 import { PageHeader } from '../components/Headers';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function Login() {
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
   const navigate = useNavigate();
+  const passwordRef = useRef(null);
 
   const loginFunc = async () => {
     await axios
       .post(`${process.env.REACT_APP_HOST}/api/user/login`, { userId, pw })
       .then((res) => {
-        alert(res.data.message);
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
+          alert('환영합니다!');
           navigate('/country');
         } else {
+          toast('아이디 또는 비밀번호가 틀렸습니다.', {
+            autoClose: 1300,
+          });
         }
       });
   };
+
   return (
+<<<<<<< HEAD
     <Template
+=======
+    <>
+      <ToastContainer />
+      <Template
+>>>>>>> a32822cea01dd63b48fbfd6c44e7e8531985d67a
       childrenTop={
         <>
           <PageHeader>{'관리자 로그인'}</PageHeader>
@@ -45,13 +59,16 @@ export default function Login() {
               className="user-login"
               type="text"
               onChange={(e) => setUserId(e.target.value)}
+              onKeyDown={handleKeyDownNext}
             ></input>
             <div className="user-login-title">비밀번호</div>
             <input
+              ref={passwordRef}
               className="user-login"
               type="password"
               maxLength={4}
               onChange={(e) => setPw(e.target.value)}
+              onKeyDown={handleKeyDown}
             ></input>
             <button className="login-btn" type="button" onClick={loginFunc}>
               로그인
@@ -60,5 +77,9 @@ export default function Login() {
         </div>
       }
     ></Template>
+<<<<<<< HEAD
+=======
+    </>
+>>>>>>> a32822cea01dd63b48fbfd6c44e7e8531985d67a
   );
 }

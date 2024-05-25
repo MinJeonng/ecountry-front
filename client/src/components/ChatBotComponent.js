@@ -1,11 +1,10 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as ArrowLeft } from '../images/ico-arr-left.svg';
-import { ReactComponent as ArrowUp } from '../images/icon-arrow-up.svg';
 import { ReactComponent as IconHome } from '../images/icon-home.svg';
 import { ReactComponent as IconSend } from '../images/icon-send.svg';
 import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
-import { getOnlyTime } from '../hooks/Functions';
+import { getOnlyTime, handleKeyDown } from '../hooks/Functions';
 
 const HeaderStyle = styled.div`
   position: fixed;
@@ -19,8 +18,9 @@ const HeaderStyle = styled.div`
   height: 60px;
   line-height: 60px;
   border-bottom: 1px solid #ddd;
-  padding: 0 20px;
+  padding: 0 20px 0 16px;
   box-sizing: border-box;
+  z-index: 10000;
   .headerLeft {
     display: flex;
     align-items: center;
@@ -30,52 +30,89 @@ const HeaderStyle = styled.div`
   }
 `;
 const ContentStyle = styled.div`
-  background: rgb(252, 255, 224);
+  position: fixed;
+  top: 60px;
+  bottom: ${(props) => props.bottomsize + 'px'};
+  overflow: auto;
+  background: #f4f5f7;
   width: 100%;
-  min-height: 100vh;
-  padding: 80px 20px ${(props) => props.bottomsize + 'px'};
+  padding: 15px 20px 0 55px;
   box-sizing: border-box;
+  font-size: 12px;
   .chatBox {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 10px;
-    .chatMsg {
-      padding: 10px;
-      max-width: 60vw;
-      word-break: break-all;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-    }
-    .chatDate {
-      font-size: 12px;
-      padding: 0 0 3px 10px;
-      color: #999;
-    }
-    &.me {
-      justify-content: end;
+    position: relative;
+    .chatMsgBox {
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
       .chatMsg {
-        order: 2;
-        background: #75a47f;
-        color: #fff;
+        margin-bottom: 10px;
+        padding: 7px 12px;
+        max-width: 66%;
+        word-break: break-all;
+        background: #fff;
+        border-radius: 20px;
+        border-top-left-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+        width: fit-content;
       }
       .chatDate {
-        order: 1;
-        padding: 0 10px 3px 0;
+        font-size: 10px;
+        word-break: keep-all;
+        padding: 0 0 13px 6px;
+        color: #999;
+      }
+    }
+    &.bot {
+      &::before {
+        content: '챗봇';
+        display: block;
+        margin-bottom: 4px;
+        color: #777;
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -40px;
+        display: block;
+        width: 35px;
+        height: 35px;
+        background: #75a47f url('/images/icon-chatbot.png') no-repeat center /
+          25px auto;
+        border-radius: 15px;
+      }
+    }
+    &.me {
+      .chatMsgBox {
+        justify-content: end;
+        .chatMsg {
+          order: 2;
+          background: #75a47f;
+          color: #fff;
+          border-radius: 20px;
+          border-bottom-right-radius: 4px;
+        }
+        .chatDate {
+          order: 1;
+          padding: 0 6px 13px 0;
+        }
       }
     }
   }
   .menuList {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 10px;
     .menuBtn {
-      background: #75a47f;
-      border: none;
-      color: #fff;
+      background: #fff;
+      border: 1.5px solid #ddd;
+      color: #75a47f;
       padding: 4px 8px;
-      border-radius: 6px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 11px;
     }
   }
 `;
@@ -103,6 +140,7 @@ const FooterStyle = styled.div`
     border: none;
     resize: none;
     overflow: auto;
+    font-size: 13px;
     &:focus {
       outline: none;
     }
@@ -142,20 +180,10 @@ export function ChatBotHeader() {
   );
 }
 
-export function ChatBotMsg({ type, chatmsg, chatdate }) {
-  console.log(getOnlyTime(chatdate));
-  return (
-    <div className={`chatBox ${type}`}>
-      <div className="chatMsg">{chatmsg}</div>
-      <p className="chatDate">{getOnlyTime(chatdate)}</p>
-    </div>
-  );
-}
-
-export function ChatBotContent({ bottomsize, chatlist, addfunc }) {
+export function ChatBotContent({ bottomsize, chatlist, addfunc, menufunc }) {
   const scrollRef = useRef(null);
   const clickFunc = (msg) => {
-    addfunc({ type: 'me', chatMsg: msg, chatDate: new Date() });
+    menufunc(msg);
   };
   const scrollBottom = () => {
     if (scrollRef.current) {
@@ -168,30 +196,39 @@ export function ChatBotContent({ bottomsize, chatlist, addfunc }) {
   };
   useEffect(() => {
     scrollBottom();
+    // console.log(chatlist);
   }, [chatlist]);
   return (
-    <ContentStyle bottomsize={bottomsize} ref={scrollRef}>
-      {chatlist.map((chat, index) =>
-        chat.type === 'me' || chat.type === 'you' ? (
-          <div key={index} className={`chatBox ${chat.type}`}>
-            <div className="chatMsg">{chat.chatMsg}</div>
-            <p className="chatDate">{getOnlyTime(chat.chatDate)}</p>
-          </div>
-        ) : (
-          <div className="menuList" key={index}>
-            {chat.menuList.map((menu, index) => (
-              <button
-                type="button"
-                key={index}
-                className="menuBtn"
-                onClick={() => clickFunc(menu)}
-              >
-                {menu}
-              </button>
-            ))}
-          </div>
-        )
-      )}
+    <ContentStyle bottomsize={bottomsize}>
+      {chatlist.map((data, parentIndex) => (
+        <div className={`chatBox ${data.writer}`}>
+          {data.detail.map((chat, index) => (
+            <div className="chatMsgBox">
+              {chat.type === 'msg' && (
+                <div className="chatMsg">{chat.chatMsg}</div>
+              )}
+              {chat.type === 'menuList' && (
+                <div className="menuList">
+                  {chat.chatMsg.map((menu) => (
+                    <button
+                      type="button"
+                      key={index}
+                      className="menuBtn"
+                      onClick={() => clickFunc(menu)}
+                    >
+                      {menu}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {data.detail.length - 1 === index && (
+                <p className="chatDate">{getOnlyTime(data.chatDate)}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      ))}
+      <div ref={scrollRef}></div>
     </ContentStyle>
   );
 }
@@ -209,8 +246,8 @@ export function ChatBotFooter({ sizefunc, addfunc }) {
   };
   const addChat = () => {
     addfunc({
-      type: 'me',
-      chatMsg: msg,
+      writer: 'me',
+      detail: [{ type: 'msg', chatMsg: msg }],
       chatDate: new Date(),
     });
     setMsg('');
@@ -230,6 +267,7 @@ export function ChatBotFooter({ sizefunc, addfunc }) {
           getHeigth();
           setMsg(e.target.value);
         }}
+        onKeyDown={(e) => handleKeyDown(e, addChat)}
       />
       <button type="button" className="sendBtn" onClick={addChat}>
         <IconSend stroke="#fff" className="sendIcon" />

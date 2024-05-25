@@ -3,10 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
 import { peopleListInfo } from '../store/peopleListReducer';
+import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
+import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
 
 import '../styles/setting.scss';
-import axios from 'axios';
-import { toast } from 'react-toastify';
 
 export function SetPeopleList() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ export function SetPeopleList() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [jobList, setJobList] = useState([]); // 직업 리스트
-
+  console.log(studentList);
   const getInfo = async () => {
     const res = await axios({
       method: 'GET',
@@ -40,10 +41,9 @@ export function SetPeopleList() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res2.data.result);
     setJobList(res2.data.result);
   };
-
+  //업데이트 -DB
   const updateStudent = async (studentId) => {
     const res = await axios({
       method: 'PATCH',
@@ -68,7 +68,7 @@ export function SetPeopleList() {
       getInfo();
     }
   };
-
+  //추가 - DB
   const addStudent = async () => {
     const res = await axios({
       method: 'POST',
@@ -82,7 +82,8 @@ export function SetPeopleList() {
       ],
     });
     if (res.data.success) {
-      toast('국민 추가가 완료되었습니다.');
+      toast.success('국민 추가가 완료되었습니다.', { autoClose: 1300 });
+      console.log(res.data.success);
     }
     getInfo();
   };
@@ -121,16 +122,27 @@ export function SetPeopleList() {
     setResetPassword('');
     setSelectedIndex(null);
   };
-  //수정
   const selectInput = (student, index) => {
-    setAttendanceNumber(student.rollNumber);
-    setStudentName(student.name);
-    setRating(student.rating);
-    setJob(student.jobId);
-    setResetPassword('');
-    setIsAccordionOpen(true);
-    setIsAddOpen(false);
-    setSelectedIndex(index);
+    if (selectedIndex === index) {
+      //이미 선택해 있었다면
+      setAttendanceNumber('');
+      setStudentName('');
+      setRating('');
+      setJob('');
+      setResetPassword('');
+      setSelectedIndex(null);
+      updateStudent(student.id);
+    } else {
+      //새로 추가
+      setAttendanceNumber(student.rollNumber);
+      setStudentName(student.name);
+      setRating(student.rating);
+      setJob(student.jobId);
+      setResetPassword('');
+      setIsAccordionOpen(true);
+      setIsAddOpen(false);
+      setSelectedIndex(index);
+    }
   };
 
   const handleCloseAccordion = () => {
@@ -174,6 +186,7 @@ export function SetPeopleList() {
 
   return (
     <>
+      <ToastContainer />
       <div className="title-list">
         {/* <div>국민 리스트</div> */}
         <ul className="title-list">
@@ -190,20 +203,11 @@ export function SetPeopleList() {
               isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
             } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
+            onClick={() => selectInput(student, index)}
+            style={{ fontSize: '14px', color: '#666666' }}
           >
             {student.rollNumber}번 {student.name}
-            <button
-              className="updateBtn"
-              onClick={() => selectInput(student, index)}
-            >
-              수정
-            </button>
-            <img
-              className="deleteBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={deleteBtn(index)}
-              alt="Delete Button"
-            />
+            <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">
@@ -211,9 +215,9 @@ export function SetPeopleList() {
                 <div className="set-title">이름</div>
                 <img
                   className="resetBtn"
-                  src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                  onClick={resetBtn}
-                  alt="Reset Button"
+                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                  onClick={(e) => deleteBtn(index)}
+                  alt="삭제"
                 />
               </div>
               <input
@@ -249,8 +253,17 @@ export function SetPeopleList() {
                 id="job"
                 value={job}
                 onChange={(e) => setJob(e.target.value)}
+                style={{
+                  marginTop: '10px',
+                  marginBottom: '20px',
+                  width: '100%',
+                  border: 'none',
+                  borderBottom: '1px solid #e9ae24',
+                  backgroundColor: '#f5f6f6',
+                  padding: '5px',
+                }}
               >
-                <option value="">무직</option>
+                <option value={null}>무직</option>
                 {jobList.map((data) => (
                   <option key={data.id} value={data.id}>
                     {data.name}
@@ -283,7 +296,6 @@ export function SetPeopleList() {
         <ConfirmBtn
           onClick={newAddBtn}
           btnName="학생 등록"
-          width={'40%'}
           backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}
@@ -293,12 +305,12 @@ export function SetPeopleList() {
           <form className="box-style">
             <div className="reset">
               <div className="set-title">이름</div>
-              <img
+              {/* <img
                 className="resetBtn"
                 src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
                 onClick={resetBtn}
                 alt="Reset Button"
-              />
+              /> */}
             </div>
             <input
               className="set-input"
@@ -334,11 +346,11 @@ export function SetPeopleList() {
               backgroundColor="#bacd92"
             ></ConfirmBtn>
           </form>
-          <ConfirmBtn
+          {/* <ConfirmBtn
             onClick={handleConfirm}
             btnName="완료"
             backgroundColor="#bacd92"
-          ></ConfirmBtn>
+          ></ConfirmBtn> */}
         </>
       )}
     </>

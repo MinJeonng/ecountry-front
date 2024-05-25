@@ -15,52 +15,84 @@ export default function ChatBot() {
   const [chatList, setChatList] = useState([]);
   const teacherMenu = [
     '다른 나라 세법 구경하기',
-    '선생님 메뉴2',
-    '선생님 메뉴3',
-    '선생님 메뉴4',
-    '선생님 메뉴5',
-    '다른 질문',
+    '다른 나라 직업 리스트 구경하기',
+    '다른 나라 과태료 구경하기',
+    '학생 메뉴 보기',
+    '다른 질문 하기',
   ];
   const studentMenu = [
-    '책 추천',
-    '학생 메뉴2',
-    '학생 메뉴3',
+    '추천 도서',
+    '지구촌 소식',
+    '',
     '학생 메뉴4',
     '학생 메뉴5',
-    '다른 질문',
+    '다른 질문 하기',
   ];
 
   const addChat = (newChat) => {
-    const newList = [];
-    chatList.map((chat) => {
-      console.log(typeof compareTime(chat.chatDate, newChat.chatDate));
-      if (
-        compareTime(chat.chatDate, newChat.chatDate) &&
-        chat.type === newChat.type
-      ) {
-        newList.push({ type: chat.type, chatMsg: chat.chatMsg, chatDate: '' });
-      } else {
-        newList.push(chat);
-      }
+    console.log(chatList);
+    console.log(newChat.writer, ' : ', newChat);
+    const newList = [...chatList];
+    const lastEl = newList[newList.length - 1];
+    if (
+      compareTime(lastEl.chatDate, newChat.chatDate) &&
+      lastEl.writer === newChat.writer
+    ) {
+      newList[newList.length - 1].detail.push(newChat.detail[0]);
+    } else {
+      console.log('else(1)-', newChat.writer, ' : ', newChat);
+      newList.push(newChat);
+      console.log('else(2)-', newChat.writer, ' : ', newList);
+    }
+    console.log('결과1 : ', chatList);
+    console.log(newList);
+    setChatList(newList);
+    console.log('chatList', chatList);
+  };
+
+  const selectMenu = (msg) => {
+    if (msg === '다른 나라 세법 구경하기') {
+      addChat({
+        writer: 'bot',
+        detail: [{ type: 'msg', chatMsg: '세법리스트 보여주기' }],
+        chatDate: new Date(),
+      });
+      console.log('챗봇 채팅 추가 : ', chatList);
+    }
+  };
+
+  const menuFunc = (msg) => {
+    console.log('내 채팅 추가 전 : ', chatList);
+    addChat({
+      writer: 'me',
+      detail: [{ type: 'msg', chatMsg: msg }],
+      chatDate: new Date(),
     });
-    setChatList([...newList, newChat]);
+
+    console.log('내 채팅 추가 : ', chatList);
+    // selectMenu(msg);
   };
 
   useEffect(() => {
+    console.log('리스트 변경 : ', chatList);
+  }, [chatList]);
+
+  useEffect(() => {
     setUserInfo();
-    console.log(userInfo);
   }, []);
   useEffect(() => {
     if (userInfo) {
       setChatList([
         {
-          type: 'you',
-          chatMsg: '상담 내용을 선택하세요',
+          writer: 'bot',
+          detail: [
+            { type: 'msg', chatMsg: '상담 내용을 선택하세요' },
+            {
+              type: 'menuList',
+              chatMsg: userInfo.isStudent ? studentMenu : teacherMenu,
+            },
+          ],
           chatDate: new Date(),
-        },
-        {
-          type: 'menu',
-          menuList: userInfo.isStudent ? studentMenu : teacherMenu,
         },
       ]);
     }
@@ -72,6 +104,7 @@ export default function ChatBot() {
         bottomsize={bottomSize}
         chatlist={chatList}
         addfunc={addChat}
+        menufunc={menuFunc}
       />
       <ChatBotFooter sizefunc={setBottomSize} addfunc={addChat} />
     </>

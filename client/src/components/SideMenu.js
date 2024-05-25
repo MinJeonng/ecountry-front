@@ -117,20 +117,15 @@ export function SideMenuComponent({ func }) {
               />
               <p>은행</p>
             </div>
-            <div className="investmentBox" onClick={() => navigate(``)}>
+            <div
+              className="investmentBox"
+              onClick={() => navigate(`/${id}/investment`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-investmentPng.png`}
                 alt="투자"
               />
               <p>투자</p>
-            </div>
-
-            <div className="peopleListBox" onClick={() => navigate(``)}>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-create-list.png`}
-                alt="국민 리스트"
-              />
-              <p>국민 리스트</p>
             </div>
             <div
               className="assemblyBox"
@@ -150,12 +145,25 @@ export function SideMenuComponent({ func }) {
               />
               <p>뉴스</p>
             </div>
-            <div className="boardPeopleBox" onClick={() => navigate(``)}>
+            <div
+              className="boardPeopleBox"
+              onClick={() => navigate(`/${id}/boardPeople`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-board.png`}
                 alt="국민 신문고"
               />
               <p>국민 신문고</p>
+            </div>
+            <div
+              className="taxServiceBox"
+              onClick={() => navigate(`/${id}/taxService`)}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
+                alt="국세청"
+              />
+              <p>국세청</p>
             </div>
 
             <div className="seatBox" onClick={() => navigate(``)}>
@@ -165,20 +173,17 @@ export function SideMenuComponent({ func }) {
               />
               <p>자리 배치도</p>
             </div>
-            <div className="taxService" onClick={() => navigate(``)}>
+            <div
+              className="taxService"
+              onClick={() => navigate(`/${id}/revenue`)}
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
                 alt="국세청"
               />
               <p>국세청</p>
             </div>
-            {/* <div className="scheduleBox">
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-schedule.png`}
-                alt="시간표"
-              />
-              <p>시간표</p>
-            </div> */}
+
             <div className="mypage" onClick={() => navigate(`/${id}/mypage`)}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-user.png`}

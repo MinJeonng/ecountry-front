@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from 'react';
 import { ConfirmBtn } from './Btns';
 import '../styles/setting.scss';
@@ -133,36 +132,25 @@ export function AddInvestment() {
   //투자 상품 클릭시 업데이트 아코디언 열리게
   const selectInput = (invest, index) => {
     if (selectedIndex === index) {
-      handleCloseAccordion();
+      setInvestmentInfo('');
+      setInvestmentName('');
+      setSelectedIndex(null);
+      setUnit('');
+
+      setIsAccordionOpen(false);
+      setIsAddOpen(true);
     } else {
-      // console.log(invest.id);
       getStatus(invest.id);
       setInvestmentInfo('');
       setInvestmentName(invest.name);
       setUnit(invest.unit);
-      // const selectedValue =
-      //   investValueList[index] !== undefined ? investValueList[index] : '';
-      // setValue(selectedValue);
 
       setSelectedIndex(index);
       setIsAccordionOpen(true);
       setIsAddOpen(false);
     }
   };
-  //아코디언 닫히게
-  const handleCloseAccordion = () => {
-    // if (!investmentInfo) {
-    //   toast.error('최신 투자 정보를 입력하세요', { autoClose: 1300 });
-    //   return;
-    // }
-    setInvestmentInfo('');
-    setInvestmentName('');
-    setSelectedIndex(null);
-    setUnit('');
 
-    setIsAccordionOpen(false);
-    setIsAddOpen(true);
-  };
   //최신 투자 정보 업데이트
   const handleInvestmentInfo = (investId) => {
     if (!investmentInfo) {
@@ -259,7 +247,6 @@ export function AddInvestment() {
     <>
       <ToastContainer />
       <div className="title-list">
-        <div>투자 상품 관리</div>
         <ul className="title-list">
           <li>투자 상품을 생성할 수 있습니다.</li>
         </ul>

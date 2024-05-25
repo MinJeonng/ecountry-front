@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn, NextBtn } from './Btns';
@@ -21,6 +21,7 @@ import '../styles/_input_common.scss';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
+import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -33,6 +34,8 @@ export function Setting1() {
   const [openSearch, setOpenSearch] = useState(false);
   const [schoolInfomation, setSchoolInfomation] = useState({});
   const [schoolAddress, setSchoolAddress] = useState('');
+
+  const inputRef = useRef(null);
 
   const grades = [1, 2, 3, 4, 5, 6];
   const schoolInfoState = useSelector((state) => state.setting1);
@@ -96,6 +99,18 @@ export function Setting1() {
     }
   };
 
+  const handleSearchSchool = (e) => {
+    if (e.key === 'Enter') {
+      searchFunc();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      nextSetting();
+    }
+  };
+
   return (
     <div className="setting-wrap">
       <div className="title-list">
@@ -121,6 +136,7 @@ export function Setting1() {
                 type="text"
                 value={schoolName}
                 onChange={inputSchoolName}
+                onKeyDown={handleSearchSchool}
                 style={{
                   imeMode: 'active',
                   marginRight: '10px',
@@ -194,7 +210,7 @@ export function Setting1() {
         <div className="select-student-id">
           <div className="select-student-id-title set-title">학년</div>
           <select id="grade" value={selectedGrade} onChange={gradeSelect}>
-            <option value="" disabled selected>
+            <option value="" disabled>
               학년 선택
             </option>
             {grades.map((grade, index) => (
@@ -210,6 +226,7 @@ export function Setting1() {
             type="number"
             value={selectedClass}
             onChange={classSelect}
+            onKeyDown={handleKeyDown}
             style={{ imeMode: 'active' }}
           />
         </div>
@@ -227,6 +244,7 @@ export function Setting2() {
   const [moneyUnit, setMoneyUnit] = useState('');
   const [salaryDate, setSalaryDate] = useState('');
   const countryInfoState = useSelector((state) => state.setting2);
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     setCountryName(countryInfoState?.countryName);
@@ -274,6 +292,15 @@ export function Setting2() {
     setSalaryDate(e.target.value);
   };
 
+  const handleKeyDown = (index, e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
+    }
+  };
+
   return (
     <div className="setting-wrap">
       <div className="title-list">
@@ -290,6 +317,8 @@ export function Setting2() {
             type="text"
             value={countryName}
             onChange={handleCountryName}
+            onKeyDown={(e) => handleKeyDown(0, e)}
+            ref={(el) => (inputRefs.current[0] = el)}
             style={{ imeMode: 'active' }}
             lang="ko"
           />
@@ -301,6 +330,8 @@ export function Setting2() {
           type="text"
           value={moneyUnit}
           onChange={handleMoneyUnit}
+          onKeyDown={(e) => handleKeyDown(1, e)}
+          ref={(el) => (inputRefs.current[1] = el)}
           style={{ imeMode: 'active' }}
         />
 
@@ -314,7 +345,7 @@ export function Setting2() {
               value={salaryDate}
               onChange={handleSalaryDate}
             >
-              <option value="" selected disabled></option>
+              <option value="" disabled></option>
               {days.map((day) => (
                 <option key={day} value={day}>
                   {day}
@@ -784,26 +815,33 @@ export function Setting5() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [inputValue, handleInputChange] = useCommaInput();
-
   const [selectedJob, setSelectedJob] = useState('');
   const [customJob, setCustomJob] = useState('');
   const [standardValue, setStandardValue] = useState('');
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
   const [countValue, setCountValue] = useState('');
-  const [selectedJobIndex, setSelectedJobIndex] = useState([]);
+  const [selectedJobIndex, setSelectedJobIndex] = useState(null);
   const [jobSkill, setJobSkill] = useState([]); //skill 번호
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const jobListState = useSelector((state) => state.setting5);
-  console.log(jobSkill);
+
+  console.log(jobsDisplay);
+
   useEffect(() => {
     setJobsDisplay(jobListState?.jobsDisplay);
   }, [jobListState]);
 
+  // useEffect(() => {
+  //   if (selectedJobSkill !== '') {
+  //     setJobSkill([...jobSkill, Number(selectedJobSkill)]);
+  //   }
+  //   setSelectedJobSkill('');
+  // }, [selectedJobSkill]);
   useEffect(() => {
     if (selectedJobSkill !== '') {
-      setJobSkill([...jobSkill, Number(selectedJobSkill)]);
+      setJobSkill((prevSkills) => [...prevSkills, Number(selectedJobSkill)]);
     }
     setSelectedJobSkill('');
   }, [selectedJobSkill]);
@@ -830,7 +868,7 @@ export function Setting5() {
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const nextSetting = () => {
-    navigate('/setting/jobRole');
+    navigate('/setting/law');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const handleCountValue = (e) => {
@@ -866,6 +904,7 @@ export function Setting5() {
 
     // 모든 입력값이 유효한 경우
     if (selectedJobIndex !== null) {
+      console.log('first');
       // 이미 목록에 있는 직업을 업데이트
       const updatedJobs = [...jobsDisplay];
       updatedJobs[selectedJobIndex] = {
@@ -880,19 +919,16 @@ export function Setting5() {
       setJobsDisplay(updatedJobs);
     } else {
       // 새 직업을 목록에 추가
-      const newJobsDisplay = [
-        ...jobsDisplay,
-        {
-          customValue: customJob,
-          selectValue: selectedJob,
-          standard: standardValue,
-          role: jobRoleValue,
-          count: countValue,
-          salary: inputValue,
-          skills: jobSkill,
-        },
-      ];
-      setJobsDisplay(newJobsDisplay);
+      const newJob = {
+        customValue: customJob,
+        selectValue: selectedJob,
+        standard: standardValue,
+        role: jobRoleValue,
+        count: countValue,
+        salary: inputValue,
+        skills: jobSkill,
+      };
+      setJobsDisplay((prevJobs) => [...prevJobs, newJob]);
     }
 
     // 입력 필드 초기화
@@ -915,8 +951,9 @@ export function Setting5() {
     setCountValue(job.count);
     handleInputChange({ target: { value: job.salary.replace(/,/g, '') } }); //숫자만 추출해 전달
     setSelectedJobIndex(index);
+
     setJobSkill([job.skills]);
-    // console.log(setCustomJob(value));
+
   };
 
   const resetBtn = () => {
@@ -964,14 +1001,13 @@ export function Setting5() {
         {jobsDisplay.map((job, index) => (
           <div
             className="display"
-            // key={index}
+            key={index}
             // onClick={() => selectInput(job, index)}
           >
             {job.selectValue === '직접입력' ? job.customValue : job.selectValue}{' '}
             {job.count}명
             <button
               className="updateBtn"
-              key={index}
               onClick={() => selectInput(job, index)}
             >
               수정
@@ -1009,7 +1045,7 @@ export function Setting5() {
             value={selectedJob}
             onChange={handleSelectChange}
           >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
               선택해주세요
             </option>
             {jobList.map((job) => (
@@ -1025,7 +1061,7 @@ export function Setting5() {
             onChange={handleSelectJobSkill}
             style={{ marginBottom: '0px' }}
           >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
               선택해주세요
             </option>
             {jobSkillList.map((skill) => (
@@ -1140,7 +1176,7 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    navigate('/setting/jobRole');
+    navigate('/setting/jobList');
     dispatch(basicLaw({ basicLaw: laws }));
   };
   const nextSetting = () => {
@@ -1426,7 +1462,7 @@ export function Setting7() {
             value={selectedUnit}
             onChange={handleSelectChange}
           >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
               선택 및 입력해주세요
             </option>
             {unitList.map((taxLaw) => (
@@ -1504,11 +1540,10 @@ export function Setting8() {
             className="set-country-detail"
             type="text"
             value={taxName}
-            // onChange={(e) => {
-            //   setTaxName(e.target.value);
-            // }}
+            onChange={(e) => {
+              setTaxName(e.target.value);
+            }}
             style={{ imeMode: 'active' }}
-            disabled
           />
         </div>
         <div className="set-country">
@@ -1584,6 +1619,8 @@ export function Setting9() {
           schoolCode: setInfo.setting1.schoolCode,
         },
       });
+      console.log(`국가 생성 : ${res.data.success}`);
+      console.log(`국가 생성 결과 : ${res.data.result}`);
 
       // 학생 등록(수기)
       if (setInfo.setting3.studentList.length > 0) {
@@ -1606,6 +1643,8 @@ export function Setting9() {
           },
           data: data2,
         });
+
+        console.log(`학생 등록 : ${res2.data.success}`);
       }
       // 자리 배치 등록
       const data3 = [];
@@ -1625,7 +1664,7 @@ export function Setting9() {
         },
         data: data3,
       });
-      console.log('자리 배치 등록 결과 : ' + res3.data.success);
+      console.log(`자리 배치 : ${res3.data.success}`);
       // 직업 리스트 등록
       const data4 = [];
       setInfo.setting5.jobsDisplay.forEach((data) => {
@@ -1638,7 +1677,7 @@ export function Setting9() {
           roll: data.role,
           standard: data.standard,
           salary: parseInt(data.salary.replaceAll(',', '')),
-          skills: [],
+          skills: data.skills,
           countryId: res.data.result.id,
         });
       });
@@ -1651,6 +1690,8 @@ export function Setting9() {
         },
         data: data4,
       });
+      console.log(`직업 리스트 : ${res4.data.success}`);
+
       // 규칙 리스트 등록
       const data5 = [];
       setInfo.setting6.basicLaw.forEach((data) => {
@@ -1668,6 +1709,7 @@ export function Setting9() {
         },
         data: data5,
       });
+      console.log(`규칙 리스트 : ${res5.data.success}`);
       // 세금 규칙 등록
       const data6 = [];
       setInfo.setting7.taxLaw.forEach((data) => {
@@ -1693,6 +1735,7 @@ export function Setting9() {
           countryId: res.data.result.id,
         });
       });
+      console.log(data6);
       const res6 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/tax`,
@@ -1702,6 +1745,7 @@ export function Setting9() {
         },
         data: data6,
       });
+      console.log(`세법 : ${res6.data.success}`);
       setCountryID(res.data.result.id);
       setIsLoading(true);
     } catch (e) {
@@ -1844,38 +1888,5 @@ export function Setting9() {
         </div>
       )}
     </div>
-  );
-}
-//Setting10 - 직업 역할 정하기
-export function Setting10() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const jobListState = useSelector((state) => state.setting5); //직업 리스트
-  console.log(jobListState);
-  const [jobList, setJobList] = useState([]); //직업 이름 리스트
-  const [roleList, setRoleList] = useState([]); // 역할 리스트
-
-  const beforeSetting = () => {
-    navigate('/setting/jobList');
-    dispatch();
-  };
-  const nextSetting = () => {
-    navigate('/setting/law');
-    dispatch();
-  };
-
-  return (
-    <>
-      <form className="box-style"></form>
-      <div className="navi-btn">
-        <button className="next-button" onClick={beforeSetting}>
-          이전
-        </button>
-        <button className="next-button" onClick={nextSetting}>
-          다음
-        </button>
-      </div>
-    </>
   );
 }

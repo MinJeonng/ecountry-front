@@ -60,8 +60,10 @@ export default function SeatMap() {
           },
         }
       );
-
       console.log('자리 배치 등록 결과 :', res.data.success);
+      if (res.data.success) {
+        document.location.reload();
+      }
     } catch (error) {
       console.error('자리 배치 등록 실패 :', error);
     }
@@ -109,7 +111,7 @@ export default function SeatMap() {
             </button>
           )}
         </div>
-        <button className="blue-btn" onClick={saveSeatData}>
+        <button className="blue-btn" type="button" onClick={saveSeatData}>
           수정
         </button>
       </form>

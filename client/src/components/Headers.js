@@ -10,6 +10,7 @@ import Template from './Template';
 const CommonHeader = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 const AlarmHeader = styled.div`
   gap: 10px;

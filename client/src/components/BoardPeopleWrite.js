@@ -91,9 +91,9 @@ export function BoardPeopleWrite() {
   }, [isSecret]);
   return (
     <>
-      <div style={{ color: '#666666', fontWeight: 'bolder' }}>
+      {/* <div style={{ color: '#666666', fontWeight: 'bolder' }}>
         신문고 글쓰기
-      </div>
+      </div> */}
       <form className="box-style">
         <div
           className="reset"

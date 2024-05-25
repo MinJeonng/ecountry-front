@@ -28,6 +28,7 @@ import { CommonMain } from './pages/CommonMain';
 import Revenu from './pages/Revenu';
 import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
+import BankClerk from './pages/BankClerk';
 
 function App() {
   return (
@@ -148,6 +149,11 @@ function App() {
           <Route
             path="/:id/revenue/collect"
             element={<Revenu position="과태료징수" />}
+          />
+          {/* 각 직업별 페이지 */}
+          <Route
+            path="/:id/bankClerk/saving"
+            element={<BankClerk position="은행원 - 적금" />}
           />
 
           <Route path="*" element={<NOTFOUND />} />

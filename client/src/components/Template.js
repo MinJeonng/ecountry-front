@@ -6,13 +6,10 @@ const BgTop = styled.div`
   height: 300px;
   position: relative;
 `;
-const PageName = styled.div`
-  height: 30px;
-`;
 
 const BgBottom = styled.div`
   position: relative;
-  margin-top: -140px;
+  margin-top: -125px;
   padding: 40px 30px 90px;
   background-color: #ffffff;
   border-top-left-radius: 25px;
@@ -23,7 +20,6 @@ export default function Template({ childrenTop, childrenBottom }) {
   return (
     <>
       <BgTop>{childrenTop}</BgTop>
-      {/* <PageName>{childrenTop}</PageName> */}
       <BgBottom>{childrenBottom}</BgBottom>
     </>
   );

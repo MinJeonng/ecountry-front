@@ -16,6 +16,7 @@ export default function StudentBank({ position }) {
           <>
             {position === '은행' && <OwnAccount />}
             {position === '거래 내역' && <TransHistory />}
+            {/* {나중에 적금 추가} */}
           </>
         }
       />

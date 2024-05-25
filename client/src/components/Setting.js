@@ -814,7 +814,6 @@ export function Setting5() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [inputValue, handleInputChange] = useCommaInput();
-
   const [selectedJob, setSelectedJob] = useState('');
   const [customJob, setCustomJob] = useState('');
   const [standardValue, setStandardValue] = useState('');
@@ -826,14 +825,20 @@ export function Setting5() {
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const jobListState = useSelector((state) => state.setting5);
-  console.log(jobSkill);
+  // console.log(jobSkill);
   useEffect(() => {
     setJobsDisplay(jobListState?.jobsDisplay);
   }, [jobListState]);
 
+  // useEffect(() => {
+  //   if (selectedJobSkill !== '') {
+  //     setJobSkill([...jobSkill, Number(selectedJobSkill)]);
+  //   }
+  //   setSelectedJobSkill('');
+  // }, [selectedJobSkill]);
   useEffect(() => {
     if (selectedJobSkill !== '') {
-      setJobSkill([...jobSkill, Number(selectedJobSkill)]);
+      setJobSkill((prevSkills) => [...prevSkills, Number(selectedJobSkill)]);
     }
     setSelectedJobSkill('');
   }, [selectedJobSkill]);
@@ -945,7 +950,7 @@ export function Setting5() {
     setCountValue(job.count);
     handleInputChange({ target: { value: job.salary.replace(/,/g, '') } }); //숫자만 추출해 전달
     setSelectedJobIndex(index);
-    setJobSkill([job.skills]);
+    setJobSkill(job.skills);
     // console.log(setCustomJob(value));
   };
 
@@ -994,14 +999,13 @@ export function Setting5() {
         {jobsDisplay.map((job, index) => (
           <div
             className="display"
-            // key={index}
+            key={index}
             // onClick={() => selectInput(job, index)}
           >
             {job.selectValue === '직접입력' ? job.customValue : job.selectValue}{' '}
             {job.count}명
             <button
               className="updateBtn"
-              key={index}
               onClick={() => selectInput(job, index)}
             >
               수정

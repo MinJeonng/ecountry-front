@@ -6,6 +6,8 @@ export default function Revune() {
   //국고, 화폐단위,
   const { id } = useParams();
   const [selectedName, setSelectedName] = useState('');
+  const [taxList, setTaxList] = useState([]);
+  const [studentList, setStudentList] = useState([]);
   const nameSelect = (e) => {
     setSelectedName(e.target.value);
   };

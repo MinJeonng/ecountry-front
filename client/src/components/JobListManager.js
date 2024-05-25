@@ -5,7 +5,6 @@ import { ConfirmBtn } from './Btns';
 import axios from 'axios';
 
 export default function JobListManager() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [inputValue, handleInputChange] = useCommaInput();
 
@@ -15,16 +14,10 @@ export default function JobListManager() {
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
   const [countValue, setCountValue] = useState('');
-  const [selectedJobIndex, setSelectedJobIndex] = useState([]);
+  const [selectedJobIndex, setSelectedJobIndex] = useState(null);
   const [jobSkill, setJobSkill] = useState([]); //skill 번호
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const [unit, setUnit] = useState('');
-
-  //   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
-  //   const jobListState = useSelector((state) => state.setting5);
-  //   useEffect(() => {
-  //     setJobsDisplay(jobListState?.jobsDisplay);
-  //   }, [jobListState]);
 
   useEffect(() => {
     if (selectedJobSkill !== '') {
@@ -50,14 +43,7 @@ export default function JobListManager() {
     { label: '신용 관리', value: 4 },
     { label: '법 관리 ', value: 5 },
   ];
-  //   const beforeSetting = () => {
-  //     navigate('/setting/seatingMap');
-  //     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
-  //   };
-  //   const nextSetting = () => {
-  //     navigate('/setting/jobRole');
-  //     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
-  //   };
+
   const handleCountValue = (e) => {
     setCountValue(e.target.value);
   };
@@ -104,19 +90,16 @@ export default function JobListManager() {
       setJobsDisplay(updatedJobs);
     } else {
       // 새 직업을 목록에 추가
-      const newJobsDisplay = [
-        ...jobsDisplay,
-        {
-          customValue: customJob,
-          selectValue: selectedJob,
-          standard: standardValue,
-          role: jobRoleValue,
-          count: countValue,
-          salary: inputValue,
-          skills: jobSkill,
-        },
-      ];
-      setJobsDisplay(newJobsDisplay);
+      const newJob = {
+        customValue: customJob,
+        selectValue: selectedJob,
+        standard: standardValue,
+        role: jobRoleValue,
+        count: countValue,
+        salary: inputValue,
+        skills: jobSkill,
+      };
+      setJobsDisplay((prevJobs) => [...prevJobs, newJob]);
     }
 
     // 입력 필드 초기화
@@ -131,7 +114,6 @@ export default function JobListManager() {
   };
 
   const selectInput = (job, index) => {
-    console.log(job);
     setSelectedJob(job.selectValue);
     setCustomJob(job.customValue);
     setStandardValue(job.standard);
@@ -140,7 +122,6 @@ export default function JobListManager() {
     handleInputChange({ target: { value: job.salary.replace(/,/g, '') } }); //숫자만 추출해 전달
     setSelectedJobIndex(index);
     setJobSkill([job.skills]);
-    // console.log(setCustomJob(value));
   };
 
   const resetBtn = () => {
@@ -184,7 +165,6 @@ export default function JobListManager() {
         },
       });
       if (res.data.success) {
-        console.log(res.data.result);
         setUnit(res.data.result);
       }
     } catch (error) {
@@ -201,18 +181,18 @@ export default function JobListManager() {
         {jobsDisplay.map((job, index) => (
           <div
             className="display"
-            // key={index}
-            // onClick={() => selectInput(job, index)}
+            key={index}
+            onClick={() => selectInput(job, index)}
           >
             {job.selectValue === '직접입력' ? job.customValue : job.selectValue}{' '}
             {job.count}명
-            <button
+            {/* <button
               className="updateBtn"
               key={index}
               onClick={() => selectInput(job, index)}
             >
               수정
-            </button>
+            </button> */}
             <img
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
@@ -294,10 +274,6 @@ export default function JobListManager() {
                 ))}
               </>
             )}
-
-            {/* {selectedJobSkill !== '' && (
-                
-              )} */}
           </div>
           <div className="set-title">급여</div>
           <div className="container">

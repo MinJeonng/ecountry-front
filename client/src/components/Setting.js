@@ -21,6 +21,7 @@ import '../styles/_input_common.scss';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
+import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -820,12 +821,14 @@ export function Setting5() {
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
   const [countValue, setCountValue] = useState('');
-  const [selectedJobIndex, setSelectedJobIndex] = useState([]);
+  const [selectedJobIndex, setSelectedJobIndex] = useState(null);
   const [jobSkill, setJobSkill] = useState([]); //skill 번호
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const jobListState = useSelector((state) => state.setting5);
-  // console.log(jobSkill);
+
+  console.log(jobsDisplay);
+
   useEffect(() => {
     setJobsDisplay(jobListState?.jobsDisplay);
   }, [jobListState]);
@@ -865,7 +868,7 @@ export function Setting5() {
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const nextSetting = () => {
-    navigate('/setting/jobRole');
+    navigate('/setting/law');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const handleCountValue = (e) => {
@@ -901,6 +904,7 @@ export function Setting5() {
 
     // 모든 입력값이 유효한 경우
     if (selectedJobIndex !== null) {
+      console.log('first');
       // 이미 목록에 있는 직업을 업데이트
       const updatedJobs = [...jobsDisplay];
       updatedJobs[selectedJobIndex] = {
@@ -915,19 +919,16 @@ export function Setting5() {
       setJobsDisplay(updatedJobs);
     } else {
       // 새 직업을 목록에 추가
-      const newJobsDisplay = [
-        ...jobsDisplay,
-        {
-          customValue: customJob,
-          selectValue: selectedJob,
-          standard: standardValue,
-          role: jobRoleValue,
-          count: countValue,
-          salary: inputValue,
-          skills: jobSkill,
-        },
-      ];
-      setJobsDisplay(newJobsDisplay);
+      const newJob = {
+        customValue: customJob,
+        selectValue: selectedJob,
+        standard: standardValue,
+        role: jobRoleValue,
+        count: countValue,
+        salary: inputValue,
+        skills: jobSkill,
+      };
+      setJobsDisplay((prevJobs) => [...prevJobs, newJob]);
     }
 
     // 입력 필드 초기화
@@ -950,8 +951,9 @@ export function Setting5() {
     setCountValue(job.count);
     handleInputChange({ target: { value: job.salary.replace(/,/g, '') } }); //숫자만 추출해 전달
     setSelectedJobIndex(index);
-    setJobSkill(job.skills);
-    // console.log(setCustomJob(value));
+
+    setJobSkill([job.skills]);
+
   };
 
   const resetBtn = () => {
@@ -1174,7 +1176,7 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    navigate('/setting/jobRole');
+    navigate('/setting/jobList');
     dispatch(basicLaw({ basicLaw: laws }));
   };
   const nextSetting = () => {
@@ -1538,11 +1540,10 @@ export function Setting8() {
             className="set-country-detail"
             type="text"
             value={taxName}
-            // onChange={(e) => {
-            //   setTaxName(e.target.value);
-            // }}
+            onChange={(e) => {
+              setTaxName(e.target.value);
+            }}
             style={{ imeMode: 'active' }}
-            disabled
           />
         </div>
         <div className="set-country">

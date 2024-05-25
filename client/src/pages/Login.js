@@ -7,6 +7,8 @@ import Template from '../components/Template';
 import '../styles/login.scss';
 import { PageHeader } from '../components/Headers';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function Login() {
   const [userId, setUserId] = useState('');
@@ -18,17 +20,22 @@ export default function Login() {
     await axios
       .post(`${process.env.REACT_APP_HOST}/api/user/login`, { userId, pw })
       .then((res) => {
-        alert(res.data.message);
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
+          alert('환영합니다!');
           navigate('/country');
         } else {
+          toast('아이디 또는 비밀번호가 틀렸습니다.', {
+            autoClose: 1300,
+          });
         }
       });
   };
 
   return (
-    <Template
+    <>
+      <ToastContainer />
+      <Template
       childrenTop={
         <>
           <PageHeader>{'관리자 로그인'}</PageHeader>
@@ -66,5 +73,6 @@ export default function Login() {
         </div>
       }
     ></Template>
+    </>
   );
 }

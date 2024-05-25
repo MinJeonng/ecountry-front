@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -7,9 +6,8 @@ import useAuth from '../hooks/useAuth';
 
 const Name = styled.div`
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
-  font-weight: 700;
 `;
 
 export function StudentIdCard() {
@@ -23,6 +21,7 @@ export function StudentIdCard() {
   const [name, setName] = useState('');
   const [job, setJob] = useState(null);
   const [rating, setRating] = useState('');
+  const [countryName, setCountryName] = useState('');
 
   const fileInput = useRef(null);
 
@@ -85,16 +84,31 @@ export function StudentIdCard() {
 
   return (
     <div className="idCard-wrap">
-      <div className="idCard-title">신분증</div>
       <div className="idCard-list">
-        <Avatar
+        <div className="idCard-detail">
+          <div className="idCard-detail-title">신분증</div>
+          <Name>{name}</Name>
+          <div className="idCard-detail-list">
+            <div className="idCard-detail-content">{job}</div>
+          </div>
+          <div className="idCard-detail-list">
+            <div className="idCard-detail-content">{rating}등급</div>
+          </div>
+        </div>
+
+        <img
           src={Image}
-          style={{ cursor: 'pointer' }}
-          size={70}
+          style={{
+            cursor: 'pointer',
+            width: 90,
+            height: 90,
+            borderRadius: 8,
+          }}
           onClick={() => {
             fileInput.current.click();
           }}
         />
+
         <input
           type="file"
           style={{ display: 'none' }}
@@ -103,19 +117,8 @@ export function StudentIdCard() {
           onChange={onChange}
           ref={fileInput}
         />
-
-        <div className="idCard-detail">
-          <Name>{name}</Name>
-          <div className="idCard-detail-list">
-            <div className="idCard-detail-title">직업</div>
-            <div className="idCard-detail-content">{job}</div>
-          </div>
-          <div className="idCard-detail-list">
-            <div className="idCard-detail-title">신용등급</div>
-            <div className="idCard-detail-content">{rating}등급</div>
-          </div>
-        </div>
       </div>
+      <div className="country-name">국가 이름</div>
     </div>
   );
 }

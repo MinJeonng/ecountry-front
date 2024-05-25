@@ -27,13 +27,24 @@ const SearchStudentStyle = styled.div`
 `;
 
 const ResultList = styled.div`
+  margin-top: 5px;
+  gap: 3px;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  padding-left: 5px;
+  color: #554d4d;
+  /* border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #554d4d; */
+
   cursor: pointer;
   &:hover {
     background-color: #f0f0f0;
   }
 `;
-
-export function SavingTeller() {
+function SearchStudent() {
   const { id } = useParams();
   const [studentList, setStudentList] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
@@ -80,13 +91,11 @@ export function SavingTeller() {
   const handleSelectStudent = (student) => {
     setSearchInput(`${student.rollNumber}번 ${student.name}`);
     setSelectedStudentId(student.id);
+    setFilteredStudents([]);
   };
 
   useEffect(() => {
-    if (searchInput) {
-      setFilteredStudents([]);
-    }
-    // console.log(selectedStudentId);
+    console.log(selectedStudentId);
   }, [searchInput, selectedStudentId]);
   return (
     <>
@@ -117,4 +126,7 @@ export function SavingTeller() {
       </SearchStudentStyle>
     </>
   );
+}
+export function SavingTeller() {
+  return <SearchStudent />;
 }

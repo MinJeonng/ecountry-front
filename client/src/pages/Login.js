@@ -7,6 +7,8 @@ import Template from '../components/Template';
 import '../styles/login.scss';
 import { PageHeader } from '../components/Headers';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function Login() {
   const [userId, setUserId] = useState('');
@@ -18,11 +20,14 @@ export default function Login() {
     await axios
       .post(`${process.env.REACT_APP_HOST}/api/user/login`, { userId, pw })
       .then((res) => {
-        alert(res.data.message);
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
+          alert('환영합니다!');
           navigate('/country');
         } else {
+          toast('아이디 또는 비밀번호가 틀렸습니다.', {
+            autoClose: 1300,
+          });
         }
       });
   };
@@ -48,7 +53,7 @@ export default function Login() {
               className="user-login"
               type="text"
               onChange={(e) => setUserId(e.target.value)}
-              onKeyDown={(e) => handleKeyDownNext(e, passwordRef)}
+              onKeyDown={handleKeyDownNext}
             ></input>
             <div className="user-login-title">비밀번호</div>
             <input
@@ -57,7 +62,7 @@ export default function Login() {
               type="password"
               maxLength={4}
               onChange={(e) => setPw(e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, loginFunc)}
+              onKeyDown={handleKeyDown}
             ></input>
             <button className="login-btn" type="button" onClick={loginFunc}>
               로그인

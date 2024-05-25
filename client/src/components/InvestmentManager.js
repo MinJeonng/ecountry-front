@@ -247,7 +247,6 @@ export function AddInvestment() {
     <>
       <ToastContainer />
       <div className="title-list">
-        <div>투자 상품 관리</div>
         <ul className="title-list">
           <li>투자 상품을 생성할 수 있습니다.</li>
         </ul>

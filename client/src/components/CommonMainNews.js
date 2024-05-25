@@ -65,6 +65,20 @@ const Image = styled.img`
   border-radius: 10px;
   margin-bottom: 10px;
 `;
+
+const NoneNews = styled.div`
+  border: 1px solid #a7d2e4;
+  border-radius: 10px;
+  height: auto;
+  margin-bottom: 40px;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  p {
+    font-size: 14px;
+  }
+`;
+
 export default function CommonMainNews() {
   const { id } = useParams();
   const [newsList, setNewsList] = useState([]);
@@ -116,33 +130,41 @@ export default function CommonMainNews() {
   }, []);
 
   return (
-    <Container>
-      <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
-        <StyledImgDiv
-          imgCount={imgCount}
-          positionx={positionx}
-          endSwipe={endSwipe}
-        >
-          {newsList?.map((post) => (
-            <ImageContainer
-              key={post.id}
-              onClick={() => navigate(`/${id}/news/read/${post.id}`)}
+    <>
+      {newsList?.length > 0 ? (
+        <Container>
+          <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
+            <StyledImgDiv
+              imgCount={imgCount}
+              positionx={positionx}
+              endSwipe={endSwipe}
             >
-              <Image src={getThumbnail(post.content)} alt={post.title} />
-              <h4>{post.title}</h4>
-            </ImageContainer>
-          ))}
-        </StyledImgDiv>
-      </Swipe>
-      {newsList?.length > 1 && (
-        <ImageCounterWrapper>
-          {newsList.map((post, index) => {
-            return (
-              <ImageCounter key={index} index={index} imgCount={imgCount} />
-            );
-          })}
-        </ImageCounterWrapper>
+              {newsList?.map((post) => (
+                <ImageContainer
+                  key={post.id}
+                  onClick={() => navigate(`/${id}/news/read/${post.id}`)}
+                >
+                  <Image src={getThumbnail(post.content)} alt={post.title} />
+                  <h4>{post.title}</h4>
+                </ImageContainer>
+              ))}
+            </StyledImgDiv>
+          </Swipe>
+          {newsList?.length > 1 && (
+            <ImageCounterWrapper>
+              {newsList.map((post, index) => {
+                return (
+                  <ImageCounter key={index} index={index} imgCount={imgCount} />
+                );
+              })}
+            </ImageCounterWrapper>
+          )}
+        </Container>
+      ) : (
+        <NoneNews>
+          <p>뉴스 정보가 없습니다.</p>
+        </NoneNews>
       )}
-    </Container>
+    </>
   );
 }

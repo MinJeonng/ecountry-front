@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ConfirmBtn } from './Btns';
 
 import '../styles/setting.scss';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function RevenuCollect() {
+  const { id } = useParams();
+  const [studentList, setStudentList] = useState([]);
+  const [taxList, setTaxList] = useState([]);
   // 학생리스트 사유-징수금 선택해서 징수할 수 있게 만들면됨...
   // 학생리스트
+
+  const getStudent = async () => {};
+
+  const getPenalty = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/tax/penalty/list/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+  };
+
+  useEffect(() => {
+    getPenalty();
+  }, []);
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'row' }}>

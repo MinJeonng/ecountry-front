@@ -1619,6 +1619,8 @@ export function Setting9() {
           schoolCode: setInfo.setting1.schoolCode,
         },
       });
+      console.log(`국가 생성 : ${res.data.success}`);
+      console.log(`국가 생성 결과 : ${res.data.result}`);
 
       // 학생 등록(수기)
       if (setInfo.setting3.studentList.length > 0) {
@@ -1641,6 +1643,8 @@ export function Setting9() {
           },
           data: data2,
         });
+
+        console.log(`학생 등록 : ${res2.data.success}`);
       }
       // 자리 배치 등록
       const data3 = [];
@@ -1660,7 +1664,7 @@ export function Setting9() {
         },
         data: data3,
       });
-      console.log('자리 배치 등록 결과 : ' + res3.data.success);
+      console.log(`자리 배치 : ${res3.data.success}`);
       // 직업 리스트 등록
       const data4 = [];
       setInfo.setting5.jobsDisplay.forEach((data) => {
@@ -1673,7 +1677,7 @@ export function Setting9() {
           roll: data.role,
           standard: data.standard,
           salary: parseInt(data.salary.replaceAll(',', '')),
-          skills: [],
+          skills: data.skills,
           countryId: res.data.result.id,
         });
       });
@@ -1686,6 +1690,8 @@ export function Setting9() {
         },
         data: data4,
       });
+      console.log(`직업 리스트 : ${res4.data.success}`);
+
       // 규칙 리스트 등록
       const data5 = [];
       setInfo.setting6.basicLaw.forEach((data) => {
@@ -1703,6 +1709,7 @@ export function Setting9() {
         },
         data: data5,
       });
+      console.log(`규칙 리스트 : ${res5.data.success}`);
       // 세금 규칙 등록
       const data6 = [];
       setInfo.setting7.taxLaw.forEach((data) => {
@@ -1728,6 +1735,7 @@ export function Setting9() {
           countryId: res.data.result.id,
         });
       });
+      console.log(data6);
       const res6 = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/tax`,
@@ -1737,6 +1745,7 @@ export function Setting9() {
         },
         data: data6,
       });
+      console.log(`세법 : ${res6.data.success}`);
       setCountryID(res.data.result.id);
       setIsLoading(true);
     } catch (e) {
@@ -1879,38 +1888,5 @@ export function Setting9() {
         </div>
       )}
     </div>
-  );
-}
-//Setting10 - 직업 역할 정하기
-export function Setting10() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const jobListState = useSelector((state) => state.setting5); //직업 리스트
-  console.log(jobListState);
-  const [jobList, setJobList] = useState([]); //직업 이름 리스트
-  const [roleList, setRoleList] = useState([]); // 역할 리스트
-
-  const beforeSetting = () => {
-    navigate('/setting/jobList');
-    dispatch();
-  };
-  const nextSetting = () => {
-    navigate('/setting/law');
-    dispatch();
-  };
-
-  return (
-    <>
-      <form className="box-style"></form>
-      <div className="navi-btn">
-        <button className="next-button" onClick={beforeSetting}>
-          이전
-        </button>
-        <button className="next-button" onClick={nextSetting}>
-          다음
-        </button>
-      </div>
-    </>
   );
 }

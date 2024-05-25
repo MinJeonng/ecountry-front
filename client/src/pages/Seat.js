@@ -44,7 +44,6 @@ export function SetSeat() {
       },
     });
     setSeatList(res.data.result);
-    console.log('seatList : ', res.data.result);
   };
 
   const getStudent = async () => {
@@ -57,7 +56,6 @@ export function SetSeat() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
-    console.log('Students:', res.data.result);
     setStudentList(res.data.result);
   };
 

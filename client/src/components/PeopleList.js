@@ -124,7 +124,7 @@ export function SetPeopleList() {
   //추가
   const handleAddPeopleList = () => {
     if (!studentName || !attendanceNumber || !resetPassword) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
     addStudent();

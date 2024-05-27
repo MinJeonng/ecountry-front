@@ -77,7 +77,7 @@ export function AddSavings() {
 
   const handleAddSavings = () => {
     if (!savingName || !savingDeadLine || !interestRate) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
 

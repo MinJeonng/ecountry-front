@@ -5,6 +5,7 @@ import { ConfirmBtn } from './Btns';
 import '../styles/setting.scss';
 import axios from 'axios';
 import { GetTimeText } from '../hooks/Functions';
+import { toast } from 'react-toastify';
 
 export function SetNewsRead() {
   const { id, newsId } = useParams();
@@ -39,10 +40,10 @@ export function SetNewsRead() {
         setWriteTime(GetTimeText(result.createdAt));
         setWriter(result.writerName);
       } else {
-        alert('유효하지 않은 접근입니다.');
+        toast('유효하지 않은 접근입니다.');
       }
     } catch {
-      alert('해당 뉴스를 불러올수 없습니다.');
+      toast('해당 뉴스를 불러올수 없습니다.');
       navigate(`/${id}/news`);
     }
   };
@@ -65,7 +66,7 @@ export function SetNewsRead() {
       },
     });
     if (res.data.success) {
-      alert('뉴스 삭제가 완료되었습니다.');
+      toast('뉴스 삭제가 완료되었습니다.');
       navigate(`/${id}/news`);
     }
   };

@@ -82,7 +82,7 @@ export function Setting1() {
   const nextSetting = () => {
     try {
       if (!selectedClass || !selectedGrade || !schoolName) {
-        alert('모든 값을 입력해주세요');
+        toast('모든 값을 입력해주세요');
         return;
       }
       navigate('/setting/countryInfo');
@@ -226,6 +226,7 @@ export function Setting1() {
             onChange={classSelect}
             onKeyDown={handleKeyDown}
             style={{ imeMode: 'active' }}
+            min={1}
           />
         </div>
       </form>
@@ -264,7 +265,7 @@ export function Setting2() {
   const nextSetting = async () => {
     try {
       if (!countryName || !moneyUnit || !salaryDate) {
-        alert('모든 값을 입력해주세요');
+        toast('모든 값을 입력해주세요');
         return;
       }
       navigate('/setting/studentInfo');
@@ -497,7 +498,7 @@ export function Setting3() {
     if (selectedFile) {
       // 선택된 파일 어떻게 할지!
     } else {
-      alert('파일을 선택해주세요.');
+      toast('파일을 선택해주세요.');
     }
   };
   //예시 파일 다운로드
@@ -590,6 +591,7 @@ export function Setting3() {
               <input
                 className="set-input"
                 type="number"
+                min={0}
                 value={attendanceNumber}
                 onChange={handleChange}
                 onKeyDown={(e) => handleKeyDownNext(e, nameRef)}
@@ -729,7 +731,7 @@ export function Setting4() {
 
     if (!isAtLeastOneRowCountSet) {
       // 모든 열이 rowCount가 설정되지 않았다면 경고 메시지 표시
-      alert('최소 1열에 대해 자리 수를 입력해주세요.');
+      toast('최소 1열에 대해 자리 수를 입력해주세요.');
       return;
     }
 
@@ -756,6 +758,7 @@ export function Setting4() {
               <input
                 className="seat-count-input"
                 type="number"
+                min={0}
                 onChange={(e) => rowCountChange(column.id, e.target.value)}
                 value={column.rowCount}
                 placeholder="자리 수"
@@ -909,7 +912,7 @@ export function Setting5() {
       !countValue ||
       inputValue === ''
     ) {
-      alert('모든 값을 입력해주세요.');
+      toast('모든 값을 입력해주세요.');
       return;
     }
 
@@ -1229,12 +1232,10 @@ export function Setting6() {
 
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>기본법 제정</div>
-        <ul className="title-list">
-          <li>국가에 필수인 기본법을 제정하세요&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>국가에 필수인 기본법을 제정하세요&#46;</li>
+      </ul>
+
       <ul>
         {laws.map((law, index) => (
           <li
@@ -1412,17 +1413,15 @@ export function Setting7() {
   };
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>세법 제정</div>
-        <ul className="title-list">
-          <li>국가에 필수인 세법을 제정하세요&#46;</li>
-          <li>부가 단위는 세율을 계산할 시 사용됩니다&#46;</li>
-          <li>
-            부가 단위는 직접 설정한 화폐단위 혹은 % 로 설정할 수 있습니다&#46;
-          </li>
-          <li>월마다 부과됩니다&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>국가에 필수인 세법을 제정하세요&#46;</li>
+        <li>부가 단위는 세율을 계산할 시 사용됩니다&#46;</li>
+        <li>
+          부가 단위는 직접 설정한 화폐단위 혹은 % 로 설정할 수 있습니다&#46;
+        </li>
+        <li>월마다 부과됩니다&#46;</li>
+      </ul>
+
       <div>
         {taxLawDisplay.map((taxLaw, index) => (
           <div
@@ -1462,6 +1461,7 @@ export function Setting7() {
           ref={priceRef}
           className="set-input"
           type="number"
+          min="0"
           value={rateValue}
           onChange={handleRateValue}
         />
@@ -1543,13 +1543,10 @@ export function Setting8() {
   };
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>자리 임대료</div>
-        <ul className="title-list">
-          <li>자리 임대료를 설정하세요&#46;</li>
-          <li>월마다 부과됩니다&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>자리 임대료를 설정하세요&#46;</li>
+        <li>월마다 부과됩니다&#46;</li>
+      </ul>
 
       <form className="box-style">
         <div className="set-country">
@@ -1570,6 +1567,7 @@ export function Setting8() {
             className="set-country-detail"
             type="number"
             value={fee}
+            min="0"
             onChange={(e) => {
               setFee(e.target.value);
             }}
@@ -1769,14 +1767,14 @@ export function Setting9() {
       setCountryID(res.data.result.id);
       setIsLoading(true);
     } catch (e) {
-      alert('error');
+      toast('error');
       console.log(e);
     }
   };
 
   const handleAddFine = () => {
     if (!reasonFine || !fineValue) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
     if (selectedIndex !== null) {
@@ -1825,13 +1823,11 @@ export function Setting9() {
         <Loading countryid={countryId} />
       ) : (
         <div className="setting-wrap">
-          <div className="title-list">
-            <div>과태료 설정</div>
-            <ul className="title-list">
-              <li>국가에 필수인 과태료를 제정하세요&#46;</li>
-              <li>특수 상황에만 부과됩니다&#46;</li>
-            </ul>
-          </div>
+          <ul className="title-list">
+            <li>국가에 필수인 과태료를 제정하세요&#46;</li>
+            <li>특수 상황에만 부과됩니다&#46;</li>
+          </ul>
+
           <div>
             {fineList.map((fine, index) => (
               <div className="display" key={index}>

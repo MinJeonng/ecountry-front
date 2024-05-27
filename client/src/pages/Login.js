@@ -55,6 +55,7 @@ export default function Login() {
                 className="user-login"
                 type="text"
                 onChange={(e) => setUserId(e.target.value)}
+
                 onKeyDown={(e) => handleKeyDownNext(e, passwordRef)}
               ></input>
               <div className="user-login-title">비밀번호</div>
@@ -64,7 +65,9 @@ export default function Login() {
                 type="password"
                 maxLength={4}
                 onChange={(e) => setPw(e.target.value)}
+
                 onKeyDown={(e) => handleKeyDown(e, loginFunc)}
+
               ></input>
               <button className="login-btn" type="button" onClick={loginFunc}>
                 로그인

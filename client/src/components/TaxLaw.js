@@ -24,7 +24,7 @@ export function TaxLaw() {
 
   const divisionList = [
     { label: '%', value: 0 },
-    { label: unit.unit, value: 1 },
+    { label: unit, value: 1 },
     { label: '자리 임대료', value: 2 },
     { label: '과태료', value: 3 },
   ];
@@ -45,12 +45,89 @@ export function TaxLaw() {
         console.log(resTax.data.result);
       }
     } catch (error) {
-      console.log('세금 규칙 불러오는데 실패', error);
+      toast.error('세금 규칙 로딩 오류', { autoClose: 1300 });
     }
   };
-  useEffect(() => {
-    getTaxList();
-  }, []);
+
+  // db 추가
+  const addTax = async () => {
+    try {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/tax`,
+        data: [
+          {
+            countryId: id,
+            name: lawName,
+            division,
+            tax,
+          },
+        ],
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        getTaxList();
+        toast.success('세금 규칙이 등록되었습니다.', { autoClose: 1300 });
+      } else {
+        toast.error('세금 규칙 등록 오류', { autoClose: 1300 });
+      }
+    } catch {
+      toast.error('세금 규칙 등록 오류', { autoClose: 1300 });
+    }
+  };
+
+  // db 업데이트
+  const updateTax = async () => {
+    try {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/tax`,
+        data: {
+          id: selectedTaxLawId,
+          name: lawName,
+          division,
+          tax,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        getTaxList();
+        toast.success('세금 규칙이 수정되었습니다.', { autoClose: 1300 });
+      } else {
+        toast.error('세금 규칙 수정 오류', { autoClose: 1300 });
+      }
+    } catch {
+      toast.error('세금 규칙 수정 오류', { autoClose: 1300 });
+    }
+  };
+
+  // db 삭제
+  const deleteTax = async () => {
+    try {
+      const res = await axios({
+        method: 'DELETE',
+        url: `${process.env.REACT_APP_HOST}/api/tax/${selectedTaxLawId}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        getTaxList();
+        toast.success('세금 규칙이 삭제되었습니다.', { autoClose: 1300 });
+      } else {
+        toast.error('세금 규칙 삭제 오류', { autoClose: 1300 });
+      }
+    } catch {
+      toast.error('세금 규칙 삭제 오류', { autoClose: 1300 });
+    }
+  };
 
   //단위 불러오기
   const getUnit = async () => {
@@ -64,59 +141,34 @@ export function TaxLaw() {
         },
       });
       if (res.data.success) {
-        setUnit(res.data.result);
+        setUnit(res.data.result.unit);
       }
     } catch (error) {
       console.log('화폐단위 불러오는데 실패', error);
     }
   };
-  useEffect(() => {
-    getUnit();
-  }, []);
 
   // 세법 추가하기
   const handleAddTaxLaw = () => {
     if (!lawName || division === '' || !tax) {
-      toast('모든 값을 입력해주세요');
+      toast.error('모든 값을 입력해주세요', { autoClose: 1300 });
       return;
     }
 
     if (isAddOpen) {
-      const newTaxLaw = {
-        id: taxLawList.length + 1,
-        name: lawName,
-        division: parseInt(division),
-        tax: parseFloat(tax),
-      };
-      setTaxLawList([...taxLawList, newTaxLaw]);
-      toast('세금 규칙이 등록되었습니다.', { type: 'success' });
+      addTax();
     } else {
-      const updatedTaxLawList = taxLawList.map((taxLaw, index) =>
-        index === selectedTaxLawIndex
-          ? {
-              ...taxLaw,
-              name: lawName,
-              division: parseInt(division),
-              tax: parseFloat(tax),
-            }
-          : taxLaw
-      );
-      setTaxLawList(updatedTaxLawList);
-      toast('세금 규칙이 수정되었습니다.', { type: 'success' });
+      updateTax();
     }
 
     resetInputs();
   };
 
   // 세법 삭제하기
-  const handleDeleteBtn = (index, lawId) => (e) => {
+  const handleDeleteBtn = (index) => (e) => {
     e.stopPropagation();
     if (window.confirm('세법을 삭제하시겠습니까?')) {
-      const updatedTaxLawList = taxLawList.filter(
-        (taxLaw) => taxLaw.id !== lawId
-      );
-      setTaxLawList(updatedTaxLawList);
-      toast('세금 규칙이 삭제되었습니다.', { type: 'success' });
+      deleteTax();
       resetInputs();
     }
   };
@@ -147,6 +199,11 @@ export function TaxLaw() {
     setIsAddOpen(true);
   };
 
+  useEffect(() => {
+    getTaxList();
+    getUnit();
+  }, []);
+
   return (
     <div>
       <ToastContainer />
@@ -155,7 +212,7 @@ export function TaxLaw() {
         <ul className="title-list">
           <li>설정한 세법을 확인할 수 있습니다&#46;</li>
           <li>
-            세금&#183;자리임대료&#183;과태료 등 추가&#183;수정 할 수
+            세금&#183;자리임대료&#183;과태료 등 추가&#183;수정&#183;삭제 할 수
             있습니다&#46;
           </li>
         </ul>
@@ -176,10 +233,7 @@ export function TaxLaw() {
                       onClick={() => selectInput(taxLaw, index)}
                     >
                       {taxLaw.name} {taxLaw.tax}
-                      {
-                        divisionList.find((d) => d.value === taxLaw.division)
-                          ?.label
-                      }{' '}
+                      {taxLaw.division == 0 ? '%' : unit}
                       <Arrow stroke="#ddd" className="accArrBtn" />
                     </div>
                     {selectedTaxLawIndex === index && (
@@ -190,7 +244,7 @@ export function TaxLaw() {
                           <img
                             className="resetBtn"
                             src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                            onClick={handleDeleteBtn(index, taxLaw.id)}
+                            onClick={handleDeleteBtn(index)}
                             alt="삭제"
                           />
                         </div>
@@ -249,7 +303,7 @@ export function TaxLaw() {
             <img
               className="resetBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={handleDeleteBtn}
+              onClick={resetInputs}
               alt="삭제"
             />
           </div>

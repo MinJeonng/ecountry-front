@@ -18,53 +18,8 @@ export default function JobListManager() {
   const [jobSkill, setJobSkill] = useState([]); //skill 번호
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const [unit, setUnit] = useState('');
+  const [isCustomInput, setIsCustomInput] = useState(false);
 
-  const getJobs = async () => {
-    const res = await axios({
-      method: 'GET',
-      url: `${process.env.REACT_APP_HOST}/api/job/${id}`,
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    });
-    console.log(res.data.result);
-    setJobsDisplay(res.data.result);
-  };
-
-  const sendJob = async () => {
-    const isCustom = selectedJob === '직접입력';
-    const res = await axios({
-      method: 'POST',
-      url: `${process.env.REACT_APP_HOST}/api/job`,
-      data: [
-        {
-          limited: countValue,
-          name: isCustom ? customJob : selectedJob,
-          roll: jobRoleValue,
-          standard: standardValue,
-          salary: inputValue.replaceAll(',', ''),
-          skills: jobSkill,
-          countryId: id,
-        },
-      ],
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    });
-    console.log(res.data.success);
-    getJobs();
-  };
-
-  useEffect(() => {
-    if (selectedJobSkill !== '') {
-      setJobSkill([...jobSkill, Number(selectedJobSkill)]);
-    }
-    setSelectedJobSkill('');
-  }, [selectedJobSkill]);
-
-  const isCustomInput = selectedJob === '직접입력';
   const jobList = [
     { label: '은행원', value: '은행원' },
     { label: '기자', value: '기자' },
@@ -81,6 +36,90 @@ export default function JobListManager() {
     { label: '신용 관리', value: 4 },
     { label: '법 관리 ', value: 5 },
   ];
+
+  const getJobs = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/job/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setJobsDisplay(res.data.result);
+  };
+
+  const sendJob = async () => {
+    const res = await axios({
+      method: 'POST',
+      url: `${process.env.REACT_APP_HOST}/api/job`,
+      data: [
+        {
+          limited: countValue,
+          name: selectedJob === '직접입력' ? customJob : selectedJob,
+          roll: jobRoleValue,
+          standard: standardValue,
+          salary: inputValue.replaceAll(',', ''),
+          skills: jobSkill,
+          countryId: id,
+        },
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    getJobs();
+  };
+
+  const updateJob = async (jobId) => {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${process.env.REACT_APP_HOST}/api/job`,
+      data: {
+        id: jobId,
+        limited: countValue,
+        name: selectedJob === '직접입력' ? customJob : selectedJob,
+        roll: jobRoleValue,
+        standard: standardValue,
+        salary: inputValue.replaceAll(',', ''),
+        skills: jobSkill,
+        countryId: id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    if (res.data.success) {
+      alert('수정이 완료되었습니다.');
+      getJobs();
+      resetBtn();
+    }
+  };
+
+  const deleteJob = async (jobId) => {
+    if (!window.confirm('삭제하시겠습니까?')) {
+      return;
+    }
+    const res = await axios({
+      method: 'DELETE',
+      url: `${process.env.REACT_APP_HOST}/api/job/${jobId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data);
+    if (res.data.success) {
+      alert('삭제되었습니다.');
+      getJobs();
+      resetBtn();
+    } else {
+      alert('이미 적용 중인 직업은 삭제할 수 없습니다.');
+    }
+  };
 
   const handleCountValue = (e) => {
     setCountValue(e.target.value);
@@ -128,12 +167,21 @@ export default function JobListManager() {
   };
 
   const selectInput = (job, index) => {
-    setSelectedJob(job.selectValue);
-    setCustomJob(job.customValue);
+    setIsCustomInput(true);
+    setSelectedJob('직접입력');
+    setCustomJob(job.name);
+    jobList.forEach((data) => {
+      if (data.value === job.name) {
+        setIsCustomInput(false);
+        setSelectedJob(data.value);
+        setCustomJob('');
+      }
+    });
     setStandardValue(job.standard);
     setJobRoleValue(job.roll);
     setCountValue(job.limited);
-    handleInputChange({ target: { value: job.salary } });
+    handleInputChange({ target: { value: job.salary.toString() } }); //숫자만 추출해 전달
+    setSelectedJobIndex(index);
     setSelectedJobIndex(index);
     setJobSkill([...job.skills]);
   };
@@ -144,14 +192,16 @@ export default function JobListManager() {
     setStandardValue('');
     setJobRoleValue('');
     setCountValue('');
+    setJobSkill([]);
     handleInputChange({ target: { value: '' } });
     setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
   };
 
-  const deleteBtn = (index) => (e) => {
+  const deleteBtn = (e, jobId) => {
     e.stopPropagation(); // 이벤트 버블링 방지
-    const filteredJobs = jobsDisplay.filter((_, i) => i !== index);
-    setJobsDisplay(filteredJobs);
+
+    deleteJob(jobId);
+
     // 초기화
     setSelectedJobIndex(null);
     setSelectedJob('');
@@ -185,6 +235,19 @@ export default function JobListManager() {
       console.log('화폐단위 불러오는데 실패', error);
     }
   };
+
+  useEffect(() => {
+    setIsCustomInput(selectedJob === '직접입력');
+    console.log(isCustomInput);
+  }, [selectedJob]);
+
+  useEffect(() => {
+    if (selectedJobSkill !== '') {
+      setJobSkill([...jobSkill, Number(selectedJobSkill)]);
+    }
+    setSelectedJobSkill('');
+  }, [selectedJobSkill]);
+
   useEffect(() => {
     getJobs();
     getUnit();
@@ -207,10 +270,13 @@ export default function JobListManager() {
             >
               수정
             </button> */}
+            <button type="button" onClick={() => updateJob(job.id)}>
+              임시 수정 버튼
+            </button>
             <img
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={deleteBtn(index)}
+              onClick={(e) => deleteBtn(e, job.id)}
             />
           </div>
         ))}

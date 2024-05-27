@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/intro.css';
 import { Link } from 'react-router-dom';
 
-export default function intro() {
-  window.onload = function () {
+export default function Intro() {
+  const [buttonVisible, setButtonVisible] = useState(false);
+
+  useEffect(() => {
     document.querySelector('.background').style.backgroundColor = '#FCFFE0';
-    setTimeout(() => {
-      document.querySelector('.button-wrap').style.visibility = 'visible';
+    const timer = setTimeout(() => {
+      setButtonVisible(true);
     }, 3000);
-  };
+
+    // 컴포넌트가 언마운트될 때 타이머 제거
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div>
       <div className="background">
@@ -16,15 +22,16 @@ export default function intro() {
           <span className="logo-img">logo</span>
           <span className="logo-title">자라나라 경제나라</span>
         </div>
-        <div className="button-wrap">
-          <Link to="/login">
-            <button className="big-button">로그인</button>
-          </Link>
-
-          <Link to="/signup">
-            <button className="big-button">회원가입</button>
-          </Link>
-        </div>
+        {buttonVisible && (
+          <div className="button-wrap">
+            <Link to="/login">
+              <button className="big-button">로그인</button>
+            </Link>
+            <Link to="/signup">
+              <button className="big-button">회원가입</button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

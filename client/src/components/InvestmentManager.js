@@ -8,6 +8,7 @@ import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
 
 import '../styles/setting.scss';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export function AddInvestment() {
   const { id } = useParams();
@@ -22,6 +23,9 @@ export function AddInvestment() {
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [statusList, setStatusList] = useState([]);
   const endOfListRef = useRef(null);
+
+  const unitRef = useRef(null);
+  const infoRef = useRef(null);
 
   useEffect(() => {
     if (endOfListRef.current) {
@@ -171,7 +175,7 @@ export function AddInvestment() {
       },
     });
     if (res.data.success) {
-      alert('삭제되었습니다.');
+      toast('삭제되었습니다.');
     }
   };
 
@@ -190,7 +194,7 @@ export function AddInvestment() {
       },
     });
     if (res.data.success) {
-      alert('삭제되었습니다.');
+      toast('삭제되었습니다.');
     }
     getList();
     setInvestmentInfo('');
@@ -421,9 +425,11 @@ export function AddInvestment() {
               onChange={(e) => {
                 setInvestmentName(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, unitRef)}
             />
             <div className="set-title">단위</div>
             <input
+              ref={unitRef}
               className="set-input"
               type="text"
               value={unit}
@@ -431,15 +437,18 @@ export function AddInvestment() {
               onChange={(e) => {
                 setUnit(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, infoRef)}
             />
             <div className="set-title">오늘의 투자정보</div>
             <input
+              ref={infoRef}
               className="set-input"
               type="text"
               value={investmentInfo}
               onChange={(e) => {
                 setInvestmentInfo(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDown(e, handleAddInvestments)}
             />
             <ConfirmBtn
               onClick={handleAddInvestments}

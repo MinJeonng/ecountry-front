@@ -165,6 +165,17 @@ export function MainDashboard({ func }) {
               <p>자리 배치도</p>
             </div>
 
+            <div
+              className="seatBox"
+              onClick={() => navigate(`/${id}/manager/taxLawList`)}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-seat.png`}
+                alt="세법 관리"
+              />
+              <p>세법 관리</p>
+            </div>
+
             <div style={{ visibility: 'hidden' }}>
               <img />
               <p></p>

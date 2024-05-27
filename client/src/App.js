@@ -29,6 +29,7 @@ import Revenu from './pages/Revenu';
 import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
 import BankClerk from './pages/BankClerk';
+import TaxLawList from './pages/TaxLawList';
 
 function App() {
   return (
@@ -101,6 +102,11 @@ function App() {
             element={<SetAssembly position="국회" />}
           />
           <Route path="/:id/manager/jobList" element={<JobList />} />
+
+          <Route
+            path="/:id/manager/taxLawList"
+            element={<TaxLawList position="세법 관리" />}
+          />
 
           {/* 공통 페이지 */}
           <Route path="/:id/main" element={<CommonMain />} />

@@ -65,6 +65,11 @@ export const compareTime = (prevTime, nowTime) => {
   }
 };
 
+export const getOnlyDate = (date) => {
+  const newDate = new Date(date);
+  return `${newDate.getMonth() + 1}월 ${newDate.getDate()}일`;
+};
+
 export const handleKeyDownNext = (e, refName) => {
   if (e.key === 'Enter') {
     e.preventDefault();

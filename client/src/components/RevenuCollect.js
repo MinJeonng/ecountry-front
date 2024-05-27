@@ -4,18 +4,17 @@ import { ConfirmBtn } from './Btns';
 import '../styles/setting.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function RevenuCollect() {
   const { id } = useParams();
   const [accountId, setAccountId] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState('');
   const [selectTax, setSelectTax] = useState('');
   const [unit, setUnit] = useState('');
   const [transaction, setTransaction] = useState(0);
   const [studentList, setStudentList] = useState([]);
   const [taxList, setTaxList] = useState([]);
-  // 학생리스트 사유-징수금 선택해서 징수할 수 있게 만들면됨...
-  // 학생리스트
-
   const getStudent = async () => {
     const res = await axios({
       method: 'GET',
@@ -41,6 +40,13 @@ export default function RevenuCollect() {
   };
 
   const collectionTax = async () => {
+    if (
+      !window.confirm(
+        `${selectedStudent.rollNumber}번 ${selectedStudent.name}에게 ${selectTax} ${transaction}${unit} 을 징수하시겠습니까? `
+      )
+    ) {
+      return;
+    }
     const res = await axios({
       method: 'POST',
       url: `${process.env.REACT_APP_HOST}/api/tax/penalty/${id}`,
@@ -54,6 +60,14 @@ export default function RevenuCollect() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
+    toast.success(
+      `${selectedStudent.rollNumber}번 ${selectedStudent.name}에게 ${selectTax} ${transaction}${unit} 을 징수하였습니다. `,
+      { autoClose: 1300 }
+    );
+    setAccountId('');
+    setSelectedStudent('');
+    setSelectTax('');
+    setTransaction(0);
   };
 
   const getUnit = async () => {
@@ -66,6 +80,18 @@ export default function RevenuCollect() {
       },
     });
     setUnit(res.data.result.unit);
+  };
+  const handleAccountId = (e) => {
+    setAccountId(e.target.value);
+    const student = studentList.find((student) => student.id == e.target.value);
+    if (student) {
+      setSelectedStudent({
+        rollNumber: student.rollNumber,
+        name: student.name,
+      });
+    } else {
+      setSelectedStudent(null);
+    }
   };
 
   const getTaxMoney = () => {
@@ -87,29 +113,31 @@ export default function RevenuCollect() {
   }, []);
   return (
     <>
+      <ToastContainer />
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <div
           className="newsHead"
-          style={{ color: '#666666', marginBottom: '10px' }}
+          style={{
+            color: '#666666',
+            marginBottom: '10%',
+            borderBottom: '2px solid #bacd92',
+            paddingBottom: '10px',
+          }}
         >
           과태료 징수
         </div>
       </div>
-      <div
-        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
-      ></div>
       <form className="box-style">
         <div className="set-title">징수 대상자</div>
         <select
           value={accountId}
-          onChange={(e) => setAccountId(e.target.value)}
+          onChange={handleAccountId}
           style={{
             width: '100%',
             height: '30px',
             border: 'none',
             backgroundColor: '#f5f6f6',
             borderBottom: '1px solid #e9ae24',
-            paddingBottom: '20px',
             margin: '10px 0 20px 0',
             outline: 'none',
           }}
@@ -133,7 +161,6 @@ export default function RevenuCollect() {
             border: 'none',
             backgroundColor: '#f5f6f6',
             borderBottom: '1px solid #e9ae24',
-            paddingBottom: '20px',
             margin: '10px 0 20px 0',
             outline: 'none',
           }}

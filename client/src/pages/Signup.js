@@ -3,6 +3,7 @@ import Template from '../components/Template';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '../components/Headers';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [name, setName] = useState('');
@@ -14,7 +15,7 @@ export default function Login() {
 
   const signupFunc = async () => {
     if (pw !== confirmPw) {
-      alert('비밀번호가 일치하지 않습니다.');
+      toast('비밀번호가 일치하지 않습니다.');
       return;
     }
 
@@ -25,7 +26,7 @@ export default function Login() {
         pw: pw,
       })
       .then((res) => {
-        alert(res.data.message);
+        toast(res.data.message);
         if (res.data.success) {
           navigate('/login');
         }

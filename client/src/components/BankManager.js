@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
@@ -6,6 +6,7 @@ import '../styles/setting.scss';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export function AddSavings() {
   const { id } = useParams();
@@ -18,6 +19,9 @@ export function AddSavings() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
+
+  const deadLineRef = useRef(null);
+  const rateRef = useRef(null);
 
   const getList = async () => {
     const res = await axios({
@@ -190,7 +194,7 @@ export function AddSavings() {
     });
     console.log(res.data.message);
     if (res.data.success) {
-      alert('삭제 완료되었습니다.');
+      toast('삭제 완료되었습니다.');
     }
     getList();
     e.stopPropagation();
@@ -248,9 +252,11 @@ export function AddSavings() {
                 onChange={(e) => {
                   setSavingName(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
               />
               <div className="set-title">적금 기간(생성일부터 ~까지)</div>
               <input
+                ref={deadLineRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -258,10 +264,12 @@ export function AddSavings() {
                 onChange={(e) => {
                   setSavingDeadLine(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
               />
               <div className="set-title">금리 설정</div>
               <div className="container">
                 <input
+                  ref={rateRef}
                   className="set-input"
                   type="number"
                   min="0"
@@ -313,9 +321,11 @@ export function AddSavings() {
               onChange={(e) => {
                 setSavingName(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
             />
             <div className="set-title">적금 기간(생성일부터 ~까지)</div>
             <input
+              ref={deadLineRef}
               className="set-input"
               type="number"
               min="0"
@@ -323,10 +333,12 @@ export function AddSavings() {
               onChange={(e) => {
                 setSavingDeadLine(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
             />
             <div className="set-title">금리 설정</div>
             <div className="container">
               <input
+                ref={rateRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -334,6 +346,7 @@ export function AddSavings() {
                 onChange={(e) => {
                   setInterestRate(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDown(e, handleAddSavings)}
               />
               <span className="unit">%</span>
             </div>

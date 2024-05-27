@@ -19,6 +19,44 @@ export default function JobListManager() {
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const [unit, setUnit] = useState('');
 
+  const getJobs = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/job/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setJobsDisplay(res.data.result);
+  };
+
+  const sendJob = async () => {
+    const isCustom = selectedJob === '직접입력';
+    const res = await axios({
+      method: 'POST',
+      url: `${process.env.REACT_APP_HOST}/api/job`,
+      data: [
+        {
+          limited: countValue,
+          name: isCustom ? customJob : selectedJob,
+          roll: jobRoleValue,
+          standard: standardValue,
+          salary: inputValue.replaceAll(',', ''),
+          skills: jobSkill,
+          countryId: id,
+        },
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.success);
+    getJobs();
+  };
+
   useEffect(() => {
     if (selectedJobSkill !== '') {
       setJobSkill([...jobSkill, Number(selectedJobSkill)]);
@@ -74,33 +112,9 @@ export default function JobListManager() {
       alert('모든 값을 입력해주세요.');
       return;
     }
-    // 모든 입력값이 유효한 경우
-    if (selectedJobIndex !== null) {
-      // 이미 목록에 있는 직업을 업데이트
-      const updatedJobs = [...jobsDisplay];
-      updatedJobs[selectedJobIndex] = {
-        customValue: customJob,
-        selectValue: selectedJob,
-        standard: standardValue,
-        role: jobRoleValue,
-        count: countValue,
-        salary: inputValue,
-        skills: jobSkill,
-      };
-      setJobsDisplay(updatedJobs);
-    } else {
-      // 새 직업을 목록에 추가
-      const newJob = {
-        customValue: customJob,
-        selectValue: selectedJob,
-        standard: standardValue,
-        role: jobRoleValue,
-        count: countValue,
-        salary: inputValue,
-        skills: jobSkill,
-      };
-      setJobsDisplay((prevJobs) => [...prevJobs, newJob]);
-    }
+
+    // db 추가 로직
+    sendJob();
 
     // 입력 필드 초기화
     setSelectedJob('');
@@ -117,11 +131,11 @@ export default function JobListManager() {
     setSelectedJob(job.selectValue);
     setCustomJob(job.customValue);
     setStandardValue(job.standard);
-    setJobRoleValue(job.role);
-    setCountValue(job.count);
-    handleInputChange({ target: { value: job.salary.replace(/,/g, '') } }); //숫자만 추출해 전달
+    setJobRoleValue(job.roll);
+    setCountValue(job.limited);
+    handleInputChange({ target: { value: job.salary } });
     setSelectedJobIndex(index);
-    setJobSkill([job.skills]);
+    setJobSkill([...job.skills]);
   };
 
   const resetBtn = () => {
@@ -172,6 +186,7 @@ export default function JobListManager() {
     }
   };
   useEffect(() => {
+    getJobs();
     getUnit();
   }, []);
 
@@ -184,8 +199,7 @@ export default function JobListManager() {
             key={index}
             onClick={() => selectInput(job, index)}
           >
-            {job.selectValue === '직접입력' ? job.customValue : job.selectValue}{' '}
-            {job.count}명
+            {job.name} {job.limited}명
             {/* <button
               className="updateBtn"
               key={index}

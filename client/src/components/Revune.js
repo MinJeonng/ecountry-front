@@ -123,7 +123,6 @@ export default function Revune() {
           style={{
             width: '100%',
             minHeight: '150px',
-            maxHeight: '300px',
             border: '1px solid #B9C0BE',
             borderRadius: '9px',
             padding: '5%',
@@ -182,25 +181,30 @@ export default function Revune() {
             <div
               style={{
                 width: '100%',
-                height: '50px',
                 backgroundColor: '#D9D9D9',
                 marginBottom: '10px',
                 borderRadius: '14px',
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'space-around',
                 alignItems: 'center',
+                boxSizing: 'border-box',
+                padding: '2%',
               }}
             >
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  marginLeft: '10px',
                   textAlign: 'center',
+                  width: '33.3%',
+                  borderRight: '0.8px solid #888888',
+                  boxSizing: 'border-box',
+                  padding: '1%',
+                  justifyContent: 'center',
+                  height: '100%',
                 }}
               >
-                <span>
+                <span style={{ fontSize: '0.9rem' }}>
                   {studentList.map((student) =>
                     student.id === tax.withdrawId
                       ? `${student.name}(${student.rollNumber})`
@@ -212,23 +216,41 @@ export default function Revune() {
                 </span>
               </div>
               <div
-                style={{ borderRight: '0.8px solid #888888', height: '60%' }}
-              ></div>
-              <span
                 style={{
-                  maxWidth: '80px',
-                  fontSize: '0.9rem',
+                  display: 'flex',
+                  flexDirection: 'column',
                   textAlign: 'center',
+                  width: '33.3%',
+                  borderRight: '0.8px solid #888888',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
                 }}
               >
-                {tax.memo}
-              </span>
+                <span
+                  style={{
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  {tax.memo}
+                </span>
+              </div>
               <div
-                style={{ borderRight: '0.8px solid #888888', height: '60%' }}
-              ></div>
-              <span style={{ marginRight: '10px' }}>
-                {tax.transaction} {unit}
-              </span>
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textAlign: 'center',
+                  width: '33.3%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
+                }}
+              >
+                <span style={{ width: '33.3%' }}>
+                  {tax.transaction} {unit}
+                </span>
+              </div>
             </div>
           ))}
         </div>

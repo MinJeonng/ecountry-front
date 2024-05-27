@@ -953,7 +953,6 @@ export function Setting5() {
     setSelectedJobIndex(index);
 
     setJobSkill([job.skills]);
-
   };
 
   const resetBtn = () => {
@@ -1406,6 +1405,11 @@ export function Setting7() {
         <div>세법 제정</div>
         <ul className="title-list">
           <li>국가에 필수인 세법을 제정하세요&#46;</li>
+          <li>부가 단위는 세율을 계산할 시 사용됩니다&#46;</li>
+          <li>
+            부가 단위는 직접 설정한 화폐단위 혹은 % 로 설정할 수 있습니다&#46;
+          </li>
+          <li>월마다 부과됩니다&#46;</li>
         </ul>
       </div>
       <div>
@@ -1530,6 +1534,7 @@ export function Setting8() {
         <div>자리 임대료</div>
         <ul className="title-list">
           <li>자리 임대료를 설정하세요&#46;</li>
+          <li>월마다 부과됩니다&#46;</li>
         </ul>
       </div>
 
@@ -1809,12 +1814,13 @@ export function Setting9() {
             <div>과태료 설정</div>
             <ul className="title-list">
               <li>국가에 필수인 과태료를 제정하세요&#46;</li>
+              <li>특수 상황에만 부과됩니다&#46;</li>
             </ul>
           </div>
           <div>
             {fineList.map((fine, index) => (
               <div className="display" key={index}>
-                {fine.reason} {fine.fine}
+                {fine.reason} {fine.fine} {moneyUnit}
                 {/* 여기에 단위 나오게 하기 */}
                 <button
                   className="updateBtn"

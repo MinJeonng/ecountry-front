@@ -77,12 +77,12 @@ function CheckingAccount({ account, unit }) {
   const navigate = useNavigate();
   const [isAccordion, setIsAccordion] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  // const [user, setUser] = useState(''); //내 통장, 보내는 사람
-  // const [amount, setAmount] = useState(''); //내 잔액
-  const [depositUser, setDepositUser] = useState(''); //받는 사람
+  const [depositUser, setDepositUser] = useState(''); //받는 사람 id
+  const [depositUserName, setDepositUserName] = useState('');
   const [transferAmount, setTransferAmount] = useState(''); //이체금액
   const [transList, setTransList] = useState([]); //이체가능리스트
   const [memo, setMemo] = useState('');
+  // const filteredTransList = transList.filter((user) => user.id !== token);
 
   //이체 가능 리스트
   const transferList = async () => {
@@ -112,16 +112,16 @@ function CheckingAccount({ account, unit }) {
   //이체하기
   const handleTransfer = async () => {
     if (depositUser && transferAmount) {
-      // // 나중에 단위 불러오면 밑에다가 alert에 추가
-      // const selectedUser = transList.find((user) => user.id === depositUser);
-      // if (!selectedUser) {
-      //   console.log(transList);
-      //   console.log('받는사람 못찾음');
-      //   return;
-      // }
-      //받는사람 name을 저장할 걸 만들어야할듯
+      //잔액보다 큰 값 인출 방지
+      if (parseInt(transferAmount) > account.balance) {
+        toast('출금할 통장의 잔액이 부족합니다.', {
+          autoClose: 1300,
+        });
+        return;
+      }
+
       const isConfirmed = window.confirm(
-        `${depositUser}님에게 ${transferAmount}를 이체하시겠습니까?`
+        `${depositUserName}님에게 ${transferAmount}${unit.unit}를 이체하시겠습니까?`
       );
       if (isConfirmed) {
         try {
@@ -170,9 +170,9 @@ function CheckingAccount({ account, unit }) {
   };
   const handleDepositUserChange = (e) => {
     const userId = e.target.value;
+    const selectedUser = transList.find((user) => user.id === userId);
     setDepositUser(userId);
-    // const selectedUser = transList.find((user) => user.id === userId);
-    // setSelectedUserName(selectedUser ? selectedUser.name : '');
+    setDepositUserName(selectedUser ? selectedUser.name : '');
   };
   return (
     <>
@@ -186,8 +186,6 @@ function CheckingAccount({ account, unit }) {
           </div>
         </AccountName>
         <Balance>
-          {/* 단위 불러오는 api도 필요 */}
-          {/* account.balance */}
           <span>
             {account.balance} {unit.unit}
           </span>
@@ -233,10 +231,9 @@ function CheckingAccount({ account, unit }) {
               value={transferAmount}
               onChange={(e) => setTransferAmount(e.target.value)}
             />
-            {/* 나중에 끝에 단위도 붙여주기 */}
             <span className="unit">{unit.unit}</span>
           </div>
-          <div className="set-title">메모 (필요하면 작성하세요)</div>
+          <div className="set-title">메모 (필요 시 작성해주세요)</div>
           <input
             className="set-input"
             type="text"
@@ -256,41 +253,87 @@ function CheckingAccount({ account, unit }) {
 }
 
 //적금통장
-function SavingAccount({ account }) {
+function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [isAccordion, setIsAccordion] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const [user, setUser] = useState('');
   const [savingAmount, setSavingAmount] = useState('');
 
   const handleBtn = () => {
     setIsAccordion(!isAccordion);
     setIsClicked(!isClicked);
   };
-  const handleSaving = () => {
-    //
+  //적금하기
+  const handleSaving = async () => {
+    // console.log(account.id);
+    if (savingAmount) {
+      if (parseInt(savingAmount) > withdrawBalance) {
+        toast('출금할 통장의 잔액을 확인해주세요', {
+          autoClose: 1300,
+        });
+        return;
+      }
+      try {
+        const res = await axios({
+          method: 'POST',
+          url: `${process.env.REACT_APP_HOST}/api/bank`,
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+          data: {
+            transaction: parseInt(savingAmount),
+            depositId: account.id, //적금 통장 Id
+            withdrawId: withdrawId, //입출금 통장 id
+          },
+        });
+        if (res.data.success) {
+          toast('이체가 완료되었습니다.', {
+            autoClose: 1300,
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1400);
+          setSavingAmount('');
+          console.log('success', res.data.success);
+        } else {
+          console.log(res.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert('이체 금액을 입력해주세요.');
+    }
   };
   return (
     <>
       <SavingComponent>
         <AccountName>
           <div className="accountName">
-            {/* {account.accountName} */}
-            적금
-            <span>통장</span>
+            {account.accountName}
+
+            {/* <span>통장</span> */}
           </div>
           {/* 적금 며칠남았는지 그것도 */}
-          <span>D-~`</span>
+          {/* <span>D-{accout}</span> */}
         </AccountName>
         <Balance>
           {/* {account.balance} {unit.unit}*/}
-          <span>0 미소</span>
+          <span>
+            {account.balance} {unit.unit}
+          </span>
         </Balance>
         <Btn>
           <TransferBtn onClick={handleBtn} clicked={isClicked}>
             적금하기
           </TransferBtn>
-          <TransferBtn onClick={() => navigate('')}>거래내역</TransferBtn>
+          <TransferBtn
+            onClick={() => navigate(`/${id}/bank/history/${account.id}`)}
+          >
+            거래내역
+          </TransferBtn>
         </Btn>
       </SavingComponent>
       {isAccordion && (
@@ -305,7 +348,7 @@ function SavingAccount({ account }) {
               onChange={(e) => setSavingAmount(e.target.value)}
             />
             {/* 나중에 끝에 단위도 붙여주기 */}
-            {/* <span className='unit'>{unit.unit}</span> */}
+            <span className="unit">{unit.unit}</span>
           </div>
           <ConfirmBtn
             onClick={handleSaving}
@@ -323,7 +366,8 @@ export function OwnAccount() {
   const { id } = useParams();
   const [accounts, setAccounts] = useState([]);
   const [unit, setUnit] = useState('');
-  // const [bothDivisionsExist, setBothDivisionsExist] = useState(false);
+  const [withdrawId, setWithdrawId] = useState(null);
+  const [withdrawBalance, setWithdrawBalance] = useState('');
 
   const getUnit = async () => {
     try {
@@ -366,10 +410,13 @@ export function OwnAccount() {
             : [res.data.result];
           setAccounts(result);
 
-          // const divisions = res.data.result.map(account => account.division);
-          // const checkingAccount = divisions.includes('0')
-          // const savingAccount = divisions.includes('1')
-          // setBothDivisionsExist(checkingAccount && savingAccount)
+          const checkingAccount = result.find(
+            (account) => account.division === '입출금통장'
+          );
+          if (checkingAccount) {
+            setWithdrawId(checkingAccount.id);
+            setWithdrawBalance(checkingAccount.balance);
+          }
         }
       } catch (error) {
         console.log('데이터 불러오는데 실패', error);
@@ -388,14 +435,15 @@ export function OwnAccount() {
             <CheckingAccount account={account} unit={unit} />
           )}
           {account.division === '적금통장' && (
-            <SavingAccount account={account} unit={unit} />
+            <SavingAccount
+              account={account}
+              unit={unit}
+              withdrawId={withdrawId}
+              withdrawBalance={withdrawBalance}
+            />
           )}
         </div>
       ))}
-      {/* {bothDivisionsExist && (
-        <div>0,1둘다 존재</div>
-      )} */}
-      <SavingAccount />
     </>
   );
 }

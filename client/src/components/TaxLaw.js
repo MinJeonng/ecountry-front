@@ -15,8 +15,8 @@ export function TaxLaw() {
   const [lawName, setLawName] = useState(''); // 세금 이름
   const [division, setDivision] = useState(''); // 세금 디비전
   const [tax, setTax] = useState(''); // 세금 금액
-  const [selectedTaxLawIndex, setSelectedTaxLawIndex] = useState(null);
-  const [selectedTaxLawId, setSelectedTaxLawId] = useState(null);
+  const [selectedTaxLawIndex, setSelectedTaxLawIndex] = useState(null); // 선택한 세금 규칙의 인덱스
+  const [selectedTaxLawId, setSelectedTaxLawId] = useState(null); // 선택한 세금 규칙의 아이디
 
   const [unit, setUnit] = useState('');
 
@@ -52,8 +52,6 @@ export function TaxLaw() {
     getTaxList();
   }, []);
 
-  // 등록하기
-
   //단위 불러오기
   const getUnit = async () => {
     try {
@@ -76,9 +74,10 @@ export function TaxLaw() {
     getUnit();
   }, []);
 
+  // 세법 추가하기
   const handleAddTaxLaw = () => {
     if (!lawName || division === '' || !tax) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
 
@@ -109,6 +108,7 @@ export function TaxLaw() {
     resetInputs();
   };
 
+  // 세법 삭제하기
   const handleDeleteBtn = (index, lawId) => (e) => {
     e.stopPropagation();
     if (window.confirm('세법을 삭제하시겠습니까?')) {
@@ -137,6 +137,7 @@ export function TaxLaw() {
     }
   };
 
+  // 초기화
   const resetInputs = () => {
     setLawName('');
     setDivision('');

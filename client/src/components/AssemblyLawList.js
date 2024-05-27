@@ -6,7 +6,6 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import '../styles/setting.scss';
 import axios from 'axios';
-// import '../styles/lawList.scss';
 
 export function AssemblyLawList() {
   const { id } = useParams();

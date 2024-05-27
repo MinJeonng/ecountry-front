@@ -1,0 +1,13 @@
+@import '../styles/variables';
+
+@include mobile {
+  .saving-title {
+    font-weight: 700;
+    color: #666666;
+    font-size: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+}

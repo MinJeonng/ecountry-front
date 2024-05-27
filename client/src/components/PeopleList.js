@@ -14,7 +14,7 @@ export function SetPeopleList() {
   const [studentName, setStudentName] = useState(''); //이름
   const [attendanceNumber, setAttendanceNumber] = useState(''); //출석번호
   const [rating, setRating] = useState(''); //신용등급
-  const [job, setJob] = useState(''); // 직업
+  const [job, setJob] = useState(null); // 직업
   const [resetPassword, setResetPassword] = useState(''); //재설정 비밀번호
   const [studentList, setStudentList] = useState([]); //학생 리스트
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -55,7 +55,7 @@ export function SetPeopleList() {
           rollNumber: attendanceNumber,
           pw: resetPassword ? resetPassword : null,
           rating,
-          jobId: job,
+          jobId: job == '' ? null : job,
         },
       ],
       headers: {
@@ -80,6 +80,10 @@ export function SetPeopleList() {
           pw: resetPassword,
         },
       ],
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     if (res.data.success) {
       toast.success('국민 추가가 완료되었습니다.', { autoClose: 1300 });
@@ -137,7 +141,7 @@ export function SetPeopleList() {
       setAttendanceNumber(student.rollNumber);
       setStudentName(student.name);
       setRating(student.rating);
-      setJob(student.jobId);
+      setJob(student.jobId ? student.jobId : '');
       setResetPassword('');
       setIsAccordionOpen(true);
       setIsAddOpen(false);
@@ -179,6 +183,10 @@ export function SetPeopleList() {
   };
 
   const handleConfirm = () => {};
+
+  useEffect(() => {
+    console.log(job);
+  }, [job]);
 
   useEffect(() => {
     getInfo();
@@ -263,7 +271,7 @@ export function SetPeopleList() {
                   padding: '5px',
                 }}
               >
-                <option value={null}>무직</option>
+                <option value="">무직</option>
                 {jobList.map((data) => (
                   <option key={data.id} value={data.id}>
                     {data.name}

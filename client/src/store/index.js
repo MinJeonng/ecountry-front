@@ -12,6 +12,7 @@ import {
 } from './settingReducer';
 import { peopleListReducer } from './peopleListReducer';
 import { studentReducer } from './selectedStudentIdReducer';
+import studentInfoReducer from './studentInfoReducer';
 const rootReducer = combineReducers({
   setting1: setting1Reducer,
   setting2: setting2Reducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   setting9: setting9Reducer,
   peopleList: peopleListReducer,
   student: studentReducer,
+  studentInfo: studentInfoReducer,
 });
 
 export default rootReducer;

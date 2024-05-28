@@ -231,7 +231,8 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
-            {saving.name} D-{saving.dueDate} (금리 {saving.interest}%)
+            {saving.name} (금리 {saving.interest}%)
+            {/* D-{saving.dueDate} */}
             <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
           {isAccordionOpen && selectedIndex === index && (

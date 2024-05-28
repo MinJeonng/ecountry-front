@@ -119,9 +119,8 @@ function CheckingAccount({ account, unit }) {
         });
         return;
       }
-
       const isConfirmed = window.confirm(
-        `${depositUserName}님에게 ${transferAmount}${unit.unit}를 이체하시겠습니까?`
+        `${depositUserName}님에게 ${transferAmount}${unit.unit} 이체하시겠습니까?`
       );
       if (isConfirmed) {
         try {
@@ -170,9 +169,13 @@ function CheckingAccount({ account, unit }) {
   };
   const handleDepositUserChange = (e) => {
     const userId = e.target.value;
-    const selectedUser = transList.find((user) => user.id === userId);
     setDepositUser(userId);
-    setDepositUserName(selectedUser ? selectedUser.name : '');
+
+    const selectedUser = transList.find((user) => user.id === parseInt(userId));
+    if (selectedUser) {
+      // console.log(selectedUser);
+      setDepositUserName(selectedUser.name);
+    }
   };
   return (
     <>
@@ -212,14 +215,17 @@ function CheckingAccount({ account, unit }) {
             onChange={handleDepositUserChange}
           >
             <option value="" disabled style={{ color: '#a5a5a5' }}>
-              예금주를 선택하세요.
+              예금주를 선택하세요
             </option>
             {transList.map((student) => {
-              return (
-                <option key={student.id} value={student.id}>
-                  {student.rollNumber}번 {student.name}
-                </option>
-              );
+              if (student.id !== account.id) {
+                return (
+                  <option key={student.id} value={student.id}>
+                    {student.rollNumber}번 {student.name}
+                  </option>
+                );
+              }
+              return null;
             })}
           </select>
           <div className="set-title">이체 금액</div>
@@ -320,7 +326,6 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
           {/* <span>D-{accout}</span> */}
         </AccountName>
         <Balance>
-          {/* {account.balance} {unit.unit}*/}
           <span>
             {account.balance} {unit.unit}
           </span>

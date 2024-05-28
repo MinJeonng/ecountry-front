@@ -66,9 +66,9 @@ export function CommonMainHeader() {
         <HeaderStyle>
           <IcoMenuRight
             onClick={() => {
-              console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu);
+              // console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu);
               setShowSideMenu(true);
-              console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
+              // console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
             }}
           />
         </HeaderStyle>

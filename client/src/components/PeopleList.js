@@ -201,6 +201,7 @@ export function SetPeopleList() {
           <li>국민리스트를 확인할 수 있습니다.</li>
           <li>국민 정보를 추가, 수정 및 삭제할 수 있습니다.</li>
           <li>학생마다 비밀번호를 재설정 할 수 있습니다.</li>
+          <li>학생에게 직업을 부여할 수 있습니다.</li>
         </ul>
       </div>
 
@@ -274,7 +275,7 @@ export function SetPeopleList() {
                 <option value="">무직</option>
                 {jobList.map((data) => (
                   <option key={data.id} value={data.id}>
-                    {data.name}
+                    {data.name} {data.skills}
                   </option>
                 ))}
               </select>

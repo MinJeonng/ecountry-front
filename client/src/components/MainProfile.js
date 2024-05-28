@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import { useParams } from 'react-router-dom';
+import { setStudentInfoList } from '../store/studentInfoReducer';
+import { useDispatch } from 'react-redux';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -20,10 +22,17 @@ const ProfileContainer = styled.div`
 `;
 
 const ProfileName = styled.div`
+  display: flex;
   padding-top: 5px;
   font-size: 25px;
   color: #333;
   font-weight: 700;
+  gap: 10px;
+  .job {
+    font-size: 15px;
+    color: #635f5f;
+    padding-top: 15px;
+  }
 `;
 const LogoutBtn = styled.button`
   border-radius: 19px;
@@ -41,6 +50,13 @@ const LogoutBtn = styled.button`
   img {
     width: 16px;
     height: 16px;
+  }
+`;
+
+const JobSkillBtn = styled.div`
+  padding-right: 30px;
+  a {
+    //밑에 언더라인 없애기
   }
 `;
 
@@ -134,6 +150,8 @@ export function GetName() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
   const [name, setName] = useState('');
+  const [job, setJob] = useState('');
+  const dispatch = useDispatch();
 
   const getUserName = async () => {
     try {
@@ -148,7 +166,12 @@ export function GetName() {
       });
 
       if (res.data.success) {
+        // console.log(res.data.result);
         setName(res.data.result.name);
+        setJob(res.data.result.job);
+        // if (userInfo.isStudent) {
+        dispatch(setStudentInfoList(res.data.result));
+        // }
       } else {
         console.error(res.data.message);
       }
@@ -169,9 +192,10 @@ export function GetName() {
     }
   }, []);
 
-  useEffect(() => {
-    setUserInfo();
-  }, []);
+  // useEffect(() => {
+  //   console.log('22222');
+  //   setUserInfo();
+  // }, []);
 
   useEffect(() => {
     if (userInfo.authority) {
@@ -180,7 +204,9 @@ export function GetName() {
   }, [userInfo]);
   return (
     <ProfileContainer>
-      <ProfileName>{name}</ProfileName>
+      <ProfileName>
+        {name} <div className="job">{job}</div>
+      </ProfileName>
       <LogoutBtn onClick={logoutFunc}>
         로그아웃
         <img
@@ -189,5 +215,90 @@ export function GetName() {
         />
       </LogoutBtn>
     </ProfileContainer>
+  );
+}
+
+export function AddJobSkills() {
+  const { id } = useParams();
+  const [userInfo, setUserInfo] = useAuth(id);
+  const [skillBtn, setSkillBtn] = useState(false);
+  const [skillBtnText, setSkillBtnText] = useState('');
+  const [skillBtnLink, setSkillBtnLink] = useState('');
+
+  const getJobSkills = async () => {
+    setSkillBtn(false); // 스킬 버튼 상태 초기화
+
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/user/info`,
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (res.data.success && userInfo?.isStudent) {
+        const skills = res.data.result.skills;
+        const validSkills = [0, 1, 2, 3, 4, 5];
+        const userSkills = skills.filter((skill) =>
+          validSkills.includes(skill)
+        );
+
+        if (userSkills.length > 0) {
+          const skill = userSkills[0]; // 첫 번째 유효한 스킬을 사용
+          const skillMappings = {
+            0: ['월급지급 페이지로 이동', `/${id}/bankClerk/salary`],
+            1: ['적금관리 페이지로 이동', `/${id}/bankClerk/saving`],
+            2: ['뉴스 작성 페이지로 이동', '/news'],
+            3: ['세금 징수 페이지로 이동', '/tax'],
+            4: ['신용 관리 페이지로 이동', '/credit'],
+            5: ['법 관리 페이지로 이동', '/law'],
+          };
+          const [text, link] = skillMappings[skill] ?? [];
+          setSkillBtnText(text);
+          setSkillBtnLink(link);
+          setSkillBtn(true);
+        }
+      } else {
+        console.log(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log('d');
+  //   if (localStorage.getItem('token')) {
+  //     setUserInfo();
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   setUserInfo();
+  // }, []);
+
+  useEffect(() => {
+    if (userInfo.authority) {
+      getJobSkills();
+    }
+  }, [userInfo]);
+
+  if (!skillBtn) {
+    return null;
+  }
+
+  return (
+    <>
+      <JobSkillBtn>
+        {skillBtnText && (
+          <a href={skillBtnLink} className="job-skill-btn">
+            {skillBtnText}
+          </a>
+        )}
+      </JobSkillBtn>
+    </>
   );
 }

@@ -31,9 +31,9 @@ export default function Setting({ position }) {
             {position === '자리배치도' && <Setting4 />}
             {position === '직업리스트' && <Setting5 />}
             {position === '기본 법 제정' && <Setting6 />}
-            {position === '세법' && <Setting7 />}
-            {position === '자리임대료' && <Setting8 />}
-            {position === '과태료' && <Setting9 />}
+            {position === '세법 제정' && <Setting7 />}
+            {position === '자리임대료 설정' && <Setting8 />}
+            {position === '과태료 설정' && <Setting9 />}
           </>
         }
       />

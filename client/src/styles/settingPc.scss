@@ -32,7 +32,7 @@ $blue: #61759f;
     display: flex;
     flex-direction: column;
     margin: 50px 100px 100px;
-    padding: 100px;
+    padding: 70px;
     justify-content: center;
 
     .select-student-id-title {
@@ -92,9 +92,25 @@ $blue: #61759f;
     }
   }
 
+  .navi-btn {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    margin: 0 100px;
+
+    .next-button {
+      @include button-style;
+    }
+
+    .next-button:hover {
+      border: 1px solid $deep-green;
+      background-color: $deep-green;
+    }
+  }
+
   .frist-next-button {
     @include button-style;
-    font-size: 16px;
+    font-size: 14px;
     width: -webkit-fill-available;
     margin: 0 100px;
   }

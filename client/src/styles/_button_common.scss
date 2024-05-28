@@ -39,21 +39,6 @@ $blue: #61759f;
   background-color: $deep-green;
 }
 
-.navi-btn {
-  display: flex;
-  text-align: center;
-  justify-content: space-between;
-
-  .next-button {
-    @include button-style;
-  }
-
-  .next-button:hover {
-    border: 1px solid $deep-green;
-    background-color: $deep-green;
-  }
-}
-
 .big-button:hover {
   border: 1px solid $deep-green;
   background-color: $deep-green;

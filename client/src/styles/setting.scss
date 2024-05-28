@@ -76,6 +76,21 @@ $blue: #61759f;
     }
   }
 
+  .navi-btn {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+
+    .next-button {
+      @include button-style;
+    }
+
+    .next-button:hover {
+      border: 1px solid $deep-green;
+      background-color: $deep-green;
+    }
+  }
+
   .set-country-title {
     color: #a5a5a5;
     font-size: 14px;

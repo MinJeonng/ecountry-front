@@ -85,13 +85,14 @@ $blue: #61759f;
 
       .user-login-title,
       .user-signup-title {
-        font-size: 18px;
+        font-size: 16px;
+        color: #777777;
       }
 
       .user-login,
       .user-signup {
         width: -webkit-fill-available;
-        font-size: 16px;
+        font-size: 14px;
         @include select-common;
       }
 

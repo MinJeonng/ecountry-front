@@ -24,7 +24,14 @@ export default function JobListManager() {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const jobList = [];
-  const jobSkillList = [];
+  const jobSkillList = [
+    { label: '월급 지급', value: 0 },
+    { label: '적금 관리(가입/해지)', value: 1 },
+    { label: '뉴스 작성', value: 2 },
+    { label: '세금 징수', value: 3 },
+    { label: '신용 관리', value: 4 },
+    { label: '법 관리 ', value: 5 },
+  ];
 
   const getJobs = async () => {
     const res = await axios({
@@ -169,6 +176,7 @@ export default function JobListManager() {
       setJobSkill([]);
       setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
     } else {
+      console.log(job.skills);
       setIsAccordionOpen(true);
       setSelectedIndex(index);
       setIsCustomInput(true);
@@ -187,10 +195,10 @@ export default function JobListManager() {
       handleInputChange({ target: { value: job.salary.toString() } }); //숫자만 추출해 전달
       setSelectedJobIndex(index);
       setSelectedJobIndex(index);
-      setJobSkill([...job.skills]);
+      setJobSkill(job.skills);
     }
   };
-
+  console.log(jobSkill);
   const resetBtn = () => {
     setSelectedJob('');
     setCustomJob('');

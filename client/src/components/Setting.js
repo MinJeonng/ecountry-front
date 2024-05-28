@@ -2118,15 +2118,17 @@ export function Setting9() {
                 >
                   수정
                 </button>
-                <img
-                  className="deleteBtn"
-                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                  onClick={deleteBtn(index)}
+                
                 /> */}
                   <Arrow stroke="#ddd" className="accArrBtn" />
                 </div>
                 {isAccordionOpen && selectedIndex === index && (
                   <form className="box-style">
+                    <img
+                      className="deleteBtn"
+                      src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                      onClick={deleteBtn(index)}
+                    />
                     <div className="reset">
                       <div className="set-title">과태료 사유</div>
                       <img

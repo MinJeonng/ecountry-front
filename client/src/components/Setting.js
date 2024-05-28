@@ -220,7 +220,9 @@ export function Setting1() {
           />
         </div>
       </form>
-      <NextBtn onClick={nextSetting} btnName="다음"></NextBtn>
+      <div className="setting-st">
+        <NextBtn onClick={nextSetting} btnName="다음"></NextBtn>
+      </div>
     </div>
   );
 }
@@ -518,7 +520,7 @@ export function Setting3() {
             <div>
               <div className="box-style">
                 <div className="set-title">비밀번호</div>
-                <ul className="title-list">
+                <ul className="pw-title-list title-list">
                   <li>국민들의 초기 비밀번호를 설정하세요.(4자리)</li>
                   <li>
                     각각의 비밀번호는 국민 개인 계정에서 변경가능하며, 관리자

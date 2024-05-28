@@ -31,7 +31,7 @@ $blue: #61759f;
     @include boxStyle-common;
     display: flex;
     flex-direction: column;
-    margin: 50px 100px 100px;
+    margin: 50px 100px;
     padding: 70px;
     justify-content: center;
 
@@ -108,11 +108,33 @@ $blue: #61759f;
     }
   }
 
+  .setting-st {
+    margin: 0 100px;
+  }
+
+  .pw-title-list {
+    margin: 10px 0 !important;
+
+    li {
+      font-size: 14px !important;
+    }
+  }
+
   .frist-next-button {
     @include button-style;
     font-size: 14px;
     width: -webkit-fill-available;
-    margin: 0 100px;
+    // margin: 0 100px;
+  }
+  .frist-next-button:hover {
+    border: 1px solid $deep-green;
+    background-color: $deep-green;
+  }
+
+  .blue-btn {
+    @include blue-btn-style;
+    width: -webkit-fill-available;
+    margin: 30px 100px 0;
   }
 
   .set-country-title {

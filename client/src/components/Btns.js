@@ -61,7 +61,7 @@ export function NextBtn({ onClick, width, btnName }) {
   return (
     <>
       <button
-        className="next-button"
+        className="frist-next-button"
         onClick={handleClick}
         style={buttonStyled}
         type="submit"

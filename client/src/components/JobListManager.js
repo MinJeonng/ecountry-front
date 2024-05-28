@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './Btns';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { handleKeyDownNext } from '../hooks/Functions';
 
 export default function JobListManager() {
   const { id } = useParams();
@@ -19,6 +21,9 @@ export default function JobListManager() {
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const [unit, setUnit] = useState('');
   const [isCustomInput, setIsCustomInput] = useState(false);
+
+  const countValueRef = useRef(null);
+  const standardValueRef = useRef(null);
 
   const jobList = [
     { label: '은행원', value: '은행원' },
@@ -93,7 +98,7 @@ export default function JobListManager() {
       },
     });
     if (res.data.success) {
-      alert('수정이 완료되었습니다.');
+      toast('수정이 완료되었습니다.');
       getJobs();
       resetBtn();
     }
@@ -113,11 +118,11 @@ export default function JobListManager() {
     });
     console.log(res.data);
     if (res.data.success) {
-      alert('삭제되었습니다.');
+      toast('삭제되었습니다.');
       getJobs();
       resetBtn();
     } else {
-      alert('이미 적용 중인 직업은 삭제할 수 없습니다.');
+      toast('이미 적용 중인 직업은 삭제할 수 없습니다.');
     }
   };
 
@@ -148,7 +153,7 @@ export default function JobListManager() {
       !countValue ||
       inputValue === ''
     ) {
-      alert('모든 값을 입력해주세요.');
+      toast('모든 값을 입력해주세요.');
       return;
     }
 
@@ -263,13 +268,6 @@ export default function JobListManager() {
             onClick={() => selectInput(job, index)}
           >
             {job.name} {job.limited}명
-            {/* <button
-              className="updateBtn"
-              key={index}
-              onClick={() => selectInput(job, index)}
-            >
-              수정
-            </button> */}
             <button type="button" onClick={() => updateJob(job.id)}>
               임시 수정 버튼
             </button>
@@ -363,22 +361,26 @@ export default function JobListManager() {
               min="0"
               value={inputValue}
               onChange={handleInputChange}
+              onKeyDown={(e) => handleKeyDownNext(e, countValueRef)}
             />
             <span className="unit">{unit.unit}</span>
           </div>
           <div className="set-title">인원수</div>
           <div className="container">
             <input
+              ref={countValueRef}
               className="set-input count"
               type="number"
               min="0"
               value={countValue}
               onChange={handleCountValue}
+              onKeyDown={(e) => handleKeyDownNext(e, standardValueRef)}
             ></input>
             <span className="unit">명</span>
           </div>
           <div className="set-title">직업의 기준</div>
           <textarea
+            ref={standardValueRef}
             rows={3.5}
             className="set-input input-textarea"
             type="text"

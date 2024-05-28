@@ -6,6 +6,7 @@ import '../styles/setting.scss';
 import axios from 'axios';
 
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
+import { handleKeyDown } from '../hooks/Functions';
 
 export function TaxLaw() {
   const { id } = useParams();
@@ -28,6 +29,12 @@ export function TaxLaw() {
     { label: '자리 임대료', value: 2 },
     { label: '과태료', value: 3 },
   ];
+
+  const categoryMapping = {
+    tax: { title: '세금', divisions: [0, 1] },
+    rent: { title: '자리 임대료', divisions: [2] },
+    penalty: { title: '과태료', divisions: [3] },
+  };
 
   // 세법 불러오기
   const getTaxList = async () => {
@@ -207,36 +214,49 @@ export function TaxLaw() {
   return (
     <div>
       <ToastContainer />
-      <div className="title-list">
-        <div>세법 관리</div>
-        <ul className="title-list">
-          <li>설정한 세법을 확인할 수 있습니다&#46;</li>
-          <li>
-            세금&#183;자리임대료&#183;과태료 등 추가&#183;수정&#183;삭제 할 수
-            있습니다&#46;
-          </li>
-        </ul>
-      </div>
-      <div>
-        {divisionList.map((divisionItem) => (
-          <div key={divisionItem.value}>
-            <div className="group-header">{divisionItem.label}</div>
 
-            {taxLawList.map((taxLaw, index) => {
-              if (taxLaw.division === divisionItem.value) {
+      <ul className="title-list">
+        <li>설정한 세법을 확인할 수 있습니다&#46;</li>
+        <li>
+          세금&#183;자리임대료&#183;과태료 등 추가&#183;수정&#183;삭제 할 수
+          있습니다&#46;
+        </li>
+      </ul>
+
+      <div>
+        {Object.keys(categoryMapping).map((categoryKey) => {
+          const category = categoryMapping[categoryKey];
+          const filteredTaxLaws = taxLawList.filter((taxLaw) =>
+            category.divisions.includes(taxLaw.division)
+          );
+
+          if (filteredTaxLaws.length === 0) {
+            return null;
+          }
+
+          return (
+            <div className="group-wrap" key={categoryKey}>
+              <div className="group-header">{category.title}</div>
+
+              {filteredTaxLaws.map((taxLaw, index) => {
+                const globalIndex = `${categoryKey}-${index}`;
                 return (
                   <div key={index}>
                     <div
                       className={`display ${
-                        selectedTaxLawIndex === index ? 'accordion-open' : ''
-                      } ${selectedTaxLawIndex === index ? 'selected' : ''}`}
-                      onClick={() => selectInput(taxLaw, index)}
+                        selectedTaxLawIndex === globalIndex
+                          ? 'accordion-open'
+                          : ''
+                      } ${
+                        selectedTaxLawIndex === globalIndex ? 'selected' : ''
+                      }`}
+                      onClick={() => selectInput(taxLaw, globalIndex)}
                     >
                       {taxLaw.name} {taxLaw.tax}
-                      {taxLaw.division == 0 ? '%' : unit}
+                      {taxLaw.division === 0 ? '%' : unit}
                       <Arrow stroke="#ddd" className="accArrBtn" />
                     </div>
-                    {selectedTaxLawIndex === index && (
+                    {selectedTaxLawIndex === globalIndex && (
                       <form className="box-style">
                         <div className="reset">
                           <div className="set-title">세금명</div>
@@ -275,7 +295,9 @@ export function TaxLaw() {
                           className="set-input"
                           type="number"
                           value={tax}
+                          min={0}
                           onChange={(e) => setTax(e.target.value)}
+                          onKeyDown={(e) => handleKeyDown(e, handleAddTaxLaw)}
                         />
                         <button
                           className="blue-btn"
@@ -288,13 +310,12 @@ export function TaxLaw() {
                     )}
                   </div>
                 );
-              } else {
-                return null;
-              }
-            })}
-          </div>
-        ))}
+              })}
+            </div>
+          );
+        })}
       </div>
+
       {isAddOpen && (
         <form className="box-style">
           <div className="reset">
@@ -334,7 +355,9 @@ export function TaxLaw() {
             className="set-input"
             type="number"
             value={tax}
+            min={0}
             onChange={(e) => setTax(e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e, handleAddTaxLaw)}
           />
           <button className="blue-btn" type="button" onClick={handleAddTaxLaw}>
             등록

@@ -80,13 +80,7 @@ export function SetNewsDetail() {
         ></div>
 
         {news.length !== 0 ? (
-          <div className="newsInfo">
-            {/* {news.map((item) => (
-              <div key={item.id}>
-                <span>{item.title}</span>
-              </div>
-            ))} */}
-          </div>
+          <div className="newsInfo"></div>
         ) : (
           <div className="newsContent nonePost">
             <span>뉴스가 존재하지 않습니다.</span>

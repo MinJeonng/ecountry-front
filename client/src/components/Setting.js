@@ -22,6 +22,7 @@ import '../styles/_input_common.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -81,7 +82,7 @@ export function Setting1() {
   const nextSetting = () => {
     try {
       if (!selectedClass || !selectedGrade || !schoolName) {
-        alert('모든 값을 입력해주세요');
+        toast('모든 값을 입력해주세요');
         return;
       }
       navigate('/setting/countryInfo');
@@ -113,9 +114,6 @@ export function Setting1() {
 
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>반 정보 입력</div>
-      </div>
       <ul className="title-list">
         <li>학교, 학년, 반 정보를 입력하세요&#46;</li>
       </ul>
@@ -228,6 +226,7 @@ export function Setting1() {
             onChange={classSelect}
             onKeyDown={handleKeyDown}
             style={{ imeMode: 'active' }}
+            min={1}
           />
         </div>
       </form>
@@ -266,7 +265,7 @@ export function Setting2() {
   const nextSetting = async () => {
     try {
       if (!countryName || !moneyUnit || !salaryDate) {
-        alert('모든 값을 입력해주세요');
+        toast('모든 값을 입력해주세요');
         return;
       }
       navigate('/setting/studentInfo');
@@ -303,9 +302,6 @@ export function Setting2() {
 
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>국가 이름 &#47; 화폐 단위 &#47; 급여 지급일 설정</div>
-      </div>
       <ul className="title-list">
         <li>국가의 이름과 화폐 단위&#44; 급여 지급일을 설정하세요&#46;</li>
       </ul>
@@ -383,6 +379,8 @@ export function Setting3() {
 
   const studentInfoState = useSelector((state) => state.setting3);
 
+  const nameRef = useRef(null);
+
   useEffect(() => {
     setPassword(studentInfoState?.password);
     setAttendees(studentInfoState?.studentList);
@@ -441,6 +439,22 @@ export function Setting3() {
     }
   };
 
+  const handleChange = (e) => {
+    const val = parseInt(e.target.value);
+
+    if (isNaN(val)) {
+      setAttendanceNumber('');
+      return;
+    }
+
+    if (val <= 0) {
+      toast.error('1 이상의 숫자를 입력해주세요.');
+      return;
+    }
+
+    setAttendanceNumber(val.toString());
+  };
+
   const deleteAttendee = (index) => {
     const updatedAttendees = [...attendees];
     updatedAttendees.splice(index, 1);
@@ -454,7 +468,6 @@ export function Setting3() {
     const { attendanceNumber, name } = attendees[index];
     setAttendanceNumber(attendanceNumber);
     setName(name);
-    // setPassword(password);
     setCorrect(true);
     setSelectedIndex(index);
   };
@@ -468,11 +481,11 @@ export function Setting3() {
     setSelectedIndex(null);
     setCorrect(!correct);
   };
-  const newAddBtn = () => {
-    setAttendanceNumber('');
-    setName('');
-    setSelectedIndex(null);
-  };
+  // const newAddBtn = () => {
+  //   setAttendanceNumber('');
+  //   setName('');
+  //   setSelectedIndex(null);
+  // };
 
   // 파일이 선택되었을 때
   const handleFileChange = (event) => {
@@ -485,7 +498,7 @@ export function Setting3() {
     if (selectedFile) {
       // 선택된 파일 어떻게 할지!
     } else {
-      alert('파일을 선택해주세요.');
+      toast('파일을 선택해주세요.');
     }
   };
   //예시 파일 다운로드
@@ -498,18 +511,16 @@ export function Setting3() {
     <>
       <ToastContainer />
       <div className="setting-wrap">
-        <div className="title-list">
-          <div>학생 파일 업로드</div>
-          <ul className="title-list">
-            <li>
-              아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요&#46;
-            </li>
-            <li>
-              만약 엑셀 업로드가 불가할 경우 '직접 입력' 버튼을 눌러 학생 정보를
-              기입할 수 있습니다.
-            </li>
-          </ul>
-        </div>
+        <ul className="title-list">
+          <li>
+            아래의 정해진 양식(엑셀)에 따라 학생 파일을 업로드 하세요&#46;
+          </li>
+          <li>
+            만약 엑셀 업로드가 불가할 경우 '직접 입력' 버튼을 눌러 학생 정보를
+            기입할 수 있습니다.
+          </li>
+        </ul>
+
         <button
           className="blue-btn"
           onClick={() => setDirectInput(!directInput)}
@@ -542,6 +553,7 @@ export function Setting3() {
                       toast.error('비밀번호는 4자리로 설정해주세요.');
                     }
                   }}
+                  onKeyDown={(e) => handleKeyDown(e, handleCheckPassword)}
                 />
                 {checkPassword && (
                   <div style={{ fontSize: '10px', color: 'red' }}>
@@ -579,11 +591,14 @@ export function Setting3() {
               <input
                 className="set-input"
                 type="number"
+                min={0}
                 value={attendanceNumber}
-                onChange={(e) => setAttendanceNumber(e.target.value)}
+                onChange={handleChange}
+                onKeyDown={(e) => handleKeyDownNext(e, nameRef)}
               />
               <div className="set-title">이름</div>
               <input
+                ref={nameRef}
                 className="set-input"
                 type="text"
                 value={name}
@@ -636,14 +651,6 @@ export function Setting3() {
             ></ConfirmBtn>
           </form>
         )}
-
-        {/* <ConfirmBtn
-          onClick={newAddBtn}
-          btnName="학생 등록"
-          width="40%"
-          
-          backgroundColor="#bacd92"
-        ></ConfirmBtn> */}
 
         <div className="navi-btn">
           <button className="next-button" onClick={beforeSetting}>
@@ -724,7 +731,7 @@ export function Setting4() {
 
     if (!isAtLeastOneRowCountSet) {
       // 모든 열이 rowCount가 설정되지 않았다면 경고 메시지 표시
-      alert('최소 1열에 대해 자리 수를 입력해주세요.');
+      toast('최소 1열에 대해 자리 수를 입력해주세요.');
       return;
     }
 
@@ -739,12 +746,9 @@ export function Setting4() {
 
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>자리 배치도</div>
-        <ul className="title-list">
-          <li>교실 내의 자리 배치를 설정하세요&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>교실 내의 자리 배치를 설정하세요&#46;</li>
+      </ul>
 
       <form className="box-style">
         {columns.map((column) => (
@@ -754,6 +758,7 @@ export function Setting4() {
               <input
                 className="seat-count-input"
                 type="number"
+                min={0}
                 onChange={(e) => rowCountChange(column.id, e.target.value)}
                 value={column.rowCount}
                 placeholder="자리 수"
@@ -827,18 +832,15 @@ export function Setting5() {
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
   const jobListState = useSelector((state) => state.setting5);
 
+  const headcountRef = useRef(null);
+  const standardRef = useRef(null);
+
   console.log(jobsDisplay);
 
   useEffect(() => {
     setJobsDisplay(jobListState?.jobsDisplay);
   }, [jobListState]);
 
-  // useEffect(() => {
-  //   if (selectedJobSkill !== '') {
-  //     setJobSkill([...jobSkill, Number(selectedJobSkill)]);
-  //   }
-  //   setSelectedJobSkill('');
-  // }, [selectedJobSkill]);
   useEffect(() => {
     if (selectedJobSkill !== '') {
       setJobSkill((prevSkills) => [...prevSkills, Number(selectedJobSkill)]);
@@ -872,7 +874,19 @@ export function Setting5() {
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const handleCountValue = (e) => {
-    setCountValue(e.target.value);
+    const val = parseInt(e.target.value);
+
+    if (isNaN(val)) {
+      setCountValue('');
+      return;
+    }
+
+    if (val <= 0) {
+      toast.error('1 이상의 숫자를 입력해주세요.');
+      return;
+    }
+
+    setCountValue(val.toString());
   };
   const handleSelectChange = (e) => {
     const value = e.target.value;
@@ -898,7 +912,7 @@ export function Setting5() {
       !countValue ||
       inputValue === ''
     ) {
-      alert('모든 값을 입력해주세요.');
+      toast('모든 값을 입력해주세요.');
       return;
     }
 
@@ -986,16 +1000,14 @@ export function Setting5() {
 
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>직업 리스트</div>
-        <ul className="title-list">
-          <li>국가 내의 다양한 직업과 급여를 설정하세요&#46;</li>
-          <li>
-            각 직업에 따른 자격기준&#40;신용등급&#41;도 함께 설정하세요&#46;
-          </li>
-          <li>기본적으로 제공되는 직업 외에 직업을 추가할 수 있습니다&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>국가 내의 다양한 직업과 급여를 설정하세요&#46;</li>
+        <li>
+          각 직업에 따른 자격기준&#40;신용등급&#41;도 함께 설정하세요&#46;
+        </li>
+        <li>기본적으로 제공되는 직업 외에 직업을 추가할 수 있습니다&#46;</li>
+      </ul>
+
       <div>
         {jobsDisplay.map((job, index) => (
           <div
@@ -1092,10 +1104,6 @@ export function Setting5() {
                 ))}
               </>
             )}
-
-            {/* {selectedJobSkill !== '' && (
-              
-            )} */}
           </div>
           <div className="set-title">급여</div>
           <div className="container">
@@ -1105,22 +1113,26 @@ export function Setting5() {
               min="0"
               value={inputValue}
               onChange={handleInputChange}
+              onKeyDown={(e) => handleKeyDownNext(e, headcountRef)}
             />
             <span className="unit">{moneyUnit}</span>
           </div>
           <div className="set-title">인원수</div>
           <div className="container">
             <input
+              ref={headcountRef}
               className="set-input count"
               type="number"
               min="0"
               value={countValue}
               onChange={handleCountValue}
+              onKeyDown={(e) => handleKeyDownNext(e, standardRef)}
             ></input>
             <span className="unit">명</span>
           </div>
           <div className="set-title">직업의 기준</div>
           <textarea
+            ref={standardRef}
             rows={3.5}
             className="set-input input-textarea"
             type="text"
@@ -1220,12 +1232,10 @@ export function Setting6() {
 
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>기본법 제정</div>
-        <ul className="title-list">
-          <li>국가에 필수인 기본법을 제정하세요&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>국가에 필수인 기본법을 제정하세요&#46;</li>
+      </ul>
+
       <ul>
         {laws.map((law, index) => (
           <li
@@ -1302,6 +1312,8 @@ export function Setting7() {
   ];
 
   const taxLawState = useSelector((state) => state.setting7);
+
+  const priceRef = useRef(null);
 
   useEffect(() => {
     setTaxLawDisplay(taxLawState?.taxLaw);
@@ -1401,17 +1413,15 @@ export function Setting7() {
   };
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>세법 제정</div>
-        <ul className="title-list">
-          <li>국가에 필수인 세법을 제정하세요&#46;</li>
-          <li>부가 단위는 세율을 계산할 시 사용됩니다&#46;</li>
-          <li>
-            부가 단위는 직접 설정한 화폐단위 혹은 % 로 설정할 수 있습니다&#46;
-          </li>
-          <li>월마다 부과됩니다&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>국가에 필수인 세법을 제정하세요&#46;</li>
+        <li>부가 단위는 세율을 계산할 시 사용됩니다&#46;</li>
+        <li>
+          부가 단위는 직접 설정한 화폐단위 혹은 % 로 설정할 수 있습니다&#46;
+        </li>
+        <li>월마다 부과됩니다&#46;</li>
+      </ul>
+
       <div>
         {taxLawDisplay.map((taxLaw, index) => (
           <div
@@ -1444,11 +1454,14 @@ export function Setting7() {
           value={lawNameValue}
           onChange={handleLawNameValue}
           style={{ imeMode: 'active' }}
+          onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
         />
         <div className="set-title">금액</div>
         <input
+          ref={priceRef}
           className="set-input"
           type="number"
+          min="0"
           value={rateValue}
           onChange={handleRateValue}
         />
@@ -1530,13 +1543,10 @@ export function Setting8() {
   };
   return (
     <div className="setting-wrap">
-      <div className="title-list">
-        <div>자리 임대료</div>
-        <ul className="title-list">
-          <li>자리 임대료를 설정하세요&#46;</li>
-          <li>월마다 부과됩니다&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>자리 임대료를 설정하세요&#46;</li>
+        <li>월마다 부과됩니다&#46;</li>
+      </ul>
 
       <form className="box-style">
         <div className="set-country">
@@ -1557,6 +1567,7 @@ export function Setting8() {
             className="set-country-detail"
             type="number"
             value={fee}
+            min="0"
             onChange={(e) => {
               setFee(e.target.value);
             }}
@@ -1596,6 +1607,8 @@ export function Setting9() {
   const [countryId, setCountryID] = useState();
   const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
+
+  const priceRef = useRef(null);
 
   const beforeSetting = () => {
     navigate('/setting/seatRental');
@@ -1754,14 +1767,14 @@ export function Setting9() {
       setCountryID(res.data.result.id);
       setIsLoading(true);
     } catch (e) {
-      alert('error');
+      toast('error');
       console.log(e);
     }
   };
 
   const handleAddFine = () => {
     if (!reasonFine || !fineValue) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
     if (selectedIndex !== null) {
@@ -1810,13 +1823,11 @@ export function Setting9() {
         <Loading countryid={countryId} />
       ) : (
         <div className="setting-wrap">
-          <div className="title-list">
-            <div>과태료 설정</div>
-            <ul className="title-list">
-              <li>국가에 필수인 과태료를 제정하세요&#46;</li>
-              <li>특수 상황에만 부과됩니다&#46;</li>
-            </ul>
-          </div>
+          <ul className="title-list">
+            <li>국가에 필수인 과태료를 제정하세요&#46;</li>
+            <li>특수 상황에만 부과됩니다&#46;</li>
+          </ul>
+
           <div>
             {fineList.map((fine, index) => (
               <div className="display" key={index}>
@@ -1853,10 +1864,12 @@ export function Setting9() {
                 setReasonFine(e.target.value);
               }}
               style={{ imeMode: 'active' }}
+              onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
             />
 
             <div className="set-title">금액</div>
             <input
+              ref={priceRef}
               className="set-input"
               type="number"
               min="0"

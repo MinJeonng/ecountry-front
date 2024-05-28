@@ -78,7 +78,7 @@ export function BoardPeopleRead() {
   useEffect(() => {
     if (userInfo.authority) {
       if (!userInfo.authority) {
-        alert('접근 권한이 없습니다.');
+        toast('접근 권한이 없습니다.');
         navigate('/');
       } else {
         getPetiton();

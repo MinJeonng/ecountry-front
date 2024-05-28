@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
 import { ConfirmBtn } from './Btns';
+import { toast } from 'react-toastify';
 
 export function BoardPeopleWrite() {
   const { id } = useParams();
@@ -32,7 +33,7 @@ export function BoardPeopleWrite() {
           },
         });
         if (res.data.success) {
-          alert('글이 등록되었습니다.');
+          toast('글이 등록되었습니다.');
           document.location.href = `/${id}/boardPeople`;
         }
       } else {
@@ -52,7 +53,7 @@ export function BoardPeopleWrite() {
           },
         });
         if (res.data.success) {
-          alert('글이 등록되었습니다.');
+          toast('글이 등록되었습니다.');
           document.location.href = `/${id}/boardPeople`;
         }
       }

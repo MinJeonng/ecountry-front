@@ -25,7 +25,7 @@ export default function StudentLogin() {
     });
     if (res.data.success) {
       localStorage.setItem('token', res.data.result.token);
-      alert('환영합니다!');
+      toast('환영합니다!');
       window.location.href = `/${id}/main`;
     } else {
       toast('입력하신 정보가 틀렸습니다.', {
@@ -46,6 +46,7 @@ export default function StudentLogin() {
               <input
                 className="user-login"
                 type="number"
+                min={1}
                 onChange={(e) => setRollNumber(e.target.value)}
               ></input>
               <div className="user-login-title">이름</div>

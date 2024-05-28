@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 
 import '../styles/setting.scss';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export function SetPeopleList() {
   const { id } = useParams();
@@ -21,6 +22,14 @@ export function SetPeopleList() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [jobList, setJobList] = useState([]); // 직업 리스트
+
+  const attendanceNumRef = useRef(null);
+  const resetPwRef = useRef(null);
+
+  const editAttendanceNumRef = useRef();
+  const editRateRef = useRef();
+  const editResetPwRef = useRef();
+
   console.log(studentList);
   const getInfo = async () => {
     const res = await axios({
@@ -115,7 +124,7 @@ export function SetPeopleList() {
   //추가
   const handleAddPeopleList = () => {
     if (!studentName || !attendanceNumber || !resetPassword) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
     addStudent();
@@ -260,9 +269,11 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setStudentName(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, editAttendanceNumRef)}
               />
               <div className="set-title">출석번호</div>
               <input
+                ref={editAttendanceNumRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -270,9 +281,11 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setAttendanceNumber(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, editRateRef)}
               />
               <div className="set-title">신용등급</div>
               <input
+                ref={editRateRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -312,6 +325,7 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setResetPassword(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDown(e, updateStudent)}
               />
               <ConfirmBtn
                 onClick={() => {
@@ -329,12 +343,6 @@ export function SetPeopleList() {
           <form className="box-style">
             <div className="reset">
               <div className="set-title">이름</div>
-              {/* <img
-                className="resetBtn"
-                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                onClick={resetBtn}
-                alt="Reset Button"
-              /> */}
             </div>
             <input
               className="set-input"
@@ -343,9 +351,11 @@ export function SetPeopleList() {
               onChange={(e) => {
                 setStudentName(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, attendanceNumRef)}
             />
             <div className="set-title">출석번호</div>
             <input
+              ref={attendanceNumRef}
               className="set-input"
               type="number"
               min="0"
@@ -353,9 +363,11 @@ export function SetPeopleList() {
               onChange={(e) => {
                 setAttendanceNumber(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, resetPwRef)}
             />
             <div className="set-title">초기 비밀번호</div>
             <input
+              ref={resetPwRef}
               className="set-input"
               type="number"
               maxLength={4}
@@ -363,6 +375,7 @@ export function SetPeopleList() {
               onChange={(e) => {
                 setResetPassword(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDown(e, handleAddPeopleList)}
             />
             <ConfirmBtn
               onClick={handleAddPeopleList}
@@ -370,11 +383,6 @@ export function SetPeopleList() {
               backgroundColor="#bacd92"
             ></ConfirmBtn>
           </form>
-          {/* <ConfirmBtn
-            onClick={handleConfirm}
-            btnName="완료"
-            backgroundColor="#bacd92"
-          ></ConfirmBtn> */}
         </>
       )}
     </>

@@ -465,7 +465,6 @@ export function Setting3() {
   };
 
   const correctAttendee = (index) => {
-
     if (selectedIndex === index) {
       setAttendanceNumber('');
       setName('');
@@ -507,7 +506,6 @@ export function Setting3() {
       toast.success('업로드 완료하였습니다.', { autoClose: 1300 });
     } else {
       toast.error('파일을 선택해주세요.', { autoClose: 1300 });
-
     }
   };
   //예시 파일 다운로드
@@ -1007,7 +1005,6 @@ export function Setting5() {
       setIsAccordionOpen(true);
       setIsAddOpen(false);
     }
-
   };
 
   const resetBtn = () => {
@@ -1207,6 +1204,7 @@ export function Setting5() {
           </div>
         ))}
       </div>
+
       {isAddOpen && (
         <form className="box-style">
           <div>
@@ -1244,7 +1242,6 @@ export function Setting5() {
             </select>
             <div className="set-title">직업의 역할(복수선택 가능)</div>
             <select
-
               className="set-input"
               value={selectedJobSkill}
               onChange={handleSelectJobSkill}
@@ -1260,27 +1257,25 @@ export function Setting5() {
               ))}
             </select>
             <div style={{ fontSize: '12px', margin: '5px' }}>
-              {jobSkill.length == 0 ? (
+              {jobSkill.length === 0 ? (
                 <div style={{ marginBottom: '20px' }}></div>
               ) : (
-                <>
-                  {jobSkill.map((skill, index) => (
-                    <div
-                      style={{
-                        margin: '5px',
-                        padding: '2px',
-                        borderBottom: '1px solid rgb(186, 205, 146)',
-                        width: 'fit-content',
-                        display: 'inline-table',
-                      }}
-                      key={index}
-                      onClick={() => deleteSkill(index)}
-                    >
-                      {jobSkillList[skill]?.label}
-                      <span style={{ paddingLeft: '4px' }}>x</span>
-                    </div>
-                  ))}
-                </>
+                jobSkill.map((skill, index) => (
+                  <div
+                    style={{
+                      margin: '5px',
+                      padding: '2px',
+                      borderBottom: '1px solid rgb(186, 205, 146)',
+                      width: 'fit-content',
+                      display: 'inline-table',
+                    }}
+                    key={index}
+                    onClick={() => deleteSkill(index)}
+                  >
+                    {jobSkillList[skill]?.label}
+                    <span style={{ paddingLeft: '4px' }}>x</span>
+                  </div>
+                ))
               )}
             </div>
             <div className="set-title">급여</div>
@@ -1302,7 +1297,7 @@ export function Setting5() {
                 min="0"
                 value={countValue}
                 onChange={handleCountValue}
-              ></input>
+              />
               <span className="unit">명</span>
             </div>
             <div className="set-title">직업의 기준</div>
@@ -1310,54 +1305,28 @@ export function Setting5() {
               rows={3.5}
               className="set-input input-textarea"
               type="text"
-
-              min="0"
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={(e) => handleKeyDownNext(e, headcountRef)}
+              value={standardValue}
+              onChange={handleStandardChange}
+              style={{ imeMode: 'active' }}
             />
-            <span className="unit">{moneyUnit}</span>
+            <div className="set-title">직업의 역할</div>
+            <textarea
+              rows={3.5}
+              className="set-input input-textarea"
+              type="text"
+              value={jobRoleValue}
+              onChange={handleJobRoleChange}
+              style={{ imeMode: 'active' }}
+            />
           </div>
-          <div className="set-title">인원수</div>
-          <div className="container">
-            <input
-              ref={headcountRef}
-              className="set-input count"
-              type="number"
-              min="0"
-              value={countValue}
-              onChange={handleCountValue}
-              onKeyDown={(e) => handleKeyDownNext(e, standardRef)}
-            ></input>
-            <span className="unit">명</span>
-          </div>
-          <div className="set-title">직업의 기준</div>
-          <textarea
-            ref={standardRef}
-            rows={3.5}
-            className="set-input input-textarea"
-            type="text"
-            value={standardValue}
-            onChange={handleStandardChange}
-            style={{ imeMode: 'active' }}
-          />
-          <div className="set-title">직업의 역할</div>
-          <textarea
-            rows={3.5}
-            className="set-input input-textarea"
-            type="text"
-            value={jobRoleValue}
-            onChange={handleJobRoleChange}
-            style={{ imeMode: 'active' }}
-          />
-        </div>
-        <ConfirmBtn
-          onClick={addJob}
-          btnName="확인"
-          backgroundColor="#bacd92"
-        ></ConfirmBtn>
-      </form>
-)}
+          <ConfirmBtn
+            onClick={addJob}
+            btnName="확인"
+            backgroundColor="#bacd92"
+          ></ConfirmBtn>
+        </form>
+      )}
+
       <form>
         <div className="navi-btn">
           <button className="next-button" type="submit" onClick={beforeSetting}>
@@ -1449,7 +1418,6 @@ export function Setting6() {
         </ul>
       </div>
       <div className="newsInfo">
-
         {laws.map((law, index) => (
           <div key={index}>
             <div
@@ -2164,13 +2132,11 @@ export function Setting9() {
                       ? 'accordion-open'
                       : ''
                   } ${selectedIndex === index ? 'selected' : ''}`}
-
                   onClick={() => selectInput(fine, index)}
                   style={{ fontSize: '13px', color: '#666666' }}
                 >
                   {fine.reason} | {fine.fine}
                   {moneyUnit}
-                
                   <Arrow stroke="#ddd" className="accArrBtn" />
                 </div>
                 {isAccordionOpen && selectedIndex === index && (

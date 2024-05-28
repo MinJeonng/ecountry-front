@@ -25,7 +25,6 @@ export default function JobListManager() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-
   const countValueRef = useRef(null);
   const standardValueRef = useRef(null);
 
@@ -300,7 +299,8 @@ export default function JobListManager() {
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
               onClick={(e) => deleteBtn(e, job.id)}
-            /> */}
+            />{' '}
+            */}
             <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
         ))}

@@ -106,7 +106,7 @@ $blue: #61759f;
 .updateBtn {
   display: block;
   position: absolute;
-  top: 50%;
+  top: 10%;
   right: 43px;
   transform: translateY(-50%);
   cursor: pointer;
@@ -128,8 +128,8 @@ $blue: #61759f;
   position: absolute;
   width: 17px;
   height: 17px;
-  top: 50%;
-  right: 15px;
+  top: 10%;
+  right: 10%;
   transform: translateY(-50%);
   cursor: pointer;
 }

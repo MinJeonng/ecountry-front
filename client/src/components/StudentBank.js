@@ -310,7 +310,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
         console.log(error);
       }
     } else {
-      alert('이체 금액을 입력해주세요.');
+      toast('이체 금액을 입력해주세요.');
     }
   };
   return (

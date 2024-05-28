@@ -130,7 +130,7 @@ $blue: #61759f;
   .display {
     position: relative;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 14px;
     text-align: start;
     padding: 8px 10px;
     margin-bottom: 15px;
@@ -280,6 +280,14 @@ $blue: #61759f;
   align-items: center;
 }
 
-.group-header {
-  display: none;
+// 세법 관리
+
+.group-wrap {
+  border-bottom: 1px solid #b3b3b3;
+
+  .group-header {
+    margin: 20px 0;
+    font-size: 14px;
+    font-weight: 800;
+  }
 }

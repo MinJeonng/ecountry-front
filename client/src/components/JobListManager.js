@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './Btns';
+import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { handleKeyDownNext } from '../hooks/Functions';
 
 export default function JobListManager() {
   const { id } = useParams();
@@ -19,6 +22,11 @@ export default function JobListManager() {
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const [unit, setUnit] = useState('');
   const [isCustomInput, setIsCustomInput] = useState(false);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const countValueRef = useRef(null);
+  const standardValueRef = useRef(null);
 
   const jobList = [
     { label: '은행원', value: '은행원' },
@@ -93,7 +101,7 @@ export default function JobListManager() {
       },
     });
     if (res.data.success) {
-      alert('수정이 완료되었습니다.');
+      toast('수정이 완료되었습니다.');
       getJobs();
       resetBtn();
     }
@@ -113,11 +121,11 @@ export default function JobListManager() {
     });
     console.log(res.data);
     if (res.data.success) {
-      alert('삭제되었습니다.');
+      toast('삭제되었습니다.');
       getJobs();
       resetBtn();
     } else {
-      alert('이미 적용 중인 직업은 삭제할 수 없습니다.');
+      toast('이미 적용 중인 직업은 삭제할 수 없습니다.');
     }
   };
 
@@ -148,7 +156,7 @@ export default function JobListManager() {
       !countValue ||
       inputValue === ''
     ) {
-      alert('모든 값을 입력해주세요.');
+      toast('모든 값을 입력해주세요.');
       return;
     }
 
@@ -167,25 +175,42 @@ export default function JobListManager() {
   };
 
   const selectInput = (job, index) => {
-    setIsCustomInput(true);
-    setSelectedJob('직접입력');
-    setCustomJob(job.name);
-    jobList.forEach((data) => {
-      if (data.value === job.name) {
-        setIsCustomInput(false);
-        setSelectedJob(data.value);
-        setCustomJob('');
-      }
-    });
-    setStandardValue(job.standard);
-    setJobRoleValue(job.roll);
-    setCountValue(job.limited);
-    handleInputChange({ target: { value: job.salary.toString() } }); //숫자만 추출해 전달
-    setSelectedJobIndex(index);
-    setSelectedJobIndex(index);
-    setJobSkill([...job.skills]);
+    if (selectedIndex === index) {
+      setIsAccordionOpen(false);
+      setSelectedIndex(null);
+      setIsCustomInput(false);
+      setSelectedJob('');
+      setCustomJob('');
+      setStandardValue('');
+      setJobRoleValue('');
+      setCountValue('');
+      handleInputChange({ target: { value: '' } });
+      setJobSkill([]);
+      setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
+    } else {
+      console.log(job.skills);
+      setIsAccordionOpen(true);
+      setSelectedIndex(index);
+      setIsCustomInput(true);
+      setSelectedJob('직접입력');
+      setCustomJob(job.name);
+      jobList.forEach((data) => {
+        if (data.value === job.name) {
+          setIsCustomInput(false);
+          setSelectedJob(data.value);
+          setCustomJob('');
+        }
+      });
+      setStandardValue(job.standard);
+      setJobRoleValue(job.roll);
+      setCountValue(job.limited);
+      handleInputChange({ target: { value: job.salary.toString() } }); //숫자만 추출해 전달
+      setSelectedJobIndex(index);
+      setSelectedJobIndex(index);
+      setJobSkill(job.skills);
+    }
   };
-
+  console.log(jobSkill);
   const resetBtn = () => {
     setSelectedJob('');
     setCustomJob('');
@@ -195,6 +220,8 @@ export default function JobListManager() {
     setJobSkill([]);
     handleInputChange({ target: { value: '' } });
     setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
+    setIsAccordionOpen(false);
+    setSelectedIndex(null);
   };
 
   const deleteBtn = (e, jobId) => {
@@ -258,18 +285,13 @@ export default function JobListManager() {
       <div>
         {jobsDisplay.map((job, index) => (
           <div
-            className="display"
+            className={`display ${
+              isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
+            } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
             onClick={() => selectInput(job, index)}
           >
             {job.name} {job.limited}명
-            {/* <button
-              className="updateBtn"
-              key={index}
-              onClick={() => selectInput(job, index)}
-            >
-              수정
-            </button> */}
             <button type="button" onClick={() => updateJob(job.id)}>
               임시 수정 버튼
             </button>
@@ -277,7 +299,9 @@ export default function JobListManager() {
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
               onClick={(e) => deleteBtn(e, job.id)}
-            />
+            />{' '}
+            */}
+            <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
         ))}
       </div>
@@ -363,22 +387,26 @@ export default function JobListManager() {
               min="0"
               value={inputValue}
               onChange={handleInputChange}
+              onKeyDown={(e) => handleKeyDownNext(e, countValueRef)}
             />
             <span className="unit">{unit.unit}</span>
           </div>
           <div className="set-title">인원수</div>
           <div className="container">
             <input
+              ref={countValueRef}
               className="set-input count"
               type="number"
               min="0"
               value={countValue}
               onChange={handleCountValue}
+              onKeyDown={(e) => handleKeyDownNext(e, standardValueRef)}
             ></input>
             <span className="unit">명</span>
           </div>
           <div className="set-title">직업의 기준</div>
           <textarea
+            ref={standardValueRef}
             rows={3.5}
             className="set-input input-textarea"
             type="text"

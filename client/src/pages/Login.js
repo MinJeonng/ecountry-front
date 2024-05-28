@@ -22,7 +22,7 @@ export default function Login() {
       .then((res) => {
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
-          alert('환영합니다!');
+          toast('환영합니다!');
           navigate('/country');
         } else {
           toast('아이디 또는 비밀번호가 틀렸습니다.', {
@@ -43,19 +43,12 @@ export default function Login() {
         }
         childrenBottom={
           <div className="setting-wrap">
-            {/* <div>
-            <div>로그인</div>
-            <ul className="title-list">
-              <li>아이디와 비밀번호를 입력하세요.</li>
-            </ul>
-          </div> */}
             <form className="box-style">
               <div className="user-login-title">아이디</div>
               <input
                 className="user-login"
                 type="text"
                 onChange={(e) => setUserId(e.target.value)}
-
                 onKeyDown={(e) => handleKeyDownNext(e, passwordRef)}
               ></input>
               <div className="user-login-title">비밀번호</div>
@@ -65,9 +58,7 @@ export default function Login() {
                 type="password"
                 maxLength={4}
                 onChange={(e) => setPw(e.target.value)}
-
                 onKeyDown={(e) => handleKeyDown(e, loginFunc)}
-
               ></input>
               <button className="login-btn" type="button" onClick={loginFunc}>
                 로그인

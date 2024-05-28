@@ -95,8 +95,6 @@ function App() {
             path="/:id/manager/investment"
             element={<SetInvestment position="투자 상품 관리" />}
           />
-
-          {/* <Route path="/:id/manager/boardPeople" element={<SetBoardPeople />} /> */}
           <Route path="/:id/manager/seatMap" element={<SetSeat />} />
 
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />

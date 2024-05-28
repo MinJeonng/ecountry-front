@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import '../styles/setting.scss';
 import axios from 'axios';
+import { handleKeyDown } from '../hooks/Functions';
 
 export function AssemblyLawList() {
   const { id } = useParams();
@@ -40,7 +41,7 @@ export function AssemblyLawList() {
       data: { id: ruleId, rule: selectedDetail },
     });
     if (res.data.success) {
-      alert('규칙 수정이 완료되었습니다.');
+      toast('규칙 수정이 완료되었습니다.');
       getRules();
     }
   };
@@ -213,6 +214,7 @@ export function AssemblyLawList() {
               setSelectedDetail(e.target.value);
               setSelectedIndex(laws.length);
             }}
+            onKeyDown={(e) => handleKeyDown(e, handleNewLaw)}
           />
           <ConfirmBtn
             onClick={handleNewLaw}

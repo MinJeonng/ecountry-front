@@ -1,3 +1,7 @@
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
 @import '../styles/variables';
 @import '../styles/input_common';
 
@@ -28,6 +32,88 @@
       font-size: 14px;
       font-weight: 800;
       color: #093030;
+    }
+  }
+
+  .login-btn,
+  .signup-btn {
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid $green;
+    background-color: $green;
+    width: 100%;
+    border-radius: 18px;
+    margin-top: 20px;
+    padding: 6px 15px;
+  }
+
+  .login-btn:hover,
+  .signup-btn:hover {
+    border: 1px solid $deep-green;
+    background-color: $deep-green;
+    color: #093030;
+  }
+}
+
+@include desktop {
+  .login-wrap,
+  .signup-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .signup-title-list {
+      margin: 10px 0;
+      width: -webkit-fill-available;
+      margin: 50px 100px 0;
+
+      li {
+        margin-left: 20px;
+        list-style: disc;
+        font-size: 18px;
+        color: #777777;
+      }
+    }
+
+    .box-style {
+      @include boxStyle-common;
+      display: flex;
+      flex-direction: column;
+      margin: 50px 100px 100px;
+      padding: 100px;
+      justify-content: center;
+
+      .user-login-title,
+      .user-signup-title {
+        font-size: 18px;
+      }
+
+      .user-login,
+      .user-signup {
+        width: -webkit-fill-available;
+        font-size: 16px;
+        @include select-common;
+      }
+
+      .login-btn,
+      .signup-btn {
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: bold;
+        border: 1px solid $green;
+        background-color: $green;
+        width: 100%;
+        border-radius: 18px;
+        margin-top: 20px;
+        padding: 6px 15px;
+      }
+
+      .login-btn:hover,
+      .signup-btn:hover {
+        border: 1px solid $deep-green;
+        background-color: $deep-green;
+        color: #093030;
+      }
     }
   }
 }

@@ -3,6 +3,7 @@ $green: #bacd92;
 $deep-green: #75a47f;
 $blue: #61759f;
 
+@import '../styles/button_common';
 @import '../styles/variables';
 @import '../styles/input_common';
 
@@ -39,6 +40,17 @@ $blue: #61759f;
       width: -webkit-fill-available;
       @include select-common;
     }
+
+    .select-school-btn {
+      width: 50px;
+      height: 44px;
+      border: 1px solid $green;
+      border-radius: 12px;
+      color: #ffffff;
+      background-color: $green;
+      font-size: 12px;
+    }
+
     .select-name {
       width: -webkit-fill-available;
       @include select-common;
@@ -80,6 +92,11 @@ $blue: #61759f;
   .set-input {
     width: -webkit-fill-available;
     @include select-common;
+  }
+
+  .frist-next-button {
+    @include button-style;
+    width: 100%;
   }
 
   .set-salary {

@@ -142,19 +142,9 @@ export function Setting1() {
                 }}
               />
               <button
+                className="select-school-btn"
                 type="button"
                 onClick={searchFunc}
-                style={{
-                  width: '50px',
-                  height: '43px',
-                  marginTop: '0',
-                  border: '1px solid #bacd92',
-                  borderRadius: '12px',
-                  color: '#ffffff',
-                  backgroundColor: '#bacd92',
-                  fontSize: '12px',
-                  marginBottom: '0px',
-                }}
               >
                 검색
               </button>
@@ -177,7 +167,7 @@ export function Setting1() {
             (schoolList.length === 0 ? (
               <div
                 style={{
-                  fontSize: '13px',
+                  fontSize: '14px',
                   color: '#666666',
                   marginBottom: '20px',
                 }}
@@ -481,11 +471,6 @@ export function Setting3() {
     setSelectedIndex(null);
     setCorrect(!correct);
   };
-  // const newAddBtn = () => {
-  //   setAttendanceNumber('');
-  //   setName('');
-  //   setSelectedIndex(null);
-  // };
 
   // 파일이 선택되었을 때
   const handleFileChange = (event) => {

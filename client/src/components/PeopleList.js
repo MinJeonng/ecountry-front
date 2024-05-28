@@ -191,7 +191,32 @@ export function SetPeopleList() {
     setResetPassword('');
   };
 
-  const handleConfirm = () => {};
+  const skillMap = {
+    0: '월급지급',
+    1: '적금관리(가입/해지)',
+    2: '뉴스 작성',
+    3: '세금 징수',
+    4: '신용 관리',
+    5: '법 관리',
+  };
+  const SkillList = ({ skills }) => {
+    const skillNames = skills.map(
+      (skill) => skillMap[skill] || 'Unknown skill'
+    );
+
+    return (
+      <div>
+        (
+        {skillNames.map((name, index) => (
+          <React.Fragment key={index}>
+            <span>{name}</span>
+            {index < skillNames.length - 1 && ', '}
+          </React.Fragment>
+        ))}
+        )
+      </div>
+    );
+  };
 
   useEffect(() => {
     console.log(job);
@@ -285,9 +310,9 @@ export function SetPeopleList() {
                 }}
               >
                 <option value="">무직</option>
-                {jobList.map((data) => (
+                {jobList.map((data, index) => (
                   <option key={data.id} value={data.id}>
-                    {data.name}
+                    {data.name} {<SkillList skills={data.skills} />}
                   </option>
                 ))}
               </select>
@@ -313,15 +338,6 @@ export function SetPeopleList() {
           )}
         </>
       ))}
-
-      {isAccordionOpen && (
-        <ConfirmBtn
-          onClick={newAddBtn}
-          btnName="학생 등록"
-          backgroundColor="#bacd92"
-        ></ConfirmBtn>
-      )}
-
       {isAddOpen && (
         <>
           <form className="box-style">

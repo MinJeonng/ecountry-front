@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './Btns';
+import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { handleKeyDownNext } from '../hooks/Functions';
@@ -21,6 +22,9 @@ export default function JobListManager() {
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const [unit, setUnit] = useState('');
   const [isCustomInput, setIsCustomInput] = useState(false);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
 
   const countValueRef = useRef(null);
   const standardValueRef = useRef(null);
@@ -172,25 +176,42 @@ export default function JobListManager() {
   };
 
   const selectInput = (job, index) => {
-    setIsCustomInput(true);
-    setSelectedJob('직접입력');
-    setCustomJob(job.name);
-    jobList.forEach((data) => {
-      if (data.value === job.name) {
-        setIsCustomInput(false);
-        setSelectedJob(data.value);
-        setCustomJob('');
-      }
-    });
-    setStandardValue(job.standard);
-    setJobRoleValue(job.roll);
-    setCountValue(job.limited);
-    handleInputChange({ target: { value: job.salary.toString() } }); //숫자만 추출해 전달
-    setSelectedJobIndex(index);
-    setSelectedJobIndex(index);
-    setJobSkill([...job.skills]);
+    if (selectedIndex === index) {
+      setIsAccordionOpen(false);
+      setSelectedIndex(null);
+      setIsCustomInput(false);
+      setSelectedJob('');
+      setCustomJob('');
+      setStandardValue('');
+      setJobRoleValue('');
+      setCountValue('');
+      handleInputChange({ target: { value: '' } });
+      setJobSkill([]);
+      setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
+    } else {
+      console.log(job.skills);
+      setIsAccordionOpen(true);
+      setSelectedIndex(index);
+      setIsCustomInput(true);
+      setSelectedJob('직접입력');
+      setCustomJob(job.name);
+      jobList.forEach((data) => {
+        if (data.value === job.name) {
+          setIsCustomInput(false);
+          setSelectedJob(data.value);
+          setCustomJob('');
+        }
+      });
+      setStandardValue(job.standard);
+      setJobRoleValue(job.roll);
+      setCountValue(job.limited);
+      handleInputChange({ target: { value: job.salary.toString() } }); //숫자만 추출해 전달
+      setSelectedJobIndex(index);
+      setSelectedJobIndex(index);
+      setJobSkill(job.skills);
+    }
   };
-
+  console.log(jobSkill);
   const resetBtn = () => {
     setSelectedJob('');
     setCustomJob('');
@@ -200,6 +221,8 @@ export default function JobListManager() {
     setJobSkill([]);
     handleInputChange({ target: { value: '' } });
     setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
+    setIsAccordionOpen(false);
+    setSelectedIndex(null);
   };
 
   const deleteBtn = (e, jobId) => {
@@ -263,7 +286,9 @@ export default function JobListManager() {
       <div>
         {jobsDisplay.map((job, index) => (
           <div
-            className="display"
+            className={`display ${
+              isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
+            } ${selectedIndex === index ? 'selected' : ''}`}
             key={index}
             onClick={() => selectInput(job, index)}
           >
@@ -275,7 +300,8 @@ export default function JobListManager() {
               className="deleteBtn"
               src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
               onClick={(e) => deleteBtn(e, job.id)}
-            />
+            /> */}
+            <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
         ))}
       </div>

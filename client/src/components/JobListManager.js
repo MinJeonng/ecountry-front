@@ -24,6 +24,7 @@ export default function JobListManager() {
   const [isCustomInput, setIsCustomInput] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [isAddOpen, setIsAddOpen] = useState(true);
 
   const countValueRef = useRef(null);
   const standardValueRef = useRef(null);
@@ -156,12 +157,38 @@ export default function JobListManager() {
       !countValue ||
       inputValue === ''
     ) {
-      toast('모든 값을 입력해주세요.');
+      toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
       return;
     }
-
-    // db 추가 로직
-    sendJob();
+    // 모든 입력값이 유효한 경우
+    if (selectedIndex !== null) {
+      console.log('first');
+      // 이미 목록에 있는 직업을 업데이트
+      const updatedJobs = [...jobsDisplay];
+      updatedJobs[selectedIndex] = {
+        customValue: customJob,
+        selectValue: selectedJob,
+        standard: standardValue,
+        role: jobRoleValue,
+        count: countValue,
+        salary: inputValue,
+        skills: jobSkill,
+      };
+      setJobsDisplay(updatedJobs);
+      setIsAddOpen(true);
+    } else {
+      // 새 직업을 목록에 추가
+      const newJob = {
+        customValue: customJob,
+        selectValue: selectedJob,
+        standard: standardValue,
+        role: jobRoleValue,
+        count: countValue,
+        salary: inputValue,
+        skills: jobSkill,
+      };
+      setJobsDisplay((prevJobs) => [...prevJobs, newJob]);
+    }
 
     // 입력 필드 초기화
     setSelectedJob('');
@@ -171,7 +198,7 @@ export default function JobListManager() {
     setCountValue('');
     handleInputChange({ target: { value: '' } });
     setJobSkill([]);
-    setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
+    setSelectedIndex(null); // 선택한 직업 인덱스 초기화
   };
 
   const selectInput = (job, index) => {
@@ -186,9 +213,9 @@ export default function JobListManager() {
       setCountValue('');
       handleInputChange({ target: { value: '' } });
       setJobSkill([]);
-      setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
+      setSelectedJobIndex(null);
+      setIsAddOpen(true);
     } else {
-      console.log(job.skills);
       setIsAccordionOpen(true);
       setSelectedIndex(index);
       setIsCustomInput(true);
@@ -208,9 +235,9 @@ export default function JobListManager() {
       setSelectedJobIndex(index);
       setSelectedJobIndex(index);
       setJobSkill(job.skills);
+      setIsAddOpen(false);
     }
   };
-  console.log(jobSkill);
   const resetBtn = () => {
     setSelectedJob('');
     setCustomJob('');
@@ -226,9 +253,7 @@ export default function JobListManager() {
 
   const deleteBtn = (e, jobId) => {
     e.stopPropagation(); // 이벤트 버블링 방지
-
     deleteJob(jobId);
-
     // 초기화
     setSelectedJobIndex(null);
     setSelectedJob('');
@@ -237,7 +262,9 @@ export default function JobListManager() {
     setJobRoleValue('');
     setCountValue('');
     handleInputChange({ target: { value: '' } });
+    setIsAddOpen(true);
   };
+
   const deleteSkill = (index) => {
     const updatedSkill = [...jobSkill];
     updatedSkill.splice(index, 1);
@@ -284,152 +311,291 @@ export default function JobListManager() {
     <div className="setting-wrap">
       <div>
         {jobsDisplay.map((job, index) => (
-          <div
-            className={`display ${
-              isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
-            } ${selectedIndex === index ? 'selected' : ''}`}
-            key={index}
-            onClick={() => selectInput(job, index)}
-          >
-            {job.name} {job.limited}명
-            <button type="button" onClick={() => updateJob(job.id)}>
+          <div key={index}>
+            <div
+              className={`display ${
+                isAccordionOpen && selectedIndex === index
+                  ? 'accordion-open'
+                  : ''
+              } ${selectedIndex === index ? 'selected' : ''}`}
+              key={index}
+              onClick={() => selectInput(job, index)}
+            >
+              {job.name} {job.limited}명
+              {/* <button type="button" onClick={() => updateJob(job.id)}>
               임시 수정 버튼
             </button>
-            <img
-              className="deleteBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={(e) => deleteBtn(e, job.id)}
-            />{' '}
+            {' '}
             */}
-            <Arrow stroke="#ddd" className="accArrBtn" />
+              <Arrow stroke="#ddd" className="accArrBtn" />
+            </div>
+            {isAccordionOpen && selectedIndex === index && (
+              <form className="box-style">
+                <div>
+                  <div className="reset">
+                    <div className="set-title">직업명</div>
+                    <img
+                      className="resetBtn"
+                      src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                      onClick={(e) => deleteBtn(e, job.id)}
+                    />
+                  </div>
+                  {isCustomInput && (
+                    <input
+                      type="text"
+                      className="set-input"
+                      value={customJob}
+                      onChange={handleCustomInputChange}
+                      placeholder="직업을 입력해주세요"
+                      style={{ imeMode: 'active' }}
+                    />
+                  )}
+                  <select
+                    className="set-input"
+                    value={selectedJob}
+                    onChange={handleSelectChange}
+                  >
+                    <option
+                      value=""
+                      disabled
+                      selected
+                      style={{ color: '#a5a5a5' }}
+                    >
+                      선택해주세요
+                    </option>
+                    {jobList.map((job) => (
+                      <option key={job.value} value={job.value}>
+                        {job.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="set-title">직업의 역할(복수선택 가능)</div>
+                  <select
+                    className="set-input"
+                    value={selectedJobSkill}
+                    onChange={handleSelectJobSkill}
+                    style={{ marginBottom: '0px' }}
+                  >
+                    <option
+                      value=""
+                      disabled
+                      selected
+                      style={{ color: '#a5a5a5' }}
+                    >
+                      선택해주세요
+                    </option>
+                    {jobSkillList.map((skill) => (
+                      <option key={skill.value} value={skill.value}>
+                        {skill.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div style={{ fontSize: '12px', margin: '5px' }}>
+                    {jobSkill.length == 0 ? (
+                      <div style={{ marginBottom: '20px' }}></div>
+                    ) : (
+                      <>
+                        {jobSkill.map((skill, index) => (
+                          <div
+                            style={{
+                              margin: '5px',
+                              padding: '2px',
+                              borderBottom: '1px solid rgb(186, 205, 146)',
+                              width: 'fit-content',
+                              display: 'inline-table',
+                            }}
+                            key={index}
+                            onClick={() => deleteSkill(index)}
+                          >
+                            {jobSkillList[skill]?.label}
+                            <span style={{ paddingLeft: '4px' }}>x</span>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <div className="set-title">급여</div>
+                  <div className="container">
+                    <input
+                      className="set-input"
+                      type="text"
+                      min="0"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      onKeyDown={(e) => handleKeyDownNext(e, countValueRef)}
+                    />
+                    <span className="unit">{unit.unit}</span>
+                  </div>
+                  <div className="set-title">인원수</div>
+                  <div className="container">
+                    <input
+                      ref={countValueRef}
+                      className="set-input count"
+                      type="number"
+                      min="0"
+                      value={countValue}
+                      onChange={handleCountValue}
+                      onKeyDown={(e) => handleKeyDownNext(e, standardValueRef)}
+                    ></input>
+                    <span className="unit">명</span>
+                  </div>
+                  <div className="set-title">직업의 기준</div>
+                  <textarea
+                    ref={standardValueRef}
+                    rows={3.5}
+                    className="set-input input-textarea"
+                    type="text"
+                    value={standardValue}
+                    onChange={handleStandardChange}
+                    style={{ imeMode: 'active' }}
+                  />
+                  <div className="set-title">직업의 역할</div>
+                  <textarea
+                    rows={3.5}
+                    className="set-input input-textarea"
+                    type="text"
+                    value={jobRoleValue}
+                    onChange={handleJobRoleChange}
+                    style={{ imeMode: 'active' }}
+                  />
+                </div>
+                <ConfirmBtn
+                  onClick={addJob}
+                  btnName="수정"
+                  backgroundColor="#bacd92"
+                ></ConfirmBtn>
+              </form>
+            )}
           </div>
         ))}
       </div>
-      <form className="box-style">
-        <div>
-          <div className="reset">
-            <div className="set-title">직업명</div>
-            <img
-              className="resetBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-              onClick={resetBtn}
-            />
-          </div>
-          {isCustomInput && (
-            <input
-              type="text"
+      {isAddOpen && (
+        <form className="box-style">
+          <div>
+            <div className="reset">
+              <div className="set-title">직업명</div>
+              <img
+                className="resetBtn"
+                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
+                onClick={resetBtn}
+              />
+            </div>
+            {isCustomInput && (
+              <input
+                type="text"
+                className="set-input"
+                value={customJob}
+                onChange={handleCustomInputChange}
+                placeholder="직업을 입력해주세요"
+                style={{ imeMode: 'active' }}
+              />
+            )}
+            <select
               className="set-input"
-              value={customJob}
-              onChange={handleCustomInputChange}
-              placeholder="직업을 입력해주세요"
+              value={selectedJob}
+              onChange={handleSelectChange}
+            >
+              <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+                선택해주세요
+              </option>
+              {jobList.map((job) => (
+                <option key={job.value} value={job.value}>
+                  {job.label}
+                </option>
+              ))}
+            </select>
+            <div className="set-title">직업의 역할(복수선택 가능)</div>
+            <select
+              className="set-input"
+              value={selectedJobSkill}
+              onChange={handleSelectJobSkill}
+              style={{ marginBottom: '0px' }}
+            >
+              <option value="" disabled selected style={{ color: '#a5a5a5' }}>
+                선택해주세요
+              </option>
+              {jobSkillList.map((skill) => (
+                <option key={skill.value} value={skill.value}>
+                  {skill.label}
+                </option>
+              ))}
+            </select>
+            <div style={{ fontSize: '12px', margin: '5px' }}>
+              {jobSkill.length == 0 ? (
+                <div style={{ marginBottom: '20px' }}></div>
+              ) : (
+                <>
+                  {jobSkill.map((skill, index) => (
+                    <div
+                      style={{
+                        margin: '5px',
+                        padding: '2px',
+                        borderBottom: '1px solid rgb(186, 205, 146)',
+                        width: 'fit-content',
+                        display: 'inline-table',
+                      }}
+                      key={index}
+                      onClick={() => deleteSkill(index)}
+                    >
+                      {jobSkillList[skill]?.label}
+                      <span style={{ paddingLeft: '4px' }}>x</span>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+            <div className="set-title">급여</div>
+            <div className="container">
+              <input
+                className="set-input"
+                type="text"
+                min="0"
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={(e) => handleKeyDownNext(e, countValueRef)}
+              />
+              <span className="unit">{unit.unit}</span>
+            </div>
+            <div className="set-title">인원수</div>
+            <div className="container">
+              <input
+                ref={countValueRef}
+                className="set-input count"
+                type="number"
+                min="0"
+                value={countValue}
+                onChange={handleCountValue}
+                onKeyDown={(e) => handleKeyDownNext(e, standardValueRef)}
+              ></input>
+              <span className="unit">명</span>
+            </div>
+            <div className="set-title">직업의 기준</div>
+            <textarea
+              ref={standardValueRef}
+              rows={3.5}
+              className="set-input input-textarea"
+              type="text"
+              value={standardValue}
+              onChange={handleStandardChange}
               style={{ imeMode: 'active' }}
             />
-          )}
-          <select
-            className="set-input"
-            value={selectedJob}
-            onChange={handleSelectChange}
-          >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
-              선택해주세요
-            </option>
-            {jobList.map((job) => (
-              <option key={job.value} value={job.value}>
-                {job.label}
-              </option>
-            ))}
-          </select>
-          <div className="set-title">직업의 역할(복수선택 가능)</div>
-          <select
-            className="set-input"
-            value={selectedJobSkill}
-            onChange={handleSelectJobSkill}
-            style={{ marginBottom: '0px' }}
-          >
-            <option value="" disabled selected style={{ color: '#a5a5a5' }}>
-              선택해주세요
-            </option>
-            {jobSkillList.map((skill) => (
-              <option key={skill.value} value={skill.value}>
-                {skill.label}
-              </option>
-            ))}
-          </select>
-          <div style={{ fontSize: '12px', margin: '5px' }}>
-            {jobSkill.length == 0 ? (
-              <div style={{ marginBottom: '20px' }}></div>
-            ) : (
-              <>
-                {jobSkill.map((skill, index) => (
-                  <div
-                    style={{
-                      margin: '5px',
-                      padding: '2px',
-                      borderBottom: '1px solid rgb(186, 205, 146)',
-                      width: 'fit-content',
-                      display: 'inline-table',
-                    }}
-                    key={index}
-                    onClick={() => deleteSkill(index)}
-                  >
-                    {jobSkillList[skill]?.label}
-                    <span style={{ paddingLeft: '4px' }}>x</span>
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
-          <div className="set-title">급여</div>
-          <div className="container">
-            <input
-              className="set-input"
+            <div className="set-title">직업의 역할</div>
+            <textarea
+              rows={3.5}
+              className="set-input input-textarea"
               type="text"
-              min="0"
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={(e) => handleKeyDownNext(e, countValueRef)}
+              value={jobRoleValue}
+              onChange={handleJobRoleChange}
+              style={{ imeMode: 'active' }}
             />
-            <span className="unit">{unit.unit}</span>
           </div>
-          <div className="set-title">인원수</div>
-          <div className="container">
-            <input
-              ref={countValueRef}
-              className="set-input count"
-              type="number"
-              min="0"
-              value={countValue}
-              onChange={handleCountValue}
-              onKeyDown={(e) => handleKeyDownNext(e, standardValueRef)}
-            ></input>
-            <span className="unit">명</span>
-          </div>
-          <div className="set-title">직업의 기준</div>
-          <textarea
-            ref={standardValueRef}
-            rows={3.5}
-            className="set-input input-textarea"
-            type="text"
-            value={standardValue}
-            onChange={handleStandardChange}
-            style={{ imeMode: 'active' }}
-          />
-          <div className="set-title">직업의 역할</div>
-          <textarea
-            rows={3.5}
-            className="set-input input-textarea"
-            type="text"
-            value={jobRoleValue}
-            onChange={handleJobRoleChange}
-            style={{ imeMode: 'active' }}
-          />
-        </div>
-        <ConfirmBtn
-          onClick={addJob}
-          btnName="확인"
-          backgroundColor="#bacd92"
-        ></ConfirmBtn>
-      </form>
+          <ConfirmBtn
+            onClick={addJob}
+            btnName="확인"
+            backgroundColor="#bacd92"
+          ></ConfirmBtn>
+        </form>
+      )}
     </div>
   );
 }

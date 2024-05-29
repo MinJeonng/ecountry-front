@@ -9,7 +9,7 @@ $blue: #61759f;
 
 @include mobile {
   .setting-wrap {
-    padding-bottom: 40px;
+    padding-bottom: 20px;
 
     .title-list {
       font-size: 16px;
@@ -21,6 +21,18 @@ $blue: #61759f;
         font-size: 14px;
         color: #777777;
       }
+    }
+  }
+
+  .title-list {
+    font-size: 16px;
+    margin: 10px 0;
+
+    li {
+      margin-left: 20px;
+      list-style: disc;
+      font-size: 14px;
+      color: #777777;
     }
   }
 

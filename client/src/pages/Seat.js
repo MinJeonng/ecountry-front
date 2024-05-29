@@ -7,7 +7,6 @@ import '../styles/seat.scss';
 import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
-import OwnerSeatMap from './OwnerSeatMap';
 import { PageHeader } from '../components/Headers';
 
 // 자리배치도

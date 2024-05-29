@@ -1347,12 +1347,22 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    navigate('/setting/jobList');
-    dispatch(basicLaw({ basicLaw: laws }));
+    if (laws.length > 0) {
+      navigate('/setting/jobList');
+      dispatch(basicLaw({ basicLaw: laws }));
+    } else {
+      toast.error('기본법을 제정하세요', { autoClose: 1300 });
+      return;
+    }
   };
   const nextSetting = () => {
-    navigate('/setting/taxLaw');
-    dispatch(basicLaw({ basicLaw: laws }));
+    if (laws.length > 0) {
+      navigate('/setting/jobList');
+      dispatch(basicLaw({ basicLaw: laws }));
+    } else {
+      toast.error('기본법을 제정하세요', { autoClose: 1300 });
+      return;
+    }
   };
 
   // 법 추가
@@ -1400,6 +1410,7 @@ export function Setting6() {
 
   return (
     <div className="setting-wrap">
+      <ToastContainer />
       <div className="title-list">
         <div>기본법 제정</div>
         <ul className="title-list">

@@ -7,8 +7,10 @@ export default function NationBuilding() {
     <div>
       <div className="background2">
         <div className="logo-wrap">
-          <span className="logo-img">logo</span>
-          <span className="logo-title">자라나라 경제나라</span>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/logo-defaultImg.jpg`}
+            alt="로고"
+          />
         </div>
         <div className="button-wrap2">
           <Link to="/setting/schoolInfo">

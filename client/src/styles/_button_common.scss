@@ -1,6 +1,7 @@
 $green: #bacd92;
 $deep-green: #75a47f;
 $blue: #61759f;
+@import '../styles/variables';
 
 @mixin button-style {
   color: #ffffff;
@@ -39,10 +40,43 @@ $blue: #61759f;
   background-color: $deep-green;
 }
 
-.big-button:hover {
+.navi-btn {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+
+  .next-button {
+    @include button-style;
+  }
+
+  .next-button:hover {
+    border: 1px solid $deep-green;
+    background-color: $deep-green;
+  }
+}
+
+.login-btn,
+.signup-btn {
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid $green;
+  background-color: $green;
+  width: 100%;
+  border-radius: 18px;
+  margin-top: 20px;
+  padding: 6px 15px;
+}
+
+.login-btn:hover,
+.signup-btn:hover {
   border: 1px solid $deep-green;
   background-color: $deep-green;
   color: #093030;
+}
+@include mobile {
+  .big-button:hover {
+    transform: scale(0.97);
+  }
 }
 
 .blue-btn {

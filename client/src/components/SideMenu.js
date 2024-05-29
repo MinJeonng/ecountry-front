@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import useAuth from '../hooks/useAuth';
+import { useEffect, useState } from 'react';
 
 const SideMenuBox = styled.div`
   position: fixed;
@@ -52,7 +54,7 @@ const DashboardBox = styled.div`
     align-items: center;
     margin: 10px 0 0;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
   }
 
@@ -95,49 +97,65 @@ const DashboardBox = styled.div`
 `;
 
 export function SideMenuComponent({ func }) {
-  //여기에 링크는 다 다시해야함
+  //여기에 링크는 자리배치도만  다시해야함
   const { id } = useParams();
   const navigate = useNavigate();
   const studentInfoList = useSelector(
     (state) => state.studentInfo.studentInfoList
   );
+  // const [userInfo, setUserInfo] = useAuth(id);
+  // const [skillBasedLinks, setSkillBasedLinks] = useState([]);
 
   //이미지 모두 변환해야함
   const skillMappings = {
     0: {
-      text: '은행원(월급지급)',
+      text: (
+        <>
+          은행원 <br /> (월급지급)
+        </>
+      ),
       link: `/${id}/bankClerk/salary`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
+      img: `${process.env.PUBLIC_URL}/images/icon-bankClerk.png`,
     },
     1: {
-      text: '은행원(적금관리)',
+      text: (
+        <>
+          은행원 <br /> (적금관리)
+        </>
+      ),
       link: `/${id}/bankClerk/saving`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
+      img: `${process.env.PUBLIC_URL}/images/icon-bankClerk.png`,
     },
     2: {
       text: '기자',
       link: `/${id}/news`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
+      img: `${process.env.PUBLIC_URL}/images/icon-journalist.png`,
     },
     3: {
-      text: '국세청(세금 징수)',
+      text: (
+        <>
+          국세청 <br /> (세금 징수)
+        </>
+      ),
       link: `/${id}/tax`,
       img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
     },
     4: {
-      text: '신용 관리 등급 위원회',
+      text: (
+        <>
+          신용 관리 <br /> 등급 위원회
+        </>
+      ),
       link: `/${id}/credit`,
       img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
     },
   };
 
-  const skillBasedLinks = Array.isArray(studentInfoList)
-    ? studentInfoList.flatMap((studentInfo) =>
-        studentInfo.skills.flatMap((skill) =>
-          skillMappings[skill] ? [{ ...skillMappings[skill], key: skill }] : []
-        )
-      )
-    : [];
+  const skillBasedLinks = studentInfoList.skills
+    .map((skill) =>
+      skillMappings[skill] ? { ...skillMappings[skill], key: skill } : null
+    )
+    .filter(Boolean);
 
   return (
     <>
@@ -242,10 +260,6 @@ export function SideMenuComponent({ func }) {
                 <p>{text}</p>
               </div>
             ))}
-            {/* <div style={{ visibility: 'hidden' }}>
-              <img />
-              <p></p>
-            </div> */}
           </DashboardBox>
         </div>
       </SideMenuBox>

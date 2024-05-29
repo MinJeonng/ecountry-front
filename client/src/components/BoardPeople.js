@@ -58,7 +58,7 @@ export function BoardPeopleList() {
         </div>
       </div>
       <div
-        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+        style={{ borderBottom: '2px solid #bacd92', marginBottom: '5%' }}
       ></div>
       {contents.length !== 0 ? (
         <>
@@ -67,11 +67,13 @@ export function BoardPeopleList() {
               className="registerBtn"
               to={`/${id}/boardPeople/write`}
               style={{
-                color: 'white',
+                color: 'black',
                 backgroundColor: '#bacd92',
-                padding: '4px 10px 4px 10px',
-                borderRadius: '8px',
+                padding: '8px 20px',
+                borderRadius: '7px',
                 marginBottom: '10px',
+                fontSize: '13px',
+                border: 'none',
               }}
             >
               제안하기
@@ -87,13 +89,14 @@ export function BoardPeopleList() {
                   position: 'relative',
                   marginBottom: '10px',
                   borderRadius: '18px',
-                  padding: '5%',
+                  padding: '3%',
                   alignItems: 'center',
                   border: '0.1px solid gray',
+                  cursor: 'pointer',
                 }}
                 onClick={() => navigate(`/${id}/boardPeople/read/${item.id}`)}
               >
-                <p style={{ marginLeft: '5%' }}>
+                <p style={{ marginLeft: '3%' }}>
                   <div>{item.title}</div>
                   <div style={{ fontSize: '11px' }}>
                     {GetTimeText(item.createdAt)}

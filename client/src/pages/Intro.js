@@ -19,8 +19,11 @@ export default function Intro() {
     <div>
       <div className="background">
         <div className="logo-wrap">
-          <span className="logo-img">logo</span>
-          <span className="logo-title">자라나라 경제나라</span>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/logo-defaultImg.jpg`}
+            alt="로고"
+          />
+          {/* <span className="logo-title">자라나라 경제나라</span> */}
         </div>
         {buttonVisible && (
           <div className="button-wrap">

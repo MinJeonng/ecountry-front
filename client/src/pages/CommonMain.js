@@ -16,7 +16,6 @@ export function CommonMain() {
             <CommonMainHeader />
             <div className="mainProfile">
               <GetName />
-              {/* <AddJobSkills /> */}
             </div>
           </>
         }

@@ -35,18 +35,16 @@ const ProfileName = styled.div`
   }
 `;
 const LogoutBtn = styled.button`
-  border-radius: 19px;
+  border-radius: 16px;
   border: none;
   text-align: center;
   font-size: 13px;
   color: #606060;
-  padding: 3px 10px;
+  padding: 14px 20px;
   margin-top: 5px;
-  height: 30px;
+  height: 32px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 3px;
   img {
     width: 16px;
     height: 16px;
@@ -166,12 +164,13 @@ export function GetName() {
       });
 
       if (res.data.success) {
-        // console.log(res.data.result);
         setName(res.data.result.name);
         setJob(res.data.result.job);
-        // if (userInfo.isStudent) {
-        dispatch(setStudentInfoList(res.data.result));
-        // }
+        if (userInfo.isStudent) {
+          dispatch(setStudentInfoList(res.data.result));
+        } else {
+          //선생님인 경우
+        }
       } else {
         console.error(res.data.message);
       }
@@ -215,90 +214,5 @@ export function GetName() {
         />
       </LogoutBtn>
     </ProfileContainer>
-  );
-}
-
-export function AddJobSkills() {
-  const { id } = useParams();
-  const [userInfo, setUserInfo] = useAuth(id);
-  const [skillBtn, setSkillBtn] = useState(false);
-  const [skillBtnText, setSkillBtnText] = useState('');
-  const [skillBtnLink, setSkillBtnLink] = useState('');
-
-  const getJobSkills = async () => {
-    setSkillBtn(false); // 스킬 버튼 상태 초기화
-
-    try {
-      const res = await axios({
-        method: 'GET',
-        url: `${process.env.REACT_APP_HOST}/api/user/info`,
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (res.data.success && userInfo?.isStudent) {
-        const skills = res.data.result.skills;
-        const validSkills = [0, 1, 2, 3, 4, 5];
-        const userSkills = skills.filter((skill) =>
-          validSkills.includes(skill)
-        );
-
-        if (userSkills.length > 0) {
-          const skill = userSkills[0]; // 첫 번째 유효한 스킬을 사용
-          const skillMappings = {
-            0: ['월급지급 페이지로 이동', `/${id}/bankClerk/salary`],
-            1: ['적금관리 페이지로 이동', `/${id}/bankClerk/saving`],
-            2: ['뉴스 작성 페이지로 이동', '/news'],
-            3: ['세금 징수 페이지로 이동', '/tax'],
-            4: ['신용 관리 페이지로 이동', '/credit'],
-            5: ['법 관리 페이지로 이동', '/law'],
-          };
-          const [text, link] = skillMappings[skill] ?? [];
-          setSkillBtnText(text);
-          setSkillBtnLink(link);
-          setSkillBtn(true);
-        }
-      } else {
-        console.log(res.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // useEffect(() => {
-  //   console.log('d');
-  //   if (localStorage.getItem('token')) {
-  //     setUserInfo();
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   setUserInfo();
-  // }, []);
-
-  useEffect(() => {
-    if (userInfo.authority) {
-      getJobSkills();
-    }
-  }, [userInfo]);
-
-  if (!skillBtn) {
-    return null;
-  }
-
-  return (
-    <>
-      <JobSkillBtn>
-        {skillBtnText && (
-          <a href={skillBtnLink} className="job-skill-btn">
-            {skillBtnText}
-          </a>
-        )}
-      </JobSkillBtn>
-    </>
   );
 }

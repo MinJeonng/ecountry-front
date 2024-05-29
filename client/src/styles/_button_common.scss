@@ -1,6 +1,7 @@
 $green: #bacd92;
 $deep-green: #75a47f;
 $blue: #61759f;
+@import '../styles/variables';
 
 @mixin button-style {
   color: #ffffff;
@@ -72,11 +73,15 @@ $blue: #61759f;
 }
 
 .login-btn:hover,
-.signup-btn:hover,
-.big-button:hover {
+.signup-btn:hover {
   border: 1px solid $deep-green;
   background-color: $deep-green;
   color: #093030;
+}
+@include mobile {
+  .big-button:hover {
+    transform: scale(0.97);
+  }
 }
 
 .blue-btn {

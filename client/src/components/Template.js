@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const BgTop = styled.div`
-  background: linear-gradient(to left, #75a47f, #bacd92);
+  background: linear-gradient(to left, #a8c7ae, #c5d6a1);
   height: 300px;
   position: relative;
 `;

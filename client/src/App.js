@@ -30,6 +30,7 @@ import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
 import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
+import Test1 from './pages/Test1';
 
 function App() {
   return (
@@ -169,6 +170,7 @@ function App() {
             path="/:id/bankClerk/salary"
             element={<BankClerk position="은행원 - 월급 지급" />}
           />
+          <Route path="/test1" element={<Test1 />} />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

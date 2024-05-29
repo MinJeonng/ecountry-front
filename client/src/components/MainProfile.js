@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import { useParams } from 'react-router-dom';
+import { setStudentInfoList } from '../store/studentInfoReducer';
+import { useDispatch } from 'react-redux';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -20,27 +22,39 @@ const ProfileContainer = styled.div`
 `;
 
 const ProfileName = styled.div`
+  display: flex;
   padding-top: 5px;
   font-size: 25px;
   color: #333;
   font-weight: 700;
+  gap: 10px;
+  .job {
+    font-size: 15px;
+    color: #635f5f;
+    padding-top: 15px;
+  }
 `;
 const LogoutBtn = styled.button`
-  border-radius: 19px;
+  border-radius: 16px;
   border: none;
   text-align: center;
   font-size: 13px;
   color: #606060;
-  padding: 3px 10px;
+  padding: 14px 20px;
   margin-top: 5px;
-  height: 30px;
+  height: 32px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 3px;
   img {
     width: 16px;
     height: 16px;
+  }
+`;
+
+const JobSkillBtn = styled.div`
+  padding-right: 30px;
+  a {
+    //밑에 언더라인 없애기
   }
 `;
 
@@ -134,6 +148,8 @@ export function GetName() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
   const [name, setName] = useState('');
+  const [job, setJob] = useState('');
+  const dispatch = useDispatch();
 
   const getUserName = async () => {
     try {
@@ -149,6 +165,12 @@ export function GetName() {
 
       if (res.data.success) {
         setName(res.data.result.name);
+        setJob(res.data.result.job);
+        if (userInfo.isStudent) {
+          dispatch(setStudentInfoList(res.data.result));
+        } else {
+          //선생님인 경우
+        }
       } else {
         console.error(res.data.message);
       }
@@ -169,9 +191,10 @@ export function GetName() {
     }
   }, []);
 
-  useEffect(() => {
-    setUserInfo();
-  }, []);
+  // useEffect(() => {
+  //   console.log('22222');
+  //   setUserInfo();
+  // }, []);
 
   useEffect(() => {
     if (userInfo.authority) {
@@ -180,7 +203,9 @@ export function GetName() {
   }, [userInfo]);
   return (
     <ProfileContainer>
-      <ProfileName>{name}</ProfileName>
+      <ProfileName>
+        {name} <div className="job">{job}</div>
+      </ProfileName>
       <LogoutBtn onClick={logoutFunc}>
         로그아웃
         <img

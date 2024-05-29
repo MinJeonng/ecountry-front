@@ -1,6 +1,6 @@
 //공통 메인페이지
 import { CommonMainHeader } from '../components/Headers';
-import { GetName } from '../components/MainProfile';
+import { AddJobSkills, GetName } from '../components/MainProfile';
 import CommonMainNews from '../components/CommonMainNews';
 import Template from '../components/Template';
 import '../styles/common_main.scss';

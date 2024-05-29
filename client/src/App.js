@@ -30,6 +30,7 @@ import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
 import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
+import Test1 from './pages/Test1';
 
 function App() {
   return (
@@ -70,12 +71,18 @@ function App() {
             path="/setting/law"
             element={<Setting position="기본 법 제정" />}
           />
-          <Route path="/setting/taxLaw" element={<Setting position="세법" />} />
+          <Route
+            path="/setting/taxLaw"
+            element={<Setting position="세법 제정" />}
+          />
           <Route
             path="/setting/seatRental"
-            element={<Setting position="자리임대료" />}
+            element={<Setting position="자리임대료 설정" />}
           />
-          <Route path="/setting/fine" element={<Setting position="과태료" />} />
+          <Route
+            path="/setting/fine"
+            element={<Setting position="과태료 설정" />}
+          />
 
           <Route path="/test" element={<Test />} />
 
@@ -159,6 +166,11 @@ function App() {
             path="/:id/bankClerk/saving"
             element={<BankClerk position="은행원 - 적금" />}
           />
+          <Route
+            path="/:id/bankClerk/salary"
+            element={<BankClerk position="은행원 - 월급 지급" />}
+          />
+          <Route path="/test1" element={<Test1 />} />
 
           <Route path="*" element={<NOTFOUND />} />
         </Routes>

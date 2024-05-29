@@ -4,7 +4,7 @@ import { ReactComponent as ArrowLeft } from '../images/ico-arr-left.svg';
 import { ReactComponent as Alarm } from '../images/icon-alarm.svg';
 import styled from 'styled-components';
 import { SideMenuComponent } from './SideMenu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Template from './Template';
 
 const CommonHeader = styled.div`
@@ -66,9 +66,9 @@ export function CommonMainHeader() {
         <HeaderStyle>
           <IcoMenuRight
             onClick={() => {
-              console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu);
+              // console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu);
               setShowSideMenu(true);
-              console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
+              // console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
             }}
           />
         </HeaderStyle>
@@ -81,15 +81,29 @@ export function CommonMainHeader() {
   );
 }
 
-export function PageHeader({ children }) {
+export function PageHeader({ children, position }) {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const getPathByPosition = (position) => {
+    switch (position) {
+      case '신문고':
+        return `/${id}/manager`;
+      case '신문고 글쓰기':
+        return `/${id}/boardPeople`;
+      case '신문고 리스트':
+        return `/${id}/boardPeople`;
+      default:
+        return null;
+    }
+  };
+  const path = getPathByPosition(position);
   return (
     <Template
       childrenTop={
         <>
           <PageHeaderBox>
             <HeaderStyle>
-              <button onClick={() => navigate(-1)}>
+              <button onClick={() => (path ? navigate(path) : navigate(-1))}>
                 <ArrowLeft stroke={'#fff'} />
               </button>
               <Text>{children}</Text>

@@ -118,6 +118,7 @@ function CheckingAccount({ account, unit }) {
             'ngrok-skip-browser-warning': '69420',
           },
         });
+        console.log(res);
         if (res.data.success) {
           console.log('입출금내역', res.data.result);
           setTransList(res.data.result);

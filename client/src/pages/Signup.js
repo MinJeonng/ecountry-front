@@ -28,7 +28,11 @@ export default function Login() {
       .then((res) => {
         toast(res.data.message);
         if (res.data.success) {
-          navigate('/login');
+          toast('회원가입 되었습니다.');
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000)
+          
         }
       });
   };
@@ -48,14 +52,12 @@ export default function Login() {
     <Template
       childrenTop={<PageHeader>{'회원가입'}</PageHeader>}
       childrenBottom={
-        <div className="setting-wrap">
-          <div>
-            {/* <div>회원가입</div> */}
-            <ul className="title-list">
-              <li>본인의 계정을 생성하세요.</li>
-              <li>이름과 4자리의 비밀번호를 작성하세요.</li>
-            </ul>
-          </div>
+        <div className="setting-wrap signup-wrap">
+          {/* <div>회원가입</div> */}
+          <ul className="title-list signup-title-list">
+            <li>본인의 계정을 생성하세요.</li>
+            <li>이름과 4자리의 비밀번호를 작성하세요.</li>
+          </ul>
           <form className="box-style">
             <div className="user-signup-title">이름</div>
             <input

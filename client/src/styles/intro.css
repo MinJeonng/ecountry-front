@@ -12,6 +12,11 @@
 .logo-wrap {
   display: flex;
   flex-direction: column;
+  img {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 10px;
+  }
 }
 
 .button-wrap {
@@ -46,12 +51,13 @@
 }
 
 .big-button {
-  color: #ffffff;
+  color: #000;
   font-weight: bold;
-  border: 1px solid #bacd92;
-  background-color: #bacd92;
-  border-radius: 18px;
+  font-size: 17px;
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  border-radius: 10px;
   margin-top: 20px;
-  padding: 6px 15px;
-  width: 180px;
+  padding: 10px 20px;
+  width: 280px;
 }

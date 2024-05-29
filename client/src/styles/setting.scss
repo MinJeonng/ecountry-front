@@ -3,6 +3,7 @@ $green: #bacd92;
 $deep-green: #75a47f;
 $blue: #61759f;
 
+@import '../styles/button_common';
 @import '../styles/variables';
 @import '../styles/input_common';
 
@@ -39,6 +40,17 @@ $blue: #61759f;
       width: -webkit-fill-available;
       @include select-common;
     }
+
+    .select-school-btn {
+      width: 50px;
+      height: 44px;
+      border: 1px solid $green;
+      border-radius: 12px;
+      color: #ffffff;
+      background-color: $green;
+      font-size: 12px;
+    }
+
     .select-name {
       width: -webkit-fill-available;
       @include select-common;
@@ -64,6 +76,21 @@ $blue: #61759f;
     }
   }
 
+  .navi-btn {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+
+    .next-button {
+      @include button-style;
+    }
+
+    .next-button:hover {
+      border: 1px solid $deep-green;
+      background-color: $deep-green;
+    }
+  }
+
   .set-country-title {
     color: #a5a5a5;
     font-size: 14px;
@@ -80,6 +107,11 @@ $blue: #61759f;
   .set-input {
     width: -webkit-fill-available;
     @include select-common;
+  }
+
+  .frist-next-button {
+    @include button-style;
+    width: 100%;
   }
 
   .set-salary {
@@ -247,17 +279,6 @@ $blue: #61759f;
 .preview::-webkit-scrollbar-track {
   background-color: $deep-green;
   border-radius: 10px;
-}
-.title-list {
-  font-size: 16px;
-  margin-bottom: 20px;
-
-  li {
-    margin-left: 20px;
-    list-style: disc;
-    font-size: 14px;
-    color: #777777;
-  }
 }
 
 // 기본법 제정

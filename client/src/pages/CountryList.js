@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/scssList.scss';
 
 import Template from '../components/Template';
+import '../styles/countryList.scss';
 import axios from 'axios';
 import { PageHeader } from '../components/Headers';
 import { toast, ToastContainer } from 'react-toastify';

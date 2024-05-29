@@ -35,11 +35,6 @@ $blue: #61759f;
   line-height: 2;
 }
 
-.frist-next-button {
-  @include button-style;
-  width: 100%;
-}
-
 .frist-next-button:hover {
   border: 1px solid $deep-green;
   background-color: $deep-green;

@@ -97,7 +97,7 @@ video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  /* font-family: 'Noto Sans KR', sans-serif, '돋움'; */
+  color: #666666;
   font-family: 'NanumSquareRound';
   vertical-align: baseline;
 }
@@ -105,6 +105,7 @@ video {
 button,
 select {
   /* font-family: 'Noto Sans KR', sans-serif, '돋움'; */
+  color: #666666;
   font-family: 'NanumSquareRound';
   cursor: pointer;
 }
@@ -112,6 +113,7 @@ select {
 input,
 textarea {
   /* font-family: 'Noto Sans KR', sans-serif, '돋움'; */
+  color: #666666;
   font-family: 'NanumSquareRound';
   cursor: text;
 }

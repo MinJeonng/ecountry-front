@@ -24,7 +24,7 @@ const BgTop = styled.div`
   @media (min-width: 1160px) {
     display: none;
   }
-
+`;
 
 const BgBottom = styled.div`
   @media (max-width: 1159px) {

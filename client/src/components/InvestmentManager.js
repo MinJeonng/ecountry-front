@@ -105,6 +105,7 @@ export function AddInvestment() {
       },
     });
     getStatus(investId);
+    setValue('');
   };
   //투자 정보 삭제 data.id, invest.id, data.createdAt,data.status, invest.unit
   const deleteStatus = async (id, investId, createdAt, status, unit) => {
@@ -407,7 +408,7 @@ export function AddInvestment() {
       {isAccordionOpen && (
         <ConfirmBtn
           onClick={() => newAddBtn()}
-          btnName="추가"
+          btnName="완료"
           backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}

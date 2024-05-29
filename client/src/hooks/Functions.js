@@ -7,7 +7,9 @@ export function GetTimeText(time) {
       return `오전 ${newTime.getHours().toString().padStart(2, '0')}`;
     }
   };
-  return `${newTime.getFullYear()}. ${newTime.getMonth()}. ${newTime.getDate()} ${translateTime()}:${newTime.getMinutes()}`;
+  return `${newTime.getFullYear()}. ${
+    newTime.getMonth() + 1
+  }. ${newTime.getDate()} ${translateTime()}:${newTime.getMinutes()}`;
 }
 
 export function getThumbnail(html) {

@@ -1,0 +1,191 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/button_common';
+@import '../styles/variables';
+@import '../styles/input_common';
+
+@include desktop {
+  .setting-wrap {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    .title-list {
+      margin: 10px 0;
+      width: -webkit-fill-available;
+      margin: 50px 100px 0;
+
+      li {
+        margin-left: 20px;
+        list-style: disc;
+        font-size: 16px;
+        color: #777777;
+      }
+    }
+  }
+
+  .box-style {
+    @include boxStyle-common;
+    display: flex;
+    flex-direction: column;
+    margin: 50px 100px;
+    padding: 70px;
+    justify-content: center;
+
+    .select-student-id-title {
+      color: #a5a5a5;
+    }
+    .select-title {
+      color: #a5a5a5;
+    }
+
+    .select-school-name {
+      width: -webkit-fill-available;
+      @include select-common;
+      font-size: 14px;
+    }
+
+    .select-school-btn {
+      width: 70px;
+      height: 40px;
+      border: 1px solid $green;
+      border-radius: 12px;
+      color: #ffffff;
+      background-color: $green;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .select-name {
+      width: -webkit-fill-available;
+      @include select-common;
+      font-size: 16px;
+    }
+
+    .select-student-id {
+      display: flex;
+      flex-direction: column;
+
+      select {
+        width: -webkit-fill-available;
+        @include select-common;
+      }
+    }
+
+    .set-input {
+      width: -webkit-fill-available;
+      @include select-common;
+      font-size: 14px;
+    }
+
+    .select-id {
+      display: flex;
+      flex-direction: column;
+
+      select {
+        width: -webkit-fill-available;
+        @include select-common;
+      }
+    }
+  }
+
+  .navi-btn {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    margin: 0 100px;
+
+    .next-button {
+      @include button-style;
+    }
+
+    .next-button:hover {
+      border: 1px solid $deep-green;
+      background-color: $deep-green;
+    }
+  }
+
+  .setting-st {
+    margin: 0 100px;
+  }
+
+  .pw-title-list {
+    margin: 10px 0 !important;
+
+    li {
+      font-size: 14px !important;
+    }
+  }
+
+  .frist-next-button {
+    @include button-style;
+    font-size: 14px;
+    width: -webkit-fill-available;
+    // margin: 0 100px;
+  }
+  .frist-next-button:hover {
+    border: 1px solid $deep-green;
+    background-color: $deep-green;
+  }
+
+  .blue-btn {
+    @include blue-btn-style;
+    width: -webkit-fill-available;
+    margin: 30px 100px 0;
+  }
+
+  .set-country-title {
+    color: #a5a5a5;
+    font-size: 14px;
+  }
+  .set-title {
+    color: #a5a5a5;
+    font-size: 14px;
+  }
+
+  .set-country-detail {
+    width: -webkit-fill-available;
+    @include select-common;
+  }
+
+  .set-salary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .set-salary-text {
+      margin: 10px 0 20px 0;
+      font-size: 14px;
+      color: #5c5b5b;
+    }
+
+    select {
+      text-align: center;
+      @include select-common;
+    }
+  }
+
+  .container {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    .count {
+      padding-right: 20px;
+    }
+    .selectSalary {
+      margin-right: 10px;
+      width: 80px;
+    }
+    .unit {
+      font-size: 16px;
+      color: #a5a5a5;
+      position: absolute;
+      right: 30px;
+      margin-bottom: 10px;
+      pointer-events: none;
+    }
+  }
+}

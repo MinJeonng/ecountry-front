@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/intro.css';
+import '../styles/intro.scss';
 import { Link } from 'react-router-dom';
 
 export default function Intro() {

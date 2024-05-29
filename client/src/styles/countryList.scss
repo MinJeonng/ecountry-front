@@ -1,0 +1,65 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/button_common';
+@import '../styles/variables';
+@import '../styles/input_common';
+
+@include mobile {
+  .country-list {
+    @include boxStyle-common;
+
+    .country-list-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+    }
+
+    .country-list-detail {
+      font-size: 14px;
+      margin: 0 0 10px 0;
+    }
+
+    .goCountry-btn {
+      @include button-style;
+      width: 100%;
+    }
+  }
+}
+
+@include desktop {
+  .country-list {
+    width: -webkit-fill-available;
+    background-color: #f5f6f6;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 50px 100px;
+
+    .country-list-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 20px;
+    }
+
+    .country-list-detail {
+      font-size: 14px;
+      margin: 20px;
+    }
+
+    .goCountry-btn {
+      color: #ffffff;
+      font-weight: bold;
+      border: 1px solid #bacd92;
+      background-color: #bacd92;
+      width: 20%;
+      border-radius: 30px;
+      padding: 6px 15px;
+      margin: 20px;
+    }
+  }
+}

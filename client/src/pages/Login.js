@@ -42,7 +42,7 @@ export default function Login() {
           </>
         }
         childrenBottom={
-          <div className="setting-wrap">
+          <div className="setting-wrap login-wrap">
             <form className="box-style">
               <div className="user-login-title">아이디</div>
               <input

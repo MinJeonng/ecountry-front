@@ -23,7 +23,9 @@ export default function Login() {
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
           toast('환영합니다!');
-          navigate('/country');
+          setTimeout(() => {
+            navigate('/country');
+          }, 2000);
         } else {
           toast('아이디 또는 비밀번호가 틀렸습니다.', {
             autoClose: 1300,

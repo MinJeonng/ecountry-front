@@ -28,7 +28,11 @@ export default function Login() {
       .then((res) => {
         toast(res.data.message);
         if (res.data.success) {
-          navigate('/login');
+          toast('회원가입 되었습니다.');
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000)
+          
         }
       });
   };

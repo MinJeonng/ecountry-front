@@ -24,6 +24,8 @@ const BgBottom = styled.div`
   }
 
   @media (min-width: 1160px) {
+    width: 970px;
+    margin: 0 auto;
   }
 `;
 

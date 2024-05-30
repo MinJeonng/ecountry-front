@@ -14,14 +14,34 @@ $blue: #61759f;
 
 @include desktop {
   header {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 480px;
-    margin: 50px;
-    background: #ffffff;
+    width: 270px;
+    // background: black;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    align-items: center;
+
+    .header-logo {
+      width: 50px;
+      margin: 50px 0;
+    }
+
+    .header-menu {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .header-menu li {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .header-menu li.active {
+      font-weight: bold;
+      background-color: $blue;
+      color: white;
+    }
   }
 }

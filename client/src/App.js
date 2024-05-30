@@ -31,6 +31,7 @@ import JobList from './pages/JobList';
 import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
 import Test1 from './pages/Test1';
+import PcInvestment from './components/PcInvestment';
 
 function App() {
   return (

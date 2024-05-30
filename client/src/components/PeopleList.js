@@ -229,7 +229,7 @@ export function SetPeopleList() {
   return (
     <>
       <ToastContainer />
-      <div className="title-list">
+      <div className="setting-wrap">
         {/* <div>국민 리스트</div> */}
         <ul className="title-list">
           <li>국민리스트를 확인할 수 있습니다.</li>

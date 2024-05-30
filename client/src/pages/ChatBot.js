@@ -6,107 +6,179 @@ import {
   ChatBotFooter,
   ChatBotHeader,
 } from '../components/ChatBotComponent';
-import { compareTime } from '../hooks/Functions';
+import { compareTime, chatBotList, chatBotCard } from '../hooks/Functions';
 
 export default function ChatBot() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
   const [bottomSize, setBottomSize] = useState(60);
   const [chatList, setChatList] = useState([]);
+  const [keyword, setKeyword] = useState('');
+  const [isPossible, setIsPossible] = useState(false);
+  const newChatMsg = (writer, msg) => {
+    return {
+      writer,
+      detail: [{ type: 'msg', chatMsg: msg }],
+      chatDate: new Date(),
+    };
+  };
   const teacherMenu = [
     '다른 나라 세법 구경하기',
     '다른 나라 직업 리스트 구경하기',
     '다른 나라 과태료 구경하기',
     '학생 메뉴 보기',
-    '다른 질문 하기',
   ];
-  const studentMenu = [
-    '추천 도서',
-    '지구촌 소식',
-    '',
-    '학생 메뉴4',
-    '학생 메뉴5',
-    '다른 질문 하기',
-  ];
+  const studentMenu = ['추천 도서', '지구촌 소식'];
+  const bookType = ['키워드', '주제', '저자', '연령', '인기 급상승 도서'];
+  const newBtnMsg = (list) => {
+    return {
+      writer: 'bot',
+      detail: [
+        {
+          type: 'menuList',
+          chatMsg: list,
+        },
+      ],
+      chatDate: new Date(),
+    };
+  };
+
+  const inputKeyword = (msg) => {
+    addChat([newChatMsg('me', msg)]);
+    if (keyword !== '') {
+      setKeyword(`${keyword} ${msg}`);
+      addChat([
+        newChatMsg('me', msg),
+        newChatMsg('bot', `${keyword} 검색 결과입니다.`),
+      ]);
+    }
+  };
 
   const addChat = (newChat) => {
-    console.log(chatList);
-    console.log(newChat.writer, ' : ', newChat);
     const newList = [...chatList];
-    const lastEl = newList[newList.length - 1];
-    if (
-      compareTime(lastEl.chatDate, newChat.chatDate) &&
-      lastEl.writer === newChat.writer
-    ) {
-      newList[newList.length - 1].detail.push(newChat.detail[0]);
-    } else {
-      console.log('else(1)-', newChat.writer, ' : ', newChat);
-      newList.push(newChat);
-      console.log('else(2)-', newChat.writer, ' : ', newList);
-    }
-    console.log('결과1 : ', chatList);
-    console.log(newList);
+    newChat.forEach((data) => {
+      if (newList.length === 0) {
+        newList.push(data);
+      } else {
+        const lastEl = newList[newList.length - 1];
+        if (
+          compareTime(lastEl.chatDate, data.chatDate) &&
+          lastEl.writer === data.writer
+        ) {
+          newList[newList.length - 1].detail.push(data.detail[0]);
+        } else {
+          newList.push(data);
+        }
+      }
+    });
     setChatList(newList);
-    console.log('chatList', chatList);
   };
 
-  const selectMenu = (msg) => {
-    if (msg === '다른 나라 세법 구경하기') {
-      addChat({
-        writer: 'bot',
-        detail: [{ type: 'msg', chatMsg: '세법리스트 보여주기' }],
-        chatDate: new Date(),
-      });
-      console.log('챗봇 채팅 추가 : ', chatList);
-    }
-  };
-
-  const menuFunc = (msg) => {
-    console.log('내 채팅 추가 전 : ', chatList);
-    addChat({
+  const menuFunc = async (msg) => {
+    const defaultMsg = {
       writer: 'me',
       detail: [{ type: 'msg', chatMsg: msg }],
       chatDate: new Date(),
+    };
+    const answerChat = async (func, kor, eng) => {
+      addChat([defaultMsg]);
+      addChat([
+        defaultMsg,
+        await func(kor, eng),
+        newChatMsg('bot', '다른 질문이 있으신가요?'),
+        newBtnMsg(userInfo.isStudent ? studentMenu : teacherMenu),
+      ]);
+      setIsPossible(false);
+    };
+    if (msg === '다른 나라 세법 구경하기') {
+      await answerChat(chatBotList, '세법', 'tax');
+    } else if (msg === '다른 나라 직업 리스트 구경하기') {
+      await answerChat(chatBotList, '직업', 'job');
+    } else if (msg === '다른 나라 과태료 구경하기') {
+      await answerChat(chatBotList, '과태료', 'penalty');
+    } else if (msg === '학생 메뉴 보기') {
+      addChat([
+        defaultMsg,
+        newChatMsg('bot', '무엇을 도와드릴까요?'),
+        newBtnMsg(studentMenu),
+      ]);
+    } else if (msg === '지구촌 소식') {
+      await answerChat(chatBotCard, '지구촌 소식', 'newsList');
+    } else if (msg === '추천 도서') {
+      addChat([
+        defaultMsg,
+        newChatMsg('bot', '원하시는 추천 메뉴를 선택하세요.'),
+        newBtnMsg(bookType),
+      ]);
+    } else if (msg === '키워드') {
+      addChat([defaultMsg, newChatMsg('bot', '검색할 키워드를 입력하세요.')]);
+      setIsPossible(true);
+      setKeyword('키워드');
+    }
+  };
+  const removeMenu = () => {
+    let isChange = false;
+    const lastIndex = chatList.length - 1;
+    const newList = [];
+    chatList.forEach((data, index) => {
+      const newDetail = [];
+      if (index !== lastIndex) {
+        data.detail.forEach((el) => {
+          if (el.type !== 'menuList') {
+            newDetail.push(el);
+          } else {
+            isChange = true;
+          }
+        });
+        newList.push({
+          writer: data.writer,
+          detail: newDetail,
+          chatDate: data.chatDate,
+        });
+      } else {
+        newList.push(data);
+      }
     });
-
-    console.log('내 채팅 추가 : ', chatList);
-    // selectMenu(msg);
+    const finalList = newList.filter((data) => data.detail.length > 0);
+    if (isChange) {
+      setChatList(finalList);
+    }
   };
 
   useEffect(() => {
-    console.log('리스트 변경 : ', chatList);
+    removeMenu();
+    console.log(chatList);
   }, [chatList]);
+
+  useEffect(() => {
+    if (userInfo) {
+      if (chatList.length === 0) {
+        addChat([
+          newChatMsg('bot', '무엇을 도와드릴까요?'),
+          newBtnMsg(userInfo.isStudent ? studentMenu : teacherMenu),
+        ]);
+      }
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     setUserInfo();
   }, []);
-  useEffect(() => {
-    if (userInfo) {
-      setChatList([
-        {
-          writer: 'bot',
-          detail: [
-            { type: 'msg', chatMsg: '상담 내용을 선택하세요' },
-            {
-              type: 'menuList',
-              chatMsg: userInfo.isStudent ? studentMenu : teacherMenu,
-            },
-          ],
-          chatDate: new Date(),
-        },
-      ]);
-    }
-  }, [userInfo]);
+
   return (
     <>
       <ChatBotHeader />
       <ChatBotContent
         bottomsize={bottomSize}
         chatlist={chatList}
-        addfunc={addChat}
         menufunc={menuFunc}
       />
-      <ChatBotFooter sizefunc={setBottomSize} addfunc={addChat} />
+      <ChatBotFooter
+        sizefunc={setBottomSize}
+        addfunc={inputKeyword}
+        ispossible={isPossible}
+        keywordfunc={setKeyword}
+      />
     </>
   );
 }

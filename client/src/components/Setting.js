@@ -402,7 +402,7 @@ export function Setting3() {
     }
   };
   const handleCheck = () => {
-    if (password !== null) {
+    if (password !== null && password.length === 4) {
       setCheckPassword(true);
     }
     if (checkPassword) {
@@ -928,7 +928,7 @@ export function Setting5() {
       !countValue ||
       inputValue === ''
     ) {
-      toast('모든 값을 입력해주세요.');
+      toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
       return;
     }
 
@@ -1055,17 +1055,6 @@ export function Setting5() {
                 ? job.customValue
                 : job.selectValue}{' '}
               {job.count}명
-              {/* <button
-                className="updateBtn"
-                onClick={() => selectInput(job, index)}
-              >
-                수정
-              </button>
-              <img
-                className="deleteBtn"
-                src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                onClick={deleteBtn(index)}
-              /> */}
               <Arrow stroke="#ddd" className="accArrBtn" />
             </div>
             {isAccordionOpen && selectedIndex === index && (
@@ -1350,12 +1339,22 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    navigate('/setting/jobList');
-    dispatch(basicLaw({ basicLaw: laws }));
+    if (laws.length > 0) {
+      navigate('/setting/jobList');
+      dispatch(basicLaw({ basicLaw: laws }));
+    } else {
+      toast.error('기본법을 제정하세요', { autoClose: 1300 });
+      return;
+    }
   };
   const nextSetting = () => {
-    navigate('/setting/taxLaw');
-    dispatch(basicLaw({ basicLaw: laws }));
+    if (laws.length > 0) {
+      navigate('/setting/taxLaw');
+      dispatch(basicLaw({ basicLaw: laws }));
+    } else {
+      toast.error('기본법을 제정하세요', { autoClose: 1300 });
+      return;
+    }
   };
 
   // 법 추가
@@ -1403,6 +1402,7 @@ export function Setting6() {
 
   return (
     <div className="setting-wrap">
+      <ToastContainer />
       <div className="title-list">
         <div>기본법 제정</div>
         <ul className="title-list">
@@ -1650,7 +1650,7 @@ export function Setting7() {
               onClick={() => selectInput(taxLaw, index)}
               style={{ fontSize: '14px', color: '#666666' }}
             >
-              {taxLaw.name} | {taxLaw.rate}
+              {taxLaw.name} {taxLaw.rate}
               {taxLaw.label}
               <Arrow stroke="#ddd" className="accArrBtn" />
             </div>
@@ -1787,7 +1787,7 @@ export function Setting8() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
-  const [taxName, setTaxName] = useState('자리 임대료');
+  const [taxName, setTaxName] = useState(null);
   const [fee, setFee] = useState('');
 
   const setRentalFeeState = useSelector((state) => state.setting8);
@@ -1798,6 +1798,9 @@ export function Setting8() {
   }, [setRentalFeeState]);
   const beforeSetting = () => {
     navigate('/setting/taxLaw');
+    if (taxName === null) {
+      setTaxName('자리임대료');
+    }
     dispatch(
       seatRentalFee({
         taxName: taxName,
@@ -1807,6 +1810,9 @@ export function Setting8() {
   };
   const nextSetting = () => {
     navigate('/setting/fine');
+    if (taxName === null) {
+      setTaxName('자리임대료');
+    }
     dispatch(
       seatRentalFee({
         taxName: taxName,
@@ -1831,6 +1837,7 @@ export function Setting8() {
             onChange={(e) => {
               setTaxName(e.target.value);
             }}
+            placeholder="자리임대료"
             style={{ imeMode: 'active' }}
           />
         </div>
@@ -2127,7 +2134,7 @@ export function Setting9() {
                   onClick={() => selectInput(fine, index)}
                   style={{ fontSize: '13px', color: '#666666' }}
                 >
-                  {fine.reason} | {fine.fine}
+                  {fine.reason} {fine.fine}
                   {moneyUnit}
                   <Arrow stroke="#ddd" className="accArrBtn" />
                 </div>

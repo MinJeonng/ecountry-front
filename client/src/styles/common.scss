@@ -47,7 +47,7 @@ img {
 
   span {
     font-weight: 700;
-    color: #666666;
+    color: #333;
   }
 }
 // button {
@@ -55,9 +55,7 @@ img {
 // }
 
 button:hover {
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  // transform: scale(0.99);
-  //웹사이트에서는 크기가 줄어드는게 아님...
+  background: #e3e2e2;
 }
 
 button:active {

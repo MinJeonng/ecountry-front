@@ -60,7 +60,14 @@ dt,
 dd,
 ol,
 ul,
-li,
+li::before {
+  content: '✔️';
+  /* color: green; */
+}
+li {
+  color: #333;
+}
+
 fieldset,
 form,
 label,
@@ -104,14 +111,12 @@ video {
 
 button,
 select {
-  /* font-family: 'Noto Sans KR', sans-serif, '돋움'; */
   font-family: 'NanumSquareRound';
   cursor: pointer;
 }
 
 input,
 textarea {
-  /* font-family: 'Noto Sans KR', sans-serif, '돋움'; */
   font-family: 'NanumSquareRound';
   cursor: text;
 }
@@ -139,6 +144,7 @@ ol,
 ul {
   list-style: none;
   margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 blockquote,

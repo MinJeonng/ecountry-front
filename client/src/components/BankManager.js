@@ -215,7 +215,7 @@ export function AddSavings() {
   return (
     <>
       <ToastContainer />
-      <div className="title-list">
+      <div className="setting-wrap">
         <ul className="title-list">
           <li>적금 상품을 생성할 수 있습니다.</li>
           <li>생성 후 수정이 불가하오니 유의해주시기 바랍니다.</li>

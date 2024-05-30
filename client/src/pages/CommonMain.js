@@ -6,6 +6,7 @@ import Template from '../components/Template';
 import '../styles/common_main.scss';
 import MenuList from '../components/MenuList';
 import ScheduleList from '../components/ScheduleList';
+import PcInvestment from '../components/PcInvestment';
 
 export function CommonMain() {
   return (
@@ -25,6 +26,7 @@ export function CommonMain() {
               <CommonMainNews />
               <ScheduleList />
               <MenuList />
+              <PcInvestment />
             </div>
           </>
         }

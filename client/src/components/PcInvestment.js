@@ -164,27 +164,31 @@ export default function PcInvestment() {
     <>
       <div>
         <div>
-          <div>
-            {info.name} (단위 : {info.unit})
-          </div>
-          <div>최신 정보 : {info.info} </div>
-          <div
-            style={{
-              width: '600px',
-              height: '400px',
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              overflow: 'auto',
-              justifyContent: 'center',
-            }}
-          >
-            <Line
-              options={options}
-              data={data}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
+          {info !== null && (
+            <>
+              <div>
+                {info.name} (단위 : {info.unit})
+              </div>
+              <div>최신 정보 : {info.info} </div>
+              <div
+                style={{
+                  width: '600px',
+                  height: '400px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  overflow: 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <Line
+                  options={options}
+                  data={data}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>

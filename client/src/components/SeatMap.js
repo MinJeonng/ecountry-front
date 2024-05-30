@@ -92,6 +92,7 @@ export default function SeatMap() {
                 onChange={(e) => rowCountChange(column.id, e.target.value)}
                 value={column.rowCount}
                 placeholder="자리 수"
+                min={0}
               />
               <div className="unit">명</div>
             </div>

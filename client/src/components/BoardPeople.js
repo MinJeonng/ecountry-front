@@ -16,6 +16,8 @@ export function BoardPeopleList() {
   const [currentItems, setCurrentItems] = useState([]); //한페이지에 들어가는 글 배열
   const [totalPages, setTotalPages] = useState(0);
 
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
   const getContents = async () => {
     try {
       const res = await axios({
@@ -47,36 +49,36 @@ export function BoardPeopleList() {
     setCurrentItems(contents.slice(indexOfFirstItem, indexOfLastItem));
   }, [indexOfFirstItem, indexOfLastItem]);
 
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+  }, []);
+
   return (
     <>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div
-          className="newsHead"
-          style={{ color: '#666666', marginBottom: '10px' }}
-        >
-          신문고
-        </div>
-      </div>
+      <p align="right" style={{ marginBottom: '6%', fontSize: '0.8rem' }}>
+        {innerWidth >= 1160 ? (
+          <Link
+            className="registerBtn"
+            to={`/${id}/boardPeople/write`}
+            style={{
+              color: 'white',
+              backgroundColor: '#bacd92',
+              padding: '4px 10px 4px 10px',
+              borderRadius: '8px',
+              marginBottom: '5%',
+            }}
+          >
+            제안하기
+          </Link>
+        ) : (
+          <NewPostBtn navigate={navigate} path={`/${id}/boardPeople/write`} />
+        )}
+      </p>
       <div
-        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+        style={{ borderBottom: '2px solid #bacd92', marginBottom: '5%' }}
       ></div>
       {contents.length !== 0 ? (
         <>
-          <p align="right" style={{ marginBottom: '20px', fontSize: '0.8rem' }}>
-            <Link
-              className="registerBtn"
-              to={`/${id}/boardPeople/write`}
-              style={{
-                color: 'white',
-                backgroundColor: '#bacd92',
-                padding: '4px 10px 4px 10px',
-                borderRadius: '8px',
-                marginBottom: '10px',
-              }}
-            >
-              제안하기
-            </Link>
-          </p>
           <div className="newsInfo">
             {currentItems.map((item, index) => (
               <div
@@ -87,13 +89,14 @@ export function BoardPeopleList() {
                   position: 'relative',
                   marginBottom: '10px',
                   borderRadius: '18px',
-                  padding: '5%',
+                  padding: '3%',
                   alignItems: 'center',
                   border: '0.1px solid gray',
+                  cursor: 'pointer',
                 }}
                 onClick={() => navigate(`/${id}/boardPeople/read/${item.id}`)}
               >
-                <p style={{ marginLeft: '5%' }}>
+                <p style={{ marginLeft: '3%' }}>
                   <div>{item.title}</div>
                   <div style={{ fontSize: '11px' }}>
                     {GetTimeText(item.createdAt)}
@@ -164,7 +167,6 @@ export function BoardPeopleList() {
         >
           &gt;
         </button>
-        <NewPostBtn navigate={navigate} path={`/${id}/boardPeople/write`} />
       </div>
     </>
   );

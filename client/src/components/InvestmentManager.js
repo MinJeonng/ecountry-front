@@ -8,6 +8,7 @@ import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
 
 import '../styles/setting.scss';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export function AddInvestment() {
   const { id } = useParams();
@@ -22,6 +23,9 @@ export function AddInvestment() {
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [statusList, setStatusList] = useState([]);
   const endOfListRef = useRef(null);
+
+  const unitRef = useRef(null);
+  const infoRef = useRef(null);
 
   useEffect(() => {
     if (endOfListRef.current) {
@@ -101,6 +105,7 @@ export function AddInvestment() {
       },
     });
     getStatus(investId);
+    setValue('');
   };
   //투자 정보 삭제 data.id, invest.id, data.createdAt,data.status, invest.unit
   const deleteStatus = async (id, investId, createdAt, status, unit) => {
@@ -171,7 +176,7 @@ export function AddInvestment() {
       },
     });
     if (res.data.success) {
-      alert('삭제되었습니다.');
+      toast('삭제되었습니다.');
     }
   };
 
@@ -190,7 +195,7 @@ export function AddInvestment() {
       },
     });
     if (res.data.success) {
-      alert('삭제되었습니다.');
+      toast('삭제되었습니다.');
     }
     getList();
     setInvestmentInfo('');
@@ -246,7 +251,7 @@ export function AddInvestment() {
   return (
     <>
       <ToastContainer />
-      <div className="title-list">
+      <div className="setting-wrap">
         <ul className="title-list">
           <li>투자 상품을 생성할 수 있습니다.</li>
         </ul>
@@ -403,7 +408,7 @@ export function AddInvestment() {
       {isAccordionOpen && (
         <ConfirmBtn
           onClick={() => newAddBtn()}
-          btnName="추가"
+          btnName="완료"
           backgroundColor="#bacd92"
         ></ConfirmBtn>
       )}
@@ -421,9 +426,11 @@ export function AddInvestment() {
               onChange={(e) => {
                 setInvestmentName(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, unitRef)}
             />
             <div className="set-title">단위</div>
             <input
+              ref={unitRef}
               className="set-input"
               type="text"
               value={unit}
@@ -431,15 +438,18 @@ export function AddInvestment() {
               onChange={(e) => {
                 setUnit(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, infoRef)}
             />
             <div className="set-title">오늘의 투자정보</div>
             <input
+              ref={infoRef}
               className="set-input"
               type="text"
               value={investmentInfo}
               onChange={(e) => {
                 setInvestmentInfo(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDown(e, handleAddInvestments)}
             />
             <ConfirmBtn
               onClick={handleAddInvestments}

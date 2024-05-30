@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import '../styles/setting.scss';
 import axios from 'axios';
-// import '../styles/lawList.scss';
+import { handleKeyDown } from '../hooks/Functions';
 
 export function AssemblyLawList() {
   const { id } = useParams();
@@ -41,7 +41,7 @@ export function AssemblyLawList() {
       data: { id: ruleId, rule: selectedDetail },
     });
     if (res.data.success) {
-      alert('규칙 수정이 완료되었습니다.');
+      toast('규칙 수정이 완료되었습니다.');
       getRules();
     }
   };
@@ -123,14 +123,6 @@ export function AssemblyLawList() {
   return (
     <>
       <ToastContainer />
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div
-          className="newsHead"
-          style={{ color: '#666666', marginBottom: '10px' }}
-        >
-          기본 법
-        </div>
-      </div>
       <div
         style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
       ></div>
@@ -148,8 +140,10 @@ export function AssemblyLawList() {
                   onClick={() => selectInput(law, index)}
                   style={{ fontSize: '13px' }}
                 >
-                  <p>{index + 1}항.</p>
-                  <p>{law.rule}</p>
+                  <div className="infoBox">
+                    <span className="line">{index + 1}항</span>
+                    <span className="pLine">{law.rule}</span>
+                  </div>
                   <Arrow stroke="#ddd" className="accArrBtn" />
                 </div>
                 {isAccordionOpen && selectedIndex === index && (
@@ -214,6 +208,7 @@ export function AssemblyLawList() {
               setSelectedDetail(e.target.value);
               setSelectedIndex(laws.length);
             }}
+            onKeyDown={(e) => handleKeyDown(e, handleNewLaw)}
           />
           <ConfirmBtn
             onClick={handleNewLaw}

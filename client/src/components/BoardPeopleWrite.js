@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
 import { ConfirmBtn } from './Btns';
+import { toast, ToastContainer } from 'react-toastify';
 
 export function BoardPeopleWrite() {
   const { id } = useParams();
@@ -31,8 +32,9 @@ export function BoardPeopleWrite() {
             isSecret,
           },
         });
+
         if (res.data.success) {
-          alert('글이 등록되었습니다.');
+          toast.success('글이 등록되었습니다.', { autoClose: 1300 });
           document.location.href = `/${id}/boardPeople`;
         }
       } else {
@@ -51,8 +53,9 @@ export function BoardPeopleWrite() {
             countryId: id,
           },
         });
+        console.log(res.data);
         if (res.data.success) {
-          alert('글이 등록되었습니다.');
+          toast('글이 등록되었습니다.');
           document.location.href = `/${id}/boardPeople`;
         }
       }
@@ -91,6 +94,7 @@ export function BoardPeopleWrite() {
   }, [isSecret]);
   return (
     <>
+      <ToastContainer />
       {/* <div style={{ color: '#666666', fontWeight: 'bolder' }}>
         신문고 글쓰기
       </div> */}
@@ -164,7 +168,7 @@ export function BoardPeopleWrite() {
 
           {/* 저장 버튼 */}
           <ConfirmBtn
-            btnName="업데이트"
+            btnName="글 등록"
             backgroundColor="#bacd92"
             onClick={handleWrite}
           ></ConfirmBtn>

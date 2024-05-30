@@ -78,7 +78,7 @@ export function BoardPeopleRead() {
   useEffect(() => {
     if (userInfo.authority) {
       if (!userInfo.authority) {
-        alert('접근 권한이 없습니다.');
+        toast('접근 권한이 없습니다.');
         navigate('/');
       } else {
         getPetiton();
@@ -93,13 +93,41 @@ export function BoardPeopleRead() {
   return (
     <>
       <ToastContainer />
-      <div style={{ color: '#666666', fontWeight: 'bolder' }}>신문고 내용</div>
-      <button type="button" onClick={updateFunc}>
-        임시 수정버튼
-      </button>
-      <button type="button" onClick={deleteFunc}>
-        임시 삭제 버튼
-      </button>
+      <p align="right">
+        <button
+          type="button"
+          onClick={updateFunc}
+          style={{
+            color: 'white',
+            backgroundColor: '#bacd92',
+            padding: '4px 10px 4px 10px',
+            borderRadius: '8px',
+            marginBottom: '10px',
+            marginRight: '10px',
+            border: 'none',
+          }}
+        >
+          수정
+        </button>
+        <button
+          type="button"
+          onClick={deleteFunc}
+          style={{
+            color: 'white',
+            backgroundColor: '#bacd92',
+            padding: '4px 10px 4px 10px',
+            borderRadius: '8px',
+            marginBottom: '10px',
+            border: 'none',
+          }}
+        >
+          삭제
+        </button>
+      </p>
+      <div
+        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+      ></div>
+
       <form className="box-style">
         <div
           className="reset"

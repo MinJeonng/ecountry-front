@@ -2,18 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 
 const BgTop = styled.div`
-  background: linear-gradient(to left, #75a47f, #bacd92);
-  height: 300px;
-  position: relative;
+  @media (max-width: 1159px) {
+    background: linear-gradient(to left, #75a47f, #bacd92);
+    height: 300px;
+    position: relative;
+  }
+
+  @media (min-width: 1160px) {
+    display: none;
+  }
 `;
 
 const BgBottom = styled.div`
-  position: relative;
-  margin-top: -125px;
-  padding: 40px 30px 90px;
-  background-color: #ffffff;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  @media (max-width: 1159px) {
+    position: relative;
+    margin-top: -125px;
+    padding: 40px 30px 90px;
+    background-color: #ffffff;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+  }
+
+  @media (min-width: 1160px) {
+  }
 `;
 
 export default function Template({ childrenTop, childrenBottom }) {

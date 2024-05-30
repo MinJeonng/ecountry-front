@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
@@ -6,6 +6,7 @@ import '../styles/setting.scss';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export function AddSavings() {
   const { id } = useParams();
@@ -18,6 +19,9 @@ export function AddSavings() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
+
+  const deadLineRef = useRef(null);
+  const rateRef = useRef(null);
 
   const getList = async () => {
     const res = await axios({
@@ -73,7 +77,7 @@ export function AddSavings() {
 
   const handleAddSavings = () => {
     if (!savingName || !savingDeadLine || !interestRate) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
 
@@ -190,7 +194,7 @@ export function AddSavings() {
     });
     console.log(res.data.message);
     if (res.data.success) {
-      alert('삭제 완료되었습니다.');
+      toast('삭제 완료되었습니다.');
     }
     getList();
     e.stopPropagation();
@@ -211,7 +215,7 @@ export function AddSavings() {
   return (
     <>
       <ToastContainer />
-      <div className="title-list">
+      <div className="setting-wrap">
         <ul className="title-list">
           <li>적금 상품을 생성할 수 있습니다.</li>
           <li>생성 후 수정이 불가하오니 유의해주시기 바랍니다.</li>
@@ -227,7 +231,8 @@ export function AddSavings() {
             key={index}
             onClick={() => selectInput(saving, index)}
           >
-            {saving.name} D-{saving.dueDate} (금리 {saving.interest}%)
+            {saving.name} (금리 {saving.interest}%)
+            {/* D-{saving.dueDate} */}
             <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
           {isAccordionOpen && selectedIndex === index && (
@@ -248,9 +253,11 @@ export function AddSavings() {
                 onChange={(e) => {
                   setSavingName(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
               />
               <div className="set-title">적금 기간(생성일부터 ~까지)</div>
               <input
+                ref={deadLineRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -258,10 +265,12 @@ export function AddSavings() {
                 onChange={(e) => {
                   setSavingDeadLine(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
               />
               <div className="set-title">금리 설정</div>
               <div className="container">
                 <input
+                  ref={rateRef}
                   className="set-input"
                   type="number"
                   min="0"
@@ -313,9 +322,11 @@ export function AddSavings() {
               onChange={(e) => {
                 setSavingName(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
             />
             <div className="set-title">적금 기간(생성일부터 ~까지)</div>
             <input
+              ref={deadLineRef}
               className="set-input"
               type="number"
               min="0"
@@ -323,10 +334,12 @@ export function AddSavings() {
               onChange={(e) => {
                 setSavingDeadLine(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
             />
             <div className="set-title">금리 설정</div>
             <div className="container">
               <input
+                ref={rateRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -334,6 +347,7 @@ export function AddSavings() {
                 onChange={(e) => {
                   setInterestRate(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDown(e, handleAddSavings)}
               />
               <span className="unit">%</span>
             </div>

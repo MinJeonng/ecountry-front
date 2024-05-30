@@ -1,6 +1,10 @@
 @import '../styles/variables';
 .Contain {
   min-width: 320px;
+  @include desktop {
+    width: 1100px;
+    margin: 0 auto;
+  }
 
   select {
     background-image: url('../images/icon-select.png');
@@ -32,6 +36,13 @@
   overflow: hidden;
 }
 
+.textLimit1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
 img {
   max-width: 100%;
 }
@@ -43,22 +54,17 @@ img {
 
   span {
     font-weight: 700;
-    color: #666666;
+    color: #333;
   }
 }
-button {
-  transition: all 0.2s ease;
-}
+// button {
+//   transition: all 0.2s ease;
+// }
 
 button:hover {
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(0.99);
+  background: #e3e2e2;
 }
 
 button:active {
   transform: scale(0.98);
-  //배경이 하얀색이면 백그라운드 색상이 회색으로 변하게 해서 좀 더 선택되는 느낌을 주기 ..토스처럼
-  // transform: translateY(2px);
-  // // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  // box-shadow: 0 2px 4px rgb(219, 221, 213);
 }

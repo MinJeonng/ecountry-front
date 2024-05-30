@@ -1,7 +1,20 @@
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
 @import '../styles/variables';
 @import '../styles/input_common';
 
 @include mobile {
+  .login-wrap,
+  .signup-wrap {
+    padding-bottom: 20px;
+
+    .box-style {
+      @include boxStyle-common;
+    }
+  }
+
   .user-login-title,
   .user-signup-title {
     color: #a5a5a5;
@@ -15,7 +28,7 @@
   }
 
   .pw-error {
-    font-size: 14px;
+    font-size: 10px;
     color: #e03232;
   }
 
@@ -29,5 +42,104 @@
       font-weight: 800;
       color: #093030;
     }
+  }
+
+  .login-btn,
+  .signup-btn {
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid $green;
+    background-color: $green;
+    width: 100%;
+    border-radius: 18px;
+    margin-top: 20px;
+    padding: 6px 15px;
+  }
+
+  .login-btn:hover,
+  .signup-btn:hover {
+    border: 1px solid $deep-green;
+    background-color: $deep-green;
+    color: #093030;
+  }
+}
+
+@include desktop {
+  .login-wrap,
+  .signup-wrap {
+    display: none;
+  }
+
+  .login-box-style,
+  .signup-box-style {
+    width: -webkit-fill-available;
+    background-color: #f5f6f6;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 18px;
+    box-sizing: border-box;
+    z-index: 10;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 400px;
+
+    .user-login-title,
+    .user-signup-title {
+      color: #a5a5a5;
+      font-size: 14px;
+    }
+
+    .user-login,
+    .user-signup {
+      width: -webkit-fill-available;
+      @include select-common;
+      margin: 10px 0 15px 0;
+    }
+
+    .pw-error {
+      font-size: 12px;
+      color: #e03232;
+    }
+
+    .pwFind-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .pwFind-text {
+        font-size: 14px;
+        font-weight: 800;
+        color: #093030;
+      }
+    }
+
+    .login-btn,
+    .signup-btn {
+      color: #ffffff;
+      font-weight: bold;
+      border: 1px solid $green;
+      background-color: $green;
+      width: 100%;
+      border-radius: 18px;
+      margin-top: 20px;
+      padding: 6px 15px;
+    }
+
+    .login-btn:hover,
+    .signup-btn:hover {
+      border: 1px solid $deep-green;
+      background-color: $deep-green;
+      color: #093030;
+    }
+  }
+
+  .navi-pre-btn {
+    width: 30px;
+    border: 1px solid transparent;
+    background-color: transparent;
+    filter: invert(66%) sepia(27%) saturate(399%) hue-rotate(81deg)
+      brightness(87%) contrast(87%);
   }
 }

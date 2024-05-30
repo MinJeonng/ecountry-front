@@ -162,7 +162,7 @@ export default function CommonMainNews() {
         </Container>
       ) : (
         <NoneNews>
-          <p>뉴스 정보가 없습니다.</p>
+          <p style={{ color: '#666666' }}>뉴스 정보가 없습니다.</p>
         </NoneNews>
       )}
     </>

@@ -118,6 +118,7 @@ function CheckingAccount({ account, unit }) {
             'ngrok-skip-browser-warning': '69420',
           },
         });
+        console.log(res);
         if (res.data.success) {
           console.log('입출금내역', res.data.result);
           setTransList(res.data.result);
@@ -127,7 +128,7 @@ function CheckingAccount({ account, unit }) {
       }
     };
     getTransHistory();
-  }, []);
+  }, [accountId]);
 
   //날짜별로 입출금 내역 정리
   const groupByDate = (transList) => {
@@ -148,6 +149,123 @@ function CheckingAccount({ account, unit }) {
   // 그룹화된 거래내역을 화면에 표시
   const TransListByDate = ({ transList }) => {
     const groupedTrans = groupByDate(transList);
+    console.log('거래내역', groupedTrans);
+
+    if (Object.keys(groupedTrans).length === 0) {
+      // groupedTrans가 비어있다면, "거래내역이 없습니다" 메시지를 표시
+      return <NoneTrans>거래내역이 없습니다.</NoneTrans>;
+    }
+
+    return (
+      <>
+        {Object.keys(groupedTrans).map((date) => (
+          <Container>
+            <div key={date}>
+              <CustomDate>{date}</CustomDate>
+              {groupedTrans[date].map((trans) => (
+                // <div key={trans.id}>
+                <TransContainer>
+                  <TransName key={trans.id}>
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/icon-trans.png`}
+                    />
+                    <div className="accountInfo">
+                      <div className="name">
+                        {trans.depositId === account.id
+                          ? trans.withdrawName
+                          : trans.depositName}
+                      </div>
+                      <div className="memo"> {trans.memo}</div>
+                    </div>
+                  </TransName>
+                  <TransAmount>
+                    <div
+                      className={
+                        trans.depositId === account.id ? 'blue' : 'red'
+                      }
+                    >
+                      {trans.depositId === account.id
+                        ? `+ ${trans.transaction} ${unit.unit}`
+                        : `- ${trans.transaction} ${unit.unit}`}
+                    </div>
+                  </TransAmount>
+                </TransContainer>
+                // </div>
+              ))}
+            </div>
+          </Container>
+        ))}
+      </>
+    );
+  };
+
+  return (
+    <>
+      <MyAccount>
+        <AccountName>
+          <div className="accountName">
+            {/* 입출금<span>통장</span> */}
+            {account.accountName}
+          </div>
+        </AccountName>
+        <Balance>
+          <span>
+            {account.balance} {unit.unit}
+          </span>
+        </Balance>
+      </MyAccount>
+      <TransListByDate transList={transList} />
+    </>
+  );
+}
+
+//적금통장
+function SavingAccount({ account, unit }) {
+  const { accountId } = useParams();
+  const [transList, setTransList] = useState([]);
+
+  useEffect(() => {
+    const getTransHistory = async () => {
+      try {
+        const res = await axios({
+          method: 'GET',
+          url: `${process.env.REACT_APP_HOST}/api/bank/list/${accountId}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        });
+        if (res.data.success) {
+          console.log('적금통장', res.data.result);
+          setTransList(res.data.result);
+        }
+      } catch (error) {
+        console.log('적금 통장 내역 불러오기 실패', error);
+      }
+    };
+    getTransHistory();
+  }, [accountId]);
+
+  //날짜별로 적금통장 내역 정리
+  const groupByDate = (transList) => {
+    return transList.reduce((acc, curr) => {
+      const date = new Date(curr.createdAt);
+      // const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const transDate = `${month}월 ${day}일`;
+      if (!acc[transDate]) {
+        acc[transDate] = [];
+      }
+      acc[transDate].push(curr);
+      return acc;
+    }, {});
+  };
+
+  // 그룹화된 거래내역을 화면에 표시
+  const TransListByDate = ({ transList }) => {
+    const groupedTrans = groupByDate(transList);
+    console.log('거래내역', groupedTrans);
 
     if (Object.keys(groupedTrans).length === 0) {
       // groupedTrans가 비어있다면, "거래내역이 없습니다" 메시지를 표시
@@ -201,10 +319,7 @@ function CheckingAccount({ account, unit }) {
     <>
       <MyAccount>
         <AccountName>
-          <div className="accountName">
-            {/* 입출금<span>통장</span> */}
-            {account.accountName}
-          </div>
+          <div className="accountName">{account.accountName}</div>
         </AccountName>
         <Balance>
           <span>
@@ -249,7 +364,7 @@ export function TransHistory() {
       try {
         const res = await axios({
           method: 'GET',
-          url: `${process.env.REACT_APP_HOST}/api/bank`,
+          url: `${process.env.REACT_APP_HOST}/api/bank/${accountId}`,
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -279,9 +394,9 @@ export function TransHistory() {
           {account.division === '입출금통장' && (
             <CheckingAccount account={account} unit={unit} />
           )}
-          {/* {account.division === '적금통장' && (
-            <SavingAccount account={account} />
-          )} */}
+          {account.division === '적금통장' && (
+            <SavingAccount account={account} unit={unit} />
+          )}
         </div>
       ))}
     </>

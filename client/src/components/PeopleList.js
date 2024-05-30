@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,19 +8,28 @@ import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 
 import '../styles/setting.scss';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export function SetPeopleList() {
   const { id } = useParams();
   const [studentName, setStudentName] = useState(''); //이름
   const [attendanceNumber, setAttendanceNumber] = useState(''); //출석번호
   const [rating, setRating] = useState(''); //신용등급
-  const [job, setJob] = useState(''); // 직업
+  const [job, setJob] = useState(null); // 직업
   const [resetPassword, setResetPassword] = useState(''); //재설정 비밀번호
   const [studentList, setStudentList] = useState([]); //학생 리스트
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [jobList, setJobList] = useState([]); // 직업 리스트
+
+  const attendanceNumRef = useRef(null);
+  const resetPwRef = useRef(null);
+
+  const editAttendanceNumRef = useRef();
+  const editRateRef = useRef();
+  const editResetPwRef = useRef();
+
   console.log(studentList);
   const getInfo = async () => {
     const res = await axios({
@@ -55,7 +64,7 @@ export function SetPeopleList() {
           rollNumber: attendanceNumber,
           pw: resetPassword ? resetPassword : null,
           rating,
-          jobId: job,
+          jobId: job == '' ? null : job,
         },
       ],
       headers: {
@@ -80,6 +89,10 @@ export function SetPeopleList() {
           pw: resetPassword,
         },
       ],
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
     });
     if (res.data.success) {
       toast.success('국민 추가가 완료되었습니다.', { autoClose: 1300 });
@@ -111,7 +124,7 @@ export function SetPeopleList() {
   //추가
   const handleAddPeopleList = () => {
     if (!studentName || !attendanceNumber || !resetPassword) {
-      alert('모든 값을 입력해주세요');
+      toast('모든 값을 입력해주세요');
       return;
     }
     addStudent();
@@ -137,7 +150,7 @@ export function SetPeopleList() {
       setAttendanceNumber(student.rollNumber);
       setStudentName(student.name);
       setRating(student.rating);
-      setJob(student.jobId);
+      setJob(student.jobId ? student.jobId : '');
       setResetPassword('');
       setIsAccordionOpen(true);
       setIsAddOpen(false);
@@ -178,7 +191,36 @@ export function SetPeopleList() {
     setResetPassword('');
   };
 
-  const handleConfirm = () => {};
+  const skillMap = {
+    0: '월급지급',
+    1: '적금관리(가입/해지)',
+    2: '뉴스 작성',
+    3: '세금 징수',
+    4: '신용 관리',
+    5: '법 관리',
+  };
+  const SkillList = ({ skills }) => {
+    const skillNames = skills.map(
+      (skill) => skillMap[skill] || 'Unknown skill'
+    );
+
+    return (
+      <div>
+        (
+        {skillNames.map((name, index) => (
+          <React.Fragment key={index}>
+            <span>{name}</span>
+            {index < skillNames.length - 1 && ', '}
+          </React.Fragment>
+        ))}
+        )
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    console.log(job);
+  }, [job]);
 
   useEffect(() => {
     getInfo();
@@ -187,12 +229,13 @@ export function SetPeopleList() {
   return (
     <>
       <ToastContainer />
-      <div className="title-list">
+      <div className="setting-wrap">
         {/* <div>국민 리스트</div> */}
         <ul className="title-list">
           <li>국민리스트를 확인할 수 있습니다.</li>
           <li>국민 정보를 추가, 수정 및 삭제할 수 있습니다.</li>
           <li>학생마다 비밀번호를 재설정 할 수 있습니다.</li>
+          <li>학생에게 직업을 부여할 수 있습니다.</li>
         </ul>
       </div>
 
@@ -227,9 +270,11 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setStudentName(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, editAttendanceNumRef)}
               />
               <div className="set-title">출석번호</div>
               <input
+                ref={editAttendanceNumRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -237,9 +282,11 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setAttendanceNumber(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDownNext(e, editRateRef)}
               />
               <div className="set-title">신용등급</div>
               <input
+                ref={editRateRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -263,10 +310,10 @@ export function SetPeopleList() {
                   padding: '5px',
                 }}
               >
-                <option value={null}>무직</option>
-                {jobList.map((data) => (
+                <option value="">무직</option>
+                {jobList.map((data, index) => (
                   <option key={data.id} value={data.id}>
-                    {data.name}
+                    {data.name} {<SkillList skills={data.skills} />}
                   </option>
                 ))}
               </select>
@@ -279,6 +326,7 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setResetPassword(e.target.value);
                 }}
+                onKeyDown={(e) => handleKeyDown(e, updateStudent)}
               />
               <ConfirmBtn
                 onClick={() => {
@@ -291,26 +339,11 @@ export function SetPeopleList() {
           )}
         </>
       ))}
-
-      {isAccordionOpen && (
-        <ConfirmBtn
-          onClick={newAddBtn}
-          btnName="학생 등록"
-          backgroundColor="#bacd92"
-        ></ConfirmBtn>
-      )}
-
       {isAddOpen && (
         <>
           <form className="box-style">
             <div className="reset">
               <div className="set-title">이름</div>
-              {/* <img
-                className="resetBtn"
-                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                onClick={resetBtn}
-                alt="Reset Button"
-              /> */}
             </div>
             <input
               className="set-input"
@@ -319,9 +352,11 @@ export function SetPeopleList() {
               onChange={(e) => {
                 setStudentName(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, attendanceNumRef)}
             />
             <div className="set-title">출석번호</div>
             <input
+              ref={attendanceNumRef}
               className="set-input"
               type="number"
               min="0"
@@ -329,9 +364,11 @@ export function SetPeopleList() {
               onChange={(e) => {
                 setAttendanceNumber(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDownNext(e, resetPwRef)}
             />
             <div className="set-title">초기 비밀번호</div>
             <input
+              ref={resetPwRef}
               className="set-input"
               type="number"
               maxLength={4}
@@ -339,6 +376,7 @@ export function SetPeopleList() {
               onChange={(e) => {
                 setResetPassword(e.target.value);
               }}
+              onKeyDown={(e) => handleKeyDown(e, handleAddPeopleList)}
             />
             <ConfirmBtn
               onClick={handleAddPeopleList}
@@ -346,11 +384,6 @@ export function SetPeopleList() {
               backgroundColor="#bacd92"
             ></ConfirmBtn>
           </form>
-          {/* <ConfirmBtn
-            onClick={handleConfirm}
-            btnName="완료"
-            backgroundColor="#bacd92"
-          ></ConfirmBtn> */}
         </>
       )}
     </>

@@ -15,7 +15,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import '../styles/setting.scss';
 import { useParams } from 'react-router-dom';
-import { GetTimeText } from '../hooks/Functions';
 
 ChartJS.register(
   CategoryScale,
@@ -37,7 +36,10 @@ export function CheckInvestment() {
   const [openStates, setOpenStates] = useState([]);
   const [rotate180Styles, setRotate180Styles] = useState([]);
   const [height, setHeight] = useState([]);
-
+  console.log('products', products);
+  console.log('list', list);
+  console.log('labels', labels);
+  console.log('amounts', amounts);
   useEffect(() => {
     const formattedLabels = list.map((item) => {
       const newDate = new Date(item.createdAt);

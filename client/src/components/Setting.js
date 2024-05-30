@@ -1349,7 +1349,7 @@ export function Setting6() {
   };
   const nextSetting = () => {
     if (laws.length > 0) {
-      navigate('/setting/jobList');
+      navigate('/setting/taxLaw');
       dispatch(basicLaw({ basicLaw: laws }));
     } else {
       toast.error('기본법을 제정하세요', { autoClose: 1300 });

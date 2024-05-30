@@ -123,14 +123,6 @@ export function AssemblyLawList() {
   return (
     <>
       <ToastContainer />
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div
-          className="newsHead"
-          style={{ color: '#666666', marginBottom: '10px' }}
-        >
-          기본 법
-        </div>
-      </div>
       <div
         style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
       ></div>

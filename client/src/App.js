@@ -31,6 +31,7 @@ import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
 import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
+import Skills from './pages/Skills';
 import Test1 from './pages/Test1';
 import { StudentAssembly } from './pages/StudentAssembly';
 import { PcHeader } from './components/PcHeader';
@@ -45,7 +46,9 @@ function AppWrapper() {
     '/countryList',
   ].includes(location.pathname);
 
+
   return (
+
     <div className={!isHeaderHidden ? 'App Contain' : ''}>
       {!isHeaderHidden && <PcHeader />}
       <Routes>
@@ -170,20 +173,9 @@ function AppWrapper() {
         <Route path="/:id/chatbot" element={<ChatBot />} />
 
         <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
-        <Route
-          path="/:id/revenue/collect"
-          element={<Revenu position="과태료징수" />}
-        />
+        
         {/* 각 직업별 페이지 */}
-        <Route
-          path="/:id/bankClerk/saving"
-          element={<BankClerk position="은행원 - 적금" />}
-        />
-        <Route
-          path="/:id/bankClerk/salary"
-          element={<BankClerk position="은행원 - 월급 지급" />}
-        />
-        <Route path="/test1" element={<Test1 />} />
+        <Route path="/:id/skills" element={<Skills />} />
 
         <Route path="*" element={<NOTFOUND />} />
       </Routes>

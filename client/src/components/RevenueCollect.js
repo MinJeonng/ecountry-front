@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 
-export default function RevenuCollect() {
+export default function RevenueCollect() {
   const { id } = useParams();
   const [accountId, setAccountId] = useState('');
   const [selectedStudent, setSelectedStudent] = useState('');

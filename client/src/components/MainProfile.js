@@ -3,7 +3,7 @@ import { Avatar, Button } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { setStudentInfoList } from '../store/studentInfoReducer';
 import { useDispatch } from 'react-redux';
 
@@ -19,6 +19,23 @@ const ProfileContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   justify-content: flex-start;
+  .btnBox {
+    display: flex;
+    gap: 10px;
+  }
+`;
+const ToManagerBtn = styled.button`
+  border-radius: 11px;
+  border: none;
+  text-align: center;
+  font-size: 13px;
+  color: #606060;
+  padding: 14px 20px;
+  margin-top: 5px;
+  height: 32px;
+  box-shadow: 1px 1.3px #c0bebe;
+  display: flex;
+  align-items: center;
 `;
 
 const ProfileName = styled.div`
@@ -35,13 +52,14 @@ const ProfileName = styled.div`
   }
 `;
 const LogoutBtn = styled.button`
-  border-radius: 16px;
+  border-radius: 11px;
   border: none;
   text-align: center;
   font-size: 13px;
   color: #606060;
   padding: 14px 20px;
   margin-top: 5px;
+  box-shadow: 1px 1.3px #c0bebe;
   height: 32px;
   display: flex;
   align-items: center;
@@ -139,7 +157,6 @@ export function MainProfile() {
         ref={fileInput}
       />
       <Name>{name}</Name>
-      {/* 이름 옆에 직업을 넣어주는 것도 고려 */}
     </>
   );
 }
@@ -150,6 +167,8 @@ export function GetName() {
   const [name, setName] = useState('');
   const [job, setJob] = useState('');
   const dispatch = useDispatch();
+  const [isManager, setIsManager] = useState(false);
+  const navigate = useNavigate();
 
   const getUserName = async () => {
     try {
@@ -169,7 +188,8 @@ export function GetName() {
         if (userInfo.isStudent) {
           dispatch(setStudentInfoList(res.data.result));
         } else {
-          //선생님인 경우
+          dispatch(setStudentInfoList({ skills: [0, 1, 2, 3, 4, 5] }));
+          setIsManager(true);
         }
       } else {
         console.error(res.data.message);
@@ -201,18 +221,27 @@ export function GetName() {
       getUserName();
     }
   }, [userInfo]);
+  const movetoManager = () => {
+    navigate(`/${id}/manager`);
+  };
+
   return (
     <ProfileContainer>
       <ProfileName>
         {name} <div className="job">{job}</div>
       </ProfileName>
-      <LogoutBtn onClick={logoutFunc}>
-        로그아웃
-        <img
-          src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
-          alt="복사"
-        />
-      </LogoutBtn>
+      <div className="btnBox">
+        <LogoutBtn onClick={logoutFunc}>
+          로그아웃
+          <img
+            src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+            alt="복사"
+          />
+        </LogoutBtn>
+        {isManager && (
+          <ToManagerBtn onClick={movetoManager}>관리자 페이지</ToManagerBtn>
+        )}
+      </div>
     </ProfileContainer>
   );
 }

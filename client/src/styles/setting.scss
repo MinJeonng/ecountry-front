@@ -312,6 +312,19 @@ $blue: #61759f;
   justify-content: space-between;
   align-items: center;
 }
+.infoBox {
+  display: flex;
+  flex-direction: column;
+  padding-left: 8px;
+  .line {
+    font-size: 1rem;
+    color: #666666;
+    margin-top: 2px;
+  }
+  .pLine {
+    font-size: 0.9rem;
+  }
+}
 
 // 세법 관리
 

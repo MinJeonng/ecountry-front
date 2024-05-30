@@ -21,31 +21,31 @@ export default function CountryList() {
     navigate(`/${id}/manager`);
   };
 
-  useEffect(() => {
-    const getList = async () => {
-      const res = await axios({
-        method: 'GET',
-        url: `${process.env.REACT_APP_HOST}/api/user`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+  const getList = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/user`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    console.log(res.data.result);
+    if (res.data.result.length > 0) {
+      setCountryList(res.data.result);
       console.log(res.data.result);
-      if (res.data.result.length > 0) {
-        setCountryList(res.data.result);
-        console.log(res.data.result);
-      }
-      if (res.data.success) {
-        setCountryInfo(res.data.result.id);
-      }
-    };
-    getList();
-  }, []);
+    }
+    if (res.data.success) {
+      setCountryInfo(res.data.result.id);
+    }
+  };
 
   //국가 삭제
   const deleteCountry = async (countryInfo) => {
+    if (!window.confirm('국가를 삭제하시겠습니까?')) {
+      return;
+    }
     const res = await axios({
       method: 'DELETE',
       url: `${process.env.REACT_APP_HOST}/api/country/${countryInfo}`,
@@ -53,21 +53,23 @@ export default function CountryList() {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
-      data: {
-        id: countryInfo,
-      },
     });
     if (res.data.success) {
-      setCountryList(
-        countryList.filter((country) => country.id !== countryInfo)
-      );
-      if (window.confirm('국가를 삭제하시겠습니까?')) {
-        toast('삭제되었습니다.', {
-          autoClose: 1300,
-        });
-      }
+      getList();
+      toast('삭제되었습니다.', {
+        autoClose: 1300,
+      });
+    } else {
+      console.log(res.data.message);
+      toast('삭제에 실패했습니다.', {
+        autoClose: 1200,
+      });
     }
   };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   return (
     <>

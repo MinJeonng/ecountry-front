@@ -47,7 +47,7 @@ function AppWrapper() {
 
   return (
     <div className={!isHeaderHidden ? 'App Contain' : ''}>
-      {/* {!isHeaderHidden && <PcHeader />} */}
+      {!isHeaderHidden && <PcHeader />}
       <Routes>
         {/* setting 페이지 */}
         <Route path="/" element={<Intro />} />

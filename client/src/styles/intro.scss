@@ -149,4 +149,22 @@ $blue: #61759f;
       padding: 6px 15px;
     }
   }
+
+  /* NationBuilding */
+
+  .background2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .button-wrap2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 15%;
+  }
 }

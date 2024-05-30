@@ -1,5 +1,14 @@
 import React from 'react';
 
-export default function PcHeader() {
-  return <div>PcHeader</div>;
+import '../styles/pcHeader.scss';
+
+export function PcHeader() {
+  return (
+    <header>
+      <div>헤더입니다</div>
+      <div>헤더입니다</div>
+      <div>헤더입니다</div>
+      <div>헤더입니다</div>
+    </header>
+  );
 }

@@ -61,32 +61,33 @@ export function SetSeat() {
   const changeList = async (row, col, studentId) => {
     let isExist = false;
     let data = [];
-    seatList.map((seat) => {
-      if (seat.rowNum == row && seat.colNum == col) {
-        isExist = true;
-        if (showStudentMap) {
-          data = [
-            {
-              id: seat.id,
-              ownerId: seat.ownerId,
-              studentId: studentId,
-              rowNum: row,
-              colNum: col,
-            },
-          ];
-        } else {
-          data = [
-            {
-              id: seat.id,
-              ownerId: studentId,
-              studentId: seat.studentId,
-              rowNum: row,
-              colNum: col,
-            },
-          ];
+    
+      seatList.map((seat) => {
+        if (seat.rowNum == row && seat.colNum == col) {
+          isExist = true;
+          if (showStudentMap) {
+            data = [
+              {
+                id: seat.id,
+                ownerId: seat.ownerId,
+                studentId: studentId,
+                rowNum: row,
+                colNum: col,
+              },
+            ];
+          } else {
+            data = [
+              {
+                id: seat.id,
+                ownerId: studentId,
+                studentId: seat.studentId,
+                rowNum: row,
+                colNum: col,
+              },
+            ];
+          }
         }
-      }
-    });
+      });
     if (!isExist) {
       if (showStudentMap) {
         data = [

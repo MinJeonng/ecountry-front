@@ -33,17 +33,21 @@ import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
 import Test1 from './pages/Test1';
 import { StudentAssembly } from './pages/StudentAssembly';
+import { PcHeader } from './components/PcHeader';
 
 function AppWrapper() {
   const location = useLocation();
-  const isIntroPage = location.pathname === '/';
-  const isLoginPage = location.pathname === '/login';
-  const isSignupPage = location.pathname === '/signup';
-
-  const applyClass = isIntroPage || isLoginPage || isSignupPage;
+  const isHeaderHidden = [
+    '/',
+    '/login',
+    '/signup',
+    '/country',
+    '/countryList',
+  ].includes(location.pathname);
 
   return (
-    <div className={applyClass ? '' : 'App Contain'}>
+    <div className={!isHeaderHidden ? 'App Contain' : ''}>
+      {!isHeaderHidden && <PcHeader />}
       <Routes>
         {/* setting 페이지 */}
         <Route path="/" element={<Intro />} />
@@ -107,7 +111,6 @@ function AppWrapper() {
         <Route path="/:id/manager/seatMap" element={<SetSeat />} />
 
         <Route path="/:id/manager/peopleList" element={<PeopleList />} />
-
         <Route path="/:id/manager/seatMap" element={<SetSeat />} />
         <Route path="/:id/manager/peopleList" element={<PeopleList />} />
         <Route

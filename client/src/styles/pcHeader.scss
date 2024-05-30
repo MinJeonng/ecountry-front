@@ -1,0 +1,27 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/variables';
+@import '../styles/input_common';
+
+@include mobile {
+  header {
+    display: none;
+  }
+}
+
+@include desktop {
+  header {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 480px;
+    margin: 50px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+  }
+}

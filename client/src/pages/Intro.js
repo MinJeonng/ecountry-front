@@ -53,7 +53,8 @@ export default function Intro() {
           </div>
           <div className="pc-info">
             <div className="pc-info1">
-              자라나라 경제나라와 함께하는 경제 개념 기르기!
+              자라나라 경제나라와 함께하는 <br />
+              경제 개념 기르기!
             </div>
             <div className="pc-info2">
               해당 웹사이트는 옥효진 선생님의 '세금내는 아이들'을 참고하여

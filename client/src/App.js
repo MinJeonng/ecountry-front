@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 
 import './styles/common.scss';
@@ -47,7 +47,7 @@ function AppWrapper() {
 
   return (
     <div className={!isHeaderHidden ? 'App Contain' : ''}>
-      {!isHeaderHidden && <PcHeader />}
+      {/* {!isHeaderHidden && <PcHeader />} */}
       <Routes>
         {/* setting 페이지 */}
         <Route path="/" element={<Intro />} />

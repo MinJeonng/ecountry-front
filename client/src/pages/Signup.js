@@ -33,7 +33,6 @@ export default function Login() {
           setTimeout(() => {
             navigate('/login');
           }, 2000);
-
         }
       });
   };
@@ -51,6 +50,7 @@ export default function Login() {
 
   return (
     <Template
+      isAuthPage={true}
       childrenTop={<PageHeader>{'회원가입'}</PageHeader>}
       childrenBottom={
         <>
@@ -113,7 +113,7 @@ export default function Login() {
               />
             </div>
             <div className="pc-right">
-              <div>대통령 회원가입</div>
+              <div>회원가입</div>
 
               <form className="signup-box-style">
                 <div className="user-signup-title">이름</div>

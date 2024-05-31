@@ -38,9 +38,10 @@ export default function Login() {
     <>
       <ToastContainer />
       <Template
+        isAuthPage={true}
         childrenTop={
           <>
-            <PageHeader>{'대통령 로그인'}</PageHeader>
+            <PageHeader>{'관리자 로그인'}</PageHeader>
           </>
         }
         childrenBottom={
@@ -78,7 +79,7 @@ export default function Login() {
                 />
               </div>
               <div className="pc-right">
-                <div>대통령 로그인</div>
+                <div>관리자 로그인</div>
                 <form className="login-box-style">
                   <div className="user-login-title">아이디</div>
                   <input

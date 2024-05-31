@@ -6,6 +6,7 @@ import useAuth from '../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setStudentInfoList } from '../store/studentInfoReducer';
 import { useDispatch } from 'react-redux';
+import { chatBotList } from '../hooks/Functions';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -120,6 +121,7 @@ export function MainProfile() {
       });
 
       if (res.data.success) {
+        console.log('관리자 이름');
         setName(res.data.result.name);
       } else {
         console.error(res.data.message);
@@ -131,11 +133,13 @@ export function MainProfile() {
 
   useEffect(() => {
     setUserInfo();
+    console.log('useE관리자');
   }, []);
 
   useEffect(() => {
     if (userInfo?.authority) {
       getUserName();
+      console.log('한번더 log');
     }
   }, [userInfo]);
 
@@ -184,6 +188,7 @@ export function GetName() {
       });
 
       if (res.data.success) {
+        console.log('success');
         setName(res.data.result.name);
         setJob(res.data.result.job);
         if (userInfo.isStudent) {
@@ -196,7 +201,7 @@ export function GetName() {
         console.error(res.data.message);
       }
     } catch (error) {
-      console.error('로그인 요청 실패:', error);
+      console.error('정보 요청 실패:', error);
     }
   };
   const logoutFunc = () => {
@@ -206,24 +211,26 @@ export function GetName() {
     localStorage.removeItem('token');
     window.location.href = `/${id}/login`;
   };
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      setUserInfo();
-    }
-  }, []);
 
   const movetoManager = () => {
     navigate(`/${id}/manager`);
   };
 
   // useEffect(() => {
-  //   console.log('22222');
-  //   setUserInfo();
+  //   if (localStorage.getItem('token')) {
+  //     setUserInfo();
+  //     console.log('useE실행');
+  //   }
   // }, []);
+  useEffect(() => {
+    setUserInfo();
+    console.log('useE실행');
+  }, []);
 
   useEffect(() => {
     if (userInfo?.authority) {
       getUserName();
+      console.log('한번더');
     }
   }, [userInfo]);
 

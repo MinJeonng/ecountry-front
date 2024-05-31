@@ -91,7 +91,7 @@ export default function MenuList() {
     </>
   ) : (
     <MenuContainer>
-      <p>급식 정보가 없습니다.</p>
+      <p style={{ color: '#666666' }}>급식 정보가 없습니다.</p>
     </MenuContainer>
   );
 }

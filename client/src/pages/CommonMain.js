@@ -1,11 +1,12 @@
 //공통 메인페이지
 import { CommonMainHeader } from '../components/Headers';
-import { AddJobSkills, GetName } from '../components/MainProfile';
+import { GetName } from '../components/MainProfile';
 import CommonMainNews from '../components/CommonMainNews';
 import Template from '../components/Template';
 import '../styles/common_main.scss';
 import MenuList from '../components/MenuList';
 import ScheduleList from '../components/ScheduleList';
+import PcInvestment from '../components/PcInvestment';
 
 export function CommonMain() {
   return (
@@ -16,7 +17,6 @@ export function CommonMain() {
             <CommonMainHeader />
             <div className="mainProfile">
               <GetName />
-              {/* <AddJobSkills /> */}
             </div>
           </>
         }
@@ -26,6 +26,7 @@ export function CommonMain() {
               <CommonMainNews />
               <ScheduleList />
               <MenuList />
+              <PcInvestment />
             </div>
           </>
         }

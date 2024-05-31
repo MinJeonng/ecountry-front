@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 
 import './styles/common.scss';
 import './styles/reset.css';
@@ -28,145 +29,161 @@ import { CommonMain } from './pages/CommonMain';
 import Revenu from './pages/Revenu';
 import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
-import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
+import Skills from './pages/Skills';
+import { StudentAssembly } from './pages/StudentAssembly';
+import { PcHeader } from './components/PcHeader';
+
+function AppWrapper() {
+  const location = useLocation();
+  const isHeaderHidden = [
+    '/',
+    '/login',
+    '/signup',
+    '/country',
+    '/countryList',
+  ].includes(location.pathname);
+
+  return (
+    <div className={!isHeaderHidden ? 'App Contain' : ''}>
+      {/* {!isHeaderHidden && <PcHeader />} */}
+      <Routes>
+        {/* setting 페이지 */}
+        <Route path="/" element={<Intro />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        <Route path="/country" element={<NationBuilding />} />
+        <Route path="/countryList" element={<CountryList />} />
+
+        <Route path="/setDone" element={<Loading />} />
+
+        <Route
+          path="/setting/schoolInfo"
+          element={<Setting position="학교 정보 입력" />}
+        />
+        <Route
+          path="/setting/countryInfo"
+          element={<Setting position="국가 정보 입력" />}
+        />
+        <Route
+          path="/setting/studentInfo"
+          element={<Setting position="학생 정보 입력" />}
+        />
+        <Route
+          path="/setting/seatingMap"
+          element={<Setting position="자리배치도" />}
+        />
+        <Route
+          path="/setting/jobList"
+          element={<Setting position="직업리스트" />}
+        />
+        <Route
+          path="/setting/law"
+          element={<Setting position="기본 법 제정" />}
+        />
+        <Route
+          path="/setting/taxLaw"
+          element={<Setting position="세법 제정" />}
+        />
+        <Route
+          path="/setting/seatRental"
+          element={<Setting position="자리임대료 설정" />}
+        />
+        <Route
+          path="/setting/fine"
+          element={<Setting position="과태료 설정" />}
+        />
+
+        <Route path="/test" element={<Test />} />
+
+        {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
+        <Route path="/:id/manager" element={<ManagerDashBoard />} />
+        <Route
+          path="/:id/manager/bank"
+          element={<SetBank position="적금 상품" />}
+        />
+        <Route
+          path="/:id/manager/investment"
+          element={<SetInvestment position="투자 상품 관리" />}
+        />
+        <Route path="/:id/manager/seatMap" element={<SetSeat />} />
+
+        <Route path="/:id/manager/peopleList" element={<PeopleList />} />
+        <Route path="/:id/manager/seatMap" element={<SetSeat />} />
+        <Route path="/:id/manager/peopleList" element={<PeopleList />} />
+        <Route
+          path="/:id/manager/assembly"
+          element={<SetAssembly position="국회" />}
+        />
+        <Route path="/:id/manager/jobList" element={<JobList />} />
+
+        <Route
+          path="/:id/manager/taxLawList"
+          element={<TaxLawList position="세법 관리" />}
+        />
+
+        {/* 공통 페이지 */}
+        <Route path="/:id/main" element={<CommonMain />} />
+        <Route
+          path="/:id/boardPeople"
+          element={<SetBoardPeople position="신문고" />}
+        />
+        <Route
+          path="/:id/boardPeople/write"
+          element={<SetBoardPeople position="신문고 글쓰기" />}
+        />
+        <Route
+          path="/:id/boardPeople/read/:contentId"
+          element={<SetBoardPeople position="신문고 리스트" />}
+        />
+        <Route path="/:id/news" element={<SetNews position="뉴스" />} />
+        <Route
+          path="/:id/news/write"
+          element={<SetNews position="뉴스 글쓰기" />}
+        />
+        <Route
+          path="/:id/news/read/:newsId"
+          element={<SetNews position="읽기" />}
+        />
+        {/* 학생 페이지 */}
+        <Route path="/:id/login" element={<StudentLogin />} />
+        <Route path="/:id/mypage" element={<StudentMyPage />} />
+        <Route path="/:id/changePw" element={<ChangePassword />} />
+
+        <Route
+          path="/:id/investment"
+          element={<SetInvestment position="투자 상품 확인" />}
+        />
+        <Route path="/:id/bank" element={<StudentBank position="은행" />} />
+        <Route
+          path="/:id/bank/history/:accountId"
+          element={<StudentBank position="거래 내역" />}
+        />
+
+        <Route
+          path="/:id/assembly"
+          element={<StudentAssembly position="국회" />}
+        />
+
+        <Route path="/:id/chatbot" element={<ChatBot />} />
+
+        <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
+
+        {/* 각 직업별 페이지 */}
+        <Route path="/:id/skills" element={<Skills />} />
+
+        <Route path="*" element={<NOTFOUND />} />
+      </Routes>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="App Contain">
-      <BrowserRouter>
-        <Routes>
-          {/* setting페이지 */}
-          <Route path="/" element={<Intro />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-
-          <Route path="/country" element={<NationBuilding />} />
-          <Route path="/countryList" element={<CountryList />} />
-
-          <Route path="/setDone" element={<Loading />} />
-
-          <Route
-            path="/setting/schoolInfo"
-            element={<Setting position="학교 정보 입력" />}
-          />
-          <Route
-            path="/setting/countryInfo"
-            element={<Setting position="국가 정보 입력" />}
-          />
-          <Route
-            path="/setting/studentInfo"
-            element={<Setting position="학생 정보 입력" />}
-          />
-          <Route
-            path="/setting/seatingMap"
-            element={<Setting position="자리배치도" />}
-          />
-          <Route
-            path="/setting/jobList"
-            element={<Setting position="직업리스트" />}
-          />
-          <Route
-            path="/setting/law"
-            element={<Setting position="기본 법 제정" />}
-          />
-          <Route
-            path="/setting/taxLaw"
-            element={<Setting position="세법 제정" />}
-          />
-          <Route
-            path="/setting/seatRental"
-            element={<Setting position="자리임대료 설정" />}
-          />
-          <Route
-            path="/setting/fine"
-            element={<Setting position="과태료 설정" />}
-          />
-
-          <Route path="/test" element={<Test />} />
-
-          {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
-          <Route path="/:id/manager" element={<ManagerDashBoard />} />
-          <Route
-            path="/:id/manager/bank"
-            element={<SetBank position="적금 상품" />}
-          />
-          <Route
-            path="/:id/manager/investment"
-            element={<SetInvestment position="투자 상품 관리" />}
-          />
-          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
-
-          <Route path="/:id/manager/peopleList" element={<PeopleList />} />
-
-          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
-          <Route path="/:id/manager/peopleList" element={<PeopleList />} />
-          <Route
-            path="/:id/manager/assembly"
-            element={<SetAssembly position="국회" />}
-          />
-          <Route path="/:id/manager/jobList" element={<JobList />} />
-
-          <Route
-            path="/:id/manager/taxLawList"
-            element={<TaxLawList position="세법 관리" />}
-          />
-
-          {/* 공통 페이지 */}
-          <Route path="/:id/main" element={<CommonMain />} />
-          <Route
-            path="/:id/boardPeople"
-            element={<SetBoardPeople position="신문고" />}
-          />
-          <Route
-            path="/:id/boardPeople/write"
-            element={<SetBoardPeople position="신문고 글쓰기" />}
-          />
-          <Route
-            path="/:id/boardPeople/read/:contentId"
-            element={<SetBoardPeople position="신문고 리스트" />}
-          />
-          <Route path="/:id/news" element={<SetNews position="뉴스" />} />
-          <Route
-            path="/:id/news/read/:newsId"
-            element={<SetNews position="읽기" />}
-          />
-          {/* 학생 페이지 */}
-          <Route path="/:id/login" element={<StudentLogin />} />
-          <Route path="/:id/mypage" element={<StudentMyPage />} />
-          <Route path="/:id/changePw" element={<ChangePassword />} />
-
-          <Route
-            path="/:id/investment"
-            element={<SetInvestment position="투자 상품 확인" />}
-          />
-          <Route path="/:id/bank" element={<StudentBank position="은행" />} />
-          <Route
-            path="/:id/bank/history/:accountId"
-            element={<StudentBank position="거래 내역" />}
-          />
-
-          <Route path="/:id/chatbot" element={<ChatBot />} />
-
-          <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
-          <Route
-            path="/:id/revenue/collect"
-            element={<Revenu position="과태료징수" />}
-          />
-          {/* 각 직업별 페이지 */}
-          <Route
-            path="/:id/bankClerk/saving"
-            element={<BankClerk position="은행원 - 적금" />}
-          />
-          <Route
-            path="/:id/bankClerk/salary"
-            element={<BankClerk position="은행원 - 월급 지급" />}
-          />
-
-          <Route path="*" element={<NOTFOUND />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <AppWrapper />
+    </BrowserRouter>
   );
 }
 

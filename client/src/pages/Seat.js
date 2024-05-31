@@ -7,7 +7,6 @@ import '../styles/seat.scss';
 import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
-import OwnerSeatMap from './OwnerSeatMap';
 import { PageHeader } from '../components/Headers';
 
 // 자리배치도
@@ -62,32 +61,33 @@ export function SetSeat() {
   const changeList = async (row, col, studentId) => {
     let isExist = false;
     let data = [];
-    seatList.map((seat) => {
-      if (seat.rowNum == row && seat.colNum == col) {
-        isExist = true;
-        if (showStudentMap) {
-          data = [
-            {
-              id: seat.id,
-              ownerId: seat.ownerId,
-              studentId: studentId,
-              rowNum: row,
-              colNum: col,
-            },
-          ];
-        } else {
-          data = [
-            {
-              id: seat.id,
-              ownerId: studentId,
-              studentId: seat.studentId,
-              rowNum: row,
-              colNum: col,
-            },
-          ];
+    
+      seatList.map((seat) => {
+        if (seat.rowNum == row && seat.colNum == col) {
+          isExist = true;
+          if (showStudentMap) {
+            data = [
+              {
+                id: seat.id,
+                ownerId: seat.ownerId,
+                studentId: studentId,
+                rowNum: row,
+                colNum: col,
+              },
+            ];
+          } else {
+            data = [
+              {
+                id: seat.id,
+                ownerId: studentId,
+                studentId: seat.studentId,
+                rowNum: row,
+                colNum: col,
+              },
+            ];
+          }
         }
-      }
-    });
+      });
     if (!isExist) {
       if (showStudentMap) {
         data = [

@@ -3,7 +3,7 @@ import { Avatar, Button } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { setStudentInfoList } from '../store/studentInfoReducer';
 import { useDispatch } from 'react-redux';
 
@@ -19,6 +19,23 @@ const ProfileContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   justify-content: flex-start;
+  .btnBox {
+    display: flex;
+    gap: 10px;
+  }
+`;
+const ToManagerBtn = styled.button`
+  border-radius: 11px;
+  border: none;
+  text-align: center;
+  font-size: 13px;
+  color: #606060;
+  padding: 14px 20px;
+  margin-top: 5px;
+  height: 32px;
+  box-shadow: 1px 1.3px #c0bebe;
+  display: flex;
+  align-items: center;
 `;
 
 const ProfileName = styled.div`
@@ -35,18 +52,18 @@ const ProfileName = styled.div`
   }
 `;
 const LogoutBtn = styled.button`
-  border-radius: 19px;
+  border-radius: 11px;
   border: none;
   text-align: center;
   font-size: 13px;
   color: #606060;
-  padding: 3px 10px;
+  padding: 14px 20px;
   margin-top: 5px;
-  height: 30px;
+  box-shadow: 1px 1.3px #c0bebe;
+  height: 32px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 3px;
+  text-wrap: nowrap;
   img {
     width: 16px;
     height: 16px;
@@ -141,7 +158,6 @@ export function MainProfile() {
         ref={fileInput}
       />
       <Name>{name}</Name>
-      {/* 이름 옆에 직업을 넣어주는 것도 고려 */}
     </>
   );
 }
@@ -152,6 +168,8 @@ export function GetName() {
   const [name, setName] = useState('');
   const [job, setJob] = useState('');
   const dispatch = useDispatch();
+  const [isManager, setIsManager] = useState(false);
+  const navigate = useNavigate();
 
   const getUserName = async () => {
     try {
@@ -166,12 +184,14 @@ export function GetName() {
       });
 
       if (res.data.success) {
-        // console.log(res.data.result);
         setName(res.data.result.name);
         setJob(res.data.result.job);
-        // if (userInfo.isStudent) {
-        dispatch(setStudentInfoList(res.data.result));
-        // }
+        if (userInfo.isStudent) {
+          dispatch(setStudentInfoList(res.data.result));
+        } else {
+          dispatch(setStudentInfoList({ skills: [0, 1, 2, 3, 4, 5] }));
+          setIsManager(true);
+        }
       } else {
         console.error(res.data.message);
       }
@@ -202,103 +222,27 @@ export function GetName() {
       getUserName();
     }
   }, [userInfo]);
+  const movetoManager = () => {
+    navigate(`/${id}/manager`);
+  };
+
   return (
     <ProfileContainer>
       <ProfileName>
         {name} <div className="job">{job}</div>
       </ProfileName>
-      <LogoutBtn onClick={logoutFunc}>
-        로그아웃
-        <img
-          src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
-          alt="복사"
-        />
-      </LogoutBtn>
-    </ProfileContainer>
-  );
-}
-
-export function AddJobSkills() {
-  const { id } = useParams();
-  const [userInfo, setUserInfo] = useAuth(id);
-  const [skillBtn, setSkillBtn] = useState(false);
-  const [skillBtnText, setSkillBtnText] = useState('');
-  const [skillBtnLink, setSkillBtnLink] = useState('');
-
-  const getJobSkills = async () => {
-    setSkillBtn(false); // 스킬 버튼 상태 초기화
-
-    try {
-      const res = await axios({
-        method: 'GET',
-        url: `${process.env.REACT_APP_HOST}/api/user/info`,
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (res.data.success && userInfo?.isStudent) {
-        const skills = res.data.result.skills;
-        const validSkills = [0, 1, 2, 3, 4, 5];
-        const userSkills = skills.filter((skill) =>
-          validSkills.includes(skill)
-        );
-
-        if (userSkills.length > 0) {
-          const skill = userSkills[0]; // 첫 번째 유효한 스킬을 사용
-          const skillMappings = {
-            0: ['월급지급 페이지로 이동', `/${id}/bankClerk/salary`],
-            1: ['적금관리 페이지로 이동', `/${id}/bankClerk/saving`],
-            2: ['뉴스 작성 페이지로 이동', '/news'],
-            3: ['세금 징수 페이지로 이동', '/tax'],
-            4: ['신용 관리 페이지로 이동', '/credit'],
-            5: ['법 관리 페이지로 이동', '/law'],
-          };
-          const [text, link] = skillMappings[skill] ?? [];
-          setSkillBtnText(text);
-          setSkillBtnLink(link);
-          setSkillBtn(true);
-        }
-      } else {
-        console.log(res.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // useEffect(() => {
-  //   console.log('d');
-  //   if (localStorage.getItem('token')) {
-  //     setUserInfo();
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   setUserInfo();
-  // }, []);
-
-  useEffect(() => {
-    if (userInfo.authority) {
-      getJobSkills();
-    }
-  }, [userInfo]);
-
-  if (!skillBtn) {
-    return null;
-  }
-
-  return (
-    <>
-      <JobSkillBtn>
-        {skillBtnText && (
-          <a href={skillBtnLink} className="job-skill-btn">
-            {skillBtnText}
-          </a>
+      <div className="btnBox">
+        <LogoutBtn onClick={logoutFunc}>
+          로그아웃
+          <img
+            src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+            alt="복사"
+          />
+        </LogoutBtn>
+        {isManager && (
+          <ToManagerBtn onClick={movetoManager}>관리자 페이지</ToManagerBtn>
         )}
-      </JobSkillBtn>
-    </>
+      </div>
+    </ProfileContainer>
   );
 }

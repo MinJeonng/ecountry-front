@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import useAuth from '../hooks/useAuth';
+import { useEffect, useState } from 'react';
 
 const SideMenuBox = styled.div`
   position: fixed;
@@ -31,15 +33,13 @@ const DashboardBox = styled.div`
   gap: 10px;
   margin-bottom: 15px;
   div {
-    width: 160px;
-    height: 110px;
     text-align: center;
-    background-color: #f5f6fc;
+    /* background-color: #f5f6fc; */
     border-radius: 10px;
     padding: 20px 0;
     cursor: pointer;
     flex: 1;
-    min-width: 100px;
+    min-width: 130px;
   }
   img {
     width: 60px;
@@ -50,52 +50,30 @@ const DashboardBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px 0 0;
+    margin: 6px 0 0;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
   }
 
-  .bankBox {
-    background: #ffdddd;
+  .blueBox {
+    background: #e9f2f3;
+    box-shadow: 1px 2px #e5f3f5;
   }
-  .investmentBox {
-    background: #fff6dd;
+  .skyblueBox {
+    background: #e9f2f3;
+    box-shadow: 1px 2px #e5f3f5;
   }
-  .taxServiceBox {
-    background: #ddeecc;
+  .skillBox {
+    border: 1px solid #a7d2e4;
   }
-  .assemblyBox {
-    background: #ddeeff;
-  }
-  .newsBox {
-    background: #fff6dd;
-  }
-  .boardPeopleBox {
-    background: #e8e8f7;
-  }
-  .seatBox {
-    background: #ffffdd;
-  }
-  .menuBox {
-    background: #f6ddff;
-  }
-  .scheduleBox {
-    background: #eeffdd;
-  }
-  .peopleListBox {
-    background: #ddf6ff;
-  }
-  .taxService {
-    background: #ddf6;
-  }
-  .mypage {
-    background: #eeffdd;
+  .spanLine {
+    color: #666666;
   }
 `;
 
 export function SideMenuComponent({ func }) {
-  //여기에 링크는 다 다시해야함
+  //여기에 링크는 자리배치도만  다시해야함
   const { id } = useParams();
   const navigate = useNavigate();
   const studentInfoList = useSelector(
@@ -105,38 +83,59 @@ export function SideMenuComponent({ func }) {
   //이미지 모두 변환해야함
   const skillMappings = {
     0: {
-      text: '은행원(월급지급)',
-      link: `/${id}/bankClerk/salary`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
+      text: (
+        <>
+          은행원 <br /> (월급지급)
+        </>
+      ),
+      link: `/${id}/skills`,
+      img: `${process.env.PUBLIC_URL}/images/icon-teller-color2.png`,
     },
     1: {
-      text: '은행원(적금관리)',
-      link: `/${id}/bankClerk/saving`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
+      text: (
+        <>
+          은행원 <br /> (적금관리)
+        </>
+      ),
+      link: `/${id}/skills`,
+      img: `${process.env.PUBLIC_URL}/images/icon-teller-color.png`,
     },
-    2: {
-      text: '기자',
-      link: `/${id}/news`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
-    },
+
     3: {
-      text: '국세청(세금 징수)',
-      link: `/${id}/tax`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
+      text: (
+        <>
+          국세청 <br /> (세금 징수)
+        </>
+      ),
+      link: `/${id}/skills`,
+      img: `${process.env.PUBLIC_URL}/images/icon-irs-color.png`,
     },
     4: {
-      text: '신용 관리 등급 위원회',
-      link: `/${id}/credit`,
-      img: `${process.env.PUBLIC_URL}/images/icon-salary.png`,
+      text: (
+        <>
+          신용 관리 <br /> 등급 위원회
+        </>
+      ),
+      link: `/${id}/skills`,
+      img: `${process.env.PUBLIC_URL}/images/icon-credit-color.png`,
+    },
+    5: {
+      text: (
+        <>
+          국회 <br /> (법 제정)
+        </>
+      ),
+      link: `/${id}/skills`,
+      img: `${process.env.PUBLIC_URL}/images/icon-law-color.png`,
     },
   };
 
-  const skillBasedLinks = Array.isArray(studentInfoList)
-    ? studentInfoList.flatMap((studentInfo) =>
-        studentInfo.skills.flatMap((skill) =>
-          skillMappings[skill] ? [{ ...skillMappings[skill], key: skill }] : []
+  const skillBasedLinks = studentInfoList.skills
+    ? studentInfoList.skills
+        .map((skill) =>
+          skillMappings[skill] ? { ...skillMappings[skill], key: skill } : null
         )
-      )
+        .filter(Boolean)
     : [];
 
   return (
@@ -151,101 +150,95 @@ export function SideMenuComponent({ func }) {
             alt="닫기"
           />
           <DashboardBox>
-            <div className="bankBox" onClick={() => navigate(`/${id}/bank`)}>
+            <div className="skyblueBox" onClick={() => navigate(`/${id}/bank`)}>
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-bank.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-bank-color.png`}
                 alt="은행"
               />
               <p>은행</p>
             </div>
             <div
-              className="investmentBox"
+              className="blueBox"
               onClick={() => navigate(`/${id}/investment`)}
             >
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-investmentPng.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-investment-color.png`}
                 alt="투자"
               />
+
               <p>투자</p>
             </div>
             <div
-              className="assemblyBox"
+              className="skyblueBox"
               onClick={() => navigate(`/${id}/assembly`)}
             >
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-capitol.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-assembly-color.png`}
                 alt="국회"
               />
               <p>국회</p>
             </div>
 
-            <div className="newsBox" onClick={() => navigate(`/${id}/news`)}>
+            <div className="blueBox" onClick={() => navigate(`/${id}/news`)}>
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-news.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-news-color.png`}
                 alt="뉴스"
               />
               <p>뉴스</p>
             </div>
             <div
-              className="boardPeopleBox"
+              className="skyblueBox"
               onClick={() => navigate(`/${id}/boardPeople`)}
             >
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-board.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-board-color.png`}
                 alt="국민 신문고"
               />
               <p>국민 신문고</p>
             </div>
-            <div
-              className="taxServiceBox"
-              onClick={() => navigate(`/${id}/taxService`)}
-            >
+            <div className="skyblueBox" onClick={() => navigate(``)}>
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
-                alt="국세청"
-              />
-              <p>국세청</p>
-            </div>
-
-            <div className="seatBox" onClick={() => navigate(``)}>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-seat.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-seats-color.png`}
                 alt="자리 배치도"
               />
               <p>자리 배치도</p>
             </div>
-            <div
-              className="taxService"
-              onClick={() => navigate(`/${id}/revenue`)}
-            >
+            <div className="blueBox" onClick={() => navigate(`/${id}/revenue`)}>
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-tax.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-tax-color.png`}
                 alt="국세청"
               />
               <p>국세청</p>
             </div>
 
-            <div className="mypage" onClick={() => navigate(`/${id}/mypage`)}>
+            <div
+              className="skyblueBox"
+              onClick={() => navigate(`/${id}/mypage`)}
+            >
               <img
-                src={`${process.env.PUBLIC_URL}/images/icon-user.png`}
+                src={`${process.env.PUBLIC_URL}/images/icon-user-color.png`}
                 alt="마이페이지"
               />
               <p>마이페이지</p>
             </div>
-            {skillBasedLinks.map(({ text, link, img }, index) => (
-              <div
-                key={index}
-                className="skillBox"
-                onClick={() => navigate(link)}
-              >
-                <img src={img} alt={text} />
-                <p>{text}</p>
-              </div>
-            ))}
-            {/* <div style={{ visibility: 'hidden' }}>
-              <img />
-              <p></p>
-            </div> */}
+
+            <hr width="100%" color="#e2e4e4" height="1px" noshade />
+            {studentInfoList.skills &&
+              skillBasedLinks.map(({ text, link, img, key }) => (
+                <>
+                  <div
+                    key={key}
+                    className="skillBox"
+                    onClick={() => {
+                      localStorage.setItem('skillId', key);
+                      navigate(link);
+                    }}
+                  >
+                    <img src={img} alt="스킬" />
+                    <p>{text}</p>
+                  </div>
+                </>
+              ))}
           </DashboardBox>
         </div>
       </SideMenuBox>

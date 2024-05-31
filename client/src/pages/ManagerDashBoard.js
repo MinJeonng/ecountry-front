@@ -12,18 +12,18 @@ import { MainDashboard } from '../components/ManagerDashboard';
 import styled from 'styled-components';
 
 const LogoutBtn = styled.button`
-  border-radius: 19px;
+  border-radius: 11px;
   border: none;
   text-align: center;
   font-size: 13px;
   color: #606060;
-  padding: 3px 10px;
+  padding: 14px 20px;
   margin-top: 5px;
-  height: 30px;
+  box-shadow: 1px 1.3px #c0bebe;
+  height: 32px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 3px;
+  text-wrap: nowrap;
   img {
     width: 16px;
     height: 16px;
@@ -46,7 +46,6 @@ export default function ManagerDashBoard() {
       <Template
         childrenTop={
           <>
-            {/* 토스트는 최상위에다가만 표시 */}
             <ToastContainer />
             <div className="managerInfo">
               <div className="InfoPart1">
@@ -54,7 +53,6 @@ export default function ManagerDashBoard() {
                   <MainProfile />
                 </div>
                 <div className="countryUrl">
-                  {/* 링크 수정 필요 */}
                   <CopyToClipboard
                     text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
                     // text={`${process.env.REACT_APP_BASEURL}/${id}/main`}

@@ -1,0 +1,46 @@
+$under-line: #e9ae24;
+$green: #bacd92;
+$deep-green: #75a47f;
+$blue: #61759f;
+
+@import '../styles/variables';
+@import '../styles/input_common';
+
+@include mobile {
+  header {
+    display: none;
+  }
+}
+
+@include desktop {
+  header {
+    width: 270px;
+    // background: black;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+
+    .header-logo {
+      width: 50px;
+      margin: 50px 0;
+    }
+
+    .header-menu {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .header-menu li {
+      padding: 10px;
+    }
+
+    .header-menu li.active {
+      font-weight: bold;
+      background-color: $blue;
+      color: white;
+    }
+  }
+}

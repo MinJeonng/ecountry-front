@@ -108,6 +108,19 @@ export function MainProfile() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  useEffect(() => {
+    setUserInfo();
+    console.log('serUserInfo 부분');
+  }, []);
+
+  useEffect(() => {
+    console.log('userInfo', userInfo);
+    if (userInfo?.authority) {
+      getUserName();
+      console.log('getUserName 호출');
+    }
+  }, [userInfo]);
+
   const getUserName = async () => {
     try {
       const res = await axios({
@@ -130,18 +143,6 @@ export function MainProfile() {
       console.error('로그인 요청 실패:', error);
     }
   };
-
-  useEffect(() => {
-    setUserInfo();
-    console.log('useE관리자');
-  }, []);
-
-  useEffect(() => {
-    if (userInfo?.authority) {
-      getUserName();
-      console.log('한번더 log');
-    }
-  }, [userInfo]);
 
   return (
     <>
@@ -224,13 +225,14 @@ export function GetName() {
   // }, []);
   useEffect(() => {
     setUserInfo();
-    console.log('useE실행');
+    console.log('setUserInfo');
   }, []);
 
   useEffect(() => {
+    console.log('userInfo', userInfo);
     if (userInfo?.authority) {
       getUserName();
-      console.log('한번더');
+      console.log('getUserName 호출');
     }
   }, [userInfo]);
 

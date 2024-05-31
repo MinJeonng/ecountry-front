@@ -269,13 +269,10 @@ function AddSaving() {
             toast('가입이 완료되었습니다.', {
               autoClose: 1300,
             });
-            setTimeout(() => {
-              window.location.reload();
-            }, 1400);
 
-            console.log('success', res.data.success);
-            console.log(selectedStudentId);
-            console.log(savingId);
+            // console.log('success', res.data.success);
+            // console.log(selectedStudentId);
+            // console.log(savingId);
           } else {
             console.log(res.data.message);
           }
@@ -413,9 +410,9 @@ function CancelSaving() {
             toast('해지가 완료되었습니다.', {
               autoClose: 1300,
             });
-            setTimeout(() => {
-              window.location.reload();
-            }, 1400);
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 1400);
             console.log('success', res.data.success);
             console.log('balance', balance);
           } else {

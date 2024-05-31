@@ -94,8 +94,6 @@ export function PageHeader({ children, position }) {
         return `/${id}/boardPeople`;
       case '신문고 리스트':
         return `/${id}/boardPeople`;
-      case '신용등급 관리 위원회':
-        return `/${id}/main`;
       default:
         return null;
     }

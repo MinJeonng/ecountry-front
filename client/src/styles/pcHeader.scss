@@ -14,12 +14,13 @@ $blue: #61759f;
 
 @include desktop {
   header {
-    width: 270px;
-    // background: black;
     display: flex;
     flex-direction: column;
     height: 100vh;
     align-items: center;
+    position: fixed;
+    width: 250px;
+    border-right: 1px solid #d9d9d9;
 
     .header-logo {
       width: 50px;
@@ -31,16 +32,24 @@ $blue: #61759f;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding-right: 40px;
     }
 
     .header-menu li {
-      padding: 10px;
+      padding: 10px 20px;
     }
 
     .header-menu li.active {
-      font-weight: bold;
-      background-color: $blue;
-      color: white;
+      background-color: rgba($deep-green, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-menu li:hover {
+      background-color: rgba($deep-green, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
     }
   }
 }

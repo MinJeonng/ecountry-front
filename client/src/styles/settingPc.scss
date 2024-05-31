@@ -12,11 +12,12 @@ $blue: #61759f;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin: 80px 0 0 0;
 
     .title-list {
       margin: 10px 0;
       width: -webkit-fill-available;
-      margin: 50px 100px 0;
+      margin: 50px 100px 30px;
 
       li {
         margin-left: 20px;
@@ -31,8 +32,8 @@ $blue: #61759f;
     @include boxStyle-common;
     display: flex;
     flex-direction: column;
-    margin: 50px 100px;
-    padding: 70px;
+    margin: 30px 100px;
+    padding: 60px;
     justify-content: center;
 
     .select-student-id-title {
@@ -81,6 +82,11 @@ $blue: #61759f;
       font-size: 14px;
     }
 
+    .input-textarea {
+      border: 1px solid #e9ae24;
+      border-radius: 4px;
+    }
+
     .select-id {
       display: flex;
       flex-direction: column;
@@ -96,7 +102,7 @@ $blue: #61759f;
     display: flex;
     text-align: center;
     justify-content: space-between;
-    margin: 0 100px;
+    margin: 0 100px 50px;
 
     .next-button {
       @include button-style;
@@ -188,4 +194,125 @@ $blue: #61759f;
       pointer-events: none;
     }
   }
+
+  .display {
+    position: relative;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: start;
+    padding: 8px 10px;
+    margin: 0 100px 15px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid #75a47f;
+  }
+  .accordion-open {
+    background: #75a47f;
+    color: #fff;
+  }
+
+  .studentInfo-upload {
+    margin: 10px 0 0 5px;
+  }
+
+  .studentInfo-input {
+    @include select-common;
+  }
+
+  // 자리 배치도
+  .seat-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .seat-colum {
+      font-size: 14px;
+    }
+
+    .seat-count-select {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 50%;
+
+      .seat-count-input {
+        width: -webkit-fill-available;
+        text-align: center;
+        @include select-common;
+      }
+
+      .unit {
+        font-size: 14px;
+      }
+    }
+  }
+}
+.add-remove-btn {
+  display: flex;
+}
+
+.preview {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid $deep-green;
+  border-radius: 16px;
+  background-color: $deep-green;
+  text-align: center;
+  margin: 10px 0;
+  overflow-x: scroll;
+
+  .seating-map {
+    padding: 15px;
+
+    .cloumn-num {
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .row-container {
+      display: flex;
+      flex-direction: column;
+
+      .cell {
+        border: 1px solid #ffffff;
+        padding: 10px 20px;
+        color: #ffffff;
+      }
+
+      .cell-input {
+        background-color: transparent;
+        border: 1px solid #ffffff;
+        color: #ffffff;
+        text-align: center;
+        padding: 10px 20px;
+        width: 100px;
+        font-size: 14px;
+        margin-top: 20px;
+
+        .cell-input-value {
+          font-size: 14px;
+          color: black;
+        }
+      }
+
+      .cell-input:focus {
+        outline: 4px solid #f77137;
+        border: none;
+      }
+    }
+  }
+}
+
+.preview::-webkit-scrollbar {
+  width: 2px;
+}
+.preview::-webkit-scrollbar-thumb {
+  background-color: $green;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+.preview::-webkit-scrollbar-track {
+  background-color: $deep-green;
+  border-radius: 10px;
 }

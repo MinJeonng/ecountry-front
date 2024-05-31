@@ -4,6 +4,7 @@ import { ConfirmBtn } from './Btns';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
+import styled from 'styled-components';
 
 export default function SalaryTeller() {
   const { id } = useParams();
@@ -155,6 +156,7 @@ export default function SalaryTeller() {
   return (
     <>
       <ToastContainer />
+
       {/* <div className="salary-title">월급 지급</div> */}
       <form className="box-style">
         <div className="set-title">예금주</div>

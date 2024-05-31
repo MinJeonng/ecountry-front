@@ -56,6 +56,13 @@ const ImageContainer = styled.div`
   h4 {
     line-height: 1.2;
   }
+  .defaultImg {
+    width: 100%;
+    height: 170px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #ddfcae;
+  }
 `;
 
 const Image = styled.img`
@@ -144,7 +151,15 @@ export default function CommonMainNews() {
                   key={post.id}
                   onClick={() => navigate(`/${id}/news/read/${post.id}`)}
                 >
-                  <Image src={getThumbnail(post.content)} alt={post.title} />
+                  <Image
+                    className={
+                      getThumbnail(post.content) === '/images/defaultImg.jpg'
+                        ? 'defaultImg'
+                        : null
+                    }
+                    src={getThumbnail(post.content)}
+                    alt={post.title}
+                  />
                   <h4>{post.title}</h4>
                 </ImageContainer>
               ))}

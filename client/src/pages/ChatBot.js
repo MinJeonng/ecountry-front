@@ -15,13 +15,6 @@ export default function ChatBot() {
   const [chatList, setChatList] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [isPossible, setIsPossible] = useState(false);
-  const newChatMsg = (writer, msg) => {
-    return {
-      writer,
-      detail: [{ type: 'msg', chatMsg: msg }],
-      chatDate: new Date(),
-    };
-  };
   const teacherMenu = [
     '다른 나라 세법 구경하기',
     '다른 나라 직업 리스트 구경하기',
@@ -29,7 +22,27 @@ export default function ChatBot() {
     '학생 메뉴 보기',
   ];
   const studentMenu = ['추천 도서', '지구촌 소식'];
-  const bookType = ['키워드', '주제', '저자', '연령', '인기 급상승 도서'];
+  const bookType = ['키워드', '저자', '연령', '인기 도서'];
+  const ageList = [
+    '유아',
+    '초등학생',
+    '중학생',
+    '고등학생',
+    '10대',
+    '20대',
+    '30대',
+    '40대',
+    '50대',
+    '60대 이상',
+  ];
+
+  const newChatMsg = (writer, msg) => {
+    return {
+      writer,
+      detail: [{ type: 'msg', chatMsg: msg }],
+      chatDate: new Date(),
+    };
+  };
   const newBtnMsg = (list) => {
     return {
       writer: 'bot',
@@ -44,13 +57,8 @@ export default function ChatBot() {
   };
 
   const inputKeyword = (msg) => {
-    addChat([newChatMsg('me', msg)]);
     if (keyword !== '') {
-      setKeyword(`${keyword} ${msg}`);
-      addChat([
-        newChatMsg('me', msg),
-        newChatMsg('bot', `${keyword} 검색 결과입니다.`),
-      ]);
+      menuFunc(`${keyword}: ${msg}`);
     }
   };
 
@@ -90,6 +98,9 @@ export default function ChatBot() {
       ]);
       setIsPossible(false);
     };
+    const depthList = (list, showMsg) => {
+      addChat([defaultMsg, newChatMsg('bot', showMsg), newBtnMsg(list)]);
+    };
     if (msg === '다른 나라 세법 구경하기') {
       await answerChat(chatBotList, '세법', 'tax');
     } else if (msg === '다른 나라 직업 리스트 구경하기') {
@@ -103,17 +114,20 @@ export default function ChatBot() {
         newBtnMsg(studentMenu),
       ]);
     } else if (msg === '지구촌 소식') {
-      await answerChat(chatBotCard, '지구촌 소식', 'newsList');
+      await answerChat(chatBotCard, '지구촌 소식 알려줘', 'newsList');
     } else if (msg === '추천 도서') {
-      addChat([
-        defaultMsg,
-        newChatMsg('bot', '원하시는 추천 메뉴를 선택하세요.'),
-        newBtnMsg(bookType),
-      ]);
-    } else if (msg === '키워드') {
-      addChat([defaultMsg, newChatMsg('bot', '검색할 키워드를 입력하세요.')]);
+      depthList(bookType, '원하시는 추천 메뉴를 선택하세요.');
+    } else if (msg === '키워드' || msg === '저자') {
+      addChat([defaultMsg, newChatMsg('bot', `검색할 ${msg}를 입력하세요.`)]);
       setIsPossible(true);
-      setKeyword('키워드');
+      setKeyword(msg);
+    } else if (msg === '연령') {
+      depthList(ageList, '연령을 선택하세요.');
+      setKeyword(msg);
+    } else if (ageList.includes(msg)) {
+      await answerChat(chatBotCard, `${keyword} ${msg}`, 'bookList');
+    } else {
+      await answerChat(chatBotCard, msg, 'bookList');
     }
   };
   const removeMenu = () => {

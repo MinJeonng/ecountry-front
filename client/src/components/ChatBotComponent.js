@@ -217,6 +217,7 @@ const ContentStyle = styled.div`
             line-height: 2;
             color: #fff;
             border-radius: 8px;
+            text-align: center;
           }
         }
       }
@@ -408,36 +409,16 @@ export function ChatBotContent({ bottomsize, chatlist, menufunc }) {
                     ))}
                   </div>
                 )}
-                {chat.type === 'cardNews' && (
+                {(chat.type === 'cardNews' || chat.type === 'cardBook') && (
                   <div className="cardNewsWrap">
                     <div className="cardNewsBox">
                       {chat.chatMsg.map((card, cardIndex) => (
-                        <div className="cardNews" key={cardIndex}>
-                          <div className="cardThumbnail">
-                            <img
-                              src={`https://kids.donga.com/${card.imageUrl}`}
-                              alt="소식 썸네일"
-                            />
-                          </div>
-                          <div className="cardText">
-                            <div className="textLimit1 cardTitle">
-                              {newsTitleFilter(card.title)}
-                            </div>
-                            <div className="cardDate">{card.date}</div>
-                            <div className="textLimit cardContent">
-                              {card.description}
-                            </div>
-                            <button
-                              type="button"
-                              className="goNews"
-                              onClick={() => {
-                                setNewsContent(card);
-                              }}
-                            >
-                              소식 보러 가기
-                            </button>
-                          </div>
-                        </div>
+                        <ChatBotCardNews
+                          type={chat.type}
+                          card={card}
+                          cardIndex={cardIndex}
+                          func={setNewsContent}
+                        />
                       ))}
                     </div>
                   </div>
@@ -517,6 +498,49 @@ export function ChatBotFooter({ sizefunc, addfunc, ispossible }) {
         </button>
       </FooterStyle>
     </>
+  );
+}
+
+export function ChatBotCardNews({ type, card, cardIndex, func }) {
+  return (
+    <div className="cardNews" key={cardIndex}>
+      <div className="cardThumbnail">
+        <img
+          src={
+            card.imageUrl
+              ? type === 'cardNews'
+                ? `https://kids.donga.com/${card.imageUrl}`
+                : card.imageUrl
+              : '/images/defaultImg.jpg'
+          }
+          alt={card.title}
+        />
+      </div>
+      <div className="cardText">
+        <div className="textLimit1 cardTitle">
+          {newsTitleFilter(card.title)}
+        </div>
+        <div className="cardDate">
+          {type === 'cardNews' ? card.date : `${card.writer}(${card.date})`}
+        </div>
+        <div className="textLimit cardContent">{card.description}</div>
+        {type === 'cardNews' ? (
+          <button
+            type="button"
+            className="goNews"
+            onClick={() => {
+              func(card);
+            }}
+          >
+            소식 보러 가기
+          </button>
+        ) : (
+          <Link className="goNews" to={card.url} target="_blank">
+            자세히 보기
+          </Link>
+        )}
+      </div>
+    </div>
   );
 }
 

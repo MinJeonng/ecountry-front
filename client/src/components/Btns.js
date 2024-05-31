@@ -81,3 +81,13 @@ export function NewPostBtn({ navigate, path }) {
     </BtnBox>
   );
 }
+
+export function NewsPostBtn({ func }) {
+  return (
+    <BtnBox>
+      <button onClick={() => func(true)}>
+        <IcoWrite stroke={'#75a47f'} />
+      </button>
+    </BtnBox>
+  );
+}

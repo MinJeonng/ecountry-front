@@ -178,14 +178,6 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      // 사용자 인증 후 권한이 없으면 작성 불가
-      // setUser();
-    } else {
-      // alert('로그인 후 이용해주세요.');
-      // navigate('/signup');
-      // return;
-    }
     if (localStorage.getItem('postId')) {
       setPostId(Number(localStorage.getItem('postId')));
     }
@@ -206,7 +198,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
     try {
       //db에 들어가는 로직
       sendNews();
-      navigate(`/${id}/news`);
+      document.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -279,7 +271,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
           <div className="postBtn">
             <ConfirmBtn
               btnName="취소"
-              onClick={() => navigate(-1)}
+              onClick={() => document.location.reload()}
               backgroundColor="#bacd92"
               width="40vw"
             ></ConfirmBtn>

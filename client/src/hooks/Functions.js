@@ -85,86 +85,91 @@ export const handleKeyDown = (e, func) => {
   }
 };
 
-export const chatBotList = async (msg, keyName) => {
+const newsData = [
+  {
+    title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다',
+    url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
+    imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
+    date: '2024-05-29 12:14:20',
+    writer: '김재성 기자',
+    description:
+      '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
+  },
+  {
+    title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다2',
+    url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
+    imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
+    date: '2024-05-29 12:14:20',
+    writer: '김재성 기자',
+    description:
+      '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
+  },
+  {
+    title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다3',
+    url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
+    imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
+    date: '2024-05-29 12:14:20',
+    writer: '김재성 기자',
+    description:
+      '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
+  },
+];
+
+const chatApi = async (msg) => {
   const res = await axios({
     method: 'GET',
-    url: `${process.env.REACT_APP_HOST}/api/chatbot?text=${msg} 알려줘`,
+    url: `${process.env.REACT_APP_HOST}/api/chatbot?text=${msg}`,
     headers: {
       'Content-Type': `application/json`,
       'ngrok-skip-browser-warning': '69420',
     },
   });
-  const list = JSON.parse(res.data.result);
-  let result = '';
-  await list.list.forEach((data, index) => {
-    if (index === 0) {
-      result += data[keyName];
-    } else {
-      result += `, ${data[keyName]}`;
-    }
-  });
+  console.log(res.data.result);
+  return JSON.parse(res.data.result);
+};
 
+const resultMsg = (type, chatMsg) => {
   return {
     writer: 'bot',
-    detail: [
-      {
-        type: 'msg',
-        chatMsg: `다른 국가의 ${msg}에는 ${result} 등이 있습니다.`,
-      },
-    ],
+    detail: [{ type, chatMsg }],
     chatDate: new Date(),
   };
 };
 
+export const chatBotList = async (msg, keyName) => {
+  const list = await chatApi(`${msg} 알려줘`);
+  if (list.list.length > 0) {
+    let result = '';
+    await list.list.forEach((data, index) => {
+      if (index === 0) {
+        result += data[keyName];
+      } else {
+        result += `, ${data[keyName]}`;
+      }
+    });
+    return resultMsg('msg', `다른 국가의 ${msg}에는 ${result} 등이 있습니다.`);
+  } else {
+    return resultMsg(
+      'msg',
+      '결과를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.'
+    );
+  }
+};
+
 export const chatBotCard = async (msg, keyName) => {
-  const res = await axios({
-    method: 'GET',
-    url: `${process.env.REACT_APP_HOST}/api/chatbot?text=${msg} 알려줘`,
-    headers: {
-      'Content-Type': `application/json`,
-      'ngrok-skip-browser-warning': '69420',
-    },
-  });
-  const list = JSON.parse(res.data.result).list[keyName];
-  // const list = [
-  //   {
-  //     title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다',
-  //     url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
-  //     imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
-  //     date: '2024-05-29 12:14:20',
-  //     writer: '김재성 기자',
-  //     description:
-  //       '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
-  //   },
-  //   {
-  //     title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다2',
-  //     url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
-  //     imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
-  //     date: '2024-05-29 12:14:20',
-  //     writer: '김재성 기자',
-  //     description:
-  //       '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
-  //   },
-  //   {
-  //     title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다3',
-  //     url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
-  //     imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
-  //     date: '2024-05-29 12:14:20',
-  //     writer: '김재성 기자',
-  //     description:
-  //       '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
-  //   },
-  // ];
-  return {
-    writer: 'bot',
-    detail: [
-      {
-        type: 'cardNews',
-        chatMsg: list,
-      },
-    ],
-    chatDate: new Date(),
-  };
+  const newMsg = msg.replace(':', '');
+  const list = await chatApi(newMsg);
+  if (list) {
+    return resultMsg(
+      keyName === 'newsList' ? 'cardNews' : 'cardBook',
+      list.list[keyName]
+    );
+  } else {
+    return resultMsg(
+      'msg',
+      '결과를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.'
+    );
+  }
 };
 
 export function newsTitleFilter(title) {

@@ -7,6 +7,11 @@
     padding: 40px 30px 0 30px;
     justify-content: space-between;
   }
+  .BtnsClass {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
   .InfoPart1 {
     display: flex;
@@ -22,20 +27,31 @@
   }
 
   .countryUrl {
-    width: 100%;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 10px;
-    img {
-      width: 19px;
-      height: 19px;
-      cursor: pointer;
+    flex-direction: column;
+    margin-top: 5px;
+    span {
+      margin-top: 5px;
+      color: #3b3a3a;
+      font-size: 0.9rem;
     }
-    .countryLink {
-      display: block;
-      font-size: 15px;
-      margin-left: 2px;
+
+    .clipboard {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      img {
+        width: 19px;
+        height: 19px;
+        cursor: pointer;
+      }
+      .countryLink {
+        display: block;
+        font-size: 15px;
+        margin-left: 2px;
+      }
     }
   }
 

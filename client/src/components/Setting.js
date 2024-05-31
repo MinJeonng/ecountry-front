@@ -649,7 +649,7 @@ export function Setting3() {
           <form className="box-style">
             <div>
               <button className="studentInfo-upload" onClick={downloadFile}>
-                예시 파일 다운
+                예시 파일 확인
               </button>
             </div>
 
@@ -1404,7 +1404,6 @@ export function Setting6() {
     <div className="setting-wrap">
       <ToastContainer />
       <div className="title-list">
-        <div>기본법 제정</div>
         <ul className="title-list">
           <li>국가에 필수인 기본법을 제정하세요&#46;</li>
         </ul>
@@ -1444,7 +1443,7 @@ export function Setting6() {
                 <input
                   className="law-input"
                   type="text"
-                  placeholder="내용"
+                  placeholder="기본 법을 입력해주세요"
                   value={detail}
                   onChange={(e) => setDetail(e.target.value)}
                   style={{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PcHeader } from '../components/PcHeader'; // PcHeader 컴포넌트 import
 
 import {
@@ -21,10 +21,15 @@ import '../styles/_button_common.scss';
 import { PageHeader } from '../components/Headers';
 
 export default function Setting({ position }) {
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
+  }, []);
   return (
     <>
       <PcHeader position={position} />
       <Template
+        // {innerWidth ? }
         childrenTop={<PageHeader>{position}</PageHeader>}
         childrenBottom={
           <>

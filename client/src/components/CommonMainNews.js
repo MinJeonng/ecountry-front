@@ -56,8 +56,19 @@ const ImageContainer = styled.div`
   min-width: 100%;
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: flex-start;
+  h4 {
+    line-height: 1.2;
+  }
+  .defaultImg {
+    width: 100%;
+    height: 170px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #ddfcae;
+  }
+
 `;
 
 const Image = styled.img`
@@ -162,20 +173,18 @@ export default function CommonMainNews() {
                   key={post.id}
                   onClick={() => navigate(`/${id}/news/read/${post.id}`)}
                 >
-                  <Image src={getThumbnail(post.content)} alt={post.title} />
-                  <Info>
-                    <h3>{post.title}</h3>
-                    <p
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        margin: 0,
-                      }}
-                    >
-                      <span>작성자 : {post.writerName}</span>
-                      <span>{GetTimeText(post.createdAt)}</span>
-                    </p>
-                  </Info>
+
+                  <Image
+                    className={
+                      getThumbnail(post.content) === '/images/defaultImg.jpg'
+                        ? 'defaultImg'
+                        : null
+                    }
+                    src={getThumbnail(post.content)}
+                    alt={post.title}
+                  />
+                  <h4>{post.title}</h4>
+
                 </ImageContainer>
               ))}
             </StyledImgDiv>

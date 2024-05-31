@@ -29,13 +29,13 @@ export function getThumbnail(html) {
     const [imgUrl, __] = start.split('">');
     return imgUrl;
   }
-  // return '/images/defaultImg.jpg';
-  return (
-    <ImageDefault
-      className="defaultImg"
-      src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
-    />
-  );
+  return '/images/defaultImg.jpg';
+  // return (
+  //   <ImageDefault
+  //     className="defaultImg"
+  //     src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
+  //   />
+  // );
 }
 
 export const htmlToText = (html) => {

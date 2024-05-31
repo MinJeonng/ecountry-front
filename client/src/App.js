@@ -29,10 +29,8 @@ import { CommonMain } from './pages/CommonMain';
 import Revenu from './pages/Revenu';
 import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
-import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
 import Skills from './pages/Skills';
-import Test1 from './pages/Test1';
 import { StudentAssembly } from './pages/StudentAssembly';
 import { PcHeader } from './components/PcHeader';
 
@@ -46,9 +44,7 @@ function AppWrapper() {
     '/countryList',
   ].includes(location.pathname);
 
-
   return (
-
     <div className={!isHeaderHidden ? 'App Contain' : ''}>
       {!isHeaderHidden && <PcHeader />}
       <Routes>
@@ -173,7 +169,7 @@ function AppWrapper() {
         <Route path="/:id/chatbot" element={<ChatBot />} />
 
         <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
-        
+
         {/* 각 직업별 페이지 */}
         <Route path="/:id/skills" element={<Skills />} />
 

@@ -60,10 +60,6 @@ dt,
 dd,
 ol,
 ul,
-li::before {
-  content: '✔️';
-  /* color: green; */
-}
 li {
   color: #333;
 }
@@ -111,7 +107,7 @@ video {
 
 button,
 select {
-  color : $666;
+  color: #666;
   font-family: 'NanumSquareRound';
   cursor: pointer;
 }
@@ -120,7 +116,7 @@ input,
 textarea {
   font-family: 'NanumSquareRound';
   cursor: text;
-  color : #666;
+  color: #666;
 }
 
 /* HTML5 display-role reset for older browsers */

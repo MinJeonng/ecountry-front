@@ -75,41 +75,91 @@ export default function CountryList() {
     <>
       <ToastContainer />
       <Template
+        isAuthPage={true}
+        isAuthPage2={true}
         childrenTop={<PageHeader path={'/country'}>{'국가 리스트'}</PageHeader>}
         childrenBottom={
           <div>
-            {countryList.length === 0 ? (
-              <div className="box-style">
-                <div>아직 생성된 국가가 없습니다.</div>
-                <button className="frist-next-button" onClick={goSetting}>
-                  생성하기
-                </button>
-              </div>
-            ) : (
-              countryList.map((data) => (
-                // box-style
-                <div className="countryList" key={data.id}>
-                  <div>
-                    <div className="countryName">{data.name}</div>
-                    <div className="countryInfo">{`${data.school} ${data.grade}학년 ${data.classroom}반`}</div>
-                  </div>
-                  <div className="btnList">
-                    <button
-                      className="mobile-select-small-btn"
-                      onClick={() => goCountry(data.id)}
-                    >
-                      설정하기
-                    </button>
-                    <button
-                      className="mobile-delete-small-btn"
-                      onClick={() => deleteCountry(data.id)}
-                    >
-                      삭제
-                    </button>
-                  </div>
+            <div className="mobile-countryList">
+              {countryList.length === 0 ? (
+                <div className="box-style">
+                  <div>아직 생성된 국가가 없습니다.</div>
+                  <button className="frist-next-button" onClick={goSetting}>
+                    생성하기
+                  </button>
                 </div>
-              ))
-            )}
+              ) : (
+                countryList.map((data) => (
+                  // box-style
+                  <div className="countryList" key={data.id}>
+                    <div>
+                      <div className="countryName">{data.name}</div>
+                      <div className="countryInfo">{`${data.school} ${data.grade}학년 ${data.classroom}반`}</div>
+                    </div>
+                    <div className="btnList">
+                      <button
+                        className="mobile-select-small-btn"
+                        onClick={() => goCountry(data.id)}
+                      >
+                        설정하기
+                      </button>
+                      <button
+                        className="mobile-delete-small-btn"
+                        onClick={() => deleteCountry(data.id)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="pc-background-log">
+              <div className="pc-left">
+                <img
+                  className="left-img"
+                  src={`${process.env.PUBLIC_URL}/images/sample.jpg`}
+                  alt="표지"
+                />
+              </div>
+
+              <div className="pc-right">
+                <div>국가 리스트</div>
+                {countryList.length === 0 ? (
+                  <div className="box-style">
+                    <div>아직 생성된 국가가 없습니다.</div>
+                    <button className="frist-next-button" onClick={goSetting}>
+                      생성하기
+                    </button>
+                  </div>
+                ) : (
+                  countryList.map((data) => (
+                    // box-style
+                    <div className="countryList" key={data.id}>
+                      <div>
+                        <div className="countryName">{data.name}</div>
+                        <div className="countryInfo">{`${data.school} ${data.grade}학년 ${data.classroom}반`}</div>
+                      </div>
+                      <div className="btnList">
+                        <button
+                          className="mobile-select-small-btn"
+                          onClick={() => goCountry(data.id)}
+                        >
+                          설정하기
+                        </button>
+                        <button
+                          className="mobile-delete-small-btn"
+                          onClick={() => deleteCountry(data.id)}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
         }
       />

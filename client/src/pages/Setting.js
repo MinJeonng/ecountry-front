@@ -27,9 +27,10 @@ export default function Setting({ position }) {
   }, []);
   return (
     <>
-      <PcHeader position={position} />
+      <PcHeader position={position}></PcHeader>
       <Template
         // {innerWidth ? }
+        isAuthPage2={true}
         childrenTop={<PageHeader>{position}</PageHeader>}
         childrenBottom={
           <>

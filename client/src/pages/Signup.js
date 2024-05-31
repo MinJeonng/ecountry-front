@@ -51,6 +51,7 @@ export default function Login() {
   return (
     <Template
       isAuthPage={true}
+      isAuthPage2={true}
       childrenTop={<PageHeader>{'회원가입'}</PageHeader>}
       childrenBottom={
         <>
@@ -104,7 +105,7 @@ export default function Login() {
             </form>
           </div>
 
-          <div className="pc-background">
+          <div className="pc-background-log">
             <div className="pc-left">
               <img
                 className="left-img"
@@ -113,7 +114,6 @@ export default function Login() {
               />
             </div>
             <div className="pc-right">
-
               <div>관리자 회원가입</div>
               <form className="signup-box-style">
                 <div className="user-signup-title">이름</div>

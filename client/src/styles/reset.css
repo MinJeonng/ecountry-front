@@ -60,10 +60,6 @@ dt,
 dd,
 ol,
 ul,
-li::before {
-  content: '✔️';
-  /* color: green; */
-}
 li {
   color: #333;
 }
@@ -122,6 +118,7 @@ textarea {
   cursor: text;
   color: #333;
   outline: none;
+
 }
 
 /* HTML5 display-role reset for older browsers */

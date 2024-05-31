@@ -50,6 +50,9 @@ export function SetNews({ position }) {
     }
   }, [userInfo]);
   useEffect(() => {
+    if (localStorage.getItem('postId')) {
+      setIsWrite(true);
+    }
     if (localStorage.getItem('token')) {
       setUserInfo();
     } else {
@@ -72,10 +75,7 @@ export function SetNews({ position }) {
             {position == '뉴스' && !isWrite && <SetNewsDetail />}
             {/* 뉴스 작성 페이지 */}
             {position === '뉴스' && isWrite && (
-              <SetPostWrite
-                placeholder={'뉴스 내용을 입력해주세요'}
-                value={undefined}
-              />
+              <SetPostWrite />
               // <Practice />
             )}
             {/* Read 읽기 header는 구현된거 보고 다시 확인 */}

@@ -1798,12 +1798,9 @@ export function Setting8() {
   }, [setRentalFeeState]);
   const beforeSetting = () => {
     navigate('/setting/taxLaw');
-    if (taxName === null) {
-      setTaxName('자리임대료');
-    }
     dispatch(
       seatRentalFee({
-        taxName: taxName,
+        taxName: taxName === null ? '자리임대료' : taxName,
         fee: fee,
       })
     );
@@ -1884,10 +1881,8 @@ export function Setting9() {
   const [fineList, setFineList] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [countryId, setCountryID] = useState();
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
-  const setInfo = useSelector((state) => state);
   const moneyUnit = useSelector((state) => state.setting2.moneyUnit);
 
   const priceRef = useRef(null);
@@ -1898,160 +1893,7 @@ export function Setting9() {
 
   const finishSetting = async () => {
     dispatch(Fine({ fine: fineList }));
-    try {
-      // 국가 생성
-      const res = await axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_HOST}/api/country`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        data: {
-          name: setInfo.setting2.countryName,
-          grade: parseInt(setInfo.setting1.schoolGrade),
-          classroom: parseInt(setInfo.setting1.schoolClass),
-          unit: setInfo.setting2.moneyUnit,
-          salaryDate: parseInt(setInfo.setting2.salaryDate),
-          school: setInfo.setting1.schoolName,
-          eduOfficeCode: setInfo.setting1.eduOfficeCode,
-          schoolCode: setInfo.setting1.schoolCode,
-        },
-      });
-      console.log(`국가 생성 : ${res.data.success}`);
-      console.log(`국가 생성 결과 : ${res.data.result}`);
-
-      // 학생 등록(수기)
-      if (setInfo.setting3.studentList.length > 0) {
-        const data2 = [];
-        setInfo.setting3.studentList.forEach((student) => {
-          data2.push({
-            rollNumber: student.attendanceNumber,
-            name: student.name,
-            pw: setInfo.setting3.password,
-          });
-        });
-        const res2 = await axios({
-          method: 'POST',
-          // 국가 생성 후 return된 id 값으로 수정해야함
-          // 비밀번호 값 추가
-          url: `${process.env.REACT_APP_HOST}/api/student/${res.data.result.id}`,
-          headers: {
-            'Content-Type': `application/json`,
-            'ngrok-skip-browser-warning': '69420',
-          },
-          data: data2,
-        });
-
-        console.log(`학생 등록 : ${res2.data.success}`);
-      }
-      // 자리 배치 등록
-      const data3 = [];
-      setInfo.setting4.columns.forEach((data) => {
-        data3.push({
-          rowNum: data.id,
-          colNum: data.rowCount,
-          countryId: res.data.result.id,
-        });
-      });
-      const res3 = await axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_HOST}/api/seat`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-        data: data3,
-      });
-      console.log(`자리 배치 : ${res3.data.success}`);
-      // 직업 리스트 등록
-      const data4 = [];
-      setInfo.setting5.jobsDisplay.forEach((data) => {
-        data4.push({
-          limited: parseInt(data.count),
-          name:
-            data.selectValue === '직접입력'
-              ? data.customValue
-              : data.selectValue,
-          roll: data.role,
-          standard: data.standard,
-          salary: parseInt(data.salary.replaceAll(',', '')),
-          skills: data.skills,
-          countryId: res.data.result.id,
-        });
-      });
-      const res4 = await axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_HOST}/api/job`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-        data: data4,
-      });
-      console.log(`직업 리스트 : ${res4.data.success}`);
-
-      // 규칙 리스트 등록
-      const data5 = [];
-      setInfo.setting6.basicLaw.forEach((data) => {
-        data5.push({
-          rule: data.detail,
-          countryId: res.data.result.id,
-        });
-      });
-      const res5 = await axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_HOST}/api/rule`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-        data: data5,
-      });
-      console.log(`규칙 리스트 : ${res5.data.success}`);
-      // 세금 규칙 등록
-      const data6 = [];
-      setInfo.setting7.taxLaw.forEach((data) => {
-        data6.push({
-          name: data.name,
-          division: data.division,
-          tax: parseFloat(data.rate),
-          countryId: res.data.result.id,
-        });
-      });
-      const rent = setInfo.setting8;
-      data6.push({
-        name: rent.taxName,
-        division: rent.division,
-        tax: parseInt(rent.fee),
-        countryId: res.data.result.id,
-      });
-      fineList.forEach((data) => {
-        data6.push({
-          name: data.reason,
-          division: 3,
-          tax: data.fine,
-          countryId: res.data.result.id,
-        });
-      });
-      console.log(data6);
-      const res6 = await axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_HOST}/api/tax`,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-        data: data6,
-      });
-      console.log(`세법 : ${res6.data.success}`);
-      setCountryID(res.data.result.id);
-      setIsLoading(true);
-    } catch (e) {
-      toast('error');
-      console.log(e);
-    }
+    setIsLoading(true);
   };
 
   const handleAddFine = () => {
@@ -2114,7 +1956,7 @@ export function Setting9() {
   return (
     <div className="setting-wrap">
       {isLoading ? (
-        <Loading countryid={countryId} />
+        <Loading />
       ) : (
         <div className="setting-wrap">
           <ul className="title-list">

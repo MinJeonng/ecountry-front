@@ -42,6 +42,8 @@ export function SetSeat() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
+    console.log(res);
+    console.log(res.data.result);
     setSeatList(res.data.result);
   };
 
@@ -61,35 +63,38 @@ export function SetSeat() {
   const changeList = async (row, col, studentId) => {
     let isExist = false;
     let data = [];
-    
-      seatList.map((seat) => {
-        if (seat.rowNum == row && seat.colNum == col) {
-          isExist = true;
-          if (showStudentMap) {
-            data = [
-              {
-                id: seat.id,
-                ownerId: seat.ownerId,
-                studentId: studentId,
-                rowNum: row,
-                colNum: col,
-              },
-            ];
-          } else {
-            data = [
-              {
-                id: seat.id,
-                ownerId: studentId,
-                studentId: seat.studentId,
-                rowNum: row,
-                colNum: col,
-              },
-            ];
-          }
+
+    seatList?.map((seat) => {
+      if (seat.rowNum == row && seat.colNum == col) {
+        isExist = true;
+        if (showStudentMap) {
+          console.log('사용자');
+          data = [
+            {
+              id: seat.id,
+              ownerId: seat.ownerId,
+              studentId: studentId,
+              rowNum: row,
+              colNum: col,
+            },
+          ];
+        } else {
+          console.log('소유자');
+          data = [
+            {
+              id: seat.id,
+              ownerId: studentId,
+              studentId: seat.studentId,
+              rowNum: row,
+              colNum: col,
+            },
+          ];
         }
-      });
+      }
+    });
     if (!isExist) {
       if (showStudentMap) {
+        console.log('소유자');
         data = [
           {
             ownerId: null,
@@ -100,6 +105,7 @@ export function SetSeat() {
           },
         ];
       } else {
+        console.log('사용자');
         data = [
           {
             ownerId: studentId,
@@ -110,6 +116,7 @@ export function SetSeat() {
           },
         ];
       }
+      console.log(data);
       const res = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/seat/status`,
@@ -119,7 +126,9 @@ export function SetSeat() {
           'ngrok-skip-browser-warning': '69420',
         },
       });
+      console.log(res.data);
     } else {
+      console.log(data);
       const res = await axios({
         method: 'PATCH',
         url: `${process.env.REACT_APP_HOST}/api/seat/status`,
@@ -129,6 +138,7 @@ export function SetSeat() {
           'ngrok-skip-browser-warning': '69420',
         },
       });
+      console.log(res.data);
     }
     getStatus();
   };
@@ -136,6 +146,10 @@ export function SetSeat() {
   const toggleEdit = () => {
     setIsSeatMapVisible(!isSeatMapVisible);
   };
+
+  useEffect(() => {
+    console.log(seatList);
+  }, [seatList]);
 
   useEffect(() => {
     getSeat();

@@ -5,6 +5,7 @@ import axios from 'axios';
 import Template from '../components/Template';
 import { PageHeader } from '../components/Headers';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import { ToastContainer, toast } from 'react-toastify';
 
 export function ChangePassword() {
   const { id } = useParams();
@@ -19,25 +20,29 @@ export function ChangePassword() {
   const handleChangePassword = async () => {
     const res = await axios({
       method: 'PATCH',
-      url: `${process.env.REACT_APP_HOST}/api/student/user/${id}`,
-      data: [
-        {
-          pw: newPassword,
-        },
-      ],
+      url: `${process.env.REACT_APP_HOST}/api/student/user`,
+      data: { pw: newPassword },
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
     });
     if (res.data.success) {
+      toast.success('비밀번호 변경이 완료되었습니다.', { autoClose: 1300 });
+      setTimeout(() => {
+        localStorage.removeItem('token');
+        navigate(`/${id}/login`);
+      }, 1300);
     }
+  };
 
-    const handlePrevPage = () => {
-      navigate(-1);
-    };
-
-    return (
+  const handlePrevPage = () => {
+    navigate(-1);
+  };
+  return (
+    <>
+      <ToastContainer />
       <Template
         childrenTop={<PageHeader>{'마이페이지'}</PageHeader>}
         childrenBottom={
@@ -74,6 +79,6 @@ export function ChangePassword() {
           </div>
         }
       />
-    );
-  };
+    </>
+  );
 }

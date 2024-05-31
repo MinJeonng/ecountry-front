@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { SideMenuComponent } from './SideMenu';
 import { useNavigate, useParams } from 'react-router-dom';
 import Template from './Template';
+import { PcHeader } from './PcHeader';
 
 const CommonHeader = styled.div`
   display: flex;
@@ -84,6 +85,7 @@ export function CommonMainHeader() {
 export function PageHeader({ children, position }) {
   const navigate = useNavigate();
   const { id } = useParams();
+
   const getPathByPosition = (position) => {
     switch (position) {
       case '신문고':
@@ -98,7 +100,9 @@ export function PageHeader({ children, position }) {
         return null;
     }
   };
+
   const path = getPathByPosition(position);
+
 
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   useEffect(() => {
@@ -109,6 +113,7 @@ export function PageHeader({ children, position }) {
       childrenTop={
         <>
           {innerWidth <= 1160 && (
+
             <PageHeaderBox>
               <HeaderStyle>
                 <button onClick={() => (path ? navigate(path) : navigate(-1))}>
@@ -117,9 +122,12 @@ export function PageHeader({ children, position }) {
                 <Text>{children}</Text>
               </HeaderStyle>
             </PageHeaderBox>
+
           )}
         </>
       }
     />
+<PcHeader position={position} />
+
   );
 }

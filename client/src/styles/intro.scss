@@ -53,7 +53,7 @@ $blue: #61759f;
 
   .big-button {
     color: #000;
-    font-size: 17px;
+    font-size: 16px;
     border: 1px solid #ddd;
     background-color: #ffffff;
     border-radius: 10px;
@@ -109,13 +109,14 @@ $blue: #61759f;
         width: 400px;
 
         .pc-info1 {
-          font-size: 16px;
+          font-size: 20px;
           font-weight: 700;
           margin-bottom: 20px;
+          text-align: center;
         }
 
         .pc-info2 {
-          font-size: 12px;
+          font-size: 14px;
         }
       }
 
@@ -124,19 +125,19 @@ $blue: #61759f;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        margin: 0 0 50px 0;
       }
     }
 
     .big-button {
-      width: 300px;
+      color: #000;
       font-size: 16px;
-      color: #ffffff;
-      font-weight: bold;
-      border: 1px solid $green;
-      background-color: $green;
-      border-radius: 18px;
-      margin-top: 20px;
-      padding: 6px 15px;
+      border: 1px solid #ddd;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 10px 20px;
+      width: 280px;
+      margin-bottom: 10px;
     }
   }
 
@@ -154,7 +155,16 @@ $blue: #61759f;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 15%;
+
+    .big-button {
+      color: #000;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 10px 20px;
+      width: 280px;
+      margin-bottom: 10px;
+    }
   }
 }

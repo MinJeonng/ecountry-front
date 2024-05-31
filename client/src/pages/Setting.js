@@ -1,4 +1,5 @@
 import React from 'react';
+import { PcHeader } from '../components/PcHeader'; // PcHeader 컴포넌트 import
 
 import {
   Setting1,
@@ -22,6 +23,7 @@ import { PageHeader } from '../components/Headers';
 export default function Setting({ position }) {
   return (
     <>
+      <PcHeader position={position} />
       <Template
         childrenTop={<PageHeader>{position}</PageHeader>}
         childrenBottom={

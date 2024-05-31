@@ -117,6 +117,10 @@ textarea {
   font-family: 'NanumSquareRound';
   cursor: text;
   color: #333;
+
+  outline: none;
+
+
 }
 
 /* HTML5 display-role reset for older browsers */

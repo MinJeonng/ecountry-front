@@ -112,11 +112,10 @@ const modules = {
   },
 };
 
-export function SetPostWrite({ placeholder, value, ...rest }) {
+export function SetPostWrite({ ...rest }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const quillRef = useRef(null);
-  const [userInfo, setUserInfo] = useAuth(id);
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
   const [postId, setPostId] = useState(0);
@@ -177,6 +176,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
     }
   };
 
+
   useEffect(() => {
     if (localStorage.getItem('token')) {
       // 사용자 인증 후 권한이 없으면 작성 불가
@@ -197,36 +197,34 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
     }
   }, []);
 
-  const addFunc = async () => {
+
+  const addFunc = () => {
     if (!content.trim() || content.trim() === '<p><br></p>') {
       alert('내용을 입력해주세요');
       return;
     }
     try {
-      await sendNews();
-      navigate(`/${id}/news`);
+      //db에 들어가는 로직
+      sendNews();
+      document.location.reload();
+
     } catch (error) {
       console.log(error);
     }
   };
 
-  //보류
-  const resetBtn = () => {
-    const userConfirmed = window.confirm('취소하시겠습니까?');
-    if (userConfirmed) {
-      navigate(-1);
+  useEffect(() => {
+    console.log(postId);
+    if (postId) {
+      getNews(postId);
     }
-  };
+  }, [postId]);
 
   useEffect(() => {
     if (localStorage.getItem('postId')) {
-      getNews(localStorage.getItem('postId'));
       setPostId(Number(localStorage.getItem('postId')));
     }
-  }, [userInfo]);
 
-  useEffect(() => {
-    setUserInfo();
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
       const toolbar = editor.getModule('toolbar');
@@ -266,7 +264,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
               borderRadius: '18px',
             }}
             {...rest}
-            placeholder={placeholder}
+            placeholder="뉴스 내용을 입력해주세요"
             theme="snow"
             ref={quillRef}
             value={content || ''}
@@ -277,7 +275,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
           <div className="postBtn">
             <ConfirmBtn
               btnName="취소"
-              onClick={() => navigate(-1)}
+              onClick={() => document.location.reload()}
               backgroundColor="#bacd92"
               width="40vw"
             ></ConfirmBtn>

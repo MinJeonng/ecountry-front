@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 
 import './styles/common.scss';
@@ -137,7 +137,7 @@ function AppWrapper() {
           path="/:id/boardPeople/read/:contentId"
           element={<SetBoardPeople position="신문고 리스트" />}
         />
-        <Route path="/:id/news" element={<SetNews position="뉴스 리스트" />} />
+        <Route path="/:id/news" element={<SetNews position="뉴스" />} />
         <Route
           path="/:id/news/write"
           element={<SetNews position="뉴스 글쓰기" />}

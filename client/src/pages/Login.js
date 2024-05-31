@@ -38,6 +38,7 @@ export default function Login() {
     <>
       <ToastContainer />
       <Template
+        isAuthPage={true}
         childrenTop={
           <>
             <PageHeader>{'관리자 로그인'}</PageHeader>

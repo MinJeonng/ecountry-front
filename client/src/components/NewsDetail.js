@@ -162,7 +162,6 @@ export function SetNewsDetail() {
             &gt;
           </button>
         </div>
-        <NewPostBtn navigate={navigate} path={`/${id}/news/write`} />
       </div>
     </>
   );

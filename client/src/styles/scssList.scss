@@ -1,55 +1,121 @@
-.countryList {
-  display: flex;
-  justify-content: space-between;
-  width: -webkit-fill-available;
-  background-color: #f5f6f6;
-  margin: 20px 0;
-  padding: 20px;
-  border-radius: 18px;
-  box-sizing: border-box;
-  z-index: 10;
-  position: relative;
+@import '../styles/variables';
+
+@include mobile {
+  .countryList {
+    display: flex;
+    justify-content: space-between;
+    width: -webkit-fill-available;
+    background-color: #f5f6f6;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 18px;
+    box-sizing: border-box;
+    z-index: 10;
+    position: relative;
+  }
+
+  .countryName {
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  .countryInfo {
+    font-size: 15px;
+  }
+
+  .btnList {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .mobile-select-small-btn,
+  .mobile-delete-small-btn {
+    font-weight: bold;
+    border: none;
+    max-width: 120px;
+    border-radius: 10px;
+    padding: 6px 15px;
+    line-height: 1;
+    font-size: 15px;
+    height: 40px;
+    white-space: nowrap;
+  }
+
+  .mobile-select-small-btn {
+    color: #000;
+    background-color: #bacd92;
+  }
+
+  .mobile-delete-small-btn {
+    color: #fff;
+    background-color: #d1d1d0;
+  }
+
+  .mobile-select-small-btn:hover,
+  .mobile-delete-small-btn:hover {
+    transform: scale(0.97);
+  }
 }
 
-.countryName {
-  font-weight: 500;
-  font-size: 18px;
-}
+@include desktop {
+  .mobile-countryList {
+    display: none;
+  }
 
-.countryInfo {
-  font-size: 15px;
-}
+  .countryList {
+    display: flex;
+    justify-content: space-between;
+    width: 480px;
+    background-color: #f5f6f6;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 18px;
+    box-sizing: border-box;
+    z-index: 10;
+    position: relative;
+  }
 
-.btnList {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
+  .countryName {
+    font-weight: 500;
+    font-size: 18px;
+  }
 
-.mobile-select-small-btn,
-.mobile-delete-small-btn {
-  font-weight: bold;
-  border: none;
-  max-width: 120px;
-  border-radius: 10px;
-  padding: 6px 15px;
-  line-height: 1;
-  font-size: 15px;
-  height: 40px;
-  white-space: nowrap;
-}
+  .countryInfo {
+    font-size: 15px;
+  }
 
-.mobile-select-small-btn {
-  color: #000;
-  background-color: #bacd92;
-}
+  .btnList {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
 
-.mobile-delete-small-btn {
-  color: #fff;
-  background-color: #d1d1d0;
-}
+  .mobile-select-small-btn,
+  .mobile-delete-small-btn {
+    font-weight: bold;
+    border: none;
+    max-width: 120px;
+    border-radius: 10px;
+    padding: 6px 15px;
+    line-height: 1;
+    font-size: 15px;
+    height: 40px;
+    white-space: nowrap;
+  }
 
-.mobile-select-small-btn:hover,
-.mobile-delete-small-btn:hover {
-  transform: scale(0.97);
+  .mobile-select-small-btn {
+    color: #000;
+    background-color: #bacd92;
+  }
+
+  .mobile-delete-small-btn {
+    color: #fff;
+    background-color: #d1d1d0;
+  }
+
+  .mobile-select-small-btn:hover,
+  .mobile-delete-small-btn:hover {
+    transform: scale(0.97);
+  }
 }

@@ -10,6 +10,10 @@ const BgTop = styled.div`
 
   @media (min-width: 1160px) {
     background: none;
+
+    &.auth-page2 {
+      width: 250px;
+    }
   }
 `;
 
@@ -34,10 +38,15 @@ const BgBottom = styled.div`
   }
 `;
 
-export default function Template({ childrenTop, childrenBottom, isAuthPage }) {
+export default function Template({
+  childrenTop,
+  childrenBottom,
+  isAuthPage,
+  isAuthPage2,
+}) {
   return (
     <>
-      <BgTop>{childrenTop}</BgTop>
+      <BgTop className={isAuthPage2 ? 'auth-page2' : ''}>{childrenTop}</BgTop>
       <BgBottom className={isAuthPage ? 'auth-page' : ''}>
         {childrenBottom}
       </BgBottom>

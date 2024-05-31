@@ -159,3 +159,14 @@ $blue: #61759f;
   width: -webkit-fill-available;
   text-align: center;
 }
+
+@include desktop {
+  .resetBtn {
+    width: 15px;
+    height: 15px;
+    right: 30px;
+    top: 30px;
+    position: absolute;
+    cursor: pointer;
+  }
+}

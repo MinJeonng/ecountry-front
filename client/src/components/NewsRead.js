@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ConfirmBtn } from './Btns';
 
 import '../styles/setting.scss';
 import axios from 'axios';
@@ -50,7 +49,7 @@ export function SetNewsRead() {
 
   const editNews = () => {
     localStorage.setItem('postId', newsId);
-    navigate(`/${id}/news/write`);
+    document.location.href = `/${id}/news`;
   };
 
   const deleteNews = async () => {
@@ -70,23 +69,17 @@ export function SetNewsRead() {
       navigate(`/${id}/news`);
     }
   };
+  const handleSelectBox = () => {
+    setShowBox(!showBox);
+  };
+
+  useEffect(() => {
+    document.querySelector('.newsContent').innerHTML = newsContent;
+  }, [newsContent]);
 
   useEffect(() => {
     getNews();
   }, []); // mount 시에만 실행
-
-  const handleImageChange = (event) => {
-    const imageFile = event.target.files[0];
-    setSelectedImage(imageFile);
-  };
-  const handleNews = () => {};
-  //삭제, 수정 버튼
-  const handleSelectBox = () => {
-    setShowBox(!showBox);
-  };
-  useEffect(() => {
-    document.querySelector('.newsContent').innerHTML = newsContent;
-  }, [newsContent]);
 
   return (
     <>

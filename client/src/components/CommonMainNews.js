@@ -76,6 +76,11 @@ const Info = styled.div`
     margin: 0;
     margin-top: 2%;
   }
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+  /* margin-bottom: 10px; */
 `;
 
 const NoneNews = styled.div`

@@ -112,7 +112,7 @@ export function PageHeader({ children, position }) {
       <Template
         childrenTop={
           <>
-            {innerWidth <= 1160 ? (
+            {innerWidth <= 1160 && (
               <PageHeaderBox>
                 <HeaderStyle>
                   <button
@@ -123,8 +123,6 @@ export function PageHeader({ children, position }) {
                   <Text>{children}</Text>
                 </HeaderStyle>
               </PageHeaderBox>
-            ) : (
-              <PcHeader position={position} />
             )}
           </>
         }

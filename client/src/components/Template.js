@@ -9,7 +9,7 @@ const BgTop = styled.div`
   }
 
   @media (min-width: 1160px) {
-    display: none;
+    background: none;
   }
 `;
 

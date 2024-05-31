@@ -10,18 +10,6 @@ $blue: #61759f;
 @include mobile {
   .setting-wrap {
     padding-bottom: 20px;
-
-    .title-list {
-      font-size: 16px;
-      margin: 10px 0;
-
-      li {
-        margin-left: 20px;
-        list-style: disc;
-        font-size: 14px;
-        color: #777777;
-      }
-    }
   }
 
   .title-list {
@@ -32,7 +20,7 @@ $blue: #61759f;
       margin-left: 20px;
       list-style: disc;
       font-size: 14px;
-      color: #777777;
+      color: #333;
     }
   }
 
@@ -317,7 +305,7 @@ $blue: #61759f;
   flex-direction: column;
   padding-left: 8px;
   .line {
-    font-size: 1rem;
+    font-size: 0.88rem;
     color: #666666;
     margin-top: 2px;
   }

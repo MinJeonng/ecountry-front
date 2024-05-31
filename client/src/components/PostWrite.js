@@ -134,7 +134,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
         },
       });
       if (res.data.success) {
-        toast('글이 등록되었습니다.');
+        toast.success('글이 수정되었습니다.');
       }
     } else {
       const res = await axios({
@@ -152,7 +152,7 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
         },
       });
       if (res.data.success) {
-        toast('글이 등록되었습니다.');
+        toast.success('글이 등록되었습니다.');
       }
     }
   };
@@ -197,15 +197,13 @@ export function SetPostWrite({ placeholder, value, ...rest }) {
     }
   }, []);
 
-  //작성 누르면 넘어가는 이 부분 부탁드릴게요
-  const addFunc = () => {
+  const addFunc = async () => {
     if (!content.trim() || content.trim() === '<p><br></p>') {
       alert('내용을 입력해주세요');
       return;
     }
     try {
-      //db에 들어가는 로직
-      sendNews();
+      await sendNews();
       navigate(`/${id}/news`);
     } catch (error) {
       console.log(error);

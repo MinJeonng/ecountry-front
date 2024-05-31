@@ -7,7 +7,7 @@ export default function StudentSeatMap({
 }) {
   const getId = (row, col) => {
     let result = '';
-    if (seatlist.length > 0) {
+    if (seatlist?.length > 0) {
       seatlist.forEach((seat) => {
         if (seat.rowNum == row && seat.colNum == col) {
           if (isuser) {
@@ -32,8 +32,9 @@ export default function StudentSeatMap({
           <div className="seating-map" key={column.rowNum}>
             <div className="column-num">{column.rowNum}열</div>{' '}
             <div className="row-container">
-              {Array.from({ length: column.colNum })?.map((_, columnIndex) => (
+              {Array.from({ length: column?.colNum })?.map((_, columnIndex) => (
                 <div key={columnIndex}>
+                  {console.log(getId(column.rowNum, columnIndex + 1) || '')}
                   <select
                     className="cell-input"
                     value={getId(column.rowNum, columnIndex + 1) || ''}

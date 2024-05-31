@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -24,6 +25,7 @@ export function StudentIdCard() {
   const [countryName, setCountryName] = useState('');
 
   const fileInput = useRef(null);
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     if (e.target.files[0]) {
@@ -46,15 +48,35 @@ export function StudentIdCard() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  const getCountryInfo = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/country/${id}`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        setCountryName(res.data.result?.name);
+      } else {
+        console.error(res.data.message);
+      }
+    } catch (error) {
+      console.error('국가 정보 요청 실패:', error);
+    }
+  };
+
   const getUserInfo = async () => {
     try {
       const res = await axios({
         method: 'GET',
         url: `${process.env.REACT_APP_HOST}/api/user/info`,
         headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       console.log(res.data.success);
@@ -73,17 +95,19 @@ export function StudentIdCard() {
   };
 
   useEffect(() => {
-    setUserInfo();
-  }, []);
-
-  useEffect(() => {
-    if (userInfo.authority) {
+    if (userInfo?.authority) {
       getUserInfo();
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    setUserInfo();
+    getCountryInfo();
+  }, []);
+
   return (
     <div className="idCard-wrap">
+      <ToastContainer />
       <div className="idCard-list">
         <div className="idCard-detail">
           <div className="idCard-detail-title">신분증</div>
@@ -118,7 +142,7 @@ export function StudentIdCard() {
           ref={fileInput}
         />
       </div>
-      <div className="country-name">국가 이름</div>
+      <div className="country-name">{countryName}</div>
     </div>
   );
 }

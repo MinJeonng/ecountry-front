@@ -6,7 +6,7 @@ import axios from 'axios';
 import { GetTimeText } from '../hooks/Functions';
 import { toast } from 'react-toastify';
 
-export function SetNewsRead() {
+export function SetNewsRead({ auth }) {
   const { id, newsId } = useParams();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(
@@ -101,13 +101,15 @@ export function SetNewsRead() {
               zIndex: 100,
             }}
           >
-            <img
-              className="resetBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-setting.png`}
-              alt="Reset Button"
-              onClick={handleSelectBox}
-              style={{ width: '20px', height: '20px', right: '0' }}
-            />
+            {auth && (
+              <img
+                className="resetBtn"
+                src={`${process.env.PUBLIC_URL}/images/icon-setting.png`}
+                alt="Reset Button"
+                onClick={handleSelectBox}
+                style={{ width: '20px', height: '20px', right: '0' }}
+              />
+            )}
             {showBox && (
               <div
                 className="selectBox"

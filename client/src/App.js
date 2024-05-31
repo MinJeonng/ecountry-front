@@ -29,7 +29,6 @@ import { CommonMain } from './pages/CommonMain';
 import Revenu from './pages/Revenu';
 import { ChangePassword } from './components/ChangePassword';
 import JobList from './pages/JobList';
-import BankClerk from './pages/BankClerk';
 import TaxLawList from './pages/TaxLawList';
 import Skills from './pages/Skills';
 import { StudentAssembly } from './pages/StudentAssembly';

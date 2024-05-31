@@ -23,6 +23,7 @@ const LogoutBtn = styled.button`
   height: 32px;
   display: flex;
   align-items: center;
+  text-wrap: nowrap;
   img {
     width: 16px;
     height: 16px;
@@ -45,7 +46,6 @@ export default function ManagerDashBoard() {
       <Template
         childrenTop={
           <>
-            {/* 토스트는 최상위에다가만 표시 */}
             <ToastContainer />
             <div className="managerInfo">
               <div className="InfoPart1">
@@ -53,7 +53,6 @@ export default function ManagerDashBoard() {
                   <MainProfile />
                 </div>
                 <div className="countryUrl">
-                  {/* 링크 수정 필요 */}
                   <CopyToClipboard
                     text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
                     // text={`${process.env.REACT_APP_BASEURL}/${id}/main`}

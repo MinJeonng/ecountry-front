@@ -134,7 +134,7 @@ export function MainProfile() {
   }, []);
 
   useEffect(() => {
-    if (userInfo.authority) {
+    if (userInfo?.authority) {
       getUserName();
     }
   }, [userInfo]);
@@ -212,19 +212,20 @@ export function GetName() {
     }
   }, []);
 
+  const movetoManager = () => {
+    navigate(`/${id}/manager`);
+  };
+
   // useEffect(() => {
   //   console.log('22222');
   //   setUserInfo();
   // }, []);
 
   useEffect(() => {
-    if (userInfo.authority) {
+    if (userInfo?.authority) {
       getUserName();
     }
   }, [userInfo]);
-  const movetoManager = () => {
-    navigate(`/${id}/manager`);
-  };
 
   return (
     <ProfileContainer>

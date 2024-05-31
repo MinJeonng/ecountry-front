@@ -1,10 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { Children, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import Template from '../components/Template';
 import { PageHeader } from '../components/Headers';
-import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import {
+  chatBotList,
+  handleKeyDown,
+  handleKeyDownNext,
+} from '../hooks/Functions';
 import { ToastContainer, toast } from 'react-toastify';
 
 export function ChangePassword() {
@@ -34,12 +38,15 @@ export function ChangePassword() {
         localStorage.removeItem('token');
         navigate(`/${id}/login`);
       }, 1300);
+    } else {
+      console.log(res.data.message);
+      toast.error('비밀번호 변경에 실패했습니다.');
     }
   };
 
   const handlePrevPage = () => {
-    navigate(-1);
-  };
+      navigate(`/${id}/mypage`);
+    };
   return (
     <>
       <ToastContainer />

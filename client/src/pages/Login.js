@@ -82,6 +82,7 @@ export default function Login() {
       <ToastContainer />
       <Template
         isAuthPage={true}
+        isAuthPage2={true}
         childrenTop={
           <>
             <PageHeader>{'관리자 로그인'}</PageHeader>
@@ -119,7 +120,7 @@ export default function Login() {
               </button>
             </div>
 
-            <div className="pc-background">
+            <div className="pc-background-log">
               <div className="pc-left">
                 <img
                   className="left-img"

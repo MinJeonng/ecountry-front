@@ -215,7 +215,7 @@ export default function Loading({ countryid }) {
       } else {
         setDone(true);
         setLoading(false);
-        toast('국가 설정이 완료되었습니다.', { autoClose: 2500 });
+        toast.success('국가 설정이 완료되었습니다.', { autoClose: 2500 });
         navigate('/countryList');
         setTimeout(() => {
           navigate('/countryList');

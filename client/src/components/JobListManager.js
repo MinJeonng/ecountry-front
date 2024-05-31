@@ -85,7 +85,7 @@ export default function JobListManager() {
         },
       });
       if (res.data.success) {
-        toast('등록이 완료되었습니다.', { autoClose: 1300 });
+        toast.success('등록이 완료되었습니다.', { autoClose: 1300 });
         getJobs();
         resetBtn();
       }

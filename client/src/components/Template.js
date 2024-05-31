@@ -24,14 +24,23 @@ const BgBottom = styled.div`
   }
 
   @media (min-width: 1160px) {
+    width: 970px;
+    margin: 0 auto;
+
+    &.auth-page {
+      width: 100%;
+      margin: 0;
+    }
   }
 `;
 
-export default function Template({ childrenTop, childrenBottom }) {
+export default function Template({ childrenTop, childrenBottom, isAuthPage }) {
   return (
     <>
       <BgTop>{childrenTop}</BgTop>
-      <BgBottom>{childrenBottom}</BgBottom>
+      <BgBottom className={isAuthPage ? 'auth-page' : ''}>
+        {childrenBottom}
+      </BgBottom>
     </>
   );
 }

@@ -8,7 +8,6 @@ import '../styles/login.scss';
 import { PageHeader } from '../components/Headers';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
 import { Link } from 'react-router-dom';
 
 export default function Login() {
@@ -23,10 +22,10 @@ export default function Login() {
       .then((res) => {
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
-          toast('환영합니다!');
+          toast.success('환영합니다!');
           setTimeout(() => {
             navigate('/country');
-          }, 2000);
+          }, 1300);
         } else {
           toast('아이디 또는 비밀번호가 틀렸습니다.', {
             autoClose: 1300,
@@ -39,9 +38,10 @@ export default function Login() {
     <>
       <ToastContainer />
       <Template
+        isAuthPage={true}
         childrenTop={
           <>
-            <PageHeader>{'대통령 로그인'}</PageHeader>
+            <PageHeader>{'관리자 로그인'}</PageHeader>
           </>
         }
         childrenBottom={
@@ -79,7 +79,7 @@ export default function Login() {
                 />
               </div>
               <div className="pc-right">
-                <div>대통령 로그인</div>
+                <div>관리자 로그인</div>
                 <form className="login-box-style">
                   <div className="user-login-title">아이디</div>
                   <input

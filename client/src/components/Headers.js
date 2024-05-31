@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { SideMenuComponent } from './SideMenu';
 import { useNavigate, useParams } from 'react-router-dom';
 import Template from './Template';
+import { PcHeader } from './PcHeader';
 
 const CommonHeader = styled.div`
   display: flex;
@@ -84,6 +85,7 @@ export function CommonMainHeader() {
 export function PageHeader({ children, position }) {
   const navigate = useNavigate();
   const { id } = useParams();
+
   const getPathByPosition = (position) => {
     switch (position) {
       case '신문고':
@@ -98,21 +100,28 @@ export function PageHeader({ children, position }) {
         return null;
     }
   };
+
   const path = getPathByPosition(position);
+
   return (
-    <Template
-      childrenTop={
-        <>
-          <PageHeaderBox>
-            <HeaderStyle>
-              <button onClick={() => (path ? navigate(path) : navigate(-1))}>
-                <ArrowLeft stroke={'#fff'} />
-              </button>
-              <Text>{children}</Text>
-            </HeaderStyle>
-          </PageHeaderBox>
-        </>
-      }
-    />
+    <>
+      {/* 모바일 버전 */}
+      <Template
+        childrenTop={
+          <>
+            <PageHeaderBox>
+              <HeaderStyle>
+                <button onClick={() => (path ? navigate(path) : navigate(-1))}>
+                  <ArrowLeft stroke={'#fff'} />
+                </button>
+                <Text>{children}</Text>
+              </HeaderStyle>
+            </PageHeaderBox>
+          </>
+        }
+      />
+      {/* PC 버전 */}
+      <PcHeader position={position} />
+    </>
   );
 }

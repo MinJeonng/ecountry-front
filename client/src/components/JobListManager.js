@@ -322,11 +322,6 @@ export default function JobListManager() {
               onClick={() => selectInput(job, index)}
             >
               {job.name} {job.limited}명
-              {/* <button type="button" onClick={() => updateJob(job.id)}>
-              임시 수정 버튼
-            </button>
-            {' '}
-            */}
               <Arrow stroke="#ddd" className="accArrBtn" />
             </div>
             {isAccordionOpen && selectedIndex === index && (

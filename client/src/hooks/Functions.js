@@ -1,4 +1,13 @@
 import axios from 'axios';
+import styled from 'styled-components';
+
+const ImageDefault = styled.img`
+  width: 100%;
+  height: 170px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #ddfcae;
+`;
 
 export function GetTimeText(time) {
   const newTime = new Date(time);
@@ -20,7 +29,13 @@ export function getThumbnail(html) {
     const [imgUrl, __] = start.split('">');
     return imgUrl;
   }
-  return '/images/defaultImg.jpg';
+  // return '/images/defaultImg.jpg';
+  return (
+    <ImageDefault
+      className="defaultImg"
+      src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
+    />
+  );
 }
 
 export const htmlToText = (html) => {

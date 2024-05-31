@@ -7,17 +7,6 @@ $blue: #61759f;
 @import '../styles/input_common';
 
 @include mobile {
-  .background {
-    width: 100vw;
-    height: 100vh;
-    background-color: $deep-green;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 2s ease;
-  }
-
   .logo-wrap {
     display: flex;
     flex-direction: column;
@@ -75,10 +64,6 @@ $blue: #61759f;
 }
 
 @include desktop {
-  .background {
-    display: none;
-  }
-
   .pc-background {
     display: flex;
     align-items: center;

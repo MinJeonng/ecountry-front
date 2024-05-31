@@ -4,13 +4,15 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const MenuContainer = styled.div`
-  border: 1px solid #a7d2e4;
+  /* border: 1px solid #a7d2e4; */
   border-radius: 10px;
+  width: 100%;
   height: auto;
-  margin-bottom: 20px;
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
+  border: 4px solid #9e9e9e29;
+  border-radius: 9px;
   h3 {
     margin-bottom: 4px;
   }

@@ -9,6 +9,7 @@ import busImage from '../images/mainBus.jpeg';
 import { getThumbnail } from '../hooks/Functions';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { GetTimeText } from '../hooks/Functions';
 
 export const Container = styled.div`
   width: 100%;
@@ -17,7 +18,10 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  box-sizing: border-box;
+  padding: 5%;
+  border: 4px solid #9e9e9e29;
+  border-radius: 9px;
 `;
 
 export const ImageCounterWrapper = styled.div`
@@ -40,6 +44,7 @@ export const ImageCounter = styled.div`
 
 export const StyledImgDiv = styled.div`
   display: flex;
+  flex-direction: row;
   height: fit-content;
   transition: transform ${({ endSwipe }) => (endSwipe ? '0.2s' : '0s')};
   transform: translateX(
@@ -51,19 +56,26 @@ const ImageContainer = styled.div`
   min-width: 100%;
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  h4 {
-    line-height: 1.2;
-  }
+  flex-direction: row;
+  justify-content: space-around;
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 200px;
+  width: 30%;
+  height: auto;
   object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 10px;
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5%;
+  h3 {
+    margin: 0;
+    margin-top: 2%;
+  }
 `;
 
 const NoneNews = styled.div`
@@ -86,6 +98,7 @@ export default function CommonMainNews() {
   const [imgCount, setImgCount] = useState(1);
   const [endSwipe, setEndSwipe] = useState(false);
 
+  console.log(newsList);
   const navigate = useNavigate();
   const onSwipeMove = (position) => {
     setEndSwipe(false);
@@ -145,7 +158,19 @@ export default function CommonMainNews() {
                   onClick={() => navigate(`/${id}/news/read/${post.id}`)}
                 >
                   <Image src={getThumbnail(post.content)} alt={post.title} />
-                  <h4>{post.title}</h4>
+                  <Info>
+                    <h3>{post.title}</h3>
+                    <p
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        margin: 0,
+                      }}
+                    >
+                      <span>작성자 : {post.writerName}</span>
+                      <span>{GetTimeText(post.createdAt)}</span>
+                    </p>
+                  </Info>
                 </ImageContainer>
               ))}
             </StyledImgDiv>

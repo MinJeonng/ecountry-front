@@ -46,9 +46,13 @@ export function SetNews({ position }) {
       if (!userInfo.isStudent) {
         setIsAuth(true);
       } else {
+        confirmStudent();
       }
     }
   }, [userInfo]);
+  useEffect(() => {
+    console.log(isWrite);
+  }, [isWrite]);
   useEffect(() => {
     if (localStorage.getItem('postId')) {
       setIsWrite(true);

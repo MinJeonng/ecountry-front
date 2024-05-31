@@ -55,7 +55,6 @@ export default function ManagerDashBoard() {
                 <div className="countryUrl">
                   <CopyToClipboard
                     text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
-                    // text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
                     onCopy={() =>
                       toast('클립보드로 복사했습니다.', {
                         autoClose: 1300,
@@ -73,7 +72,7 @@ export default function ManagerDashBoard() {
                     className="countryLink"
                     style={{ color: '#777' }}
                   >
-                    {`http://localhost:3000/${id}/main`}
+                    {`https://api.devnhk.com/${id}/main`}
                   </Link>
                 </div>
               </div>

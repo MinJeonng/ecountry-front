@@ -103,12 +103,17 @@ export function PageHeader({ children, position }) {
 
   const path = getPathByPosition(position);
 
+
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
+  }, []);
   return (
-    <>
-      {/* 모바일 버전 */}
-      <Template
-        childrenTop={
-          <>
+    <Template
+      childrenTop={
+        <>
+          {innerWidth <= 1160 && (
+
             <PageHeaderBox>
               <HeaderStyle>
                 <button onClick={() => (path ? navigate(path) : navigate(-1))}>
@@ -117,11 +122,12 @@ export function PageHeader({ children, position }) {
                 <Text>{children}</Text>
               </HeaderStyle>
             </PageHeaderBox>
-          </>
-        }
-      />
-      {/* PC 버전 */}
-      <PcHeader position={position} />
-    </>
+
+          )}
+        </>
+      }
+    />
+<PcHeader position={position} />
+
   );
 }

@@ -133,7 +133,7 @@ export function SetPostWrite({ ...rest }) {
         },
       });
       if (res.data.success) {
-        toast('글이 등록되었습니다.');
+        toast.success('글이 수정되었습니다.');
       }
     } else {
       const res = await axios({
@@ -151,7 +151,7 @@ export function SetPostWrite({ ...rest }) {
         },
       });
       if (res.data.success) {
-        toast('글이 등록되었습니다.');
+        toast.success('글이 등록되었습니다.');
       }
     }
   };
@@ -176,6 +176,28 @@ export function SetPostWrite({ ...rest }) {
     }
   };
 
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      // 사용자 인증 후 권한이 없으면 작성 불가
+      // setUser();
+    } else {
+      // alert('로그인 후 이용해주세요.');
+      // navigate('/signup');
+      // return;
+    }
+    if (localStorage.getItem('postId')) {
+      setPostId(Number(localStorage.getItem('postId')));
+    }
+
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const toolbar = editor.getModule('toolbar');
+      toolbar.addHandler('image', () => imageHandler(quillRef, storage));
+    }
+  }, []);
+
+
   const addFunc = () => {
     if (!content.trim() || content.trim() === '<p><br></p>') {
       alert('내용을 입력해주세요');
@@ -185,6 +207,7 @@ export function SetPostWrite({ ...rest }) {
       //db에 들어가는 로직
       sendNews();
       document.location.reload();
+
     } catch (error) {
       console.log(error);
     }

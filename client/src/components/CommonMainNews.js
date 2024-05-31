@@ -60,10 +60,10 @@ const ImageContainer = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 200px;
+  height: 170px;
   object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 `;
 
 const NoneNews = styled.div`

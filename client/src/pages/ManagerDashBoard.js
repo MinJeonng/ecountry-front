@@ -72,7 +72,7 @@ export default function ManagerDashBoard() {
                     className="countryLink"
                     style={{ color: '#777' }}
                   >
-                    {`https://api.devnhk.com/${id}/main`}
+                    {`http://13.125.85.110/${id}/main`}
                   </Link>
                 </div>
               </div>

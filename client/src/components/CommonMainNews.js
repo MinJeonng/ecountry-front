@@ -9,6 +9,7 @@ import busImage from '../images/mainBus.jpeg';
 import { getThumbnail } from '../hooks/Functions';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { GetTimeText } from '../hooks/Functions';
 
 export const Container = styled.div`
   width: 100%;
@@ -17,7 +18,10 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  box-sizing: border-box;
+  padding: 5%;
+  border: 4px solid #9e9e9e29;
+  border-radius: 9px;
 `;
 
 export const ImageCounterWrapper = styled.div`
@@ -40,6 +44,7 @@ export const ImageCounter = styled.div`
 
 export const StyledImgDiv = styled.div`
   display: flex;
+  flex-direction: row;
   height: fit-content;
   transition: transform ${({ endSwipe }) => (endSwipe ? '0.2s' : '0s')};
   transform: translateX(
@@ -63,9 +68,25 @@ const ImageContainer = styled.div`
     border-radius: 10px;
     background: #ddfcae;
   }
+
 `;
 
 const Image = styled.img`
+  width: 30%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5%;
+  h3 {
+    margin: 0;
+    margin-top: 2%;
+  }
   width: 100%;
   height: 170px;
   object-fit: cover;
@@ -93,6 +114,7 @@ export default function CommonMainNews() {
   const [imgCount, setImgCount] = useState(1);
   const [endSwipe, setEndSwipe] = useState(false);
 
+  console.log(newsList);
   const navigate = useNavigate();
   const onSwipeMove = (position) => {
     setEndSwipe(false);
@@ -151,6 +173,7 @@ export default function CommonMainNews() {
                   key={post.id}
                   onClick={() => navigate(`/${id}/news/read/${post.id}`)}
                 >
+
                   <Image
                     className={
                       getThumbnail(post.content) === '/images/defaultImg.jpg'
@@ -161,6 +184,7 @@ export default function CommonMainNews() {
                     alt={post.title}
                   />
                   <h4>{post.title}</h4>
+
                 </ImageContainer>
               ))}
             </StyledImgDiv>

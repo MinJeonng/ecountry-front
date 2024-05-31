@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  width: 100%;
   border: 1px solid #a7d2e4;
   border-radius: 10px;
   height: auto;
@@ -63,7 +64,7 @@ export default function ScheduleList() {
       <table>
         <thead>
           <tr>
-            <th></th>
+            <th style={{ color: ' #f99a23' }}></th>
             {days.map((day, index) => (
               <th key={index}>{day}</th>
             ))}

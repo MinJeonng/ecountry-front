@@ -40,7 +40,7 @@ export function BoardPeopleRead() {
       setPetitionInfo(res.data.result);
       setIsShow(!res.data.result.isSecret);
       if (userInfo.isStudent) {
-        if (userInfo.id == petitionInfo.writerId) {
+        if (userInfo.id == petitionInfo?.writerId) {
           setIsShow(true);
         }
       } else {

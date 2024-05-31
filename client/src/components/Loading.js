@@ -216,6 +216,7 @@ export default function Loading({ countryid }) {
         setDone(true);
         setLoading(false);
         toast.success('국가 설정이 완료되었습니다.', { autoClose: 2500 });
+        navigate('/countryList');
         setTimeout(() => {
           navigate('/countryList');
         }, 2500);
@@ -230,7 +231,9 @@ export default function Loading({ countryid }) {
   };
 
   useEffect(() => {
-    registCountry();
+    if (!done) {
+      registCountry();
+    }
   }, []);
 
   return (

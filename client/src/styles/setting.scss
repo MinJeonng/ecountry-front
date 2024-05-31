@@ -17,7 +17,6 @@ $blue: #61759f;
     margin: 10px 0;
 
     li {
-      margin-left: 20px;
       list-style: disc;
       font-size: 14px;
       color: #333;
@@ -177,6 +176,12 @@ $blue: #61759f;
 
   .studentInfo-upload {
     margin: 10px 0 0 5px;
+    width: 20%;
+    padding: 4px 6px;
+    font-size: 0.77rem;
+    border: 1px solid #a0a895;
+    border-radius: 8px;
+    text-wrap: nowrap;
   }
 
   .studentInfo-input {

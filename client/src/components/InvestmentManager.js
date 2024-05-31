@@ -105,6 +105,9 @@ export function AddInvestment() {
       },
     });
     getStatus(investId);
+    toast.success('값이 없데이트 되었습니다.', {
+      autoClose: 1300,
+    });
     setValue('');
   };
   //투자 정보 삭제 data.id, invest.id, data.createdAt,data.status, invest.unit
@@ -163,6 +166,7 @@ export function AddInvestment() {
       return;
     }
     updateFunc(investId); //DB로 최신 투자 정보 업데이트
+    toast.success('최신 투자 정보가 업데이트 되었습니다.', { autoClose: 1300 });
     setInvestmentInfo('');
   };
 
@@ -176,7 +180,7 @@ export function AddInvestment() {
       },
     });
     if (res.data.success) {
-      toast('삭제되었습니다.');
+      toast.success('삭제되었습니다.');
     }
   };
 
@@ -195,7 +199,7 @@ export function AddInvestment() {
       },
     });
     if (res.data.success) {
-      toast('삭제되었습니다.');
+      toast.success('삭제되었습니다.');
     }
     getList();
     setInvestmentInfo('');

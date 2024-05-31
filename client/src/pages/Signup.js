@@ -27,7 +27,6 @@ export default function Login() {
         pw: pw,
       })
       .then((res) => {
-        toast(res.data.message);
         if (res.data.success) {
           toast.success('회원가입 되었습니다.');
           setTimeout(() => {

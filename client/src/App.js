@@ -178,6 +178,7 @@ function App() {
           <Route path="*" element={<NOTFOUND />} />
         </Routes>
       </BrowserRouter>
+
     </div>
   );
 }

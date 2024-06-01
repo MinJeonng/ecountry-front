@@ -431,27 +431,11 @@ export function Setting3() {
     }
   };
   const handleCheckPassword = () => {
-    if (password == null) {
+    if (password.length !== 4) {
       toast.error('비밀번호를 입력해주세요.', { autoClose: 1300 });
     } else {
       setCheckPassword(true);
     }
-  };
-
-  const handleChange = (e) => {
-    const val = parseInt(e.target.value);
-
-    if (isNaN(val)) {
-      setAttendanceNumber('');
-      return;
-    }
-
-    if (val <= 0) {
-      toast.error('1 이상의 숫자를 입력해주세요.');
-      return;
-    }
-
-    setAttendanceNumber(val.toString());
   };
 
   const deleteAttendee = (index) => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Swipe from 'react-easy-swipe';
 
-//나중에 삭제
+// 나중에 삭제
 import dogImage from '../images/dog.png';
 import moonImage from '../images/moon.jpeg';
 import busImage from '../images/mainBus.jpeg';
@@ -31,6 +31,7 @@ export const ImageCounterWrapper = styled.div`
   margin-bottom: 15px;
   margin-top: 15px;
 `;
+
 export const ImageCounter = styled.div`
   width: 6px;
   height: 6px;
@@ -47,11 +48,9 @@ export const StyledImgDiv = styled.div`
   flex-direction: row;
   height: fit-content;
   transition: transform ${({ endSwipe }) => (endSwipe ? '0.2s' : '0s')};
-  transform: translateX(
-    ${({ imgCount, positionx }) =>
-      `calc(${positionx}px - ${(imgCount - 1) * 100}%)`}
-  );
+  transform: translateX(${({ imgCount }) => `calc(-${imgCount - 1}00%)`});
 `;
+
 const ImageContainer = styled.div`
   min-width: 100%;
   box-sizing: border-box;
@@ -91,7 +90,6 @@ const Info = styled.div`
   height: 170px;
   object-fit: cover;
   border-radius: 10px;
-  /* margin-bottom: 10px; */
 `;
 
 const NoneNews = styled.div`
@@ -142,6 +140,7 @@ export default function CommonMainNews() {
     setPositionx(0);
     setEndSwipe(true);
   };
+
   const getNews = async () => {
     const res = await axios({
       method: 'GET',
@@ -154,6 +153,7 @@ export default function CommonMainNews() {
     console.log(res.data.result);
     setNewsList(res.data.result);
   };
+
   useEffect(() => {
     getNews();
   }, []);

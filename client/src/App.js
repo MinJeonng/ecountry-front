@@ -168,7 +168,7 @@ function App() {
             element={<StudentAssembly position="국회" />}
           />
 
-          <Route path="/:id/chatbot" element={<ChatBot />} />
+          <Route path="/chatbot" element={<ChatBot />} />
 
           <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
 

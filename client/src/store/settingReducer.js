@@ -64,7 +64,6 @@ export const studentInfo = (info) => ({
   info,
 });
 const initalState3 = {
-  password: null,
   studentList: [],
 };
 export const setting3Reducer = (state = initalState3, action) => {
@@ -72,7 +71,6 @@ export const setting3Reducer = (state = initalState3, action) => {
     case STUDENTINFO:
       return {
         ...state,
-        password: action.info.password,
         studentList: action.info.studentList,
       };
     default:

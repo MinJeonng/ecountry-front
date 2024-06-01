@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import * as XLSX from 'xlsx';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -402,10 +403,17 @@ export function Setting3() {
   const nextSetting = () => {
     if (password !== null || selectedFile) {
       navigate('/setting/seatingMap');
+      const newInfo = [];
+      attendees.forEach((data) => {
+        newInfo.push({
+          password,
+          attendanceNumber: data.attendanceNumber,
+          name: data.name,
+        });
+      });
       dispatch(
         studentInfo({
-          password: password,
-          studentList: attendees,
+          studentList: newInfo,
         })
       );
     } else {
@@ -483,13 +491,48 @@ export function Setting3() {
 
   // 파일이 선택되었을 때
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // 선택된 파일 가져오기
-    setSelectedFile(file); // 상태 업데이트
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (!e.target?.result) return;
+        const list = [];
+
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array', bookVBA: true });
+
+        const firstWorksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstWorksheet, {
+          header: 1,
+        });
+
+        console.log(jsonData);
+        jsonData.forEach((data, index) => {
+          if (index > 0) {
+            list.push({
+              password: data[2],
+              attendanceNumber: data[0],
+              name: data[1],
+            });
+          }
+        });
+        console.log(list);
+        setAttendees(list);
+      };
+      reader.readAsArrayBuffer(files[0]);
+      setSelectedFile(files[0]); // 상태 업데이트
+    }
   };
 
   // 파일 업로드
   const handleUpload = () => {
     if (selectedFile) {
+      console.log(attendees);
+      dispatch(
+        studentInfo({
+          studentList: [...attendees],
+        })
+      );
       toast.success('업로드 완료하였습니다.', { autoClose: 1300 });
     } else {
       toast.error('파일을 선택해주세요.', { autoClose: 1300 });

@@ -266,7 +266,7 @@ export function SideMenuComponent({ func }) {
 }
 
 export function AlarmComponent({ func }) {
-  const [alarmList, setAlarmList] = useState();
+  const [alarmList, setAlarmList] = useState([]);
 
   const getAlarm = async () => {
     try {
@@ -281,6 +281,7 @@ export function AlarmComponent({ func }) {
       });
       if (res.data.success) {
         if (res.data.result) {
+          console.log(res.data.result);
           setAlarmList(res.data.result);
         }
       } else {
@@ -292,7 +293,9 @@ export function AlarmComponent({ func }) {
   };
 
   useEffect(() => {
-    getAlarm();
+    if (alarmList.length === 0) {
+      getAlarm();
+    }
   }, []);
 
   return (
@@ -308,11 +311,11 @@ export function AlarmComponent({ func }) {
         <AlarmBox>
           {alarmList?.map((alarm) => (
             <div
-              className={`alarm ${alarm.isChecked ? null : 'new'}`}
+              className={`alarm ${alarm.isChecked ? 'old' : 'new'}`}
               key={alarm.id}
             >
               <div className="alarmContent">{alarm.content}</div>
-              <div className="alarmDate">{GetTimeText(alarm.createAt)}</div>
+              <div className="alarmDate">{GetTimeText(alarm.createdAt)}</div>
             </div>
           ))}
         </AlarmBox>

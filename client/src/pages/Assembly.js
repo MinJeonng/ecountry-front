@@ -1,6 +1,7 @@
 import Template from '../components/Template';
 import { AssemblyLawList } from '../components/AssemblyLawList';
 import { PageHeader } from '../components/Headers';
+import { ChatBotBtn } from '../components/Btns';
 
 //국회
 export function SetAssembly({ position }) {
@@ -12,6 +13,7 @@ export function SetAssembly({ position }) {
           <>
             {/* 법 리스트 */}
             {position == '국회' && <AssemblyLawList />}
+            <ChatBotBtn />
           </>
         }
       />

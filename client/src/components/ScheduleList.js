@@ -84,7 +84,7 @@ export default function ScheduleList() {
     </>
   ) : (
     <Container>
-      <p style={{ color: '#666666' }}>시간표 정보가 없습니다.</p>
+      <p style={{ color: '#333' }}>시간표 정보가 없습니다.</p>
     </Container>
   );
 }

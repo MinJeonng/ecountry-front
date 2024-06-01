@@ -28,39 +28,11 @@ export function CommonMain() {
         }
         childrenBottom={
           <>
-            <div
-              className="mainContent"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: '5%',
-              }}
-            >
-              <div
-                className="news"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <CommonMainNews />
-              </div>
-              <div
-                className="schedule"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <ScheduleList />
-              </div>
-              <div
-                className="menu"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <MenuList />
-              </div>
-              <div
-                className="invest"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <PcInvestment />
-              </div>
+            <div className="mainContent">
+              <CommonMainNews />
+              <ScheduleList />
+              <MenuList />
+              <PcInvestment />
             </div>
           </>
         }

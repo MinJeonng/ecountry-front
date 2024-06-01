@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, { useState } from 'react';
 import '../styles/_button_common.scss';
 import { ReactComponent as IcoWrite } from '../images/ico-write.svg';
+import { useNavigate } from 'react-router-dom';
 
 const StyledConfirmBtn = styled.div`
   display: flex;
@@ -12,15 +13,20 @@ const BtnBox = styled.div`
   position: fixed;
   width: 50px;
   bottom: 0;
-  right: 40px;
+  right: 25px;
   display: block;
   z-index: 170;
+
   button {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     margin-bottom: 15px;
-    border: 2px solid #75a47f;
+    border: 1.7px solid #75a47f;
+  }
+  img {
+    display: flex;
+    align-items: center;
   }
   @media (min-width: 1370px) {
     right: 50%;
@@ -74,7 +80,7 @@ export function NextBtn({ onClick, width, btnName }) {
 
 export function NewPostBtn({ navigate, path }) {
   return (
-    <BtnBox>
+    <BtnBox style={{ bottom: '60px' }}>
       <button onClick={() => navigate(path)}>
         <IcoWrite stroke={'#75a47f'} />
       </button>
@@ -82,11 +88,29 @@ export function NewPostBtn({ navigate, path }) {
   );
 }
 
+//뉴스
 export function NewsPostBtn({ func }) {
   return (
-    <BtnBox>
+    <BtnBox style={{ bottom: '60px' }}>
       <button onClick={() => func(true)}>
         <IcoWrite stroke={'#75a47f'} />
+      </button>
+    </BtnBox>
+  );
+}
+
+//챗봇
+export function ChatBotBtn({ func }) {
+  const navigate = useNavigate();
+  return (
+    <BtnBox>
+      <button
+        onClick={() => {
+          navigate('/chatbot');
+          func(true);
+        }}
+      >
+        <img src={`${process.env.PUBLIC_URL}/images/icon-chatbot.png`} />
       </button>
     </BtnBox>
   );

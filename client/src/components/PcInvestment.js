@@ -17,6 +17,7 @@ import { Container } from './CommonMainNews';
 
 import '../styles/setting.scss';
 import styled from 'styled-components';
+import { MenuContainer } from './MenuList';
 
 ChartJS.register(
   CategoryScale,
@@ -45,6 +46,7 @@ export default function PcInvestment() {
   const [labels, setLabels] = useState([]);
   const [amounts, setAmounts] = useState([]);
   const [info, setInfo] = useState(null);
+  const [isInfo, setIsInfo] = useState(false);
 
   console.log(products);
   console.log('list', list);
@@ -76,6 +78,9 @@ export default function PcInvestment() {
     });
     const result = res.data.result;
     setList(result);
+    if (res.data.success) {
+      setInfo(true);
+    }
 
     const formattedLabels = result.map((item) => {
       const newDate = new Date(item.createdAt);
@@ -173,39 +178,45 @@ export default function PcInvestment() {
 
   return (
     <>
-      <Container>
-        <div>
+      {isInfo ? (
+        <Container>
           <div>
-            {info !== null && (
-              <>
-                <Info>
-                  <h4>
-                    {info.name} (단위 : {info.unit})
-                  </h4>
-                  <span>최신 정보 : {info.info} </span>
-                </Info>
-                <div
-                  style={{
-                    // width: '600px',
-                    // height: '400px',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    overflow: 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Line
-                    options={options}
-                    data={data}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              </>
-            )}
+            <div>
+              {info !== null && (
+                <>
+                  <Info>
+                    <h4>
+                      {info.name} (단위 : {info.unit})
+                    </h4>
+                    <span>최신 정보 : {info.info} </span>
+                  </Info>
+                  <div
+                    style={{
+                      // width: '600px',
+                      // height: '400px',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      overflow: 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Line
+                      options={options}
+                      data={data}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      ) : (
+        <MenuContainer>
+          <p style={{ color: '#333' }}>투자 정보가 없습니다.</p>
+        </MenuContainer>
+      )}
     </>
   );
 }

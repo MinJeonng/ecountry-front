@@ -15,7 +15,6 @@ export const Container = styled.div`
   align-items: center;
   box-sizing: border-box;
   border-radius: 9px;
-
 `;
 
 export const ImageCounterWrapper = styled.div`
@@ -62,7 +61,6 @@ const ImageContainer = styled.div`
     border-radius: 10px;
     background: #e0e0e0;
   }
-
 `;
 
 const Image = styled.img`
@@ -70,7 +68,6 @@ const Image = styled.img`
   height: 170px;
   object-fit: cover;
   border-radius: 10px;
-
 `;
 
 const NoneNews = styled.div`
@@ -88,17 +85,18 @@ const NoneNews = styled.div`
 
 export default function CommonMainNews() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [newsList, setNewsList] = useState([]);
   const [positionx, setPositionx] = useState(0);
   const [imgCount, setImgCount] = useState(1);
   const [endSwipe, setEndSwipe] = useState(false);
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [displayNewsList, setDisplayNewsList] = useState([]); //뉴스 보여지는거 5개로 제한
 
   useEffect(() => {
     window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
   }, []);
 
-  const navigate = useNavigate();
   const onSwipeMove = (position) => {
     setEndSwipe(false);
     if (newsList.length === 1) {
@@ -125,6 +123,7 @@ export default function CommonMainNews() {
     setPositionx(0);
     setEndSwipe(true);
   };
+
   const getNews = async () => {
     const res = await axios({
       method: 'GET',
@@ -141,9 +140,13 @@ export default function CommonMainNews() {
     getNews();
   }, []);
 
+  useEffect(() => {
+    setDisplayNewsList(newsList.slice(0, 5));
+  }, [newsList]);
+
   return (
     <>
-      {newsList?.length > 0 ? (
+      {displayNewsList?.length > 0 ? (
         <Container>
           <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
             <StyledImgDiv
@@ -151,12 +154,11 @@ export default function CommonMainNews() {
               positionx={positionx}
               endSwipe={endSwipe}
             >
-              {newsList?.map((post) => (
+              {displayNewsList?.map((post, index) => (
                 <ImageContainer
                   key={post.id}
                   onClick={() => navigate(`/${id}/news/read/${post.id}`)}
                 >
-
                   <Image
                     className={
                       getThumbnail(post.content) === '/images/defaultImg.jpg'
@@ -171,9 +173,9 @@ export default function CommonMainNews() {
               ))}
             </StyledImgDiv>
           </Swipe>
-          {newsList?.length > 1 && (
+          {displayNewsList?.length > 1 && (
             <ImageCounterWrapper>
-              {newsList.map((post, index) => {
+              {displayNewsList.map((post, index) => {
                 return (
                   <ImageCounter key={index} index={index} imgCount={imgCount} />
                 );

@@ -212,7 +212,6 @@ export function AddSavings() {
             onClick={() => selectInput(saving, index)}
           >
             {saving.name} (금리 {saving.interest}%)
-            {/* D-{saving.dueDate} */}
             <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
           {isAccordionOpen && selectedIndex === index && (
@@ -228,19 +227,24 @@ export function AddSavings() {
                   setSavingName(e.target.value);
                 }}
                 onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
+                disabled
               />
-              <div className="set-title">적금 기간(생성일부터 ~까지)</div>
-              <input
-                ref={deadLineRef}
-                className="set-input"
-                type="number"
-                min="0"
-                value={savingDeadLine}
-                onChange={(e) => {
-                  setSavingDeadLine(e.target.value);
-                }}
-                onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
-              />
+              <div className="set-title">적금 기간</div>
+              <div className="container">
+                <input
+                  ref={deadLineRef}
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={savingDeadLine}
+                  onChange={(e) => {
+                    setSavingDeadLine(e.target.value);
+                  }}
+                  onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
+                  disabled
+                />
+                <div className="unit">일</div>
+              </div>
               <div className="set-title">금리 설정</div>
               <div className="container">
                 <input
@@ -252,6 +256,7 @@ export function AddSavings() {
                   onChange={(e) => {
                     setInterestRate(e.target.value);
                   }}
+                  disabled
                 />
                 <span className="unit">%</span>
               </div>

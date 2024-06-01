@@ -7,7 +7,7 @@ import Template from '../components/Template';
 import MenuList from '../components/MenuList';
 import ScheduleList from '../components/ScheduleList';
 import PcInvestment from '../components/PcInvestment';
-import CommonMainNewsMoblie from '../components/CommonMainNewsMoblie';
+// import CommonMainNewsMoblie from '../components/CommonMainNewsMoblie';
 
 import '../styles/common_main.scss';
 import styled from 'styled-components';
@@ -44,23 +44,21 @@ export function CommonMain() {
   return (
     <>
       <Template
-        // childrenTop={
-        //   <>
-        //     <CommonMainHeader />
-        //     <div className="mainProfile">
-        //       <GetName />
-        //     </div>
-        //   </>
-        // }
+        childrenTop={
+          <>
+            <CommonMainHeader />
+            <div className="mainProfile">
+              <GetName />
+            </div>
+          </>
+        }
         childrenBottom={
           <>
-
             <div className="mainContent">
               <CommonMainNews />
               <ScheduleList />
               <MenuList />
               <PcInvestment />
-
             </div>
           </>
         }

@@ -59,7 +59,9 @@ dl,
 dt,
 dd,
 ol,
-ul,
+ul {
+  padding: 0;
+}
 li {
   color: #333;
 }
@@ -119,8 +121,6 @@ textarea {
   color: #333;
 
   outline: none;
-
-
 }
 
 /* HTML5 display-role reset for older browsers */

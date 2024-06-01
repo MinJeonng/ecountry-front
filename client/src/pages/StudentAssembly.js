@@ -12,7 +12,7 @@ export function StudentAssembly({ position }) {
         childrenBottom={
           <>
             {/* 법 리스트 */}
-            {position == '국회' && <StudentAssemblyLawList />}
+            {position === '국회' && <StudentAssemblyLawList />}
             <ChatBotBtn />
           </>
         }

@@ -41,6 +41,16 @@ const Info = styled.div`
   }
 `;
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+`;
+
 export default function PcInvestment() {
   const { id } = useParams();
   const [products, setProducts] = useState([]);
@@ -81,7 +91,7 @@ export default function PcInvestment() {
     const result = res.data.result;
     setList(result);
     if (res.data.success) {
-      setInfo(true);
+      setIsInfo(true);
     }
 
     const formattedLabels = result.map((item) => {
@@ -180,7 +190,6 @@ export default function PcInvestment() {
 
   return (
     <>
-
       {isInfo ? (
         <Container>
           <div>
@@ -220,7 +229,6 @@ export default function PcInvestment() {
           <p style={{ color: '#333' }}>투자 정보가 없습니다.</p>
         </MenuContainer>
       )}
-
     </>
   );
 }

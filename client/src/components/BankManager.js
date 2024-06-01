@@ -299,18 +299,21 @@ export function AddSavings() {
               }}
               onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
             />
-            <div className="set-title">적금 기간(생성일부터 ~까지)</div>
-            <input
-              ref={deadLineRef}
-              className="set-input"
-              type="number"
-              min="0"
-              value={savingDeadLine}
-              onChange={(e) => {
-                setSavingDeadLine(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
-            />
+            <div className="set-title">적금 기간</div>
+            <div className="container">
+              <input
+                ref={deadLineRef}
+                className="set-input"
+                type="number"
+                min="0"
+                value={savingDeadLine}
+                onChange={(e) => {
+                  setSavingDeadLine(e.target.value);
+                }}
+                onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
+              />
+              <div className="unit">일</div>
+            </div>
             <div className="set-title">금리 설정</div>
             <div className="container">
               <input

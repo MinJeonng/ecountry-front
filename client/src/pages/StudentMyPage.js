@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
 import '../styles/studentMypage.scss';
 
@@ -10,10 +8,11 @@ import { PageHeader } from '../components/Headers';
 import { StudentPayStub } from './StudentPayStub';
 
 export default function StudentMyPage() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const handleChangePassword = () => {
-    navigate('/:id/changePw');
+    navigate(`/${id}/changePw`);
   };
 
   return (

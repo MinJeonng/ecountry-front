@@ -11,6 +11,10 @@ const IntroBackGround = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (min-width: 1160px) {
+    display: none;
+  }
 `;
 export default function Intro() {
   return (

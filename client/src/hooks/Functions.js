@@ -20,7 +20,10 @@ export function GetTimeText(time) {
   };
   return `${newTime.getFullYear()}. ${
     newTime.getMonth() + 1
-  }. ${newTime.getDate()} ${translateTime()}:${newTime.getMinutes()}`;
+  }. ${newTime.getDate()} ${translateTime()}:${newTime
+    .getMinutes()
+    .toString()
+    .padStart(2, '0')}`;
 }
 
 export function getThumbnail(html) {
@@ -29,13 +32,13 @@ export function getThumbnail(html) {
     const [imgUrl, __] = start.split('">');
     return imgUrl;
   }
-  // return '/images/defaultImg.jpg';
-  return (
-    <ImageDefault
-      className="defaultImg"
-      src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
-    />
-  );
+  return '/images/defaultImg.jpg';
+  // return (
+  //   <ImageDefault
+  //     className="defaultImg"
+  //     src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
+  //   />
+  // );
 }
 
 export const htmlToText = (html) => {
@@ -58,12 +61,12 @@ export const getOnlyTime = (time) => {
   if (newTime.getHours() > 12) {
     result = `오후 ${(newTime.getHours() - 12)
       .toString()
-      .padStart(2, '0')}:${newTime.getMinutes()}`;
+      .padStart(2, '0')}:${newTime.getMinutes().toString().padStart(2, '0')}`;
   } else {
-    result = `오전 ${newTime
-      .getHours()
+    result = `오전 ${newTime.getHours().toString().padStart(2, '0')}:${newTime
+      .getMinutes()
       .toString()
-      .padStart(2, '0')}:${newTime.getMinutes()}`;
+      .padStart(2, '0')}`;
   }
   return result;
 };

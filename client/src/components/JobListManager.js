@@ -4,7 +4,7 @@ import { useCommaInput } from '../hooks/Utils';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { handleKeyDownNext } from '../hooks/Functions';
 
 export default function JobListManager() {
@@ -17,7 +17,6 @@ export default function JobListManager() {
   const [jobRoleValue, setJobRoleValue] = useState('');
   const [jobsDisplay, setJobsDisplay] = useState([]);
   const [countValue, setCountValue] = useState('');
-  const [selectedJobIndex, setSelectedJobIndex] = useState(null);
   const [jobSkill, setJobSkill] = useState([]); //skill 번호
   const [selectedJobSkill, setSelectedJobSkill] = useState('');
   const [unit, setUnit] = useState('');
@@ -47,24 +46,63 @@ export default function JobListManager() {
   ];
 
   const getJobs = async () => {
-    const res = await axios({
-      method: 'GET',
-      url: `${process.env.REACT_APP_HOST}/api/job/${id}`,
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    });
-    console.log(res.data.result);
-    setJobsDisplay(res.data.result);
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/job/${id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      setJobsDisplay(res.data.result);
+    } catch {
+      toast.error('직업을 불러올 수 없습니다. 다시 시도해주세요.', {
+        autoClose: 1300,
+      });
+    }
   };
 
   const sendJob = async () => {
-    const res = await axios({
-      method: 'POST',
-      url: `${process.env.REACT_APP_HOST}/api/job`,
-      data: [
-        {
+    try {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/job`,
+        data: [
+          {
+            limited: countValue,
+            name: selectedJob === '직접입력' ? customJob : selectedJob,
+            roll: jobRoleValue,
+            standard: standardValue,
+            salary: inputValue.replaceAll(',', ''),
+            skills: jobSkill,
+            countryId: id,
+          },
+        ],
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        toast.success('등록이 완료되었습니다.', { autoClose: 1300 });
+        getJobs();
+        resetBtn();
+      }
+    } catch {
+      toast.error('다시 시도해주세요.', {
+        autoClose: 1300,
+      });
+    }
+  };
+
+  const updateJob = async (jobId) => {
+    try {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/job`,
+        data: {
+          id: jobId,
           limited: countValue,
           name: selectedJob === '직접입력' ? customJob : selectedJob,
           roll: jobRoleValue,
@@ -73,38 +111,24 @@ export default function JobListManager() {
           skills: jobSkill,
           countryId: id,
         },
-      ],
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    });
-    getJobs();
-  };
-
-  const updateJob = async (jobId) => {
-    const res = await axios({
-      method: 'PATCH',
-      url: `${process.env.REACT_APP_HOST}/api/job`,
-      data: {
-        id: jobId,
-        limited: countValue,
-        name: selectedJob === '직접입력' ? customJob : selectedJob,
-        roll: jobRoleValue,
-        standard: standardValue,
-        salary: inputValue.replaceAll(',', ''),
-        skills: jobSkill,
-        countryId: id,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    });
-    if (res.data.success) {
-      toast('수정이 완료되었습니다.');
-      getJobs();
-      resetBtn();
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        toast('수정이 완료되었습니다.', { autoClose: 1300 });
+        getJobs();
+        resetBtn();
+      } else {
+        toast.error('다시 시도해주세요.', {
+          autoClose: 1300,
+        });
+      }
+    } catch {
+      toast.error('다시 시도해주세요.', {
+        autoClose: 1300,
+      });
     }
   };
 
@@ -120,13 +144,14 @@ export default function JobListManager() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data);
     if (res.data.success) {
-      toast('삭제되었습니다.');
+      toast.error('삭제되었습니다.', { autoClose: 1300 });
       getJobs();
       resetBtn();
     } else {
-      toast('이미 적용 중인 직업은 삭제할 수 없습니다.');
+      toast.error('이미 적용 중인 직업은 삭제할 수 없습니다.', {
+        autoClose: 1300,
+      });
     }
   };
 
@@ -160,45 +185,10 @@ export default function JobListManager() {
       toast.error('모든 값을 입력해주세요.', { autoClose: 1300 });
       return;
     }
-    // 모든 입력값이 유효한 경우
-    if (selectedIndex !== null) {
-      console.log('first');
-      // 이미 목록에 있는 직업을 업데이트
-      const updatedJobs = [...jobsDisplay];
-      updatedJobs[selectedIndex] = {
-        customValue: customJob,
-        selectValue: selectedJob,
-        standard: standardValue,
-        role: jobRoleValue,
-        count: countValue,
-        salary: inputValue,
-        skills: jobSkill,
-      };
-      setJobsDisplay(updatedJobs);
-      setIsAddOpen(true);
-    } else {
-      // 새 직업을 목록에 추가
-      const newJob = {
-        customValue: customJob,
-        selectValue: selectedJob,
-        standard: standardValue,
-        role: jobRoleValue,
-        count: countValue,
-        salary: inputValue,
-        skills: jobSkill,
-      };
-      setJobsDisplay((prevJobs) => [...prevJobs, newJob]);
-    }
 
-    // 입력 필드 초기화
-    setSelectedJob('');
-    setCustomJob('');
-    setStandardValue('');
-    setJobRoleValue('');
-    setCountValue('');
-    handleInputChange({ target: { value: '' } });
-    setJobSkill([]);
-    setSelectedIndex(null); // 선택한 직업 인덱스 초기화
+    sendJob();
+
+    resetBtn();
   };
 
   const selectInput = (job, index) => {
@@ -213,7 +203,6 @@ export default function JobListManager() {
       setCountValue('');
       handleInputChange({ target: { value: '' } });
       setJobSkill([]);
-      setSelectedJobIndex(null);
       setIsAddOpen(true);
     } else {
       setIsAccordionOpen(true);
@@ -232,8 +221,6 @@ export default function JobListManager() {
       setJobRoleValue(job.roll);
       setCountValue(job.limited);
       handleInputChange({ target: { value: job.salary.toString() } }); //숫자만 추출해 전달
-      setSelectedJobIndex(index);
-      setSelectedJobIndex(index);
       setJobSkill(job.skills);
       setIsAddOpen(false);
     }
@@ -246,23 +233,15 @@ export default function JobListManager() {
     setCountValue('');
     setJobSkill([]);
     handleInputChange({ target: { value: '' } });
-    setSelectedJobIndex(null); // 선택한 직업 인덱스 초기화
     setIsAccordionOpen(false);
     setSelectedIndex(null);
+    setIsAddOpen(true);
   };
 
   const deleteBtn = (e, jobId) => {
     e.stopPropagation(); // 이벤트 버블링 방지
     deleteJob(jobId);
     // 초기화
-    setSelectedJobIndex(null);
-    setSelectedJob('');
-    setCustomJob('');
-    setStandardValue('');
-    setJobRoleValue('');
-    setCountValue('');
-    handleInputChange({ target: { value: '' } });
-    setIsAddOpen(true);
   };
 
   const deleteSkill = (index) => {
@@ -285,14 +264,15 @@ export default function JobListManager() {
       if (res.data.success) {
         setUnit(res.data.result);
       }
-    } catch (error) {
-      console.log('화폐단위 불러오는데 실패', error);
+    } catch {
+      toast.error('다시 시도해주세요.', {
+        autoClose: 1300,
+      });
     }
   };
 
   useEffect(() => {
     setIsCustomInput(selectedJob === '직접입력');
-    console.log(isCustomInput);
   }, [selectedJob]);
 
   useEffect(() => {
@@ -309,6 +289,7 @@ export default function JobListManager() {
 
   return (
     <div className="setting-wrap">
+      <ToastContainer />
       <div>
         {jobsDisplay.map((job, index) => (
           <div key={index}>
@@ -455,7 +436,7 @@ export default function JobListManager() {
                   />
                 </div>
                 <ConfirmBtn
-                  onClick={addJob}
+                  onClick={() => updateJob(job.id)}
                   btnName="수정"
                   backgroundColor="#bacd92"
                 ></ConfirmBtn>

@@ -4,7 +4,6 @@ import Template from '../components/Template';
 import { SetPostWrite } from '../components/PostWrite';
 import { SetNewsDetail } from '../components/NewsDetail';
 import { SetNewsRead } from '../components/NewsRead';
-import { Practice } from '../components/Write_ex';
 import { PageHeader } from '../components/Headers';
 import { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
@@ -31,7 +30,8 @@ export function SetNews({ position }) {
       },
     });
     if (res.data.success) {
-      if (res.data.result.skills.includes(2)) {
+      console.log(res.data.result);
+      if (res.data.result.skills?.includes(2)) {
         setIsAuth(true);
       }
     }
@@ -46,9 +46,13 @@ export function SetNews({ position }) {
       if (!userInfo.isStudent) {
         setIsAuth(true);
       } else {
+        confirmStudent();
       }
     }
   }, [userInfo]);
+  useEffect(() => {
+    console.log(isWrite);
+  }, [isWrite]);
   useEffect(() => {
     if (localStorage.getItem('postId')) {
       setIsWrite(true);
@@ -79,7 +83,7 @@ export function SetNews({ position }) {
               // <Practice />
             )}
             {/* Read 읽기 header는 구현된거 보고 다시 확인 */}
-            {position === '읽기' && <SetNewsRead />}
+            {position === '읽기' && <SetNewsRead auth={isAuth} />}
             {isAuth && !isWrite && <NewsPostBtn func={setIsWrite} />}
           </>
         }

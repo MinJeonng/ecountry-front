@@ -3,6 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useAuth from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { GetTimeText } from '../hooks/Functions';
 
 const SideMenuBox = styled.div`
   position: fixed;
@@ -69,6 +72,22 @@ const DashboardBox = styled.div`
   }
   .spanLine {
     color: #666666;
+  }
+`;
+
+const AlarmBox = styled.div`
+  .alarm {
+    background: #ddd;
+    padding: 25px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    .alarmDate {
+      font-size: 12px;
+      color: #777;
+    }
+    &.new {
+      background: #e1ead0;
+    }
   }
 `;
 
@@ -243,5 +262,61 @@ export function SideMenuComponent({ func }) {
         </div>
       </SideMenuBox>
     </>
+  );
+}
+
+export function AlarmComponent({ func }) {
+  const [alarmList, setAlarmList] = useState();
+
+  const getAlarm = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/student/notice`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        if (res.data.result) {
+          setAlarmList(res.data.result);
+        }
+      } else {
+        toast.error('알림을 조회할 수 없습니다.', { autoClose: 1300 });
+      }
+    } catch {
+      toast.error('알림을 조회할 수 없습니다.', { autoClose: 1300 });
+    }
+  };
+
+  useEffect(() => {
+    getAlarm();
+  }, []);
+
+  return (
+    <SideMenuBox>
+      <div className="sideBox">
+        <img
+          src={`${process.env.PUBLIC_URL}/images/icon-close.png`}
+          className="btnClose changeStroke"
+          onClick={func}
+          style={{ cursor: 'pointer' }}
+          alt="닫기"
+        />
+        <AlarmBox>
+          {alarmList?.map((alarm) => (
+            <div
+              className={`alarm ${alarm.isChecked ? null : 'new'}`}
+              key={alarm.id}
+            >
+              <div className="alarmContent">{alarm.content}</div>
+              <div className="alarmDate">{GetTimeText(alarm.createAt)}</div>
+            </div>
+          ))}
+        </AlarmBox>
+      </div>
+    </SideMenuBox>
   );
 }

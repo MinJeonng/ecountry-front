@@ -3,10 +3,10 @@ import { ReactComponent as IcoMenuRight } from '../images/icon-sideMenu.svg';
 import { ReactComponent as ArrowLeft } from '../images/ico-arr-left.svg';
 import { ReactComponent as Alarm } from '../images/icon-alarm.svg';
 import styled from 'styled-components';
-import { SideMenuComponent } from './SideMenu';
+import { AlarmComponent, SideMenuComponent } from './SideMenu';
 import { useNavigate, useParams } from 'react-router-dom';
 import Template from './Template';
-import { PcHeader } from './PcHeader';
+import axios from 'axios';
 
 const CommonHeader = styled.div`
   display: flex;
@@ -16,11 +16,24 @@ const CommonHeader = styled.div`
 const AlarmHeader = styled.div`
   gap: 10px;
   display: flex;
-  /* position: relative;
-  top: 25px;
+  position: relative;
+  /* top: 25px;
   right: 20px; */
-  padding-right: 30px;
-  padding-top: 25px;
+  margin-right: 30px;
+  margin-top: 25px;
+  &.new {
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      background: #b62c2c;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+  }
 `;
 const BoxStyle = styled.div`
   z-index: 100;
@@ -54,30 +67,54 @@ const Text = styled.div`
 
 export function CommonMainHeader() {
   const [showSideMenu, setShowSideMenu] = useState(false);
-  useEffect(() => {
-    console.log('showSideMenu 상태 변경됨:', showSideMenu);
-  }, [showSideMenu]);
+  const [showAlarm, setShowAlarm] = useState(false);
+  const [alarmCount, setAlarmCount] = useState(0);
+
+  const getAlarmCount = async () => {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_HOST}/api/student/notice/count`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        if (res.data.result) {
+          console.log(res.data.result.count);
+          setAlarmCount(res.data.result.count);
+        }
+      } else {
+        setAlarmCount(0);
+      }
+    } catch {
+      setAlarmCount(0);
+    }
+  };
+
   const closeFunc = () => {
     setShowSideMenu(false);
+    setShowAlarm(false);
   };
+
+  useEffect(() => {
+    getAlarmCount();
+  }, []);
 
   return (
     <CommonHeader>
       <BoxStyle className="headerBg">
         <HeaderStyle>
-          <IcoMenuRight
-            onClick={() => {
-              // console.log('메뉴 열기 전 showSideMenu 상태:', showSideMenu);
-              setShowSideMenu(true);
-              // console.log('메뉴 열기 후 showSideMenu 상태:', showSideMenu);
-            }}
-          />
+          <IcoMenuRight onClick={() => setShowSideMenu(true)} />
         </HeaderStyle>
       </BoxStyle>
       {showSideMenu && <SideMenuComponent func={closeFunc} />}
-      <AlarmHeader>
-        <Alarm />
+      <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
+        <Alarm onClick={() => setShowAlarm(true)} />
       </AlarmHeader>
+      {showAlarm && <AlarmComponent func={closeFunc} />}
     </CommonHeader>
   );
 }
@@ -94,8 +131,6 @@ export function PageHeader({ children, position }) {
         return `/${id}/boardPeople`;
       case '신문고 리스트':
         return `/${id}/boardPeople`;
-      case '신용등급 관리 위원회':
-        return `/${id}/main`;
       default:
         return null;
     }
@@ -127,7 +162,6 @@ export function PageHeader({ children, position }) {
           </>
         }
       />
-      <PcHeader position={position} />
     </>
   );
 }

@@ -53,7 +53,7 @@ const MainDashboardBox = styled.div`
   }
 `;
 
-export function MainDashboard({ func }) {
+export function MainDashboard() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -123,27 +123,6 @@ export function MainDashboard({ func }) {
 
                 <div
                   className="blueBox"
-                  onClick={() => navigate(`/${id}/news`)}
-                >
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/icon-news-color.png`}
-                    alt="뉴스"
-                  />
-                  <p>뉴스</p>
-                </div>
-                <div
-                  className="skyblueBox"
-                  onClick={() => navigate(`/${id}/boardPeople`)}
-                >
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/icon-board-color.png`}
-                    alt="국민 신문고"
-                  />
-                  <p>국민 신문고</p>
-                </div>
-
-                <div
-                  className="blueBox"
                   onClick={() => navigate(`/${id}/manager/seatMap`)}
                 >
                   <img
@@ -176,14 +155,7 @@ export function MainDashboard({ func }) {
         //pc버전임 여기 수정하기
         <>
           <SideBox>
-            <div className="sideBox">
-              <div
-                className="seatBox"
-                onClick={() => navigate(`/${id}/manager/taxLawList`)}
-              >
-                {/* <CheckInvestment /> */}
-              </div>
-            </div>
+            <div className="sideBox"></div>
           </SideBox>
         </>
       )}

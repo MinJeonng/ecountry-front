@@ -34,11 +34,55 @@ export default function Login() {
       });
   };
 
+  const testLongin = async (isStudent) => {
+    const successFunc = (result, url) => {
+      localStorage.setItem('token', result.token);
+      toast.success('환영합니다!');
+      setTimeout(() => {
+        navigate(url);
+      }, 1300);
+    };
+    const falseFunc = () => {
+      toast.error('다시 시도해주세요', {
+        autoClose: 1300,
+      });
+    };
+    if (!isStudent) {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/user/login`,
+        data: { userId: 'test', pw: '1234' },
+      });
+      if (res.data.success) {
+        successFunc(res.data.result, '/country');
+      } else {
+        falseFunc();
+      }
+    } else {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/student/user/1`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: { rollNumber: 7, name: '테스트 국민', pw: '1234' },
+      });
+      console.log(res.data.success);
+      if (res.data.success) {
+        successFunc(res.data.result, '/1/main');
+      } else {
+        falseFunc();
+      }
+    }
+  };
+
   return (
     <>
       <ToastContainer />
       <Template
         isAuthPage={true}
+        isAuthPage2={true}
         childrenTop={
           <>
             <PageHeader>{'관리자 로그인'}</PageHeader>
@@ -68,9 +112,15 @@ export default function Login() {
                   로그인
                 </button>
               </form>
+              <button type="button" onClick={() => testLongin(false)}>
+                테스트 로그인 (선생님)
+              </button>
+              <button type="button" onClick={() => testLongin(true)}>
+                테스트 로그인 (학생)
+              </button>
             </div>
 
-            <div className="pc-background">
+            <div className="pc-background-log">
               <div className="pc-left">
                 <img
                   className="left-img"

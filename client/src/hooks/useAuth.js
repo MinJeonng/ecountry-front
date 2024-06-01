@@ -19,11 +19,10 @@ export default function useAuth(id) {
           },
         });
         // 토큰이 유효하지 않으면 localStorage 삭제
-        res.data.success
-          ? setUserInfo(res.data.result)
-          : localStorage.removeItem('token');
-
-        if (id && !res.data.result.isStudent) {
+        if (!res.data.success) {
+          localStorage.removeItem('token');
+        }
+        if (!res.data.result.isStudent) {
           let result = res.data.result;
           const res2 = await axios({
             method: 'GET',
@@ -41,7 +40,7 @@ export default function useAuth(id) {
             }
           });
           setUserInfo(result);
-        } else if (id && res.data.result.isStudent) {
+        } else if (res.data.result.isStudent) {
           let result = res.data.result;
           const res3 = await axios({
             method: 'GET',

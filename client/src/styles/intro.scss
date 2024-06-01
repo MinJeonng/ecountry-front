@@ -7,6 +7,17 @@ $blue: #61759f;
 @import '../styles/input_common';
 
 @include mobile {
+  .background {
+    width: 100vw;
+    height: 100vh;
+    background-color: $deep-green;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 2s ease;
+  }
+
   .logo-wrap {
     display: flex;
     flex-direction: column;
@@ -27,7 +38,8 @@ $blue: #61759f;
     height: 15%;
   }
 
-  .pc-background {
+  .pc-background,
+  .pc-background-log {
     display: none;
   }
 
@@ -64,6 +76,10 @@ $blue: #61759f;
 }
 
 @include desktop {
+  .background {
+    display: none;
+  }
+
   .pc-background {
     display: flex;
     align-items: center;
@@ -144,10 +160,19 @@ $blue: #61759f;
   /* NationBuilding */
 
   .background2 {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .logo-wrap {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      margin: 30px 0;
+    }
   }
 
   .button-wrap2 {

@@ -32,21 +32,10 @@ import JobList from './pages/JobList';
 import TaxLawList from './pages/TaxLawList';
 import Skills from './pages/Skills';
 import { StudentAssembly } from './pages/StudentAssembly';
-import { PcHeader } from './components/PcHeader';
+import { SettingHeader } from './components/SettingHeader';
 
 function App() {
-  // const location = useLocation();
-  // const isHeaderHidden = [
-  //   '/',
-  //   '/login',
-  //   '/signup',
-  //   '/country',
-  //   '/countryList',
-  // ].includes(location.pathname);
-
   return (
-    // <div className={!isHeaderHidden ? 'App Contain' : ''}>
-    //   {!isHeaderHidden && <PcHeader />}
     <div className="App Contain">
       <BrowserRouter>
         <Routes>
@@ -178,7 +167,6 @@ function App() {
           <Route path="*" element={<NOTFOUND />} />
         </Routes>
       </BrowserRouter>
-
     </div>
   );
 }

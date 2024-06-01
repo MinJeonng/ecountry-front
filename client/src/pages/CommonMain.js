@@ -54,49 +54,13 @@ export function CommonMain() {
         // }
         childrenBottom={
           <>
-            <div
-              className="mainContent"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: '5%',
-              }}
-            >
-              {innerWidth <= 1160 ? (
-                <Container>
-                  <div className="block news">
-                    <CommonMainNewsMoblie />
-                  </div>
-                  <div className="block">
-                    <ScheduleList />
-                  </div>
-                  <div className="block">
-                    <MenuList />
-                  </div>
-                  <div className="block">
-                    <PcInvestment />
-                  </div>
-                </Container>
-              ) : (
-                <PcContainer>
-                  <Left>
-                    <CommonMainNews />
-                  </Left>
-                  <Right>
-                    <div className="block">
-                      <ScheduleList />
-                    </div>
-                    <div className="block">
-                      <MenuList />
-                    </div>
 
-                    <div className="block">
-                      <PcInvestment />
-                    </div>
-                  </Right>
-                </PcContainer>
-              )}
+            <div className="mainContent">
+              <CommonMainNews />
+              <ScheduleList />
+              <MenuList />
+              <PcInvestment />
+
             </div>
           </>
         }

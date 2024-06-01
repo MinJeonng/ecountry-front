@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Swipe from 'react-easy-swipe';
-
-//나중에 삭제
-import dogImage from '../images/dog.png';
-import moonImage from '../images/moon.jpeg';
-import busImage from '../images/mainBus.jpeg';
 import { getThumbnail } from '../hooks/Functions';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,6 +14,8 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  border-radius: 9px;
+
 `;
 
 export const ImageCounterWrapper = styled.div`
@@ -26,7 +23,7 @@ export const ImageCounterWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 15px;
-  margin-top: 15px;
+  margin-top: 10px;
 `;
 export const ImageCounter = styled.div`
   width: 6px;
@@ -54,35 +51,35 @@ const ImageContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
+  h4 {
+    line-height: 1.2;
+  }
+  .defaultImg {
+    width: 100%;
+    height: 170px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #e0e0e0;
+  }
+
 `;
 
 const Image = styled.img`
   width: 100%;
-  height: auto;
-  object-fit: scale-down;
-`;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
 
-const Info = styled.div`
-  padding-top: 3%;
-  width: 100%;
-  h3 {
-    margin: 0;
-    font-size: 4vw;
-  }
-  span {
-    font-size: 2.5vw;
-    padding-right: 3%;
-  }
 `;
 
 const NoneNews = styled.div`
   border: 4px solid #9e9e9e29;
   border-radius: 10px;
   height: auto;
-  margin-bottom: 40px;
   padding: 20px;
   box-sizing: border-box;
+  width: 100%;
   text-align: center;
   p {
     font-size: 14px;
@@ -159,20 +156,17 @@ export default function CommonMainNews() {
                   key={post.id}
                   onClick={() => navigate(`/${id}/news/read/${post.id}`)}
                 >
-                  <Image src={getThumbnail(post.content)} alt={post.title} />
-                  <Info>
-                    <h3>{post.title}</h3>
-                    <p
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        margin: 0,
-                      }}
-                    >
-                      <span>{GetTimeText(post.createdAt)}</span>
-                      <span>작성자 : {post.writerName}</span>
-                    </p>
-                  </Info>
+
+                  <Image
+                    className={
+                      getThumbnail(post.content) === '/images/defaultImg.jpg'
+                        ? 'defaultImg'
+                        : null
+                    }
+                    src={getThumbnail(post.content)}
+                    alt={post.title}
+                  />
+                  <h4>{post.title}</h4>
                 </ImageContainer>
               ))}
             </StyledImgDiv>
@@ -189,7 +183,7 @@ export default function CommonMainNews() {
         </Container>
       ) : (
         <NoneNews>
-          <p style={{ color: '#666666' }}>뉴스 정보가 없습니다.</p>
+          <p style={{ color: '#333' }}>뉴스 정보가 없습니다.</p>
         </NoneNews>
       )}
     </>

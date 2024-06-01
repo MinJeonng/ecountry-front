@@ -19,8 +19,8 @@
     width: 100px;
     height: 50px;
     text-align: center;
-    border: 1px solid white;
-    background-color: #9e9e9e29;
+    border: 1px solid #a7d2e4;
+    background-color: #d0cece29;
     padding: auto;
     vertical-align: top;
     vertical-align: bottom;
@@ -29,6 +29,13 @@
   }
   .period {
     font-weight: 600;
+  }
+  .mainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: '5%';
+    gap: 20px;
   }
 }
 

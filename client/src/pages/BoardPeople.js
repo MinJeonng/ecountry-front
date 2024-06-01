@@ -17,7 +17,6 @@ export function SetBoardPeople({ position }) {
           <>
             {position === '신문고' && <BoardPeopleList />}
             {position === '신문고 글쓰기' && <BoardPeopleWrite />}
-
             {position === '신문고 리스트' && <BoardPeopleRead />}
           </>
         }

@@ -197,7 +197,7 @@ export function SetNewsRead({ auth }) {
             }}
           ></div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+        <div style={{ display: 'flex' }}>
           <button
             onClick={() => navigate(`/${id}/news`)}
             style={{

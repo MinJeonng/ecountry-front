@@ -7,6 +7,7 @@ import '../styles/setting.scss';
 import '../styles/_button_common.scss';
 import { PageHeader } from '../components/Headers';
 import { useParams } from 'react-router-dom';
+import { ChatBotBtn } from '../components/Btns';
 
 export default function PeopleList({ position }) {
   const { id } = useParams();
@@ -16,7 +17,12 @@ export default function PeopleList({ position }) {
         childrenTop={
           <PageHeader path={`/${id}/manager`}>{'국민 리스트'}</PageHeader>
         }
-        childrenBottom={<SetPeopleList />}
+        childrenBottom={
+          <>
+            <SetPeopleList />
+            <ChatBotBtn />
+          </>
+        }
       />
     </>
   );

@@ -133,7 +133,9 @@ export function SetPostWrite({ ...rest }) {
         },
       });
       if (res.data.success) {
-        toast.success('글이 수정되었습니다.');
+        toast.success('글이 수정되었습니다.', {
+          autoClose: 1200,
+        });
       }
     } else {
       const res = await axios({
@@ -151,7 +153,9 @@ export function SetPostWrite({ ...rest }) {
         },
       });
       if (res.data.success) {
-        toast.success('글이 등록되었습니다.');
+        toast.success('글이 등록되었습니다.', {
+          autoClose: 1200,
+        });
       }
     }
   };
@@ -176,27 +180,25 @@ export function SetPostWrite({ ...rest }) {
     }
   };
 
+  // useEffect(() => {
+  //   if (localStorage.getItem('token')) {
+  //     // 사용자 인증 후 권한이 없으면 작성 불가
+  //     // setUser();
+  //   } else {
+  //     // alert('로그인 후 이용해주세요.');
+  //     // navigate('/signup');
+  //     // return;
+  //   }
+  //   if (localStorage.getItem('postId')) {
+  //     setPostId(Number(localStorage.getItem('postId')));
+  //   }
 
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      // 사용자 인증 후 권한이 없으면 작성 불가
-      // setUser();
-    } else {
-      // alert('로그인 후 이용해주세요.');
-      // navigate('/signup');
-      // return;
-    }
-    if (localStorage.getItem('postId')) {
-      setPostId(Number(localStorage.getItem('postId')));
-    }
-
-    if (quillRef.current) {
-      const editor = quillRef.current.getEditor();
-      const toolbar = editor.getModule('toolbar');
-      toolbar.addHandler('image', () => imageHandler(quillRef, storage));
-    }
-  }, []);
-
+  //   if (quillRef.current) {
+  //     const editor = quillRef.current.getEditor();
+  //     const toolbar = editor.getModule('toolbar');
+  //     toolbar.addHandler('image', () => imageHandler(quillRef, storage));
+  //   }
+  // }, []);
 
   const addFunc = () => {
     if (!content.trim() || content.trim() === '<p><br></p>') {
@@ -204,10 +206,10 @@ export function SetPostWrite({ ...rest }) {
       return;
     }
     try {
-      //db에 들어가는 로직
       sendNews();
-      document.location.reload();
-
+      setTimeout(() => {
+        document.location.href = `/${id}/news`;
+      }, 1400);
     } catch (error) {
       console.log(error);
     }
@@ -235,7 +237,6 @@ export function SetPostWrite({ ...rest }) {
   return (
     <>
       <ToastContainer />
-
       <form className="box-style">
         <div
           className="reset"

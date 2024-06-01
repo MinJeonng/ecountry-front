@@ -8,6 +8,7 @@ import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
 import { PageHeader } from '../components/Headers';
+import { ChatBotBtn } from '../components/Btns';
 
 // 자리배치도
 export function SetSeat() {
@@ -194,6 +195,7 @@ export function SetSeat() {
               <SeatMap columns={columns} />
             </div>
           )}
+          <ChatBotBtn />
         </>
       }
     />

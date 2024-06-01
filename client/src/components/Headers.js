@@ -103,31 +103,31 @@ export function PageHeader({ children, position }) {
 
   const path = getPathByPosition(position);
 
-
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   useEffect(() => {
     window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
   }, []);
   return (
-    <Template
-      childrenTop={
-        <>
-          {innerWidth <= 1160 && (
-
-            <PageHeaderBox>
-              <HeaderStyle>
-                <button onClick={() => (path ? navigate(path) : navigate(-1))}>
-                  <ArrowLeft stroke={'#fff'} />
-                </button>
-                <Text>{children}</Text>
-              </HeaderStyle>
-            </PageHeaderBox>
-
-          )}
-        </>
-      }
-    />
-<PcHeader position={position} />
-
+    <>
+      <Template
+        childrenTop={
+          <>
+            {innerWidth <= 1160 && (
+              <PageHeaderBox>
+                <HeaderStyle>
+                  <button
+                    onClick={() => (path ? navigate(path) : navigate(-1))}
+                  >
+                    <ArrowLeft stroke={'#fff'} />
+                  </button>
+                  <Text>{children}</Text>
+                </HeaderStyle>
+              </PageHeaderBox>
+            )}
+          </>
+        }
+      />
+      <PcHeader position={position} />
+    </>
   );
 }

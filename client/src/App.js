@@ -138,10 +138,7 @@ function AppWrapper() {
           element={<SetBoardPeople position="신문고 리스트" />}
         />
         <Route path="/:id/news" element={<SetNews position="뉴스" />} />
-        <Route
-          path="/:id/news/write"
-          element={<SetNews position="뉴스 글쓰기" />}
-        />
+        <Route path="/:id/news/write" element={<SetNews position="뉴스" />} />
         <Route
           path="/:id/news/read/:newsId"
           element={<SetNews position="읽기" />}

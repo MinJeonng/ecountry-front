@@ -22,10 +22,12 @@ export default function Login() {
       .then((res) => {
         if (res.data.success) {
           localStorage.setItem('token', res.data.result.token);
-          toast.success('환영합니다!');
+          toast.success('환영합니다!', {
+            autoClose: 1300,
+          });
           setTimeout(() => {
             navigate('/country');
-          }, 1300);
+          }, 2000);
         } else {
           toast('아이디 또는 비밀번호가 틀렸습니다.', {
             autoClose: 1300,

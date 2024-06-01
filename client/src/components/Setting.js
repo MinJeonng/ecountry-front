@@ -617,7 +617,7 @@ export function Setting3() {
                       style={{ color: '#666666' }}
                       onClick={() => correctAttendee(index)}
                     >
-                      {attendee.attendanceNumber}번. {attendee.name}
+                      {attendee.attendanceNumber}번 {attendee.name}
                       <Arrow stroke="#ddd" className="accArrBtn" />
                     </div>
                     {isAccordionOpen && selectedIndex === index && (
@@ -639,13 +639,16 @@ export function Setting3() {
                             onChange={(e) =>
                               setAttendanceNumber(e.target.value)
                             }
+                            onKeyDown={(e) => handleKeyDownNext(e, nameRef)}
                           />
                           <div className="set-title">이름</div>
                           <input
+                            ref={nameRef}
                             className="set-input"
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            onKeyDown={(e) => handleKeyDown(e, updateAttendee)}
                           />
                           <ConfirmBtn
                             onClick={updateAttendee}
@@ -666,13 +669,16 @@ export function Setting3() {
                   type="number"
                   value={attendanceNumber}
                   onChange={(e) => setAttendanceNumber(e.target.value)}
+                  onKeyDown={(e) => handleKeyDownNext(e, nameRef)}
                 />
                 <div className="set-title">이름</div>
                 <input
+                  ref={nameRef}
                   className="set-input"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, handleCheck)}
                 />
 
                 <ConfirmBtn
@@ -1188,22 +1194,26 @@ export function Setting5() {
                       min="0"
                       value={inputValue}
                       onChange={handleInputChange}
+                      onKeyDown={(e) => handleKeyDownNext(e, headcountRef)}
                     />
                     <span className="unit">{moneyUnit}</span>
                   </div>
                   <div className="set-title">인원수</div>
                   <div className="container">
                     <input
+                      ref={headcountRef}
                       className="set-input count"
                       type="number"
                       min="0"
                       value={countValue}
                       onChange={handleCountValue}
+                      onKeyDown={(e) => handleKeyDownNext(e, standardRef)}
                     ></input>
                     <span className="unit">명</span>
                   </div>
                   <div className="set-title">직업의 기준</div>
                   <textarea
+                    ref={standardRef}
                     rows={3.5}
                     className="set-input input-textarea"
                     type="text"
@@ -1504,6 +1514,7 @@ export function Setting6() {
                     fontSize: '14px',
                     color: '#666666',
                   }}
+                  onKeyDown={(e) => handleKeyDown(e, updateLaw)}
                 />
                 <button className="edit-btn" type="button" onClick={updateLaw}>
                   수정
@@ -1514,7 +1525,7 @@ export function Setting6() {
         ))}
       </div>
       {isAddOpen && (
-        <form className="box-style">
+        <div className="box-style">
           <div className="reset"></div>
           <div className="set-title">{laws.length + 1}항</div>
           <input
@@ -1524,13 +1535,14 @@ export function Setting6() {
             value={detail}
             onChange={(e) => setDetail(e.target.value)}
             style={{ imeMode: 'active', fontSize: '14px', color: '#666666' }}
+            onKeyDown={(e) => handleKeyDown(e, handleAddLaw)}
           />
           <ConfirmBtn
             onClick={handleAddLaw}
             btnName="제정하기"
             backgroundColor="#61759f"
           ></ConfirmBtn>
-        </form>
+        </div>
       )}
 
       <div className="navi-btn">
@@ -1722,9 +1734,11 @@ export function Setting7() {
                   value={lawNameValue}
                   onChange={handleLawNameValue}
                   style={{ imeMode: 'active' }}
+                  onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
                 />
                 <div className="set-title">금액</div>
                 <input
+                  ref={priceRef}
                   className="set-input"
                   type="number"
                   value={rateValue}
@@ -1784,6 +1798,7 @@ export function Setting7() {
           />
           <div className="set-title">금액</div>
           <input
+            ref={priceRef}
             className="set-input"
             type="number"
             value={rateValue}
@@ -1844,6 +1859,8 @@ export function Setting8() {
 
   const setRentalFeeState = useSelector((state) => state.setting8);
 
+  const taxPrice = useRef(null);
+
   useEffect(() => {
     setTaxName(setRentalFeeState?.taxName);
     setFee(setRentalFeeState?.fee);
@@ -1888,11 +1905,13 @@ export function Setting8() {
             }}
             placeholder="자리임대료"
             style={{ imeMode: 'active' }}
+            onKeyDown={(e) => handleKeyDownNext(e, taxPrice)}
           />
         </div>
         <div className="set-country">
           <div className="set-country-title set-title">금액</div>
           <input
+            ref={taxPrice}
             className="set-country-detail"
             type="number"
             value={fee}
@@ -1900,6 +1919,7 @@ export function Setting8() {
             onChange={(e) => {
               setFee(e.target.value);
             }}
+            onKeyDown={(e) => handleKeyDown(e, nextSetting)}
           />
         </div>
         <div className="set-country">
@@ -2055,10 +2075,12 @@ export function Setting9() {
                         setReasonFine(e.target.value);
                       }}
                       style={{ imeMode: 'active' }}
+                      onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
                     />
 
                     <div className="set-title">금액</div>
                     <input
+                      ref={priceRef}
                       className="set-input"
                       type="number"
                       min="0"
@@ -2066,6 +2088,7 @@ export function Setting9() {
                       onChange={(e) => {
                         setFineValue(e.target.value);
                       }}
+                      onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
                     />
 
                     <div className="set-title">단위</div>
@@ -2105,9 +2128,11 @@ export function Setting9() {
                   setReasonFine(e.target.value);
                 }}
                 style={{ imeMode: 'active' }}
+                onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
               />
               <div className="set-title">금액</div>
               <input
+                ref={priceRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -2116,7 +2141,7 @@ export function Setting9() {
                   setFineValue(e.target.value);
                 }}
                 style={{ imeMode: 'active' }}
-                onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
+                onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
               />
 
               <div className="set-title">단위</div>

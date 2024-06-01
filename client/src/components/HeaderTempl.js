@@ -1,11 +1,11 @@
 import React from 'react';
-import { PcHeader } from './PcHeader';
-import '../styles/pcHeader.scss';
+import { SettingHeader } from './SettingHeader';
+import '../styles/settingHeader.scss';
 
 export function HeaderTempl({ position, childrenTop, childrenBottom }) {
   return (
     <>
-      <PcHeader position={position} />
+      <SettingHeader position={position} />
       {childrenTop}
       {childrenBottom}
     </>

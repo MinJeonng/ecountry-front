@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PcHeader } from '../components/PcHeader'; // PcHeader 컴포넌트 import
+import { SettingHeader } from '../components/SettingHeader';
 
 import {
   Setting1,
@@ -25,9 +25,21 @@ export default function Setting({ position }) {
   useEffect(() => {
     window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
   }, []);
+
+  const settingPositions = [
+    '학교 정보 입력',
+    '국가 정보 입력',
+    '학생 정보 입력',
+    '자리배치도',
+    '직업리스트',
+    '기본 법 제정',
+    '세법 제정',
+    '자리임대료 설정',
+    '과태료 설정',
+  ];
   return (
     <>
-      <PcHeader position={position}></PcHeader>
+      <SettingHeader position={position} positions={settingPositions} />
       <Template
         // {innerWidth ? }
         isAuthPage2={true}

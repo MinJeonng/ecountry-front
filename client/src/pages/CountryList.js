@@ -7,6 +7,7 @@ import '../styles/countryList.scss';
 import axios from 'axios';
 import { PageHeader } from '../components/Headers';
 import { toast, ToastContainer } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function CountryList() {
@@ -56,12 +57,12 @@ export default function CountryList() {
     });
     if (res.data.success) {
       getList();
-      toast('삭제되었습니다.', {
+      toast.success('삭제되었습니다.', {
         autoClose: 1300,
       });
     } else {
       console.log(res.data.message);
-      toast('삭제에 실패했습니다.', {
+      toast.error('삭제에 실패했습니다.', {
         autoClose: 1200,
       });
     }
@@ -127,7 +128,7 @@ export default function CountryList() {
               <div className="pc-right">
                 <div>국가 리스트</div>
                 {countryList.length === 0 ? (
-                  <div className="box-style">
+                  <div className="box-style2">
                     <div>아직 생성된 국가가 없습니다.</div>
                     <button className="frist-next-button" onClick={goSetting}>
                       생성하기
@@ -158,6 +159,14 @@ export default function CountryList() {
                     </div>
                   ))
                 )}
+                <Link to="/country">
+                  <button className="navi-pre-btn">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+                      alt="뒤로가기"
+                    />
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

@@ -13,7 +13,6 @@ import {
 } from 'chart.js';
 import axios from 'axios';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Container } from './CommonMainNews';
 
 import '../styles/setting.scss';
 import styled from 'styled-components';
@@ -33,9 +32,12 @@ ChartJS.register(
 const Info = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 5%;
+  margin-bottom: 5%;
   h4 {
     margin: 0;
+  }
+  span {
+    font-size: 0.8rem;
   }
 `;
 
@@ -178,6 +180,7 @@ export default function PcInvestment() {
 
   return (
     <>
+
       {isInfo ? (
         <Container>
           <div>
@@ -217,6 +220,7 @@ export default function PcInvestment() {
           <p style={{ color: '#333' }}>투자 정보가 없습니다.</p>
         </MenuContainer>
       )}
+
     </>
   );
 }

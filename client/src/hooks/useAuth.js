@@ -57,6 +57,8 @@ export default function useAuth(id) {
       } catch {
         localStorage.removeItem('token');
       }
+    } else {
+      setUserInfo({ id: null, isStudent: null, authority: null });
     }
   };
 

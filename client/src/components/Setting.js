@@ -401,7 +401,7 @@ export function Setting3() {
     );
   };
   const nextSetting = () => {
-    if (password !== null || selectedFile) {
+    if (selectedFile) {
       navigate('/setting/seatingMap');
       const newInfo = [];
       attendees.forEach((data) => {
@@ -417,9 +417,24 @@ export function Setting3() {
         })
       );
     } else {
-      toast.error('학생들의 초기 비밀번호를 설정하세요', { autoClose: 1300 });
+      if (password.length === 4) {
+        if (attendees.length > 0) {
+          navigate('/setting/seatingMap');
+          dispatch(
+            studentInfo({
+              password: password,
+              studentList: attendees,
+            })
+          );
+        } else {
+          toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
+        }
+      } else {
+        toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
+      }
     }
   };
+
   const handleCheck = () => {
     if (password !== null && password.length === 4) {
       setCheckPassword(true);
@@ -1400,13 +1415,8 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    if (laws.length > 0) {
-      navigate('/setting/jobList');
-      dispatch(basicLaw({ basicLaw: laws }));
-    } else {
-      toast.error('기본법을 제정하세요', { autoClose: 1300 });
-      return;
-    }
+    navigate('/setting/jobList');
+    dispatch(basicLaw({ basicLaw: laws }));
   };
   const nextSetting = () => {
     if (laws.length > 0) {
@@ -2023,6 +2033,7 @@ export function Setting9() {
     setSelectedIndex(null);
     setReasonFine('');
     setFineValue('');
+    setIsAddOpen(true);
   };
 
   return (
@@ -2061,11 +2072,6 @@ export function Setting9() {
                     />
                     <div className="reset">
                       <div className="set-title">과태료 사유</div>
-                      <img
-                        className="resetBtn"
-                        src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                        onClick={resetBtn}
-                      />
                     </div>
                     <input
                       className="set-input"

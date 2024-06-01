@@ -8,6 +8,7 @@ import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
 import { PageHeader } from '../components/Headers';
+import { ManagerHeader } from '../components/ManagerHeader';
 
 // 자리배치도
 export function SetSeat() {
@@ -158,44 +159,49 @@ export function SetSeat() {
   }, []);
 
   return (
-    <Template
-      childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
-      childrenBottom={
-        <>
-          <div className="seat-title">
-            <button
-              className={`seat-user ${showStudentMap ? 'active' : ''}`}
-              onClick={() => setShowStudentMap(true)}
-            >
-              사용자
-            </button>
-            <button
-              className={`seat-owner ${!showStudentMap ? 'active' : ''}`}
-              onClick={() => setShowStudentMap(false)}
-            >
-              소유자
-            </button>
-          </div>
+    <>
+      <ManagerHeader />
+      <Template
+        isAuthPage2={true}
+        childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
+        childrenBottom={
+          <div>
+            <div className="pc-seat-top">
+              <div className="seat-title">
+                <button
+                  className={`seat-user ${showStudentMap ? 'active' : ''}`}
+                  onClick={() => setShowStudentMap(true)}
+                >
+                  사용자
+                </button>
+                <button
+                  className={`seat-owner ${!showStudentMap ? 'active' : ''}`}
+                  onClick={() => setShowStudentMap(false)}
+                >
+                  소유자
+                </button>
+              </div>
 
-          <StudentSeatMap
-            columns={columns}
-            seatlist={seatList}
-            changelist={changeList}
-            studentlist={studentList}
-            isuser={showStudentMap}
-          />
-
-          <button className="blue-btn" onClick={toggleEdit}>
-            자리 배치 수정
-          </button>
-          {isSeatMapVisible && (
-            <div className="seat-map-container">
-              {/* 배치표 추가 */}
-              <SeatMap columns={columns} />
+              <StudentSeatMap
+                columns={columns}
+                seatlist={seatList}
+                changelist={changeList}
+                studentlist={studentList}
+                isuser={showStudentMap}
+              />
             </div>
-          )}
-        </>
-      }
-    />
+            <button className="blue-btn" onClick={toggleEdit}>
+              자리 배치 수정
+            </button>
+            {isSeatMapVisible && (
+              <div className="seat-map-container">
+                {/* 배치표 추가 */}
+                <SeatMap columns={columns} />
+              </div>
+            )}
+          </div>
+        }
+      />
+    </>
   );
 }

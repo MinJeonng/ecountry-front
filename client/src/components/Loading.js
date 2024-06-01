@@ -80,7 +80,7 @@ export default function Loading({ countryid }) {
           data2.push({
             rollNumber: student.attendanceNumber,
             name: student.name,
-            pw: setInfo.setting3.password,
+            pw: student.password,
           });
         });
         const res2 = await axios({

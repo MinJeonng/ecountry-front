@@ -1,13 +1,38 @@
 import axios from 'axios';
-import styled from 'styled-components';
+import * as XLSX from 'xlsx';
 
-const ImageDefault = styled.img`
-  width: 100%;
-  height: 170px;
-  object-fit: contain;
-  border-radius: 10px;
-  background: #ddfcae;
-`;
+export const handleFileChange = (event) => {
+  const files = event.target.files;
+  if (files) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (!e.target?.result) return;
+      const list = [];
+
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array', bookVBA: true });
+
+      const firstWorksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(firstWorksheet, {
+        header: 1,
+      });
+
+      console.log(jsonData);
+      jsonData.forEach((data, index) => {
+        if (index > 0) {
+          list.push({
+            password: data[2],
+            attendanceNumber: data[0],
+            name: data[1],
+          });
+        }
+      });
+      console.log(list);
+      return list;
+    };
+    reader.readAsArrayBuffer(files[0]);
+  }
+};
 
 export function GetTimeText(time) {
   const newTime = new Date(time);
@@ -33,12 +58,6 @@ export function getThumbnail(html) {
     return imgUrl;
   }
   return '/images/defaultImg.jpg';
-  // return (
-  //   <ImageDefault
-  //     className="defaultImg"
-  //     src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
-  //   />
-  // );
 }
 
 export const htmlToText = (html) => {

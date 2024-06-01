@@ -9,8 +9,7 @@ import {
 import { compareTime, chatBotList, chatBotCard } from '../hooks/Functions';
 
 export default function ChatBot() {
-  const { id } = useParams();
-  const [userInfo, setUserInfo] = useAuth(id);
+  const [userInfo, setUserInfo] = useAuth(0);
   const [bottomSize, setBottomSize] = useState(60);
   const [chatList, setChatList] = useState([]);
   const [keyword, setKeyword] = useState('');

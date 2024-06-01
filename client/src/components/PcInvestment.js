@@ -13,7 +13,6 @@ import {
 } from 'chart.js';
 import axios from 'axios';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Container } from './CommonMainNews';
 
 import '../styles/setting.scss';
 import styled from 'styled-components';
@@ -32,9 +31,12 @@ ChartJS.register(
 const Info = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 5%;
+  margin-bottom: 5%;
   h4 {
     margin: 0;
+  }
+  span {
+    font-size: 0.8rem;
   }
 `;
 
@@ -173,39 +175,37 @@ export default function PcInvestment() {
 
   return (
     <>
-      <Container>
+      <div>
         <div>
-          <div>
-            {info !== null && (
-              <>
-                <Info>
-                  <h4>
-                    {info.name} (단위 : {info.unit})
-                  </h4>
-                  <span>최신 정보 : {info.info} </span>
-                </Info>
-                <div
-                  style={{
-                    // width: '600px',
-                    // height: '400px',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    overflow: 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Line
-                    options={options}
-                    data={data}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              </>
-            )}
-          </div>
+          {info !== null && (
+            <>
+              <Info>
+                <h4>
+                  {info.name} (단위 : {info.unit})
+                </h4>
+                <span>최신 정보 : {info.info} </span>
+              </Info>
+              <div
+                style={{
+                  // width: '600px',
+                  // height: '400px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  overflow: 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <Line
+                  options={options}
+                  data={data}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            </>
+          )}
         </div>
-      </Container>
+      </div>
     </>
   );
 }

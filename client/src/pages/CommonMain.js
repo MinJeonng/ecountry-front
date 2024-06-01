@@ -1,4 +1,5 @@
 //공통 메인페이지
+import { useState, useEffect } from 'react';
 import { CommonMainHeader } from '../components/Headers';
 import { GetName } from '../components/MainProfile';
 import CommonMainNews from '../components/CommonMainNews';
@@ -6,26 +7,51 @@ import Template from '../components/Template';
 import MenuList from '../components/MenuList';
 import ScheduleList from '../components/ScheduleList';
 import PcInvestment from '../components/PcInvestment';
+import CommonMainNewsMoblie from '../components/CommonMainNewsMoblie';
 
 import '../styles/common_main.scss';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  padding: 10%;
+  .block {
+    width: 100%;
+    margin-bottom: 5%;
+  }
 `;
+const PcContainer = styled.div`
+  .block {
+    /* width: 50%; */
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5%;
+    /* padding: 5%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+    border-radius: 9px;
+  }
+  .news {
+    width: 100%;
+  }
+`;
+const Left = styled.div``;
+const Right = styled.div``;
 
 export function CommonMain() {
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
+  }, []);
   return (
     <>
       <Template
-        childrenTop={
-          <>
-            <CommonMainHeader />
-            <div className="mainProfile">
-              <GetName />
-            </div>
-          </>
-        }
+        // childrenTop={
+        //   <>
+        //     <CommonMainHeader />
+        //     <div className="mainProfile">
+        //       <GetName />
+        //     </div>
+        //   </>
+        // }
         childrenBottom={
           <>
             <div
@@ -37,30 +63,40 @@ export function CommonMain() {
                 marginTop: '5%',
               }}
             >
-              <div
-                className="news"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <CommonMainNews />
-              </div>
-              <div
-                className="schedule"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <ScheduleList />
-              </div>
-              <div
-                className="menu"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <MenuList />
-              </div>
-              <div
-                className="invest"
-                style={{ width: '100%', marginBottom: '5% ' }}
-              >
-                <PcInvestment />
-              </div>
+              {innerWidth <= 1160 ? (
+                <Container>
+                  <div className="block news">
+                    <CommonMainNewsMoblie />
+                  </div>
+                  <div className="block">
+                    <ScheduleList />
+                  </div>
+                  <div className="block">
+                    <MenuList />
+                  </div>
+                  <div className="block">
+                    <PcInvestment />
+                  </div>
+                </Container>
+              ) : (
+                <PcContainer>
+                  <Left>
+                    <CommonMainNews />
+                  </Left>
+                  <Right>
+                    <div className="block">
+                      <ScheduleList />
+                    </div>
+                    <div className="block">
+                      <MenuList />
+                    </div>
+
+                    <div className="block">
+                      <PcInvestment />
+                    </div>
+                  </Right>
+                </PcContainer>
+              )}
             </div>
           </>
         }

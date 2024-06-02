@@ -7,7 +7,7 @@ import '../styles/_button_common.scss';
 import { PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
 import { ChatBotBtn } from '../components/Btns';
-
+import { useParams } from 'react-router-dom';
 
 export default function SetBank({ position }) {
   const { id } = useParams();

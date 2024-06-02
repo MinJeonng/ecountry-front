@@ -96,3 +96,30 @@ $blue: #61759f;
     }
   }
 }
+
+@include desktop {
+  .pc-seat-top {
+    margin: 80px 100px 0;
+
+    .seat-title {
+      display: flex;
+      justify-content: space-around;
+      margin: 0px 0px 25px;
+      padding: 50px 0 0 0;
+
+      .seat-user,
+      .seat-owner {
+        border: 1px solid transparent;
+        background-color: transparent;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .seat-user.active,
+      .seat-owner.active {
+        color: $under-line;
+        border-bottom: 1px solid $under-line;
+      }
+    }
+  }
+}

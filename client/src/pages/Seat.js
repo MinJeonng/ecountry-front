@@ -8,7 +8,9 @@ import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
 import { PageHeader } from '../components/Headers';
+import { ManagerHeader } from '../components/ManagerHeader';
 import { ChatBotBtn } from '../components/Btns';
+
 
 // 자리배치도
 export function SetSeat() {
@@ -159,24 +161,28 @@ export function SetSeat() {
   }, []);
 
   return (
-    <Template
-      childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
-      childrenBottom={
-        <>
-          <div className="seat-title">
-            <button
-              className={`seat-user ${showStudentMap ? 'active' : ''}`}
-              onClick={() => setShowStudentMap(true)}
-            >
-              사용자
-            </button>
-            <button
-              className={`seat-owner ${!showStudentMap ? 'active' : ''}`}
-              onClick={() => setShowStudentMap(false)}
-            >
-              소유자
-            </button>
-          </div>
+    <>
+      <ManagerHeader />
+      <Template
+        isAuthPage2={true}
+        childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
+        childrenBottom={
+          <div>
+            <div className="pc-seat-top">
+              <div className="seat-title">
+                <button
+                  className={`seat-user ${showStudentMap ? 'active' : ''}`}
+                  onClick={() => setShowStudentMap(true)}
+                >
+                  사용자
+                </button>
+                <button
+                  className={`seat-owner ${!showStudentMap ? 'active' : ''}`}
+                  onClick={() => setShowStudentMap(false)}
+                >
+                  소유자
+                </button>
+              </div>
 
           <StudentSeatMap
             columns={columns}

@@ -43,12 +43,9 @@ function App() {
           <Route path="/" element={<Intro />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
           <Route path="/country" element={<NationBuilding />} />
           <Route path="/countryList" element={<CountryList />} />
-
           <Route path="/setDone" element={<Loading />} />
-
           <Route
             path="/setting/schoolInfo"
             element={<Setting position="학교 정보 입력" />}
@@ -85,9 +82,7 @@ function App() {
             path="/setting/fine"
             element={<Setting position="과태료 설정" />}
           />
-
           <Route path="/test" element={<Test />} />
-
           {/* 밑에는 관리자 대시보드에서 연결되는 링크 */}
           <Route path="/:id/manager" element={<ManagerDashBoard />} />
           <Route
@@ -98,22 +93,17 @@ function App() {
             path="/:id/manager/investment"
             element={<SetInvestment position="투자 상품 관리" />}
           />
-          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
-
-          <Route path="/:id/manager/peopleList" element={<PeopleList />} />
-          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
           <Route path="/:id/manager/peopleList" element={<PeopleList />} />
           <Route
             path="/:id/manager/assembly"
             element={<SetAssembly position="국회" />}
           />
-          <Route path="/:id/manager/jobList" element={<JobList />} />
-
+          <Route path="/:id/manager/seatMap" element={<SetSeat />} />{' '}
           <Route
             path="/:id/manager/taxLawList"
             element={<TaxLawList position="세법 관리" />}
           />
-
+          <Route path="/:id/manager/jobList" element={<JobList />} />
           {/* 공통 페이지 */}
           <Route path="/:id/main" element={<CommonMain />} />
           <Route
@@ -141,7 +131,6 @@ function App() {
           <Route path="/:id/login" element={<StudentLogin />} />
           <Route path="/:id/mypage" element={<StudentMyPage />} />
           <Route path="/:id/changePw" element={<ChangePassword />} />
-
           <Route
             path="/:id/investment"
             element={<SetInvestment position="투자 상품 확인" />}
@@ -151,19 +140,14 @@ function App() {
             path="/:id/bank/history/:accountId"
             element={<StudentBank position="거래 내역" />}
           />
-
           <Route
             path="/:id/assembly"
             element={<StudentAssembly position="국회" />}
           />
-
           <Route path="/chatbot" element={<ChatBot />} />
-
           <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
-
           {/* 각 직업별 페이지 */}
           <Route path="/:id/skills" element={<Skills />} />
-
           <Route path="*" element={<NOTFOUND />} />
         </Routes>
       </BrowserRouter>

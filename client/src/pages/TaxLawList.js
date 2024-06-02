@@ -4,6 +4,7 @@ import Template from '../components/Template';
 import { PageHeader } from '../components/Headers';
 import { TaxLaw } from '../components/TaxLaw';
 import { ManagerHeader } from '../components/ManagerHeader';
+import { ChatBotBtn } from '../components/Btns';
 
 export default function TaxLawList({ position }) {
   return (
@@ -12,7 +13,12 @@ export default function TaxLawList({ position }) {
       <Template
         isAuthPage2={true}
         childrenTop={<PageHeader>{position}</PageHeader>}
-        childrenBottom={<>{position === '세법 관리' && <TaxLaw />}</>}
+        childrenBottom={
+          <>
+            {position === '세법 관리' && <TaxLaw />}
+            <ChatBotBtn />
+          </>
+        }
       />
     </>
   );

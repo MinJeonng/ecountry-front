@@ -70,7 +70,7 @@ export default function SeatMap() {
   };
 
   return (
-    <div className="setting-wrap">
+    <div className="seat-wrap">
       <div className="title-list">
         <div>자리 배치 수정</div>
         <ul className="title-list">
@@ -81,7 +81,7 @@ export default function SeatMap() {
         </ul>
       </div>
 
-      <form className="box-style">
+      <form className="box-style seat-box-style">
         {columns.map((column) => (
           <div className="seat-count" key={column.id}>
             <div className="seat-colum">{column.label}</div>
@@ -112,7 +112,11 @@ export default function SeatMap() {
             </button>
           )}
         </div>
-        <button className="blue-btn" type="button" onClick={saveSeatData}>
+        <button
+          className="blue-btn seat-blue-btn"
+          type="button"
+          onClick={saveSeatData}
+        >
           수정
         </button>
       </form>

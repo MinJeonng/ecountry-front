@@ -10,6 +10,7 @@ import '../styles/manager_dash.scss';
 
 import { MainDashboard } from '../components/ManagerDashboard';
 import styled from 'styled-components';
+import { ChatBotBtn } from '../components/Btns';
 
 const Btns = styled.button`
   border-radius: 11px;
@@ -100,6 +101,7 @@ export default function ManagerDashBoard() {
         childrenBottom={
           <>
             <MainDashboard />
+            <ChatBotBtn />
           </>
         }
       />

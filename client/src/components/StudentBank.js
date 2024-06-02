@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,27 +11,27 @@ import 'react-toastify/dist/ReactToastify.min.css';
 const MyAccount = styled.div`
   border: none;
   border-radius: 10px;
-  background: #edeef1;
+  background: #ecf1ef;
   height: auto;
-  padding: 30px;
+  padding: 7%;
 `;
 const SavingComponent = styled.div`
   border: none;
   border-radius: 10px;
-  background: #edeef1;
+  background: #ecf1ef;
   height: auto;
-  padding: 30px;
+  padding: 7%;
   margin-top: 20px;
 `;
 const AccountName = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 3px;
 
   span {
     font-weight: 500;
-    color: #666666;
+    color: #333;
     font-size: 16px;
     gap: 5px;
   }
@@ -42,9 +43,15 @@ const AccountName = styled.div`
     display: flex;
   }
 `;
+const DueDate = styled.div`
+  display: flex;
+  color: #5a5959;
+  font-size: 12px;
+  text-align: center;
+`;
 const Balance = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 14px;
   span {
@@ -119,6 +126,13 @@ function CheckingAccount({ account, unit }) {
         });
         return;
       }
+      if (transferAmount < 0) {
+        //마이너스 이체 방지
+        toast.error('이체 금액을 제대로 기입해주세요.', {
+          autoClose: 1300,
+        });
+        return;
+      }
       const isConfirmed = window.confirm(
         `${depositUserName}님에게 ${transferAmount}${unit.unit} 이체하시겠습니까?`
       );
@@ -182,11 +196,7 @@ function CheckingAccount({ account, unit }) {
       <ToastContainer />
       <MyAccount>
         <AccountName>
-          {/* account.accountName */}
-          <div className="accountName">
-            {/* 입출금<span>통장</span> */}
-            {account.accountName}
-          </div>
+          <div className="accountName">{account.accountName}</div>
         </AccountName>
         <Balance>
           <span>
@@ -270,6 +280,15 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
     setIsAccordion(!isAccordion);
     setIsClicked(!isClicked);
   };
+
+  //만기일 계산
+  const calculateDueDate = (createdAt, dueDays) => {
+    const date = new Date(createdAt);
+    date.setDate(date.getDate() + dueDays);
+    return format(date, 'yyyy년 MM월 dd일');
+  };
+  const formattedDate = calculateDueDate(account.createdAt, account.dueDate);
+
   //적금하기
   const handleSaving = async () => {
     // console.log(account.id);
@@ -310,21 +329,18 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
         console.log(error);
       }
     } else {
-      toast('이체 금액을 입력해주세요.');
+      toast.error('이체 금액을 입력해주세요.');
     }
   };
   return (
     <>
       <SavingComponent>
         <AccountName>
-          <div className="accountName">
-            {account.accountName}
-
-            {/* <span>통장</span> */}
-          </div>
-          {/* 적금 며칠남았는지 그것도 */}
-          {/* <span>D-{accout}</span> */}
+          <div className="accountName savingAccount">{account.accountName}</div>
         </AccountName>
+        <DueDate>
+          <div className="duedate">만기일 {formattedDate}</div>
+        </DueDate>
         <Balance>
           <span>
             {account.balance} {unit.unit}
@@ -352,7 +368,6 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
               value={savingAmount}
               onChange={(e) => setSavingAmount(e.target.value)}
             />
-            {/* 나중에 끝에 단위도 붙여주기 */}
             <span className="unit">{unit.unit}</span>
           </div>
           <ConfirmBtn

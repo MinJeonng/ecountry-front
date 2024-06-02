@@ -5,6 +5,7 @@ import axios from 'axios';
 import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import { PageHeader } from '../components/Headers';
+import { ChatBotBtn } from '../components/Btns';
 
 export default function SetSeatMap() {
   const { id } = useParams();
@@ -106,6 +107,7 @@ export default function SetSeatMap() {
       childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
       childrenBottom={
         <>
+          <ChatBotBtn />
           <div className="seat-title">
             <button className="seat-user">사용자</button>
             <button className="seat-owner">소유주</button>

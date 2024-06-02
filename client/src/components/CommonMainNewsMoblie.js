@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Swipe from 'react-easy-swipe';
+
+//나중에 삭제
+import dogImage from '../images/dog.png';
+import moonImage from '../images/moon.jpeg';
+import busImage from '../images/mainBus.jpeg';
 import { getThumbnail } from '../hooks/Functions';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,6 +19,8 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  padding: 5%;
+  border: 4px solid #9e9e9e29;
   border-radius: 9px;
 `;
 
@@ -22,7 +29,7 @@ export const ImageCounterWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 15px;
-  margin-top: 10px;
+  margin-top: 15px;
 `;
 export const ImageCounter = styled.div`
   width: 6px;
@@ -59,24 +66,40 @@ const ImageContainer = styled.div`
     height: 170px;
     object-fit: contain;
     border-radius: 10px;
-    background: #e0e0e0;
+    background: #ddfcae;
   }
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 170px;
+  width: 30%;
+  height: auto;
   object-fit: cover;
   border-radius: 10px;
 `;
 
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5%;
+  h3 {
+    margin: 0;
+    margin-top: 2%;
+  }
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+  /* margin-bottom: 10px; */
+`;
+
 const NoneNews = styled.div`
-  border: 4px solid #9e9e9e29;
+  border: 1px solid #a7d2e4;
   border-radius: 10px;
   height: auto;
+  margin-bottom: 40px;
   padding: 20px;
   box-sizing: border-box;
-  width: 100%;
   text-align: center;
   p {
     font-size: 14px;
@@ -85,18 +108,13 @@ const NoneNews = styled.div`
 
 export default function CommonMainNews() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [newsList, setNewsList] = useState([]);
   const [positionx, setPositionx] = useState(0);
   const [imgCount, setImgCount] = useState(1);
   const [endSwipe, setEndSwipe] = useState(false);
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const [displayNewsList, setDisplayNewsList] = useState([]); //뉴스 보여지는거 5개로 제한
 
-  useEffect(() => {
-    window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
-  }, []);
-
+  console.log(newsList);
+  const navigate = useNavigate();
   const onSwipeMove = (position) => {
     setEndSwipe(false);
     if (newsList.length === 1) {
@@ -123,7 +141,6 @@ export default function CommonMainNews() {
     setPositionx(0);
     setEndSwipe(true);
   };
-
   const getNews = async () => {
     const res = await axios({
       method: 'GET',
@@ -140,13 +157,9 @@ export default function CommonMainNews() {
     getNews();
   }, []);
 
-  useEffect(() => {
-    setDisplayNewsList(newsList.slice(0, 5));
-  }, [newsList]);
-
   return (
     <>
-      {displayNewsList?.length > 0 ? (
+      {newsList?.length > 0 ? (
         <Container>
           <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
             <StyledImgDiv
@@ -154,7 +167,7 @@ export default function CommonMainNews() {
               positionx={positionx}
               endSwipe={endSwipe}
             >
-              {displayNewsList?.map((post, index) => (
+              {newsList?.map((post) => (
                 <ImageContainer
                   key={post.id}
                   onClick={() => navigate(`/${id}/news/read/${post.id}`)}
@@ -173,9 +186,9 @@ export default function CommonMainNews() {
               ))}
             </StyledImgDiv>
           </Swipe>
-          {displayNewsList?.length > 1 && (
+          {newsList?.length > 1 && (
             <ImageCounterWrapper>
-              {displayNewsList.map((post, index) => {
+              {newsList.map((post, index) => {
                 return (
                   <ImageCounter key={index} index={index} imgCount={imgCount} />
                 );
@@ -185,7 +198,7 @@ export default function CommonMainNews() {
         </Container>
       ) : (
         <NoneNews>
-          <p style={{ color: '#333' }}>뉴스 정보가 없습니다.</p>
+          <p style={{ color: '#666666' }}>뉴스 정보가 없습니다.</p>
         </NoneNews>
       )}
     </>

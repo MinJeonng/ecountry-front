@@ -3,6 +3,14 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GetTimeText, getThumbnail, htmlToText } from '../hooks/Functions';
 import { NewPostBtn } from './Btns';
+import styled from 'styled-components';
+
+const ImaContainer = styled.div`
+  @media (max-width: 1160px) {
+    width: 20%;
+    height: 20%;
+  }
+`;
 
 export function SetNewsDetail() {
   const navigate = useNavigate();
@@ -64,20 +72,12 @@ export function SetNewsDetail() {
     <>
       {/* <div className="content"> */}
       <div>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div
-            className="newsHead"
-            style={{
-              color: '#666666',
-              marginBottom: '10px',
-            }}
-          >
-            뉴스
-          </div>
-        </div>
-        <div
+        {/* <div style={{ display: 'flex', flexDirection: 'row' }}>
+          
+        </div> */}
+        {/* <div
           style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
-        ></div>
+        ></div> */}
 
         {news.length !== 0 ? (
           <div className="newsInfo"></div>
@@ -101,9 +101,9 @@ export function SetNewsDetail() {
             }}
             onClick={() => navigate(`/${id}/news/read/${news.id}`)}
           >
-            <div style={{ width: '30%', height: '30%' }}>
+            <ImaContainer>
               <img src={getThumbnail(news.content)} alt="News Image" />
-            </div>
+            </ImaContainer>
 
             <p style={{ marginLeft: '5%' }}>
               <div>{news.title}</div>
@@ -116,6 +116,7 @@ export function SetNewsDetail() {
             </p>
           </div>
         ))}
+
         <div style={{ marginTop: '10%', textAlign: 'center' }}>
           {/* 이전 페이지 그룹 버튼 */}
           <button
@@ -123,7 +124,9 @@ export function SetNewsDetail() {
               setCurrentPage((prevPage) => Math.max(prevPage - 5, 1))
             }
             disabled={currentPage <= 1}
-            style={{ marginRight: '10px' }}
+            style={{
+              marginRight: '10px',
+            }}
           >
             &lt;
           </button>
@@ -139,10 +142,12 @@ export function SetNewsDetail() {
                   style={{
                     margin: '0 5px',
                     padding: '5px 10px',
-                    border: '1px solid #ccc',
+                    border: '1px solid rgb(192 238 207)',
                     borderRadius: '5px',
                     backgroundColor:
-                      currentPage === pageNum + 1 ? '#eee' : 'transparent',
+                      currentPage === pageNum + 1
+                        ? 'rgb(192 238 207)'
+                        : 'transparent',
                     cursor: 'pointer',
                   }}
                 >

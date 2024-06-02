@@ -55,8 +55,12 @@ export function BoardPeopleWrite() {
         });
         console.log(res.data);
         if (res.data.success) {
-          toast('글이 등록되었습니다.');
-          document.location.href = `/${id}/boardPeople`;
+          toast.success('글이 등록되었습니다.', {
+            autoClose: 1200,
+          });
+          setTimeout(() => {
+            document.location.href = `/${id}/boardPeople`;
+          }, 1400);
         }
       }
     } catch (error) {

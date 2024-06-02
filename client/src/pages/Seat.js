@@ -9,6 +9,8 @@ import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
 import { PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
+import { ChatBotBtn } from '../components/Btns';
+
 
 // 자리배치도
 export function SetSeat() {
@@ -182,26 +184,26 @@ export function SetSeat() {
                 </button>
               </div>
 
-              <StudentSeatMap
-                columns={columns}
-                seatlist={seatList}
-                changelist={changeList}
-                studentlist={studentList}
-                isuser={showStudentMap}
-              />
+          <StudentSeatMap
+            columns={columns}
+            seatlist={seatList}
+            changelist={changeList}
+            studentlist={studentList}
+            isuser={showStudentMap}
+          />
+
+          <button className="blue-btn" onClick={toggleEdit}>
+            자리 배치 수정
+          </button>
+          {isSeatMapVisible && (
+            <div className="seat-map-container">
+              {/* 배치표 추가 */}
+              <SeatMap columns={columns} />
             </div>
-            <button className="blue-btn" onClick={toggleEdit}>
-              자리 배치 수정
-            </button>
-            {isSeatMapVisible && (
-              <div className="seat-map-container">
-                {/* 배치표 추가 */}
-                <SeatMap columns={columns} />
-              </div>
-            )}
-          </div>
-        }
-      />
-    </>
+          )}
+          <ChatBotBtn />
+        </>
+      }
+    />
   );
 }

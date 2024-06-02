@@ -1,38 +1,4 @@
 import axios from 'axios';
-import * as XLSX from 'xlsx';
-
-export const handleFileChange = (event) => {
-  const files = event.target.files;
-  if (files) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (!e.target?.result) return;
-      const list = [];
-
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array', bookVBA: true });
-
-      const firstWorksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(firstWorksheet, {
-        header: 1,
-      });
-
-      console.log(jsonData);
-      jsonData.forEach((data, index) => {
-        if (index > 0) {
-          list.push({
-            password: data[2],
-            attendanceNumber: data[0],
-            name: data[1],
-          });
-        }
-      });
-      console.log(list);
-      return list;
-    };
-    reader.readAsArrayBuffer(files[0]);
-  }
-};
 
 export function GetTimeText(time) {
   const newTime = new Date(time);
@@ -112,6 +78,7 @@ export const getOnlyDate = (date) => {
 };
 
 export const handleKeyDownNext = (e, refName) => {
+  if (e.nativeEvent.isComposing) return;
   if (e.key === 'Enter') {
     e.preventDefault();
     refName.current.focus();
@@ -119,7 +86,9 @@ export const handleKeyDownNext = (e, refName) => {
 };
 
 export const handleKeyDown = (e, func) => {
+  if (e.nativeEvent.isComposing) return;
   if (e.key === 'Enter') {
+    e.preventDefault();
     func();
   }
 };
@@ -198,7 +167,10 @@ export const chatBotList = async (msg, keyName) => {
 export const chatBotCard = async (msg, keyName) => {
   const newMsg = msg.replace(':', '');
   const list = await chatApi(newMsg);
-  if (list) {
+  if (list?.list[keyName]?.length === 0) {
+    console.log('빈배열');
+    return resultMsg('msg', '검색 결과가 없습니다.');
+  } else if (list) {
     return resultMsg(
       keyName === 'newsList' ? 'cardNews' : 'cardBook',
       list.list[keyName]
@@ -214,7 +186,7 @@ export const chatBotCard = async (msg, keyName) => {
 export function newsTitleFilter(title) {
   if (title.includes(']')) {
     const [_, text] = title.split(']');
-    return text;
+    return text.replace(' ', '');
   }
   return title;
 }

@@ -214,14 +214,15 @@ export function TaxLaw() {
   return (
     <div>
       <ToastContainer />
-
-      <ul className="title-list">
-        <li>설정한 세법을 확인할 수 있습니다&#46;</li>
-        <li>
-          세금 &#183; 자리임대료 &#183; 과태료 등 추가 &#183; 수정 &#183; 삭제
-          할 수 있습니다&#46;
-        </li>
-      </ul>
+      <div className="setting-wrap">
+        <ul className="title-list">
+          <li>설정한 세법을 확인할 수 있습니다&#46;</li>
+          <li>
+            세금 &#183; 자리임대료 &#183; 과태료 등 추가 &#183; 수정 &#183; 삭제
+            할 수 있습니다&#46;
+          </li>
+        </ul>
+      </div>
 
       <div>
         {Object.keys(categoryMapping).map((categoryKey) => {

@@ -123,6 +123,12 @@ export function AssemblyLawList() {
   return (
     <>
       <ToastContainer />
+      <div className="setting-wrap">
+        <ul className="title-list">
+          <li>국가에 필수인 기본법을 제정하세요&#46;</li>
+        </ul>
+      </div>
+
       <div
         style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
       ></div>
@@ -182,17 +188,7 @@ export function AssemblyLawList() {
         </>
       ) : (
         <>
-          <div
-            style={{
-              color: '#666666',
-              marginBottom: '20px',
-              fontSize: '13px',
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span>제정된 세법이 존재하지 않습니다.</span>
-          </div>
+          <div className="non-law">제정된 기본법이 존재하지 않습니다.</div>
         </>
       )}
       {isAddOpen && (

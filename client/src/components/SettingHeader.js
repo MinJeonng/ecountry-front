@@ -1,18 +1,18 @@
 import React from 'react';
-import '../styles/pcHeader.scss';
+import '../styles/settingHeader.scss';
 
-export function PcHeader({ position }) {
-  const positions = [
-    '학교 정보 입력',
-    '국가 정보 입력',
-    '학생 정보 입력',
-    '자리배치도',
-    '직업리스트',
-    '기본 법 제정',
-    '세법 제정',
-    '자리임대료 설정',
-    '과태료 설정',
-  ];
+export function SettingHeader({ position, positions }) {
+  // const positions = [
+  //   '학교 정보 입력',
+  //   '국가 정보 입력',
+  //   '학생 정보 입력',
+  //   '자리배치도',
+  //   '직업리스트',
+  //   '기본 법 제정',
+  //   '세법 제정',
+  //   '자리임대료 설정',
+  //   '과태료 설정',
+  // ];
 
   return (
     <header>

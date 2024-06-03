@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
-import { ConfirmBtn } from './Btns';
+import { ChatBotBtn, ConfirmBtn } from './Btns';
 import { ToastContainer, toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 
@@ -93,6 +93,7 @@ export function BoardPeopleRead() {
   return (
     <>
       <ToastContainer />
+      <ChatBotBtn />
       <p align="right">
         <button
           type="button"

@@ -104,6 +104,7 @@ const ContentStyle = styled.div`
         word-break: keep-all;
         padding: 0 0 13px 6px;
         color: #999;
+        margin: 0;
       }
     }
     &.bot {
@@ -216,8 +217,10 @@ const ContentStyle = styled.div`
             background: #75a47f;
             line-height: 2;
             color: #fff;
-            border-radius: 8px;
+            border-radius: 20px;
             text-align: center;
+            font-size: 12px;
+            line-height: 2.5;
           }
         }
       }
@@ -472,6 +475,7 @@ export function ChatBotFooter({ sizefunc, addfunc, ispossible }) {
   const getFooterHeight = () => {
     sizefunc(footerRef.current.offsetHeight);
   };
+
   return (
     <>
       <ToastContainer />

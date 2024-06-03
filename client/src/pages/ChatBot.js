@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import {
@@ -9,12 +9,12 @@ import {
 import { compareTime, chatBotList, chatBotCard } from '../hooks/Functions';
 
 export default function ChatBot() {
-  const { id } = useParams();
-  const [userInfo, setUserInfo] = useAuth(id);
+  const [userInfo, setUserInfo] = useAuth(0);
   const [bottomSize, setBottomSize] = useState(60);
   const [chatList, setChatList] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [isPossible, setIsPossible] = useState(false);
+  const navigate = useNavigate();
   const teacherMenu = [
     '다른 나라 세법 구경하기',
     '다른 나라 직업 리스트 구경하기',
@@ -126,6 +126,8 @@ export default function ChatBot() {
       setKeyword(msg);
     } else if (ageList.includes(msg)) {
       await answerChat(chatBotCard, `${keyword} ${msg}`, 'bookList');
+    } else if (msg === '선생님 로그인하기') {
+      navigate('/login');
     } else {
       await answerChat(chatBotCard, msg, 'bookList');
     }
@@ -165,7 +167,7 @@ export default function ChatBot() {
   }, [chatList]);
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo.id) {
       if (chatList.length === 0) {
         addChat([
           newChatMsg('bot', '무엇을 도와드릴까요?'),
@@ -177,6 +179,18 @@ export default function ChatBot() {
 
   useEffect(() => {
     setUserInfo();
+    if (!localStorage.getItem('token')) {
+      if (chatList.length === 0) {
+        addChat([
+          newChatMsg('bot', '로그인 후 이용 가능한 서비스입니다.'),
+          newChatMsg(
+            'bot',
+            '선생님인 경우 아래 버튼을 클릭해서 로그인 해주시고, 학생인 경우 해당 국가의 페이지에서 로그인 해주세요.'
+          ),
+          newBtnMsg(['선생님 로그인하기']),
+        ]);
+      }
+    }
   }, []);
 
   return (

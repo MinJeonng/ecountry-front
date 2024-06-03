@@ -3,15 +3,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-const MenuContainer = styled.div`
-  /* border: 1px solid #a7d2e4; */
+export const MenuContainer = styled.div`
+  border: 1px solid #a7d2e4;
   border-radius: 10px;
   width: 100%;
   height: auto;
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
-  border: 4px solid #9e9e9e29;
   border-radius: 9px;
   h3 {
     margin-bottom: 4px;
@@ -93,7 +92,7 @@ export default function MenuList() {
     </>
   ) : (
     <MenuContainer>
-      <p style={{ color: '#666666' }}>급식 정보가 없습니다.</p>
+      <p style={{ color: '#333' }}>급식 정보가 없습니다.</p>
     </MenuContainer>
   );
 }

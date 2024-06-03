@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
-import { NewPostBtn } from './Btns';
+import { ChatBotBtn, NewPostBtn } from './Btns';
 
 export function BoardPeopleList() {
   const navigate = useNavigate();
@@ -55,6 +55,7 @@ export function BoardPeopleList() {
 
   return (
     <>
+      <ChatBotBtn />
       <p align="right" style={{ marginBottom: '6%', fontSize: '0.8rem' }}>
         {innerWidth >= 1160 ? (
           <Link

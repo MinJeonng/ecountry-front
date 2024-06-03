@@ -2,6 +2,7 @@ import React from 'react';
 import Template from '../components/Template';
 import { PageHeader } from '../components/Headers';
 import { StudentAssemblyLawList } from '../components/StudentAssemblyLawList';
+import { ChatBotBtn } from '../components/Btns';
 
 export function StudentAssembly({ position }) {
   return (
@@ -11,7 +12,8 @@ export function StudentAssembly({ position }) {
         childrenBottom={
           <>
             {/* 법 리스트 */}
-            {position == '국회' && <StudentAssemblyLawList />}
+            {position === '국회' && <StudentAssemblyLawList />}
+            <ChatBotBtn />
           </>
         }
       />

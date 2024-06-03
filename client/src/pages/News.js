@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { NewsPostBtn } from '../components/Btns';
+import { ChatBotBtn, NewsPostBtn } from '../components/Btns';
 import axios from 'axios';
 
 export function SetNews({ position }) {
@@ -82,9 +82,9 @@ export function SetNews({ position }) {
               <SetPostWrite />
               // <Practice />
             )}
-            {/* Read 읽기 header는 구현된거 보고 다시 확인 */}
             {position === '읽기' && <SetNewsRead auth={isAuth} />}
             {isAuth && !isWrite && <NewsPostBtn func={setIsWrite} />}
+            {!isWrite && <ChatBotBtn func={setIsWrite} />}
           </>
         }
       />

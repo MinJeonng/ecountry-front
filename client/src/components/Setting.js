@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import axios from 'axios';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import * as XLSX from 'xlsx';
 
 //Setting1 - 학교 / 반 / 번호 설정
 export function Setting1() {
@@ -400,25 +401,59 @@ export function Setting3() {
     );
   };
   const nextSetting = () => {
-    if (password !== null || selectedFile) {
+    if (selectedFile) {
+      if (!handleUpload()) {
+        toast.error('업로드 버튼을 눌러주세요', {
+          autoClose: 1300,
+        });
+        return;
+      }
       navigate('/setting/seatingMap');
+      const newInfo = [];
+      attendees.forEach((data) => {
+        newInfo.push({
+          password: data.password,
+          attendanceNumber: data.attendanceNumber,
+          name: data.name,
+        });
+      });
       dispatch(
         studentInfo({
-          password: password,
-          studentList: attendees,
+          studentList: newInfo,
         })
       );
     } else {
-      toast.error('학생들의 초기 비밀번호를 설정하세요', { autoClose: 1300 });
+      if (attendees.some((student) => student.password === false)) {
+        return toast.error('학생정보를 모두 입력해주세요.', {
+          autoClose: 1300,
+        });
+      }
+
+      // if (password.length === 4) {
+      if (attendees.length > 0) {
+        navigate('/setting/seatingMap');
+        dispatch(
+          studentInfo({
+            password: password, //이거 넣고 안넣고 실험
+            studentList: attendees,
+          })
+        );
+      } else {
+        toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
+      }
+      // } else {
+      //   toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
+      // }
     }
   };
+
   const handleCheck = () => {
     if (password !== null && password.length === 4) {
       setCheckPassword(true);
     }
     if (checkPassword) {
       if (attendanceNumber && name) {
-        setAttendees([...attendees, { attendanceNumber, name }]);
+        setAttendees([...attendees, { attendanceNumber, name, password }]);
         setAttendanceNumber('');
         setName('');
       } else {
@@ -431,27 +466,11 @@ export function Setting3() {
     }
   };
   const handleCheckPassword = () => {
-    if (password == null) {
+    if (password.length !== 4) {
       toast.error('비밀번호를 입력해주세요.', { autoClose: 1300 });
     } else {
       setCheckPassword(true);
     }
-  };
-
-  const handleChange = (e) => {
-    const val = parseInt(e.target.value);
-
-    if (isNaN(val)) {
-      setAttendanceNumber('');
-      return;
-    }
-
-    if (val <= 0) {
-      toast.error('1 이상의 숫자를 입력해주세요.');
-      return;
-    }
-
-    setAttendanceNumber(val.toString());
   };
 
   const deleteAttendee = (index) => {
@@ -499,16 +518,53 @@ export function Setting3() {
 
   // 파일이 선택되었을 때
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // 선택된 파일 가져오기
-    setSelectedFile(file); // 상태 업데이트
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (!e.target?.result) return;
+        const list = [];
+
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array', bookVBA: true });
+
+        const firstWorksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstWorksheet, {
+          header: 1,
+        });
+
+        console.log(jsonData);
+        jsonData.forEach((data, index) => {
+          if (index > 0) {
+            list.push({
+              password: data[2],
+              attendanceNumber: data[0],
+              name: data[1],
+            });
+          }
+        });
+        console.log(list);
+        setAttendees(list);
+      };
+      reader.readAsArrayBuffer(files[0]);
+      setSelectedFile(files[0]); // 상태 업데이트
+    }
   };
 
   // 파일 업로드
   const handleUpload = () => {
     if (selectedFile) {
+      console.log(attendees);
+      dispatch(
+        studentInfo({
+          studentList: [...attendees],
+        })
+      );
       toast.success('업로드 완료하였습니다.', { autoClose: 1300 });
+      return true;
     } else {
       toast.error('파일을 선택해주세요.', { autoClose: 1300 });
+      return false;
     }
   };
   //예시 파일 다운로드
@@ -549,6 +605,9 @@ export function Setting3() {
                     각각의 비밀번호는 국민 개인 계정에서 변경가능하며, 관리자
                     페이지에서 재설정 가능합니다.
                   </li>
+                  <li>
+                    직접 입력시, 국민들의 비밀번호는 하나의 값으로 통일됩니다.
+                  </li>
                 </ul>
                 <input
                   className="set-input"
@@ -560,7 +619,9 @@ export function Setting3() {
                     if (val.length <= 4) {
                       setPassword(val);
                     } else {
-                      toast.error('비밀번호는 4자리로 설정해주세요.');
+                      toast.error('비밀번호는 4자리로 설정해주세요.', {
+                        autoClose: 1300,
+                      });
                     }
                   }}
                   onKeyDown={(e) => handleKeyDown(e, handleCheckPassword)}
@@ -590,7 +651,7 @@ export function Setting3() {
                       style={{ color: '#666666' }}
                       onClick={() => correctAttendee(index)}
                     >
-                      {attendee.attendanceNumber}번. {attendee.name}
+                      {attendee.attendanceNumber}번 {attendee.name}
                       <Arrow stroke="#ddd" className="accArrBtn" />
                     </div>
                     {isAccordionOpen && selectedIndex === index && (
@@ -612,13 +673,16 @@ export function Setting3() {
                             onChange={(e) =>
                               setAttendanceNumber(e.target.value)
                             }
+                            onKeyDown={(e) => handleKeyDownNext(e, nameRef)}
                           />
                           <div className="set-title">이름</div>
                           <input
+                            ref={nameRef}
                             className="set-input"
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            onKeyDown={(e) => handleKeyDown(e, updateAttendee)}
                           />
                           <ConfirmBtn
                             onClick={updateAttendee}
@@ -639,13 +703,16 @@ export function Setting3() {
                   type="number"
                   value={attendanceNumber}
                   onChange={(e) => setAttendanceNumber(e.target.value)}
+                  onKeyDown={(e) => handleKeyDownNext(e, nameRef)}
                 />
                 <div className="set-title">이름</div>
                 <input
+                  ref={nameRef}
                   className="set-input"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, handleCheck)}
                 />
 
                 <ConfirmBtn
@@ -1161,22 +1228,26 @@ export function Setting5() {
                       min="0"
                       value={inputValue}
                       onChange={handleInputChange}
+                      onKeyDown={(e) => handleKeyDownNext(e, headcountRef)}
                     />
                     <span className="unit">{moneyUnit}</span>
                   </div>
                   <div className="set-title">인원수</div>
                   <div className="container">
                     <input
+                      ref={headcountRef}
                       className="set-input count"
                       type="number"
                       min="0"
                       value={countValue}
                       onChange={handleCountValue}
+                      onKeyDown={(e) => handleKeyDownNext(e, standardRef)}
                     ></input>
                     <span className="unit">명</span>
                   </div>
                   <div className="set-title">직업의 기준</div>
                   <textarea
+                    ref={standardRef}
                     rows={3.5}
                     className="set-input input-textarea"
                     type="text"
@@ -1363,13 +1434,8 @@ export function Setting6() {
   }, [basicLawState]);
 
   const beforeSetting = () => {
-    if (laws.length > 0) {
-      navigate('/setting/jobList');
-      dispatch(basicLaw({ basicLaw: laws }));
-    } else {
-      toast.error('기본법을 제정하세요', { autoClose: 1300 });
-      return;
-    }
+    navigate('/setting/jobList');
+    dispatch(basicLaw({ basicLaw: laws }));
   };
   const nextSetting = () => {
     if (laws.length > 0) {
@@ -1428,11 +1494,9 @@ export function Setting6() {
     <div className="setting-wrap">
       <ToastContainer />
 
-      <div className="title-list">
-        <ul className="title-list">
-          <li>국가에 필수인 기본법을 제정하세요&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>국가에 필수인 기본법을 제정하세요&#46;</li>
+      </ul>
 
       <div className="newsInfo">
         {laws.map((law, index) => (
@@ -1477,6 +1541,7 @@ export function Setting6() {
                     fontSize: '14px',
                     color: '#666666',
                   }}
+                  onKeyDown={(e) => handleKeyDown(e, updateLaw)}
                 />
                 <button className="edit-btn" type="button" onClick={updateLaw}>
                   수정
@@ -1487,7 +1552,7 @@ export function Setting6() {
         ))}
       </div>
       {isAddOpen && (
-        <form className="box-style">
+        <div className="box-style">
           <div className="reset"></div>
           <div className="set-title">{laws.length + 1}항</div>
           <input
@@ -1497,13 +1562,14 @@ export function Setting6() {
             value={detail}
             onChange={(e) => setDetail(e.target.value)}
             style={{ imeMode: 'active', fontSize: '14px', color: '#666666' }}
+            onKeyDown={(e) => handleKeyDown(e, handleAddLaw)}
           />
           <ConfirmBtn
             onClick={handleAddLaw}
             btnName="제정하기"
             backgroundColor="#61759f"
           ></ConfirmBtn>
-        </form>
+        </div>
       )}
 
       <div className="navi-btn">
@@ -1695,9 +1761,11 @@ export function Setting7() {
                   value={lawNameValue}
                   onChange={handleLawNameValue}
                   style={{ imeMode: 'active' }}
+                  onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
                 />
                 <div className="set-title">금액</div>
                 <input
+                  ref={priceRef}
                   className="set-input"
                   type="number"
                   value={rateValue}
@@ -1757,6 +1825,7 @@ export function Setting7() {
           />
           <div className="set-title">금액</div>
           <input
+            ref={priceRef}
             className="set-input"
             type="number"
             value={rateValue}
@@ -1817,6 +1886,8 @@ export function Setting8() {
 
   const setRentalFeeState = useSelector((state) => state.setting8);
 
+  const taxPrice = useRef(null);
+
   useEffect(() => {
     setTaxName(setRentalFeeState?.taxName);
     setFee(setRentalFeeState?.fee);
@@ -1861,11 +1932,13 @@ export function Setting8() {
             }}
             placeholder="자리임대료"
             style={{ imeMode: 'active' }}
+            onKeyDown={(e) => handleKeyDownNext(e, taxPrice)}
           />
         </div>
         <div className="set-country">
           <div className="set-country-title set-title">금액</div>
           <input
+            ref={taxPrice}
             className="set-country-detail"
             type="number"
             value={fee}
@@ -1873,6 +1946,7 @@ export function Setting8() {
             onChange={(e) => {
               setFee(e.target.value);
             }}
+            onKeyDown={(e) => handleKeyDown(e, nextSetting)}
           />
         </div>
         <div className="set-country">
@@ -1976,6 +2050,7 @@ export function Setting9() {
     setSelectedIndex(null);
     setReasonFine('');
     setFineValue('');
+    setIsAddOpen(true);
   };
 
   return (
@@ -2014,11 +2089,6 @@ export function Setting9() {
                     />
                     <div className="reset">
                       <div className="set-title">과태료 사유</div>
-                      <img
-                        className="resetBtn"
-                        src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                        onClick={resetBtn}
-                      />
                     </div>
                     <input
                       className="set-input"
@@ -2028,10 +2098,12 @@ export function Setting9() {
                         setReasonFine(e.target.value);
                       }}
                       style={{ imeMode: 'active' }}
+                      onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
                     />
 
                     <div className="set-title">금액</div>
                     <input
+                      ref={priceRef}
                       className="set-input"
                       type="number"
                       min="0"
@@ -2039,6 +2111,7 @@ export function Setting9() {
                       onChange={(e) => {
                         setFineValue(e.target.value);
                       }}
+                      onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
                     />
 
                     <div className="set-title">단위</div>
@@ -2078,9 +2151,11 @@ export function Setting9() {
                   setReasonFine(e.target.value);
                 }}
                 style={{ imeMode: 'active' }}
+                onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
               />
               <div className="set-title">금액</div>
               <input
+                ref={priceRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -2089,7 +2164,7 @@ export function Setting9() {
                   setFineValue(e.target.value);
                 }}
                 style={{ imeMode: 'active' }}
-                onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
+                onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
               />
 
               <div className="set-title">단위</div>

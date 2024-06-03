@@ -4,6 +4,7 @@ $deep-green: #75a47f;
 $blue: #61759f;
 
 @import '../styles/variables';
+@import '../styles/button_common';
 
 @include mobile {
   .seat-title {
@@ -94,5 +95,74 @@ $blue: #61759f;
         font-size: 14px;
       }
     }
+  }
+}
+
+@include desktop {
+  .pc-seat-top {
+    margin: 80px 100px 0;
+
+    .seat-title {
+      display: flex;
+      justify-content: space-around;
+      margin: 0px 0px 25px;
+      padding: 50px 0 0 0;
+
+      .seat-user,
+      .seat-owner {
+        border: 1px solid transparent;
+        background-color: transparent;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .seat-user.active,
+      .seat-owner.active {
+        color: $under-line;
+        border-bottom: 1px solid $under-line;
+      }
+    }
+  }
+
+  .seat-map-container {
+    .seat-wrap {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin: 60px 0 0 0;
+      border-top: 1px solid #b3b3b3;
+      padding: 20px 0;
+
+      .title-list {
+        margin: 10px 0;
+        width: -webkit-fill-available;
+
+        li {
+          margin-left: 20px;
+          list-style: disc;
+          font-size: 16px;
+          color: #777777;
+        }
+      }
+
+      .seat-box-style {
+        width: -webkit-fill-available;
+        background-color: #f5f6f6;
+        margin: 20px 0;
+        border-radius: 18px;
+        box-sizing: border-box;
+        z-index: 10;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 60px;
+        justify-content: center;
+      }
+    }
+  }
+
+  .seat-blue-btn {
+    @include blue-btn-style;
+    width: -webkit-fill-available;
   }
 }

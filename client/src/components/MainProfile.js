@@ -6,7 +6,10 @@ import useAuth from '../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setStudentInfoList } from '../store/studentInfoReducer';
 import { useDispatch } from 'react-redux';
-import { chatBotList } from '../hooks/Functions';
+import { storage } from '../config/Firebase';
+import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
+import { chatBotList, profileImageUpload } from '../hooks/Functions';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -71,57 +74,19 @@ const LogoutBtn = styled.button`
   }
 `;
 
-const JobSkillBtn = styled.div`
-  padding-right: 30px;
-  a {
-    //밑에 언더라인 없애기
-  }
-`;
-
+//관리자 info
 export function MainProfile() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(id);
-  const [Image, setImage] = useState(
+  const fileInputRef = useRef(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
   );
-  const [file, setFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [name, setName] = useState('');
 
-  const fileInput = useRef(null);
-  const onChange = (e) => {
-    if (e.target.files[0]) {
-      setFile(e.target.files[0]);
-    } else {
-      //업로드 취소할 시
-      setImage(
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-      );
-      return;
-    }
-    //화면에 프로필 사진 표시
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImage(reader.result);
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
-  };
-
-  useEffect(() => {
-    setUserInfo();
-    console.log('serUserInfo 부분');
-  }, []);
-
-  useEffect(() => {
-    console.log('userInfo', userInfo);
-    if (userInfo?.authority) {
-      getUserName();
-      console.log('getUserName 호출');
-    }
-  }, [userInfo]);
-
-  const getUserName = async () => {
+  //정보 불러오기
+  const getInfo = async () => {
     try {
       const res = await axios({
         method: 'GET',
@@ -134,8 +99,8 @@ export function MainProfile() {
       });
 
       if (res.data.success) {
-        console.log('관리자 이름');
         setName(res.data.result.name);
+        setUploadedImageUrl(res.data.result.img);
       } else {
         console.error(res.data.message);
       }
@@ -144,14 +109,57 @@ export function MainProfile() {
     }
   };
 
+  const updateProfile = async (imageUrl) => {
+    try {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/user`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+          // Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: {
+          id: userInfo.id,
+          img: imageUrl,
+        },
+      });
+      if (res.data.success) {
+        console.log(res.data.success);
+        toast.success('프로필 변경이 완료되었습니다.', { autoClose: 1300 });
+        getInfo();
+      } else {
+        toast.error('다시 시도해주세요.', { autoClose: 1300 });
+      }
+    } catch (error) {
+      toast.error('다시 시도해주세요.', { autoClose: 1300 });
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const fileInputRef = ref(storage, `profileImages/${userInfo.id}`);
+    profileImageUpload(e, userInfo.id, fileInputRef, updateProfile);
+  };
+
+  useEffect(() => {
+    setUserInfo();
+  }, []);
+
+  useEffect(() => {
+    if (userInfo?.authority) {
+      getInfo();
+    }
+  }, [userInfo]);
+
   return (
     <>
+      <ToastContainer />
       <Avatar
-        src={Image}
+        src={uploadedImageUrl}
         style={{ marginRight: '10px', cursor: 'pointer' }}
         size={64}
         onClick={() => {
-          fileInput.current.click();
+          fileInputRef.current.click();
         }}
       />
       <input
@@ -159,9 +167,11 @@ export function MainProfile() {
         style={{ display: 'none' }}
         accept="image/jpg,image/png,image/jpeg"
         name="profile_img"
-        onChange={onChange}
-        ref={fileInput}
+        onChange={handleImageUpload}
+        ref={fileInputRef}
       />
+      {/* <button onClick={updateImg}>완료</button> */}
+
       <Name>{name}</Name>
     </>
   );

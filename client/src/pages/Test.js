@@ -1,18 +1,49 @@
-import React, { useEffect } from 'react';
-import useAuth from '../hooks/useAuth';
+import React, { useEffect, useState } from 'react';
+import * as XLSX from 'xlsx';
+import { handleFileChange } from '../hooks/Functions';
 
 export default function Test() {
-  // const [userInfo, setUserInfo] = useAuth();
+  const [list, setList] = useState([]);
+
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (!e.target?.result) return;
+        const list = [];
+
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array', bookVBA: true });
+
+        const firstWorksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstWorksheet, {
+          header: 1,
+        });
+
+        console.log(jsonData);
+        jsonData.forEach((data, index) => {
+          if (index > 0) {
+            list.push({
+              password: data[2],
+              attendanceNumber: data[0],
+              name: data[1],
+            });
+          }
+        });
+        console.log(list);
+        setList(list);
+      };
+      reader.readAsArrayBuffer(files[0]);
+    }
+  };
+
   useEffect(() => {
-    // setUserInfo();
-  }, []);
+    console.log(list);
+  }, [list]);
   return (
     <>
-      {/* <div>사용자 인증 테스트</div>
-      <div>
-        result: {userInfo.isStudent ? '학생' : '선생'}{' '}
-        {userInfo.id === 0 ? '사용자 인증 실패' : `id ${userInfo.id}`}
-      </div> */}
+      <input type="file" onChange={handleFileChange} />
     </>
   );
 }

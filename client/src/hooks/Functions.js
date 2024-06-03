@@ -1,13 +1,5 @@
 import axios from 'axios';
-import styled from 'styled-components';
-
-const ImageDefault = styled.img`
-  width: 100%;
-  height: 170px;
-  object-fit: contain;
-  border-radius: 10px;
-  background: #ddfcae;
-`;
+import { getDownloadURL, uploadBytes } from 'firebase/storage';
 
 export function GetTimeText(time) {
   const newTime = new Date(time);
@@ -33,12 +25,6 @@ export function getThumbnail(html) {
     return imgUrl;
   }
   return '/images/defaultImg.jpg';
-  // return (
-  //   <ImageDefault
-  //     className="defaultImg"
-  //     src={`${process.env.PUBLIC_URL}/images/defaultImg.jpg`}
-  //   />
-  // );
 }
 
 export const htmlToText = (html) => {
@@ -93,6 +79,7 @@ export const getOnlyDate = (date) => {
 };
 
 export const handleKeyDownNext = (e, refName) => {
+  if (e.nativeEvent.isComposing) return;
   if (e.key === 'Enter') {
     e.preventDefault();
     refName.current.focus();
@@ -100,7 +87,9 @@ export const handleKeyDownNext = (e, refName) => {
 };
 
 export const handleKeyDown = (e, func) => {
+  if (e.nativeEvent.isComposing) return;
   if (e.key === 'Enter') {
+    e.preventDefault();
     func();
   }
 };
@@ -179,7 +168,10 @@ export const chatBotList = async (msg, keyName) => {
 export const chatBotCard = async (msg, keyName) => {
   const newMsg = msg.replace(':', '');
   const list = await chatApi(newMsg);
-  if (list) {
+  if (list?.list[keyName]?.length === 0) {
+    console.log('빈배열');
+    return resultMsg('msg', '검색 결과가 없습니다.');
+  } else if (list) {
     return resultMsg(
       keyName === 'newsList' ? 'cardNews' : 'cardBook',
       list.list[keyName]
@@ -195,7 +187,62 @@ export const chatBotCard = async (msg, keyName) => {
 export function newsTitleFilter(title) {
   if (title.includes(']')) {
     const [_, text] = title.split(']');
-    return text;
+    return text.replace(' ', '');
   }
   return title;
 }
+
+const dataURLtoBlob = (dataurl) => {
+  let arr = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+};
+
+const uploadImageFunc = async (file, ref) => {
+  // file 매개변수 추가
+  if (!file) return;
+  try {
+    await uploadBytes(ref, file);
+    const url = await getDownloadURL(ref); // 업로드된 파일의 URL 가져옴
+    console.log('반환된 이미지경로 : ' + url);
+    return url; // URL을 반환
+  } catch (error) {
+    console.error('이미지 업로드 실패:', error);
+    return null;
+  }
+};
+
+//프로필 사진 변경
+const updateImg = async (id, file, uploadedUrl, ref, func) => {
+  let imageUrl = uploadedUrl;
+  if (file && !uploadedUrl.startsWith('https://')) {
+    let blob = dataURLtoBlob(uploadedUrl);
+    const uploadUrl = await uploadImageFunc(blob, ref);
+    if (uploadUrl) {
+      imageUrl = uploadUrl;
+    }
+  }
+  func(imageUrl);
+};
+
+export const profileImageUpload = async (e, id, ref, func) => {
+  const file = e.target.files[0];
+  if (file) {
+    // 파일을 읽어서 화면에 표시
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      // onloadend 이벤트 사용
+      updateImg(id, file, reader.result, ref, func);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // 업로드 취소할 시 기본 이미지로 설정
+    return 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  }
+};

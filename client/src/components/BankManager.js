@@ -52,23 +52,7 @@ export function AddSavings() {
     console.log(res.data.message);
     getList();
   };
-  const updateFunc = async (accountId) => {
-    const res = await axios({
-      method: 'PATCH',
-      url: `${process.env.REACT_APP_HOST}/api/account`,
-      headers: {
-        'Content-Type': `application/json`,
-        'ngrok-skip-browser-warning': '69420',
-      },
-      data: {
-        id: accountId,
-        name: savingName,
-        interest: interestRate,
-        dueDate: savingDeadLine,
-      },
-    });
-    getList();
-  };
+
   useEffect(() => {
     // 등록 날짜를 오늘 날짜로 설정
     setRegisterDate(new Date());
@@ -163,9 +147,6 @@ export function AddSavings() {
     setSelectedIndex(null);
     setIsAccordionOpen(false); // 아코디언 닫힘 상태로 변경
     setIsAddOpen(true);
-    toast('적금 상품이 수정되었습니다.', {
-      autoClose: 1300,
-    });
   };
   const resetBtn = () => {
     if (savingName !== '' || savingDeadLine !== '' || selectedIndex !== null) {
@@ -194,10 +175,9 @@ export function AddSavings() {
     });
     console.log(res.data.message);
     if (res.data.success) {
-      toast('삭제 완료되었습니다.');
+      toast.success('삭제 완료되었습니다.', { autoClose: 1300 });
     }
     getList();
-    e.stopPropagation();
     setSavingName('');
     setInterestRate('');
     setSavingDeadLine('');
@@ -232,19 +212,12 @@ export function AddSavings() {
             onClick={() => selectInput(saving, index)}
           >
             {saving.name} (금리 {saving.interest}%)
-            {/* D-{saving.dueDate} */}
             <Arrow stroke="#ddd" className="accArrBtn" />
           </div>
           {isAccordionOpen && selectedIndex === index && (
             <form className="box-style">
               <div className="reset">
                 <div className="set-title">적금 상품명</div>
-                <img
-                  className="resetBtn"
-                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                  onClick={(e) => deleteBtn(e, saving.id)}
-                  alt="삭제"
-                />
               </div>
               <input
                 className="set-input"
@@ -254,19 +227,24 @@ export function AddSavings() {
                   setSavingName(e.target.value);
                 }}
                 onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
+                disabled
               />
-              <div className="set-title">적금 기간(생성일부터 ~까지)</div>
-              <input
-                ref={deadLineRef}
-                className="set-input"
-                type="number"
-                min="0"
-                value={savingDeadLine}
-                onChange={(e) => {
-                  setSavingDeadLine(e.target.value);
-                }}
-                onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
-              />
+              <div className="set-title">적금 기간</div>
+              <div className="container">
+                <input
+                  ref={deadLineRef}
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={savingDeadLine}
+                  onChange={(e) => {
+                    setSavingDeadLine(e.target.value);
+                  }}
+                  onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
+                  disabled
+                />
+                <div className="unit">일</div>
+              </div>
               <div className="set-title">금리 설정</div>
               <div className="container">
                 <input
@@ -278,15 +256,17 @@ export function AddSavings() {
                   onChange={(e) => {
                     setInterestRate(e.target.value);
                   }}
+                  disabled
                 />
                 <span className="unit">%</span>
               </div>
               <ConfirmBtn
-                onClick={() => {
+                onClick={(e) => {
                   handleCloseAccordion();
-                  updateFunc(saving.id);
+                  // updateFunc(saving.id);
+                  deleteBtn(e, saving.id);
                 }}
-                btnName="업데이트"
+                btnName="삭제"
                 backgroundColor="#61759f"
               ></ConfirmBtn>
             </form>

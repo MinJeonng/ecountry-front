@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/scssList.scss';
-
 import Template from '../components/Template';
 import '../styles/countryList.scss';
 import axios from 'axios';
 import { PageHeader } from '../components/Headers';
 import { toast, ToastContainer } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function CountryList() {
   const navigate = useNavigate();
   const [countryList, setCountryList] = useState([]);
-  const [countryInfo, setCountryInfo] = useState('');
 
   const goSetting = () => {
     navigate('/setting/schoolInfo');
   };
+
   const goCountry = (id) => {
     navigate(`/${id}/manager`);
   };
@@ -31,17 +31,12 @@ export default function CountryList() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
-    console.log(res.data.result);
     if (res.data.result.length > 0) {
       setCountryList(res.data.result);
-      console.log(res.data.result);
-    }
-    if (res.data.success) {
-      setCountryInfo(res.data.result.id);
     }
   };
 
-  //국가 삭제
+  // 국가 삭제
   const deleteCountry = async (countryInfo) => {
     if (!window.confirm('국가를 삭제하시겠습니까?')) {
       return;
@@ -56,12 +51,12 @@ export default function CountryList() {
     });
     if (res.data.success) {
       getList();
-      toast('삭제되었습니다.', {
+      toast.success('삭제되었습니다.', {
         autoClose: 1300,
       });
     } else {
       console.log(res.data.message);
-      toast('삭제에 실패했습니다.', {
+      toast.error('삭제에 실패했습니다.', {
         autoClose: 1200,
       });
     }
@@ -89,29 +84,33 @@ export default function CountryList() {
                   </button>
                 </div>
               ) : (
-                countryList.map((data) => (
-                  // box-style
-                  <div className="countryList" key={data.id}>
-                    <div>
-                      <div className="countryName">{data.name}</div>
-                      <div className="countryInfo">{`${data.school} ${data.grade}학년 ${data.classroom}반`}</div>
+                <>
+                  {countryList.map((data) => (
+                    <div className="countryList" key={data.id}>
+                      <div>
+                        <div className="countryName">{data.name}</div>
+                        <div className="countryInfo">{`${data.school} ${data.grade}학년 ${data.classroom}반`}</div>
+                      </div>
+                      <div className="btnList">
+                        <button
+                          className="mobile-select-small-btn"
+                          onClick={() => goCountry(data.id)}
+                        >
+                          설정하기
+                        </button>
+                        <button
+                          className="mobile-delete-small-btn"
+                          onClick={() => deleteCountry(data.id)}
+                        >
+                          삭제
+                        </button>
+                      </div>
                     </div>
-                    <div className="btnList">
-                      <button
-                        className="mobile-select-small-btn"
-                        onClick={() => goCountry(data.id)}
-                      >
-                        설정하기
-                      </button>
-                      <button
-                        className="mobile-delete-small-btn"
-                        onClick={() => deleteCountry(data.id)}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  ))}
+                  <button className="frist-next-button" onClick={goSetting}>
+                    국가 생성하기
+                  </button>
+                </>
               )}
             </div>
 
@@ -123,11 +122,10 @@ export default function CountryList() {
                   alt="표지"
                 />
               </div>
-
               <div className="pc-right">
                 <div>국가 리스트</div>
                 {countryList.length === 0 ? (
-                  <div className="box-style">
+                  <div className="box-style2">
                     <div>아직 생성된 국가가 없습니다.</div>
                     <button className="frist-next-button" onClick={goSetting}>
                       생성하기
@@ -135,7 +133,6 @@ export default function CountryList() {
                   </div>
                 ) : (
                   countryList.map((data) => (
-                    // box-style
                     <div className="countryList" key={data.id}>
                       <div>
                         <div className="countryName">{data.name}</div>
@@ -158,6 +155,14 @@ export default function CountryList() {
                     </div>
                   ))
                 )}
+                <Link to="/country">
+                  <button className="navi-pre-btn">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+                      alt="뒤로가기"
+                    />
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

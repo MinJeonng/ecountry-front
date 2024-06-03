@@ -8,7 +8,7 @@ import { setStudentInfoList } from '../store/studentInfoReducer';
 import { useDispatch } from 'react-redux';
 import { storage } from '../config/Firebase';
 import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
-import { chatBotList } from '../hooks/Functions';
+import { chatBotList, profileImageUpload } from '../hooks/Functions';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Name = styled.div`
@@ -109,45 +109,7 @@ export function MainProfile() {
     }
   };
 
-  const dataURLtoBlob = (dataurl) => {
-    let arr = dataurl.split(','),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
-  };
-
-  const uploadImageFunc = async (file) => {
-    // file 매개변수 추가
-    if (!file) return;
-    const fileId = userInfo.id; // 파일명 사용자 id로 설정
-    const fileInputRef = ref(storage, `profileImages/${fileId}`);
-    try {
-      await uploadBytes(fileInputRef, file);
-      const url = await getDownloadURL(fileInputRef); // 업로드된 파일의 URL 가져옴
-      console.log('반환된 이미지경로 : ' + url);
-      return url; // URL을 반환
-    } catch (error) {
-      console.error('이미지 업로드 실패:', error);
-      return null;
-    }
-  };
-  //프로필 사진 변경
-  const updateImg = async () => {
-    let imageUrl = uploadedImageUrl;
-    if (selectedFile && !uploadedImageUrl.startsWith('https://')) {
-      let blob = dataURLtoBlob(uploadedImageUrl);
-      const uploadUrl = await uploadImageFunc(blob);
-      if (uploadUrl) {
-        imageUrl = uploadUrl;
-        setUploadedImageUrl(uploadUrl);
-      }
-    }
-
+  const updateProfile = async (imageUrl) => {
     try {
       const res = await axios({
         method: 'PATCH',
@@ -164,34 +126,19 @@ export function MainProfile() {
       });
       if (res.data.success) {
         console.log(res.data.success);
-        toast.success('프로필 변경이 완료되었습니다.');
+        toast.success('프로필 변경이 완료되었습니다.', { autoClose: 1300 });
         getInfo();
       } else {
-        console.log(res.data.message);
+        toast.error('다시 시도해주세요.', { autoClose: 1300 });
       }
     } catch (error) {
-      console.log(error);
+      toast.error('다시 시도해주세요.', { autoClose: 1300 });
     }
   };
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-
-      // 파일을 읽어서 화면에 표시
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // onloadend 이벤트 사용
-        setUploadedImageUrl(reader.result); // 미리보기 이미지 설정
-      };
-      reader.readAsDataURL(file);
-    } else {
-      // 업로드 취소할 시 기본 이미지로 설정
-      setUploadedImageUrl(
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-      );
-    }
+    const fileInputRef = ref(storage, `profileImages/${userInfo.id}`);
+    profileImageUpload(e, userInfo.id, fileInputRef, updateProfile);
   };
 
   useEffect(() => {
@@ -223,7 +170,7 @@ export function MainProfile() {
         onChange={handleImageUpload}
         ref={fileInputRef}
       />
-      <button onClick={updateImg}>완료</button>
+      {/* <button onClick={updateImg}>완료</button> */}
 
       <Name>{name}</Name>
     </>

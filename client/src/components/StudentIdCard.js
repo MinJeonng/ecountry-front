@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { ToastContainer, toast } from 'react-toastify';
+import { profileImageUpload } from '../hooks/Functions';
+import { ref } from 'firebase/storage';
+import { storage } from '../config/Firebase';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -24,28 +27,39 @@ export function StudentIdCard() {
   const [rating, setRating] = useState('');
   const [countryName, setCountryName] = useState('');
 
-  const fileInput = useRef(null);
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const onChange = (e) => {
-    if (e.target.files[0]) {
-      setFile(e.target.files[0]);
-    } else {
-      //업로드 취소할 시
-      setImage(
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-      );
-      return;
-    }
-
-    //화면에 프로필 사진 표시
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImage(reader.result);
+  const updateProfile = async (imageUrl) => {
+    try {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/student/user/img/${id}`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: {
+          img: imageUrl,
+        },
+      });
+      console.log(res.data);
+      if (res.data.success) {
+        console.log(res.data.success);
+        toast.success('프로필 변경이 완료되었습니다.', { autoClose: 1300 });
+        getUserInfo();
+      } else {
+        toast.error('다시 시도해주세요.', { autoClose: 1300 });
       }
-    };
-    reader.readAsDataURL(e.target.files[0]);
+    } catch (error) {
+      toast.error('다시 시도해주세요.', { autoClose: 1300 });
+    }
+  };
+
+  const onChange = (e) => {
+    const fileInputRef = ref(storage, `profileImages/${userInfo.id}`);
+    profileImageUpload(e, userInfo.id, fileInputRef, updateProfile);
   };
 
   const getCountryInfo = async () => {
@@ -86,6 +100,9 @@ export function StudentIdCard() {
         setName(user.name);
         setJob(user.job);
         setRating(user.rating);
+        if (user.img) {
+          setImage(user.img);
+        }
       } else {
         console.error(res.data.message);
       }
@@ -93,6 +110,10 @@ export function StudentIdCard() {
       console.error('사용자 정보 요청 실패:', error);
     }
   };
+
+  useEffect(() => {
+    console.log(Image);
+  }, [Image]);
 
   useEffect(() => {
     if (userInfo?.authority) {
@@ -129,7 +150,7 @@ export function StudentIdCard() {
             borderRadius: 8,
           }}
           onClick={() => {
-            fileInput.current.click();
+            fileInputRef.current.click();
           }}
         />
 
@@ -139,7 +160,7 @@ export function StudentIdCard() {
           accept="image/jpg,image/png,image/jpeg"
           name="profile_img"
           onChange={onChange}
-          ref={fileInput}
+          ref={fileInputRef}
         />
       </div>
       <div className="country-name">{countryName}</div>

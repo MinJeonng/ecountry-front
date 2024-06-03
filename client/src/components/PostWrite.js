@@ -13,7 +13,6 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 import '../styles/setting.scss';
 import '../styles/test.scss';
-import useAuth from '../hooks/useAuth';
 
 Quill.register('modules/imageResize', ImageResize);
 

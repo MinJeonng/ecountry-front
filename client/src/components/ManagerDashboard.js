@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { CheckInvestment } from './Investment';
 
 const SideBox = styled.div`
   width: 100%;

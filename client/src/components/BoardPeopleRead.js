@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GetTimeText } from '../hooks/Functions';
+import { GetTimeText, confirmCountry } from '../hooks/Functions';
 import { ChatBotBtn, ConfirmBtn } from './Btns';
 import { ToastContainer, toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 
-export function BoardPeopleRead() {
+export function BoardPeopleRead({ userinfo }) {
   // 데이터
   // id : long,
   // title : string,
@@ -15,7 +15,6 @@ export function BoardPeopleRead() {
   // writerId : long,
   // writerName : string
   const { id, contentId } = useParams();
-  const [userInfo, setUserInfo] = useAuth(id);
   const navigate = useNavigate();
   const [petitionInfo, setPetitionInfo] = useState();
   const [isShow, setIsShow] = useState(false);
@@ -31,16 +30,20 @@ export function BoardPeopleRead() {
     console.log(res.data.result);
     if (res.data.success) {
       if (res.data.result.countryId != id) {
-        // 잘못된 접근 알림 추가
-        console.log('접근 권한이 없습니다.');
         toast.error('잘못된 접근입니다.', { autoClose: 1300 });
-        // 홈으로 랜딩
-        return;
+        if (userinfo?.isStudent) {
+          setTimeout(() => navigate(`/${id}/login`), 1300);
+        } else {
+          setTimeout(() => navigate('/login'), 1300);
+        }
+        if (!userinfo) {
+          setTimeout(() => navigate('/'), 1300);
+        }
       }
       setPetitionInfo(res.data.result);
       setIsShow(!res.data.result.isSecret);
-      if (userInfo.isStudent) {
-        if (userInfo.id == petitionInfo?.writerId) {
+      if (userinfo?.isStudent) {
+        if (userinfo?.id == petitionInfo?.writerId) {
           setIsShow(true);
         }
       } else {
@@ -76,20 +79,10 @@ export function BoardPeopleRead() {
   };
 
   useEffect(() => {
-    if (userInfo.authority) {
-      if (!userInfo.authority) {
-        toast('접근 권한이 없습니다.');
-        navigate('/');
-      } else {
-        getPetiton();
-      }
+    if (userinfo) {
+      getPetiton();
     }
-  }, [userInfo]);
-
-  useEffect(() => {
-    setUserInfo();
-  }, []);
-
+  }, [userinfo]);
   return (
     <>
       <ToastContainer />

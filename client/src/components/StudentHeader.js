@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import '../styles/settingHeader.scss';
 
-export function ManagerHeader() {
+export function StudentHeader() {
   const { id } = useParams();
   const navigate = useNavigate();
 

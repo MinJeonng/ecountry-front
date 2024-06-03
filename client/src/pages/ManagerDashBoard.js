@@ -5,7 +5,6 @@ import { MainProfile } from '../components/MainProfile';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-// import '..styles/toast.css';
 import '../styles/manager_dash.scss';
 
 import { MainDashboard } from '../components/ManagerDashboard';
@@ -56,10 +55,10 @@ export default function ManagerDashBoard() {
 
   return (
     <>
+      <ToastContainer />
       <Template
         childrenTop={
           <>
-            <ToastContainer />
             <div className="managerInfo">
               <div className="InfoPart1">
                 <div className="MainProfileBox">

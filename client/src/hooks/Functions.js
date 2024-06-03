@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getDownloadURL, uploadBytes } from 'firebase/storage';
 
 export function GetTimeText(time) {
   const newTime = new Date(time);
@@ -190,3 +191,58 @@ export function newsTitleFilter(title) {
   }
   return title;
 }
+
+const dataURLtoBlob = (dataurl) => {
+  let arr = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+};
+
+const uploadImageFunc = async (file, ref) => {
+  // file 매개변수 추가
+  if (!file) return;
+  try {
+    await uploadBytes(ref, file);
+    const url = await getDownloadURL(ref); // 업로드된 파일의 URL 가져옴
+    console.log('반환된 이미지경로 : ' + url);
+    return url; // URL을 반환
+  } catch (error) {
+    console.error('이미지 업로드 실패:', error);
+    return null;
+  }
+};
+
+//프로필 사진 변경
+const updateImg = async (id, file, uploadedUrl, ref, func) => {
+  let imageUrl = uploadedUrl;
+  if (file && !uploadedUrl.startsWith('https://')) {
+    let blob = dataURLtoBlob(uploadedUrl);
+    const uploadUrl = await uploadImageFunc(blob, ref);
+    if (uploadUrl) {
+      imageUrl = uploadUrl;
+    }
+  }
+  func(imageUrl);
+};
+
+export const profileImageUpload = async (e, id, ref, func) => {
+  const file = e.target.files[0];
+  if (file) {
+    // 파일을 읽어서 화면에 표시
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      // onloadend 이벤트 사용
+      updateImg(id, file, reader.result, ref, func);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // 업로드 취소할 시 기본 이미지로 설정
+    return 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  }
+};

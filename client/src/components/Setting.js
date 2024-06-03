@@ -1475,11 +1475,9 @@ export function Setting6() {
     <div className="setting-wrap">
       <ToastContainer />
 
-      <div className="title-list">
-        <ul className="title-list">
-          <li>국가에 필수인 기본법을 제정하세요&#46;</li>
-        </ul>
-      </div>
+      <ul className="title-list">
+        <li>국가에 필수인 기본법을 제정하세요&#46;</li>
+      </ul>
 
       <div className="newsInfo">
         {laws.map((law, index) => (

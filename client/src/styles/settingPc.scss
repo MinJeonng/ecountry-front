@@ -15,7 +15,6 @@ $blue: #61759f;
     margin: 80px 0 0 0;
 
     .title-list {
-      margin: 10px 0;
       width: -webkit-fill-available;
       margin: 50px 100px 30px;
 
@@ -329,5 +328,13 @@ $blue: #61759f;
   .preview::-webkit-scrollbar-track {
     background-color: $deep-green;
     border-radius: 10px;
+  }
+
+  .non-law {
+    margin: 0 100px 20px;
+    color: #666666;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
   }
 }

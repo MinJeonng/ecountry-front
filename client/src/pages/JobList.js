@@ -9,15 +9,16 @@ export default function JobList() {
   return (
     <>
       <ManagerHeader />
-       <Template
-      childrenTop={<PageHeader>{'직업 설정'}</PageHeader>}
-      childrenBottom={
-        <>
-          <JobListManager />
-          <ChatBotBtn />
-        </>
-      }
-    ></Template>
+      <Template
+        isAuthPage2={true}
+        childrenTop={<PageHeader>{'직업 설정'}</PageHeader>}
+        childrenBottom={
+          <>
+            <JobListManager />
+            <ChatBotBtn />
+          </>
+        }
+      ></Template>
     </>
   );
 }

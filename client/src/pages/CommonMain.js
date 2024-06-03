@@ -32,8 +32,10 @@ const PcContainer = styled.div`
     width: 100%;
   }
 `;
-const Left = styled.div``;
-const Right = styled.div``;
+const Block = styled.div`
+  width: 50%;
+  height: 30%;
+`;
 
 export function CommonMain() {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -44,20 +46,26 @@ export function CommonMain() {
   return (
     <>
       <Template
-        childrenTop={
-          <>
-            <CommonMainHeader />
-            <div className="mainProfile">
-              <GetName />
-            </div>
-          </>
-        }
+        // childrenTop={
+        //   <>
+        //     <CommonMainHeader />
+        //     <div className="mainProfile">
+        //       <GetName />
+        //     </div>
+        //   </>
+        // }
         childrenBottom={
           <>
             <div className="mainContent">
-              <CommonMainNews />
-              <ScheduleList />
-              <MenuList />
+              <Block>
+                <CommonMainNews />
+              </Block>
+              <Block>
+                <ScheduleList />
+              </Block>
+              <Block>
+                <MenuList />
+              </Block>
               <PcInvestment />
             </div>
           </>

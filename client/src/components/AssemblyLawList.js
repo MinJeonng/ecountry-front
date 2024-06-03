@@ -56,10 +56,27 @@ export function AssemblyLawList() {
       },
       data: [{ countryId: id, rule: selectedDetail }],
     });
-    getRules();
+    if (res.data.success) {
+      toast.success('등록 완료되었습니다.', { autoClose: 1300 });
+      getRules();
+    }
   };
 
-  const deleteRule = async () => {};
+  const deleteRule = async (ruleId) => {
+    const res = await axios({
+      method: 'DELETE',
+      url: `${process.env.REACT_APP_HOST}/api/rule/${ruleId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+      data: [{ countryId: id, rule: selectedDetail }],
+    });
+    if (res.data.success) {
+      toast.success('삭제 완료되었습니다.', { autoClose: 1300 });
+      getRules();
+    }
+  };
 
   const selectInput = (law, index) => {
     if (selectedIndex === index) {
@@ -110,10 +127,17 @@ export function AssemblyLawList() {
     setSelectedDetail('');
     setSelectedIndex(null);
   };
-  const deleteBtn = (e, id) => {
-    if (!window.confirm(`${id}항을 삭제하시겠습니까?`)) {
+  const deleteBtn = (e, index, id) => {
+    if (!window.confirm(`${index}항을 삭제하시겠습니까?`)) {
       return;
     }
+    deleteRule(id);
+
+    setIsAccordionOpen(false);
+    setIsAddOpen(true);
+    setSelectedIndex(null);
+    setSelectedId('');
+    setSelectedDetail('');
   };
 
   useEffect(() => {
@@ -159,7 +183,7 @@ export function AssemblyLawList() {
                       <img
                         className="resetBtn"
                         src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                        onClick={(e) => deleteBtn(e, law.id)}
+                        onClick={(e) => deleteBtn(e, index + 1, law.id)}
                         alt="삭제"
                       />
                     </div>

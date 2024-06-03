@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import '../styles/setting.scss';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import { ManagerHeader } from './ManagerHeader';
 
 export function AddInvestment() {
   const { id } = useParams();

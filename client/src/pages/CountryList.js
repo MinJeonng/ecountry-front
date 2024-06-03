@@ -132,30 +132,35 @@ export default function CountryList() {
                     </button>
                   </div>
                 ) : (
-                  countryList.map((data) => (
-                    <div className="countryList" key={data.id}>
-                      <div>
-                        <div className="countryName">{data.name}</div>
-                        <div className="countryInfo">{`${data.school} ${data.grade}학년 ${data.classroom}반`}</div>
+                  <>
+                    {countryList.map((data) => (
+                      <div className="countryList" key={data.id}>
+                        <div>
+                          <div className="countryName">{data.name}</div>
+                          <div className="countryInfo">{`${data.school} ${data.grade}학년 ${data.classroom}반`}</div>
+                        </div>
+                        <div className="btnList">
+                          <button
+                            className="mobile-select-small-btn"
+                            onClick={() => goCountry(data.id)}
+                          >
+                            설정하기
+                          </button>
+                          <button
+                            className="mobile-delete-small-btn"
+                            onClick={() => deleteCountry(data.id)}
+                          >
+                            삭제
+                          </button>
+                        </div>
                       </div>
-                      <div className="btnList">
-                        <button
-                          className="mobile-select-small-btn"
-                          onClick={() => goCountry(data.id)}
-                        >
-                          설정하기
-                        </button>
-                        <button
-                          className="mobile-delete-small-btn"
-                          onClick={() => deleteCountry(data.id)}
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    </div>
-                  ))
+                    ))}
+                    <button className="frist-next-button" onClick={goSetting}>
+                      국가 생성하기
+                    </button>
+                  </>
                 )}
-                <Link to="/country">
+                <Link to="/">
                   <button className="navi-pre-btn">
                     <img
                       src={`${process.env.PUBLIC_URL}/images/icon-back.png`}

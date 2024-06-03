@@ -1,8 +1,10 @@
+import React from 'react';
 import { AddInvestment } from '../components/InvestmentManager';
 import { CheckInvestment } from '../components/Investment';
 import Template from '../components/Template';
 import { PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
+import { StudentHeader } from '../components/StudentHeader';
 
 import '../styles/_input_common.scss';
 import '../styles/setting.scss';
@@ -10,11 +12,10 @@ import '../styles/_button_common.scss';
 
 import { ChatBotBtn } from '../components/Btns';
 
-
 export default function SetInvestment({ position }) {
   return (
     <>
-      <ManagerHeader />
+      {position === '투자 상품 관리' ? <ManagerHeader /> : <StudentHeader />}
       <Template
         isAuthPage2={true}
         childrenTop={

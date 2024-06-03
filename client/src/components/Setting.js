@@ -402,11 +402,17 @@ export function Setting3() {
   };
   const nextSetting = () => {
     if (selectedFile) {
+      if (!handleUpload()) {
+        toast.error('업로드 버튼을 눌러주세요', {
+          autoClose: 1300,
+        });
+        return;
+      }
       navigate('/setting/seatingMap');
       const newInfo = [];
       attendees.forEach((data) => {
         newInfo.push({
-          password,
+          password: data.password,
           attendanceNumber: data.attendanceNumber,
           name: data.name,
         });
@@ -417,21 +423,27 @@ export function Setting3() {
         })
       );
     } else {
-      if (password.length === 4) {
-        if (attendees.length > 0) {
-          navigate('/setting/seatingMap');
-          dispatch(
-            studentInfo({
-              password: password,
-              studentList: attendees,
-            })
-          );
-        } else {
-          toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
-        }
+      if (attendees.some((student) => student.password === false)) {
+        return toast.error('학생정보를 모두 입력해주세요.', {
+          autoClose: 1300,
+        });
+      }
+
+      // if (password.length === 4) {
+      if (attendees.length > 0) {
+        navigate('/setting/seatingMap');
+        dispatch(
+          studentInfo({
+            password: password, //이거 넣고 안넣고 실험
+            studentList: attendees,
+          })
+        );
       } else {
         toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
       }
+      // } else {
+      //   toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
+      // }
     }
   };
 
@@ -441,7 +453,7 @@ export function Setting3() {
     }
     if (checkPassword) {
       if (attendanceNumber && name) {
-        setAttendees([...attendees, { attendanceNumber, name }]);
+        setAttendees([...attendees, { attendanceNumber, name, password }]);
         setAttendanceNumber('');
         setName('');
       } else {
@@ -549,8 +561,10 @@ export function Setting3() {
         })
       );
       toast.success('업로드 완료하였습니다.', { autoClose: 1300 });
+      return true;
     } else {
       toast.error('파일을 선택해주세요.', { autoClose: 1300 });
+      return false;
     }
   };
   //예시 파일 다운로드
@@ -591,6 +605,9 @@ export function Setting3() {
                     각각의 비밀번호는 국민 개인 계정에서 변경가능하며, 관리자
                     페이지에서 재설정 가능합니다.
                   </li>
+                  <li>
+                    직접 입력시, 국민들의 비밀번호는 하나의 값으로 통일됩니다.
+                  </li>
                 </ul>
                 <input
                   className="set-input"
@@ -602,7 +619,9 @@ export function Setting3() {
                     if (val.length <= 4) {
                       setPassword(val);
                     } else {
-                      toast.error('비밀번호는 4자리로 설정해주세요.');
+                      toast.error('비밀번호는 4자리로 설정해주세요.', {
+                        autoClose: 1300,
+                      });
                     }
                   }}
                   onKeyDown={(e) => handleKeyDown(e, handleCheckPassword)}

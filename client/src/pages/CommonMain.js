@@ -46,26 +46,20 @@ export function CommonMain() {
   return (
     <>
       <Template
-        // childrenTop={
-        //   <>
-        //     <CommonMainHeader />
-        //     <div className="mainProfile">
-        //       <GetName />
-        //     </div>
-        //   </>
-        // }
+        childrenTop={
+          <>
+            <CommonMainHeader />
+            <div className="mainProfile">
+              <GetName />
+            </div>
+          </>
+        }
         childrenBottom={
           <>
             <div className="mainContent">
-              <Block>
-                <CommonMainNews />
-              </Block>
-              <Block>
-                <ScheduleList />
-              </Block>
-              <Block>
-                <MenuList />
-              </Block>
+              <CommonMainNews />
+              <ScheduleList />
+              <MenuList />
               <PcInvestment />
             </div>
           </>

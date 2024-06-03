@@ -346,7 +346,7 @@ export function ChatBotHeader() {
         <div className="chatbotTit">챗봇</div>
       </div>
       {/* 홈버튼 클릭 시 국가 메인페이지로 이동 되도록 수정 */}
-      <IconHome stroke="#ddd" onClick={() => navigate(`/${id}/manager`)} />
+      <IconHome stroke="#ddd" onClick={() => navigate(`/${id}/main`)} />
     </HeaderStyle>
   );
 }

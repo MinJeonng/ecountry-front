@@ -8,7 +8,11 @@ import { setStudentInfoList } from '../store/studentInfoReducer';
 import { useDispatch } from 'react-redux';
 import { storage } from '../config/Firebase';
 import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
-import { chatBotList, profileImageUpload } from '../hooks/Functions';
+import {
+  chatBotList,
+  confirmCountry,
+  profileImageUpload,
+} from '../hooks/Functions';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Name = styled.div`
@@ -85,6 +89,8 @@ export function MainProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [name, setName] = useState('');
 
+  const navigate = useNavigate();
+
   //정보 불러오기
   const getInfo = async () => {
     try {
@@ -146,8 +152,8 @@ export function MainProfile() {
   }, []);
 
   useEffect(() => {
-    if (userInfo?.authority) {
-      getInfo();
+    if (userInfo) {
+      confirmCountry(id, userInfo, getInfo);
     }
   }, [userInfo]);
 
@@ -227,22 +233,14 @@ export function GetName() {
     navigate(`/${id}/manager`);
   };
 
-  // useEffect(() => {
-  //   if (localStorage.getItem('token')) {
-  //     setUserInfo();
-  //     console.log('useE실행');
-  //   }
-  // }, []);
   useEffect(() => {
     setUserInfo();
     console.log('setUserInfo');
   }, []);
 
   useEffect(() => {
-    console.log('userInfo', userInfo);
-    if (userInfo?.authority) {
-      getUserName();
-      console.log('getUserName 호출');
+    if (userInfo) {
+      confirmCountry(id, userInfo, getUserName);
     }
   }, [userInfo]);
 

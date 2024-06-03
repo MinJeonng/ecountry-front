@@ -144,7 +144,7 @@ function App() {
             path="/:id/assembly"
             element={<StudentAssembly position="국회" />}
           />
-          <Route path="/chatbot" element={<ChatBot />} />
+          <Route path="/:id/chatbot" element={<ChatBot />} />
           <Route path="/:id/revenue" element={<Revenu position="국세청" />} />
           {/* 각 직업별 페이지 */}
           <Route path="/:id/skills" element={<Skills />} />

@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { ChatBotBtn, NewsPostBtn } from '../components/Btns';
 import axios from 'axios';
+import { authFunc, confirmCountry } from '../hooks/Functions';
 
 export function SetNews({ position }) {
   const { id } = useParams();
@@ -37,18 +38,15 @@ export function SetNews({ position }) {
     }
   };
 
+  const mountFunc = () => {
+    if (!userInfo.isStudent) {
+      setIsAuth(true);
+    } else {
+      confirmStudent();
+    }
+  };
   useEffect(() => {
-    if (userInfo.authority === false) {
-      toast.error('접근 권한이 없습니다.', { autoClose: 1300 });
-      navigate('/country');
-    }
-    if (userInfo.authority === true) {
-      if (!userInfo.isStudent) {
-        setIsAuth(true);
-      } else {
-        confirmStudent();
-      }
-    }
+    confirmCountry(id, userInfo, mountFunc);
   }, [userInfo]);
   useEffect(() => {
     console.log(isWrite);
@@ -57,11 +55,8 @@ export function SetNews({ position }) {
     if (localStorage.getItem('postId')) {
       setIsWrite(true);
     }
-    if (localStorage.getItem('token')) {
+    if (authFunc()) {
       setUserInfo();
-    } else {
-      toast.error('로그인 후 이용해주세요', { autoClose: 1300 });
-      // 선생님 로그인인지 학생 로그인인지 선택하는 버튼
     }
   }, []);
   return (
@@ -84,7 +79,7 @@ export function SetNews({ position }) {
             )}
             {position === '읽기' && <SetNewsRead auth={isAuth} />}
             {isAuth && !isWrite && <NewsPostBtn func={setIsWrite} />}
-            {!isWrite && <ChatBotBtn func={setIsWrite} />}
+            {!isWrite && <ChatBotBtn />}
           </>
         }
       />

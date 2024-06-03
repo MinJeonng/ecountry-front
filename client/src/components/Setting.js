@@ -403,11 +403,10 @@ export function Setting3() {
   const nextSetting = () => {
     if (selectedFile) {
       if (!handleUpload()) {
-        toast.error('업로드 버튼을 눌러주세요', {
-          autoClose: 1300,
-        });
+        toast.error('업로드 버튼을 눌러주세요.', { autoClose: 1300 });
         return;
       }
+
       navigate('/setting/seatingMap');
       const newInfo = [];
       attendees.forEach((data) => {

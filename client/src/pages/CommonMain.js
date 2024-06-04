@@ -17,68 +17,86 @@ import { ManagerTopHeader } from './ManagerDashBoard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { OwnAccount } from '../components/StudentBank';
 import { ChatBotBtn } from '../components/Btns';
+import { StudentIdCard } from '../components/StudentIdCard';
 
-const PcContainer = styled.div`
-  .block {
-    /* width: 50%; */
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 5%;
-    /* padding: 5%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-    border-radius: 9px;
-  }
-  .news {
-    width: 100%;
-  }
-`;
 export const CommonMainDashboard = styled.div`
-  padding: 30px 40px 10px 290px;
+  padding: 35px 40px 10px 310px;
+  box-sizing: border-box;
   .main-title {
-    /* padding: 20px 30px 10px 280px; */
     font-size: 20px;
     font-weight: 500;
     color: #333;
     margin-bottom: 35px;
   }
+  .firstContainer {
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 60px;
+  width: 100%;
 `;
 
 export const BlockLine = styled.div`
   margin-top: 15px;
   display: flex;
-  gap: 50px;
-
-  .firstBox {
+  gap: 70px;
+  margin-bottom: 40px;
+  .Box {
     border: 1px solid #eff4f0;
-    background: #fff;
+    background: #d9d9d924;
     border-radius: 10px;
-    width: 100px;
-    height: 90px;
     box-shadow: 1.5px 2.99px 5.98px #eff4f0;
     padding: 20px;
-  }
-  .secondBox {
-    border: 1px solid #eff4f0;
-    background: #fff;
-    border-radius: 10px;
-    width: 230px;
-    height: 90px;
-    box-shadow: 1.5px 2.99px 5.98px #eff4f0;
-    padding: 20px;
+    &.firstBox {
+      width: 190px;
+      height: 90px;
+    }
+    &.firstManagerBox {
+      width: 200px;
+      height: 9%;
+    }
+    &.secondBox {
+      width: 230px;
+      height: 90px;
+    }
+    &.thirdBox {
+      width: 470px;
+      height: 200px;
+    }
+    &.fourthBox {
+      width: 370px;
+      height: 200px;
+    }
+    &.fifthBox {
+      width: 540px;
+      height: 360px;
+    }
+    &.sixthBox {
+      width: 360px;
+      height: 360px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
   }
 `;
 
 export function CommonMain() {
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
   }, []);
   return (
     <>
@@ -110,8 +128,10 @@ export function CommonMain() {
         <>
           <CommonMainDesktopHeader />
           <ChatBotBtn />
+
           <Container>
             <ManagerTopHeader>
+              <StudentIdCard />
               <CommonMainHeader />
             </ManagerTopHeader>
 
@@ -119,16 +139,31 @@ export function CommonMain() {
             <CommonMainDashboard>
               <div className="main-title">Dashboard</div>
               <BlockLine>
-                <div className="firstBox">
+                <div className="Box firstBox">
                   <GetName />
                 </div>
                 <div
-                  className="secondBox"
+                  className="Box secondBox"
                   onClick={() => navigate(`/${id}/bank`)}
                 >
                   <OwnAccount />
                 </div>
-                {/* <div className="firstBox"></div> */}
+              </BlockLine>
+              <BlockLine>
+                <div className="Box thirdBox">
+                  <CommonMainNews />
+                </div>
+                <div className="Box fourthBox">
+                  <PcInvestment />
+                </div>
+              </BlockLine>
+              <BlockLine>
+                <div className="Box fifthBox">
+                  <ScheduleList />
+                </div>
+                <div className="Box sixthBox">
+                  <MenuList />
+                </div>
               </BlockLine>
             </CommonMainDashboard>
           </Container>

@@ -311,7 +311,8 @@ $blue: #61759f;
 .infoBox {
   display: flex;
   flex-direction: column;
-  padding-left: 8px;
+  // padding-left: 8px;
+  padding: 8px;
   .line {
     font-size: 0.88rem;
     color: #666666;
@@ -319,6 +320,7 @@ $blue: #61759f;
   }
   .pLine {
     font-size: 0.9rem;
+    color: #333;
   }
 }
 
@@ -339,5 +341,15 @@ $blue: #61759f;
     margin: 20px 0;
     font-size: 14px;
     font-weight: 800;
+  }
+}
+.lawList {
+  padding: 10px;
+  span {
+    font-weight: 600;
+    color: #333;
+  }
+  @media (min-width: 1160px) {
+    font-size: 16px;
   }
 }

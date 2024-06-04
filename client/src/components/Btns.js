@@ -32,6 +32,13 @@ const BtnBox = styled.div`
     right: 50%;
     transform: translateX(670px);
   }
+  @media (min-width: 1160px) {
+    button {
+      width: 55px;
+      height: 55px;
+      margin-bottom: 20px;
+    }
+  }
 `;
 
 const LoginBox = styled.div`
@@ -138,7 +145,7 @@ export function NewsPostBtn({ func }) {
 }
 
 //챗봇
-export function ChatBotBtn({ func }) {
+export function ChatBotBtn() {
   const { id } = useParams();
   const navigate = useNavigate();
   return (

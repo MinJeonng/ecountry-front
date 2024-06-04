@@ -1,7 +1,7 @@
 import { Flex } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { getOnlyDate } from '../hooks/Functions';
 import styled from 'styled-components';
 
@@ -13,7 +13,6 @@ const FineList = styled.div`
   .infoList {
     display: flex;
     justify-content: space-evenly;
-
     border-radius: 10px;
     background: #e2e8ae;
     padding: 11px;
@@ -57,11 +56,18 @@ const TreasuryBox = styled.div`
     align-items: center;
     height: 20px;
   }
+  span {
+    margin-bottom: 10px;
+  }
+  @media (min-width: 1160px) {
+    padding-left: 0;
+  }
 `;
 
 export default function Revune() {
   //국고, 화폐단위,
   const { id } = useParams();
+  const location = useLocation();
   const [selectedName, setSelectedName] = useState('');
   const [taxList, setTaxList] = useState([]);
   const [studentList, setStudentList] = useState([]);
@@ -70,6 +76,11 @@ export default function Revune() {
   const [showList, setShowList] = useState([]);
 
   const [displayedValue, setDisplayedValue] = useState(0);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  const shouldRender =
+    innerWidth <= 1160 ||
+    (innerWidth > 1160 && location.pathname === `/${id}/revenue`);
 
   const nameSelect = (e) => {
     setSelectedName(e.target.value);
@@ -164,111 +175,152 @@ export default function Revune() {
     requestAnimationFrame(animate);
   }, [treasury]);
 
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
+
   return (
     <>
-      <div className="pc-wrap">
-        <TreasuryBox>
-          {/* 국고, 화폐단위 */}
-          <p style={{ fontSize: '15px' }}>국고</p>
-          <div className="pList">
-            <p style={{ fontSize: '35px', fontWeight: 'bold' }}>
-              {displayedValue}
-            </p>
-            <p style={{ fontSize: '16px', paddingTop: '13px' }}>{unit}</p>
-          </div>
-        </TreasuryBox>
-        <div
-          style={{
-            width: '100%',
-            minHeight: '150px',
-            border: '1px solid #B9C0BE',
-            borderRadius: '9px',
-            padding: '5%',
-            boxSizing: 'border-box',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span style={{ fontSize: '17px' }}>과태료</span>
-            {/* 학생 리스트 */}
+      {shouldRender && (
+        <>
+          <div className="pc-wrap">
+            <TreasuryBox>
+              {/* 국고, 화폐단위 */}
+              <p style={{ fontSize: '15px' }}>국고</p>
+              <div className="pList">
+                <p style={{ fontSize: '35px', fontWeight: 'bold' }}>
+                  {displayedValue}
+                </p>
+                <p style={{ fontSize: '16px', paddingTop: '13px' }}>{unit}</p>
+              </div>
+            </TreasuryBox>
             <div
               style={{
-                width: '100px',
+                width: '100%',
+                minHeight: '150px',
+                border: '1px solid #B9C0BE',
+                borderRadius: '9px',
+                padding: '5%',
+                boxSizing: 'border-box',
+                overflowX: 'hidden',
+                overflowY: 'scroll',
               }}
             >
-              <select
+              <div
                 style={{
-                  width: '100px',
-                  padding: '0 5%',
-                  border: '0.5px solid #999999',
-                  borderRadius: '7px',
-                  fontSize: '12px',
-                  height: '27px',
-                  color: '#777777',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                 }}
-                id="name"
-                value={selectedName}
-                onChange={nameSelect}
               >
-                <option value="" selected>
-                  전체 보기
-                </option>
-                {studentList.map((student) => (
-                  <option key={student.id} value={student.id}>
-                    {student.name}({student.rollNumber})
-                  </option>
-                ))}
-              </select>
+                <span style={{ fontSize: '17px' }}>과태료</span>
+                {/* 학생 리스트 */}
+                <div
+                  style={{
+                    width: '100px',
+                  }}
+                >
+                  <select
+                    style={{
+                      width: '100px',
+                      padding: '0 5%',
+                      border: '0.5px solid #999999',
+                      borderRadius: '7px',
+                      fontSize: '12px',
+                      height: '27px',
+                      color: '#777777',
+                    }}
+                    id="name"
+                    value={selectedName}
+                    onChange={nameSelect}
+                  >
+                    <option value="" selected>
+                      전체 보기
+                    </option>
+                    {studentList.map((student) => (
+                      <option key={student.id} value={student.id}>
+                        {student.name}({student.rollNumber})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  borderBottom: '1px solid #777777',
+                  marginTop: '5px',
+                  marginBottom: '6%',
+                }}
+              ></div>
+              {/* 여기서부터 과태료 리스트 */}
+              {showList.map((tax) => (
+                <>
+                  <FineList>
+                    <div className="infoList">
+                      <div className="spanList">
+                        <span>
+                          {studentList.map((student) =>
+                            student.id === tax.withdrawId
+                              ? `${student.name}(${student.rollNumber})`
+                              : null
+                          )}
+                        </span>
+                        <span style={{ fontSize: '0.7rem' }}>
+                          {getOnlyDate(tax.createdAt)}
+                        </span>
+                      </div>
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+                        alt="구분선"
+                      />
+                      <span className="taxSpan">{tax.memo}</span>
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+                        alt="구분선"
+                      />
+                      <span className="taxSpan">
+                        {tax.transaction} {unit}
+                      </span>
+                    </div>
+                  </FineList>
+                </>
+              ))}
             </div>
           </div>
-          <div
-            style={{
-              width: '100%',
-              borderBottom: '1px solid #777777',
-              marginTop: '5px',
-              marginBottom: '6%',
-            }}
-          ></div>
-          {/* 여기서부터 과태료 리스트 */}
-          {showList.map((tax) => (
-            <>
-              <FineList>
-                <div className="infoList">
-                  <div className="spanList">
-                    <span>
-                      {studentList.map((student) =>
-                        student.id === tax.withdrawId
-                          ? `${student.name}(${student.rollNumber})`
-                          : null
-                      )}
-                    </span>
-                    <span style={{ fontSize: '0.7rem' }}>
-                      {getOnlyDate(tax.createdAt)}
-                    </span>
-                  </div>
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-                    alt="구분선"
-                  />
-                  <span className="taxSpan">{tax.memo}</span>
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-                    alt="구분선"
-                  />
-                  <span className="taxSpan">
-                    {tax.transaction} {unit}
-                  </span>
-                </div>
-              </FineList>
-            </>
-          ))}
-        </div>
-      </div>
+        </>
+      )}
+      {innerWidth >= 1160 && location.pathname === `/${id}/manager` && (
+        <>
+          <TreasuryBox>
+            {/* 국고, 화폐단위 */}
+            <span style={{ fontSize: '1.1rem' }}>국고</span>
+            <div
+              className="pList"
+              style={{
+                marginTop: '20px',
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '35px',
+                  fontWeight: 'bold',
+                  paddingRight: '5px',
+                }}
+              >
+                {displayedValue}
+              </p>
+              <p style={{ fontSize: '16px', paddingTop: '12px' }}>{unit}</p>
+            </div>
+          </TreasuryBox>
+        </>
+      )}
     </>
   );
 }

@@ -21,6 +21,15 @@ export default function ScheduleList() {
   const { id } = useParams();
   const [schedule, setSchedule] = useState([]);
   const [isSchedule, setIsSchedule] = useState(true);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
 
   useEffect(() => {
     const getSchedule = async () => {
@@ -59,32 +68,67 @@ export default function ScheduleList() {
     return '';
   };
 
-  return isSchedule ? (
+  return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th style={{ color: ' #f99a23' }}></th>
-            {days.map((day, index) => (
-              <th key={index}>{day}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {periods.map((period, periodIndex) => (
-            <tr key={periodIndex}>
-              <td className="period">{period}</td>
-              {days.map((day, dayIndex) => (
-                <td key={dayIndex}>{getSubject(dayIndex, periodIndex)}</td>
+      {innerWidth <= 1160 ? (
+        isSchedule ? (
+          <>
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ color: '#f99a23' }}></th>
+                  {days.map((day, index) => (
+                    <th key={index}>{day}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {periods.map((period, periodIndex) => (
+                  <tr key={periodIndex}>
+                    <td className="period">{period}</td>
+                    {days.map((day, dayIndex) => (
+                      <td key={dayIndex}>
+                        {getSubject(dayIndex, periodIndex)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ) : (
+          <Container>
+            <p style={{ color: '#333' }}>시간표 정보가 없습니다.</p>
+          </Container>
+        )
+      ) : isSchedule ? (
+        <>
+          <table>
+            <thead>
+              <tr>
+                <th style={{ color: '#f99a23' }}></th>
+                {days.map((day, index) => (
+                  <th key={index}>{day}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {periods.map((period, periodIndex) => (
+                <tr key={periodIndex}>
+                  <td className="period">{period}</td>
+                  {days.map((day, dayIndex) => (
+                    <td key={dayIndex}>{getSubject(dayIndex, periodIndex)}</td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </>
+      ) : (
+        <Container>
+          <p style={{ color: '#333' }}>시간표 정보가 없습니다.</p>
+        </Container>
+      )}
     </>
-  ) : (
-    <Container>
-      <p style={{ color: '#333' }}>시간표 정보가 없습니다.</p>
-    </Container>
   );
 }

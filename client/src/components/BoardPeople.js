@@ -63,11 +63,11 @@ export function BoardPeopleList() {
               className="registerBtn"
               to={`/${id}/boardPeople/write`}
               style={{
-                color: 'white',
+                color: '#333',
                 backgroundColor: '#bacd92',
-                padding: '4px 10px 4px 10px',
+                padding: '10px 15px',
                 borderRadius: '8px',
-                marginBottom: '5%',
+                textDecoration: 'none',
               }}
             >
               제안하기
@@ -77,7 +77,7 @@ export function BoardPeopleList() {
           )}
         </p>
         <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '5%' }}
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '7%' }}
         ></div>
         {contents.length !== 0 ? (
           <>

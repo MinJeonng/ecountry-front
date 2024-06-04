@@ -12,23 +12,45 @@ import styled from 'styled-components';
 import { ChatBotBtn } from '../components/Btns';
 import { useEffect, useState } from 'react';
 import { ManagerHeader } from '../components/ManagerHeader';
+import { BlockLine, CommonMainDashboard, Container } from './CommonMain';
+import Revune from '../components/Revune';
+import CommonMainNews from '../components/CommonMainNews';
+import PcInvestment from '../components/PcInvestment';
+import ScheduleList from '../components/ScheduleList';
+import MenuList from '../components/MenuList';
+import { StudentIdCard } from '../components/StudentIdCard';
 
 const Btns = styled.button`
-  border-radius: 11px;
-  border: none;
-  text-align: center;
-  font-size: 13px;
-  color: #606060;
-  padding: 14px 20px;
-  margin-top: 5px;
-  box-shadow: 1px 1.3px #c0bebe;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  text-wrap: nowrap;
-  img {
-    width: 16px;
-    height: 16px;
+  @media (max-width: 1160px) {
+    border-radius: 11px;
+    border: none;
+    text-align: center;
+    font-size: 13px;
+    color: #606060;
+    padding: 14px 20px;
+    margin-top: 5px;
+    box-shadow: 1px 1.3px #c0bebe;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    text-wrap: nowrap;
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  @media (min-width: 1160px) {
+    display: flex;
+    position: relative;
+    gap: 10px;
+    margin: 10px 30px 10px 0;
+    border: none;
+    background: none;
+    &:hover {
+      background: #ddd;
+      border-radius: 10px;
+      padding: 5px;
+    }
   }
 `;
 export const ManagerTopHeader = styled.div`
@@ -37,7 +59,7 @@ export const ManagerTopHeader = styled.div`
   border-bottom: 1px solid #d9d9d9;
   width: 100vw;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
 
 export default function ManagerDashBoard() {
@@ -64,87 +86,139 @@ export default function ManagerDashBoard() {
   }, []);
   useEffect(() => {
     window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
   }, []);
-
   return (
     <>
       <ToastContainer />
-      {/* //pc버전 왼쪽 헤더 */}
-      <ManagerHeader />
-      <Template
-        childrenTop={
-          <>
-            {innerWidth <= 1160 ? (
-              <>
-                <div className="managerInfo">
-                  <div className="InfoPart1">
-                    <div className="MainProfileBox">
-                      <MainProfile />
-                    </div>
-                    <div className="countryUrl">
-                      <span>국가 홈페이지 주소</span>
-                      <div className="clipboard">
-                        <CopyToClipboard
-                          text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
-                          onCopy={() =>
-                            toast('클립보드로 복사했습니다.', {
-                              autoClose: 1300,
-                            })
-                          }
-                        >
-                          <img
-                            src={`${process.env.PUBLIC_URL}/images/icon-copy.png`}
-                            alt="복사"
-                          />
-                        </CopyToClipboard>
+      <ChatBotBtn />
 
-                        <Link
-                          to={`${process.env.REACT_APP_BASEURL}/${id}/main`}
-                          className="countryLink"
-                          style={{ color: '#777' }}
-                        >
-                          {`http://13.125.85.110/${id}/main`}
-                        </Link>
-                      </div>
-                    </div>
+      {innerWidth <= 1160 ? (
+        <Template
+          childrenTop={
+            <>
+              <div className="managerInfo">
+                <div className="InfoPart1">
+                  <div className="MainProfileBox">
+                    <MainProfile />
                   </div>
-                  <div className="BtnsClass">
-                    <Btns onClick={logoutFunc}>
-                      로그아웃
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
-                        alt="복사"
-                      />
-                    </Btns>
-                    <Btns onClick={movetoCountryList}>국가 리스트</Btns>
+                  <div className="countryUrl">
+                    <span>국가 홈페이지 주소</span>
+                    <div className="clipboard">
+                      <CopyToClipboard
+                        text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                        onCopy={() =>
+                          toast('클립보드로 복사했습니다.', {
+                            autoClose: 1300,
+                          })
+                        }
+                      >
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/icon-copy.png`}
+                          alt="복사"
+                        />
+                      </CopyToClipboard>
+
+                      <Link
+                        to={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                        className="countryLink"
+                        style={{ color: '#777' }}
+                      >
+                        {`http://13.125.85.110/${id}/main`}
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </>
-            ) : (
-              <>
-                <ManagerTopHeader>
-                  <div className="BtnsClass">
-                    <Btns onClick={movetoCountryList}>국가 리스트</Btns>
-                    <Btns onClick={logoutFunc}>
-                      로그아웃
+                <div className="BtnsClass">
+                  <Btns onClick={logoutFunc}>
+                    로그아웃
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+                      alt="복사"
+                    />
+                  </Btns>
+                  <Btns onClick={movetoCountryList}>국가 리스트</Btns>
+                </div>
+              </div>
+            </>
+          }
+          childrenBottom={
+            <>
+              <MainDashboard />
+            </>
+          }
+        />
+      ) : (
+        <>
+          <ManagerHeader />
+          <Container>
+            <ManagerTopHeader>
+              <StudentIdCard />
+              <Btns onClick={movetoCountryList}>국가 리스트</Btns>
+            </ManagerTopHeader>
+
+            <CommonMainDashboard>
+              <div className="firstContainer">
+                <div className="main-title">Manager Dashboard</div>
+                <div className="countryUrl">
+                  <span>국가 홈페이지 주소</span>
+                  <div className="clipboard">
+                    <CopyToClipboard
+                      text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                      onCopy={() =>
+                        toast('클립보드로 복사했습니다.', {
+                          autoClose: 1300,
+                        })
+                      }
+                    >
                       <img
-                        src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
-                        alt="로그아웃"
+                        src={`${process.env.PUBLIC_URL}/images/icon-copy.png`}
+                        alt="복사"
                       />
-                    </Btns>
+                    </CopyToClipboard>
+
+                    <Link
+                      to={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                      className="countryLink"
+                      style={{ color: '#777' }}
+                    >
+                      {`http://13.125.85.110/${id}/main`}
+                    </Link>
                   </div>
-                </ManagerTopHeader>
-              </>
-            )}
-          </>
-        }
-        childrenBottom={
-          <>
-            <MainDashboard />
-            <ChatBotBtn />
-          </>
-        }
-      />
+                </div>
+              </div>
+
+              <BlockLine>
+                <div className="Box firstManagerBox">
+                  <MainProfile />
+                </div>
+                <div className="Box secondBox">
+                  <Revune />
+                </div>
+              </BlockLine>
+              <BlockLine>
+                <div className="Box thirdBox">
+                  <CommonMainNews />
+                </div>
+                <div className="Box fourthBox">
+                  <PcInvestment />
+                </div>
+              </BlockLine>
+              <BlockLine>
+                <div className="Box fifthBox">
+                  <ScheduleList />
+                </div>
+                <div className="Box sixthBox">
+                  <MenuList />
+                </div>
+              </BlockLine>
+            </CommonMainDashboard>
+          </Container>
+        </>
+      )}
     </>
   );
 }

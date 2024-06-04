@@ -29,6 +29,7 @@ $blue: #61759f;
   }
 
   .pc-wrap {
+    width: 100%;
     margin: 80px 100px 0;
 
     .title-wrap {
@@ -294,6 +295,7 @@ $blue: #61759f;
 
   .reset {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
   }
 

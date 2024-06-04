@@ -106,7 +106,13 @@ export function MainProfile() {
 
       if (res.data.success) {
         setName(res.data.result.name);
-        setUploadedImageUrl(res.data.result.img);
+        if (res.data.result.img) {
+          setUploadedImageUrl(res.data.result.img);
+        } else {
+          setUploadedImageUrl(
+            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+          );
+        }
       } else {
         console.error(res.data.message);
       }

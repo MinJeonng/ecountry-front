@@ -42,13 +42,28 @@ const Info = styled.div`
 `;
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  overflow: hidden;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
+  @media (max-width: 1159px) {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid #a7d2e4;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  @media (min-width: 1160px) {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
 `;
 
 export default function PcInvestment() {

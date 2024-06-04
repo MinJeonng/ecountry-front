@@ -6,7 +6,12 @@ import {
   ChatBotFooter,
   ChatBotHeader,
 } from '../components/ChatBotComponent';
-import { compareTime, chatBotList, chatBotCard } from '../hooks/Functions';
+import {
+  compareTime,
+  chatBotList,
+  chatBotCard,
+  getExpire,
+} from '../hooks/Functions';
 
 export default function ChatBot() {
   const { id } = useParams();
@@ -182,7 +187,7 @@ export default function ChatBot() {
 
   useEffect(() => {
     setUserInfo();
-    if (!localStorage.getItem('token')) {
+    if (!getExpire()) {
       if (chatList.length === 0) {
         addChat([
           newChatMsg('bot', '로그인 후 이용 가능한 서비스입니다.'),

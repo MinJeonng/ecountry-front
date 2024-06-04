@@ -39,7 +39,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'studentInfo'], // 새로고침해도 유지되어야 하는 reducer만 whitelist에 추가
+  whitelist: ['auth'], // 새로고침해도 유지되어야 하는 reducer만 whitelist에 추가
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

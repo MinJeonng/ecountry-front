@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { getExpire } from '../hooks/Functions';
 
 const MyAccount = styled.div`
   border: none;
@@ -368,7 +369,7 @@ export function TransHistory() {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${getExpire()}`,
           },
         });
         if (res.data.success) {
@@ -390,6 +391,12 @@ export function TransHistory() {
   return (
     <>
       <div className="pc-wrap">
+        <div className="navi-pre-btn">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+            alt="뒤로가기"
+          />
+        </div>
         {accounts.map((account) => (
           <div key={account.id}>
             {account.division === '입출금통장' && (

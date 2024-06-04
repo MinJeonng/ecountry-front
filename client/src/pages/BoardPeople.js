@@ -13,51 +13,51 @@ import { ToastContainer } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { LoginBtn } from '../components/Btns';
 import { authFunc, confirmCountry } from '../hooks/Functions';
+import { useSelector } from 'react-redux';
 
 export function SetBoardPeople({ position }) {
   const { id } = useParams();
   const [loginBtn, setLoginBtn] = useState(false);
-  const [userInfo, setUserInfo] = useAuth(id);
+  const [isShow, setIsShow] = useState(false);
 
-  useEffect(() => {
-    if (userInfo) {
-      confirmCountry(id, userInfo, null);
-    }
-  }, [userInfo]);
+  const userInfo = useSelector((state) => state.auth);
+
+  const showItem = () => {
+    setIsShow(true);
+  };
 
   useEffect(() => {
     if (authFunc()) {
-      setUserInfo();
+      confirmCountry(id, userInfo, showItem);
     } else {
       setLoginBtn(true);
     }
-  }, []);
+  }, [userInfo]);
 
   return (
     <>
-
       <StudentHeader />
 
       <ToastContainer />
       {loginBtn && <LoginBtn />}
 
-      <Template
-        isAuthPage2={true}
-        childrenTop={
-          <>
-            <PageHeader>{position}</PageHeader>
-          </>
-        }
-        childrenBottom={
-          <>
-            {position === '신문고' && <BoardPeopleList />}
-            {position === '신문고 글쓰기' && <BoardPeopleWrite />}
-            {position === '신문고 리스트' && (
-              <BoardPeopleRead userinfo={userInfo} />
-            )}
-          </>
-        }
-      />
+      {isShow && (
+        <Template
+          isAuthPage2={true}
+          childrenTop={
+            <>
+              <PageHeader>{position}</PageHeader>
+            </>
+          }
+          childrenBottom={
+            <>
+              {position === '신문고' && <BoardPeopleList />}
+              {position === '신문고 글쓰기' && <BoardPeopleWrite />}
+              {position === '신문고 리스트' && <BoardPeopleRead />}
+            </>
+          }
+        />
+      )}
     </>
   );
 }

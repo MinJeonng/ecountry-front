@@ -88,4 +88,37 @@
   .main-title {
     color: #333;
   }
+  .countryUrl {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    border: 1px solid #eff4f0;
+    background: #d9d9d924;
+    border-radius: 10px;
+    box-shadow: 1.5px 2.99px 5.98px #eff4f0;
+    padding: 20px;
+    span {
+      margin-top: 5px;
+      color: #3b3a3a;
+      font-size: 0.9rem;
+    }
+
+    .clipboard {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      img {
+        width: 19px;
+        height: 19px;
+        cursor: pointer;
+      }
+      .countryLink {
+        display: block;
+        font-size: 15px;
+        margin-left: 2px;
+      }
+    }
+  }
 }

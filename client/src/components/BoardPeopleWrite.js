@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GetTimeText, handleKeyDownNext } from '../hooks/Functions';
+import { GetTimeText, getExpire, handleKeyDownNext } from '../hooks/Functions';
 import { ConfirmBtn } from './Btns';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -38,13 +38,19 @@ export function BoardPeopleWrite() {
           document.location.href = `/${id}/boardPeople`;
         }
       } else {
+        console.log({
+          title,
+          content,
+          isSecret,
+          countryId: id,
+        });
         const res = await axios({
           method: 'POST',
           url: `${process.env.REACT_APP_HOST}/api/post/petition`,
           headers: {
             'Content-Type': `application/json`,
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${getExpire()}`,
           },
           data: {
             title,
@@ -61,6 +67,10 @@ export function BoardPeopleWrite() {
           setTimeout(() => {
             document.location.href = `/${id}/boardPeople`;
           }, 1400);
+        } else {
+          toast.error('글 등록에 실패하였습니다. 다시 시도해주세요.', {
+            autoClose: 1300,
+          });
         }
       }
     } catch (error) {
@@ -101,11 +111,19 @@ export function BoardPeopleWrite() {
 
   return (
     <>
+      <ToastContainer />
       <div className="pc-wrap">
-        <ToastContainer />
+        <div className="navi-pre-btn">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+            alt="뒤로가기"
+          />
+        </div>
+
         {/* <div style={{ color: '#666666', fontWeight: 'bolder' }}>
         신문고 글쓰기
       </div> */}
+
         <form className="box-style">
           <div
             className="reset"

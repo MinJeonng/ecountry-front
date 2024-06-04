@@ -102,6 +102,26 @@ $blue: #61759f;
   .pc-seat-top {
     margin: 80px 100px 0;
 
+    .seat-wrap {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      border-bottom: 10px;
+      border-bottom: 2px solid #bacd92;
+
+      .title-list {
+        width: -webkit-fill-available;
+        margin: 50px 0 20px;
+
+        li {
+          margin-left: 20px;
+          list-style: disc;
+          font-size: 16px;
+          color: #777777;
+        }
+      }
+    }
+
     .seat-title {
       display: flex;
       justify-content: space-around;

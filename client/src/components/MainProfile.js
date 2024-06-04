@@ -5,23 +5,29 @@ import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setStudentInfoList } from '../store/studentInfoReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { storage } from '../config/Firebase';
 import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
 import {
+  authFunc,
   chatBotList,
   confirmCountry,
+  getExpire,
   profileImageUpload,
 } from '../hooks/Functions';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../store';
 import { persistor } from '../';
+import { auth } from '../store/userInfoReducer';
 
 const Name = styled.div`
   box-sizing: border-box;
-  font-size: 25px;
+  font-size: 22px;
   color: #333;
   font-weight: 700;
+  @media (min-width: 1160px) {
+    font-size: 20px;
+  }
 `;
 
 const ProfileContainer = styled.div`
@@ -35,6 +41,7 @@ const ProfileContainer = styled.div`
   }
 `;
 const ToManagerBtn = styled.button`
+  /* @media (max-width: 1159px) { */
   border-radius: 11px;
   border: none;
   text-align: center;
@@ -46,6 +53,12 @@ const ToManagerBtn = styled.button`
   box-shadow: 1px 1.3px #c0bebe;
   display: flex;
   align-items: center;
+  /* } */
+  @media (min-width: 1160px) {
+    color: #606060;
+    padding: 5px 10px;
+    f
+  }
 `;
 
 const ProfileName = styled.div`
@@ -78,6 +91,9 @@ const LogoutBtn = styled.button`
     width: 16px;
     height: 16px;
   }
+  @media (min-width: 1160px) {
+    padding: 5px 10px;
+  }
 `;
 
 export const DesktopContainer = styled.div`
@@ -93,19 +109,39 @@ export const DesktopContainer = styled.div`
     color: #606060;
   }
 `;
+const ProfileInfo = styled.span`
+  font-size: 0.8rem;
+  color: #31660f;
+`;
+const Container = styled.div`
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 5px;
+`;
+const ProfileBtn = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+`;
 
 //관리자 info
 export function MainProfile() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useAuth(id);
   const fileInputRef = useRef(null);
+
   const [uploadedImageUrl, setUploadedImageUrl] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
   );
-  const [selectedFile, setSelectedFile] = useState(null);
   const [name, setName] = useState('');
 
-  const navigate = useNavigate();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  const userInfo = useSelector((state) => state.auth);
+
 
   //정보 불러오기
   const getInfo = async () => {
@@ -116,7 +152,7 @@ export function MainProfile() {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
         },
       });
 
@@ -145,7 +181,7 @@ export function MainProfile() {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          // Authorization: `Bearer ${localStorage.getItem('token')}`,
+          // Authorization: `Bearer ${getExpire()}`,
         },
         data: {
           id: userInfo.id,
@@ -170,37 +206,71 @@ export function MainProfile() {
   };
 
   useEffect(() => {
-    setUserInfo();
-  }, []);
-
-  useEffect(() => {
     if (userInfo) {
-      confirmCountry(id, userInfo, getInfo);
+      getInfo();
     }
   }, [userInfo]);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
 
   return (
     <>
       <ToastContainer />
-      <Avatar
-        src={uploadedImageUrl}
-        style={{ marginRight: '10px', cursor: 'pointer' }}
-        size={64}
-        onClick={() => {
-          fileInputRef.current.click();
-        }}
-      />
-      <input
-        type="file"
-        style={{ display: 'none' }}
-        accept="image/jpg,image/png,image/jpeg"
-        name="profile_img"
-        onChange={handleImageUpload}
-        ref={fileInputRef}
-      />
-      {/* <button onClick={updateImg}>완료</button> */}
+      {innerWidth <= 1160 ? (
+        <>
+          <Avatar
+            src={uploadedImageUrl}
+            style={{ marginRight: '10px', cursor: 'pointer' }}
+            size={64}
+            onClick={() => {
+              fileInputRef.current.click();
+            }}
+          />
+          <input
+            type="file"
+            style={{ display: 'none' }}
+            accept="image/jpg,image/png,image/jpeg"
+            name="profile_img"
+            onChange={handleImageUpload}
+            ref={fileInputRef}
+          />
+          {/* <button onClick={updateImg}>완료</button> */}
 
-      <Name>{name}</Name>
+          <Name>{name}</Name>
+        </>
+      ) : (
+        <>
+          <Container>
+            <Avatar
+              src={uploadedImageUrl}
+              style={{ marginRight: '10px', cursor: 'pointer' }}
+              size={50}
+              onClick={() => {
+                fileInputRef.current.click();
+              }}
+            />
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              accept="image/jpg,image/png,image/jpeg"
+              name="profile_img"
+              onChange={handleImageUpload}
+              ref={fileInputRef}
+            />
+
+            <Name>{name}</Name>
+          </Container>
+          <ProfileInfo>
+            프로필을 클릭하면 프로필 사진을 변경할 수 있습니다.
+          </ProfileInfo>
+        </>
+      )}
     </>
   );
 }
@@ -223,7 +293,7 @@ export function GetName() {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
         },
       });
 
@@ -249,10 +319,10 @@ export function GetName() {
     if (!window.confirm('로그아웃 하시겠습니까?')) {
       return;
     }
-
+    dispatch(auth(null));
     dispatch({ type: 'LOGOUT' });
     await persistor.purge();
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate(`/${id}/login`, { replace: true });
   };
 
@@ -260,10 +330,7 @@ export function GetName() {
     navigate(`/${id}/manager`);
   };
 
-  useEffect(() => {
-    setUserInfo();
-    console.log('setUserInfo');
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (userInfo) {
@@ -273,6 +340,10 @@ export function GetName() {
 
   useEffect(() => {
     window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
   }, []);
   return (
     <>
@@ -295,10 +366,24 @@ export function GetName() {
           </div>
         </ProfileContainer>
       ) : (
-        <DesktopContainer>
-          <div className="name">{name}</div>
-          <div className="job">{job}</div>
-        </DesktopContainer>
+        <>
+          <DesktopContainer>
+            <div className="name">{name}</div>
+            <div className="job">{job}</div>
+          </DesktopContainer>
+          <ProfileBtn>
+            {isManager && (
+              <ToManagerBtn onClick={movetoManager}>관리자 페이지</ToManagerBtn>
+            )}
+            <LogoutBtn onClick={async () => logoutFunc()}>
+              로그아웃
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+                alt="로그아웃"
+              />
+            </LogoutBtn>
+          </ProfileBtn>
+        </>
       )}
     </>
   );

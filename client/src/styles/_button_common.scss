@@ -162,9 +162,17 @@ $blue: #61759f;
 
 @include desktop {
   .resetBtn {
-    width: 15px;
-    height: 15px;
-    right: 30px;
+    width: 17px;
+    height: 17px;
+    right: 60px;
+    top: 30px;
+    position: absolute;
+    cursor: pointer;
+  }
+  .deleteBtn {
+    width: 20px;
+    height: 20px;
+    right: 60px;
     top: 30px;
     position: absolute;
     cursor: pointer;

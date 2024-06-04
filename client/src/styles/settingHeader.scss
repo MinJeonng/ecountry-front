@@ -16,15 +16,21 @@ $blue: #61759f;
   header {
     display: flex;
     flex-direction: column;
-    height: 100vh;
     align-items: center;
-    position: fixed;
+    // position: fixed;
+    height: 100vh;
     width: 250px;
     border-right: 1px solid #d9d9d9;
     background: #eff4f0;
+
     .header-logo {
-      width: 50px;
-      margin: 50px 0;
+      width: 70px;
+      margin-top: 50px;
+    }
+
+    .header-logo2 {
+      width: 100px;
+      margin: 20px 0;
     }
 
     .header-menu {
@@ -39,14 +45,7 @@ $blue: #61759f;
       padding: 10px 20px;
     }
 
-    .header-menu li.active1 {
-      background-color: rgba($deep-green, 0.2);
-      border-radius: 8px;
-      padding: 10px 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-    }
-
-    .header-menu li.active2 {
+    .header-menu li.active {
       background-color: rgba($deep-green, 0.2);
       border-radius: 8px;
       padding: 10px 20px;

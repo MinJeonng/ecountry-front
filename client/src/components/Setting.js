@@ -588,7 +588,7 @@ export function Setting3() {
         </button>
 
         {directInput ? (
-          <div className="setting-wrap">
+          <div className="setting-wrap setting-wrap2">
             <div>
               <div className="box-style">
                 <div className="set-title">비밀번호</div>

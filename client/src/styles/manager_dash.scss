@@ -79,3 +79,13 @@
     }
   }
 }
+@include desktop {
+  .BtnsClass {
+    display: flex;
+    gap: 10px;
+    padding-right: 40px;
+  }
+  .main-title {
+    color: #333;
+  }
+}

@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import Swipe from 'react-easy-swipe';
 import { getThumbnail } from '../hooks/Functions';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText } from '../hooks/Functions';
+import { ToastContainer } from 'react-toastify';
 
 export const Container = styled.div`
   width: 100%;
@@ -37,6 +38,7 @@ export const ImageCounter = styled.div`
 
 export const StyledImgDiv = styled.div`
   display: flex;
+  overflow: hidden;
   flex-direction: row;
   height: fit-content;
   transition: transform ${({ endSwipe }) => (endSwipe ? '0.2s' : '0s')};
@@ -82,10 +84,26 @@ const NoneNews = styled.div`
     font-size: 14px;
   }
 `;
+const ArrowLeft = styled.div`
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  cursor: pointer;
+  z-index: 1000;
+`;
+
+const ArrowRight = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  cursor: pointer;
+  z-index: 1000;
+`;
 
 export default function CommonMainNews() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [newsList, setNewsList] = useState([]);
   const [positionx, setPositionx] = useState(0);
   const [imgCount, setImgCount] = useState(1);
@@ -93,8 +111,16 @@ export default function CommonMainNews() {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [displayNewsList, setDisplayNewsList] = useState([]); //뉴스 보여지는거 5개로 제한
 
+  const shouldRender =
+    innerWidth <= 1160 ||
+    (innerWidth > 1160 && location.pathname === `/${id}/news`);
+
   useEffect(() => {
-    window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
   }, []);
 
   const onSwipeMove = (position) => {
@@ -124,6 +150,17 @@ export default function CommonMainNews() {
     setEndSwipe(true);
   };
 
+  // 화살표 클릭 이벤트 핸들러
+  const handlePrevClick = () => {
+    const prevImgCount = imgCount <= 1 ? displayNewsList.length : imgCount - 1;
+    setImgCount(prevImgCount);
+  };
+
+  const handleNextClick = () => {
+    const nextImgCount = imgCount >= displayNewsList.length ? 1 : imgCount + 1;
+    setImgCount(nextImgCount);
+  };
+
   const getNews = async () => {
     const res = await axios({
       method: 'GET',
@@ -146,47 +183,104 @@ export default function CommonMainNews() {
 
   return (
     <>
-      {displayNewsList?.length > 0 ? (
-        <Container>
-          <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
-            <StyledImgDiv
-              imgCount={imgCount}
-              positionx={positionx}
-              endSwipe={endSwipe}
-            >
-              {displayNewsList?.map((post, index) => (
-                <ImageContainer
-                  key={post.id}
-                  onClick={() => navigate(`/${id}/news/read/${post.id}`)}
+      <ToastContainer />
+      {shouldRender && (
+        <>
+          {displayNewsList?.length > 0 ? (
+            <Container>
+              <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
+                <StyledImgDiv
+                  imgCount={imgCount}
+                  positionx={positionx}
+                  endSwipe={endSwipe}
                 >
-                  <Image
-                    className={
-                      getThumbnail(post.content) === '/images/defaultImg.jpg'
-                        ? 'defaultImg'
-                        : null
-                    }
-                    src={getThumbnail(post.content)}
-                    alt={post.title}
-                  />
-                  <h4>{post.title}</h4>
-                </ImageContainer>
-              ))}
-            </StyledImgDiv>
-          </Swipe>
-          {displayNewsList?.length > 1 && (
-            <ImageCounterWrapper>
-              {displayNewsList.map((post, index) => {
-                return (
-                  <ImageCounter key={index} index={index} imgCount={imgCount} />
-                );
-              })}
-            </ImageCounterWrapper>
+                  {displayNewsList?.map((post, index) => (
+                    <ImageContainer
+                      key={post.id}
+                      onClick={() => navigate(`/${id}/news/read/${post.id}`)}
+                    >
+                      <Image
+                        className={
+                          getThumbnail(post.content) ===
+                          '/images/defaultImg.jpg'
+                            ? 'defaultImg'
+                            : null
+                        }
+                        src={getThumbnail(post.content)}
+                        alt={post.title}
+                      />
+                      <h4>{post.title}</h4>
+                    </ImageContainer>
+                  ))}
+                </StyledImgDiv>
+              </Swipe>
+              {displayNewsList?.length > 1 && (
+                <ImageCounterWrapper>
+                  {displayNewsList.map((post, index) => {
+                    return (
+                      <ImageCounter
+                        key={index}
+                        index={index}
+                        imgCount={imgCount}
+                      />
+                    );
+                  })}
+                </ImageCounterWrapper>
+              )}
+            </Container>
+          ) : (
+            <NoneNews>
+              <p style={{ color: '#333' }}>뉴스 정보가 없습니다.</p>
+            </NoneNews>
           )}
-        </Container>
-      ) : (
-        <NoneNews>
-          <p style={{ color: '#333' }}>뉴스 정보가 없습니다.</p>
-        </NoneNews>
+        </>
+      )}
+      {innerWidth >= 1160 && location.pathname === `/${id}/main` && (
+        <>
+          {displayNewsList?.length > 0 && (
+            <Container>
+              <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
+                {/* 왼쪽 화살표 추가 */}
+                {displayNewsList.length > 1 && (
+                  <ArrowLeft onClick={handlePrevClick}>＜</ArrowLeft>
+                )}
+                <StyledImgDiv
+                  imgCount={imgCount}
+                  positionx={positionx}
+                  endSwipe={endSwipe}
+                >
+                  {displayNewsList?.map((post, index) => (
+                    <ImageContainer
+                      key={post.id}
+                      onClick={() => navigate(`/${id}/news/read/${post.id}`)}
+                    >
+                      <Image
+                        src={getThumbnail(post.content)}
+                        alt={post.title}
+                      />
+                      <h4>{post.title}</h4>
+                    </ImageContainer>
+                  ))}
+                </StyledImgDiv>
+                {/* 오른쪽 화살표 추가 */}
+                {displayNewsList.length > 1 && (
+                  <ArrowRight onClick={handleNextClick}>＞</ArrowRight>
+                )}
+              </Swipe>
+              {displayNewsList?.length > 1 && (
+                <ImageCounterWrapper>
+                  {displayNewsList.map((_, index) => (
+                    <ImageCounter
+                      key={index}
+                      index={index}
+                      imgCount={imgCount}
+                    />
+                  ))}
+                </ImageCounterWrapper>
+              )}
+            </Container>
+          )}
+        </>
       )}
     </>
   );

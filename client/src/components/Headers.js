@@ -7,6 +7,8 @@ import { AlarmComponent, SideMenuComponent } from './SideMenu';
 import { useNavigate, useParams } from 'react-router-dom';
 import Template from './Template';
 import axios from 'axios';
+import '../styles/settingHeader.scss';
+import { useSelector } from 'react-redux';
 
 const CommonHeader = styled.div`
   display: flex;
@@ -17,8 +19,6 @@ const AlarmHeader = styled.div`
   gap: 10px;
   display: flex;
   position: relative;
-  /* top: 25px;
-  right: 20px; */
   margin-right: 30px;
   margin-top: 25px;
   &.new {
@@ -32,6 +32,25 @@ const AlarmHeader = styled.div`
       width: 6px;
       height: 6px;
       border-radius: 50%;
+    }
+  }
+  @media (min-width: 1160px) {
+    display: flex;
+    position: relative;
+    gap: 10px;
+    margin: 10px 30px 10px 0;
+    &.new {
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 3px;
+        right: 5px;
+        background: #b62c2c;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
     }
   }
 `;
@@ -69,6 +88,7 @@ export function CommonMainHeader() {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showAlarm, setShowAlarm] = useState(false);
   const [alarmCount, setAlarmCount] = useState(0);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   const getAlarmCount = async () => {
     try {
@@ -102,20 +122,36 @@ export function CommonMainHeader() {
   useEffect(() => {
     getAlarmCount();
   }, []);
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+  }, []);
 
   return (
-    <CommonHeader>
-      <BoxStyle className="headerBg">
-        <HeaderStyle>
-          <IcoMenuRight onClick={() => setShowSideMenu(true)} />
-        </HeaderStyle>
-      </BoxStyle>
-      {showSideMenu && <SideMenuComponent func={closeFunc} />}
-      <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
-        <Alarm onClick={() => setShowAlarm(true)} />
-      </AlarmHeader>
-      {showAlarm && <AlarmComponent func={closeFunc} />}
-    </CommonHeader>
+    <>
+      {innerWidth <= 1160 ? (
+        <>
+          <CommonHeader>
+            <BoxStyle className="headerBg">
+              <HeaderStyle>
+                <IcoMenuRight onClick={() => setShowSideMenu(true)} />
+              </HeaderStyle>
+            </BoxStyle>
+            {showSideMenu && <SideMenuComponent func={closeFunc} />}
+            <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
+              <Alarm onClick={() => setShowAlarm(true)} />
+            </AlarmHeader>
+            {showAlarm && <AlarmComponent func={closeFunc} />}
+          </CommonHeader>
+        </>
+      ) : (
+        <>
+          <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
+            <Alarm onClick={() => setShowAlarm(true)} />
+          </AlarmHeader>
+          {showAlarm && <AlarmComponent func={closeFunc} />}
+        </>
+      )}
+    </>
   );
 }
 
@@ -163,5 +199,99 @@ export function PageHeader({ children, position }) {
         }
       />
     </>
+  );
+}
+export function CommonMainDesktopHeader() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const studentInfoList = useSelector(
+    (state) => state.studentInfo.studentInfoList
+  );
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const positions = [
+    { name: '홈', path: `/${id}/main` },
+    { name: '은행', path: `/${id}/bank` },
+    { name: '투자', path: `/${id}/investment` },
+    { name: '뉴스', path: `/${id}/news` },
+    { name: '국회', path: `/${id}/assembly` },
+    { name: '국민 신문고', path: `/${id}/boardPeople` },
+    { name: '국세청', path: `/${id}/revenue` },
+    { name: '마이페이지', path: `/${id}/mypage` },
+  ];
+
+  const skillMappings = {
+    0: {
+      text: <>은행원 (월급지급)</>,
+      link: `/${id}/skills`,
+    },
+    1: {
+      text: <>은행원 (적금관리)</>,
+      link: `/${id}/skills`,
+    },
+
+    3: {
+      text: <>국세청 (세금 징수)</>,
+      link: `/${id}/skills`,
+    },
+    4: {
+      text: <>신용 관리 등급 위원회</>,
+      link: `/${id}/skills`,
+    },
+    5: {
+      text: <>국회 (법 제정)</>,
+      link: `/${id}/skills`,
+    },
+  };
+  const skillBasedLinks = studentInfoList.skills
+    ? studentInfoList.skills
+        .map((skill) =>
+          skillMappings[skill] ? { ...skillMappings[skill], key: skill } : null
+        )
+        .filter(Boolean)
+    : [];
+
+  return (
+    <header>
+      <img
+        className="header-logo"
+        src={`${process.env.PUBLIC_URL}/images/logo-defaultImg.jpg`}
+        alt="로고"
+      />
+      <nav>
+        <ul className="header-menu">
+          {positions.map(({ name, path }) => (
+            <li
+              key={name}
+              className={window.location.pathname === path ? 'active' : ''}
+            >
+              <div onClick={() => handleNavigation(path)}>{name}</div>
+            </li>
+          ))}
+          <hr width="80%" color="#e2e4e4" height="1px" noshade />
+          {studentInfoList.skills &&
+            skillBasedLinks.map(({ text, link, key }) => (
+              <>
+                <li
+                  key={key}
+                  className={window.location.pathname === link ? 'active' : ''}
+                >
+                  <div
+                    onClick={() => {
+                      localStorage.setItem('skillId', key);
+                      navigate(link);
+                    }}
+                  >
+                    {text}
+                  </div>
+                </li>
+              </>
+            ))}
+        </ul>
+      </nav>
+    </header>
   );
 }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GetTimeText } from '../hooks/Functions';
+import { GetTimeText, confirmCountry } from '../hooks/Functions';
 import { ChatBotBtn, ConfirmBtn } from './Btns';
 import { ToastContainer, toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 
-export function BoardPeopleRead() {
+export function BoardPeopleRead({ userinfo }) {
   // 데이터
   // id : long,
   // title : string,
@@ -15,7 +15,6 @@ export function BoardPeopleRead() {
   // writerId : long,
   // writerName : string
   const { id, contentId } = useParams();
-  const [userInfo, setUserInfo] = useAuth(id);
   const navigate = useNavigate();
   const [petitionInfo, setPetitionInfo] = useState();
   const [isShow, setIsShow] = useState(false);
@@ -31,16 +30,20 @@ export function BoardPeopleRead() {
     console.log(res.data.result);
     if (res.data.success) {
       if (res.data.result.countryId != id) {
-        // 잘못된 접근 알림 추가
-        console.log('접근 권한이 없습니다.');
         toast.error('잘못된 접근입니다.', { autoClose: 1300 });
-        // 홈으로 랜딩
-        return;
+        if (userinfo?.isStudent) {
+          setTimeout(() => navigate(`/${id}/login`), 1300);
+        } else {
+          setTimeout(() => navigate('/login'), 1300);
+        }
+        if (!userinfo) {
+          setTimeout(() => navigate('/'), 1300);
+        }
       }
       setPetitionInfo(res.data.result);
       setIsShow(!res.data.result.isSecret);
-      if (userInfo.isStudent) {
-        if (userInfo.id == petitionInfo?.writerId) {
+      if (userinfo?.isStudent) {
+        if (userinfo?.id == petitionInfo?.writerId) {
           setIsShow(true);
         }
       } else {
@@ -76,117 +79,115 @@ export function BoardPeopleRead() {
   };
 
   useEffect(() => {
-    if (userInfo.authority) {
-      if (!userInfo.authority) {
-        toast('접근 권한이 없습니다.');
-        navigate('/');
-      } else {
-        getPetiton();
-      }
+    if (userinfo) {
+      getPetiton();
     }
-  }, [userInfo]);
-
-  useEffect(() => {
-    setUserInfo();
-  }, []);
-
+  }, [userinfo]);
   return (
     <>
-      <ToastContainer />
-      <ChatBotBtn />
-      <p align="right">
-        <button
-          type="button"
-          onClick={updateFunc}
-          style={{
-            color: 'white',
-            backgroundColor: '#bacd92',
-            padding: '4px 10px 4px 10px',
-            borderRadius: '8px',
-            marginBottom: '10px',
-            marginRight: '10px',
-            border: 'none',
-          }}
-        >
-          수정
-        </button>
-        <button
-          type="button"
-          onClick={deleteFunc}
-          style={{
-            color: 'white',
-            backgroundColor: '#bacd92',
-            padding: '4px 10px 4px 10px',
-            borderRadius: '8px',
-            marginBottom: '10px',
-            border: 'none',
-          }}
-        >
-          삭제
-        </button>
-      </p>
-      <div
-        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
-      ></div>
-
-      <form className="box-style">
+      <div className="pc-wrap">
+        <ToastContainer />
+        <ChatBotBtn />
+        <p align="right">
+          <button
+            type="button"
+            onClick={updateFunc}
+            style={{
+              color: 'white',
+              backgroundColor: '#bacd92',
+              padding: '4px 10px 4px 10px',
+              borderRadius: '8px',
+              marginBottom: '10px',
+              marginRight: '10px',
+              border: 'none',
+            }}
+          >
+            수정
+          </button>
+          <button
+            type="button"
+            onClick={deleteFunc}
+            style={{
+              color: 'white',
+              backgroundColor: '#bacd92',
+              padding: '4px 10px 4px 10px',
+              borderRadius: '8px',
+              marginBottom: '10px',
+              border: 'none',
+            }}
+          >
+            삭제
+          </button>
+        </p>
         <div
-          className="reset"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-          }}
-        >
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+        ></div>
+
+        <form className="box-style">
           <div
-            style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
+            className="reset"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+            }}
           >
             <div
               style={{
-                padding: '10px',
-                border: 'none',
-                width: '100%',
-                boxSizing: 'border-box',
-                color: '#666666',
-                background: '#fff',
+                borderBottom: '2px solid #bacd92',
+                marginBottom: '20px',
               }}
             >
-              {petitionInfo?.title}
+              <div
+                style={{
+                  padding: '10px',
+                  border: 'none',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  color: '#666666',
+                  background: '#fff',
+                }}
+              >
+                {petitionInfo?.title}
+              </div>
+            </div>
+            <div
+              style={{
+                borderBottom: '2px solid #bacd92',
+                marginBottom: '20px',
+              }}
+            >
+              {!isShow ? (
+                <div
+                  style={{
+                    padding: '10px 10px 40px',
+                    border: 'none',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    color: '#666666',
+                    background: '#fff',
+                  }}
+                >
+                  비밀글 입니다.
+                </div>
+              ) : (
+                <div
+                  style={{
+                    padding: '10px 10px 40px',
+                    border: 'none',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    color: '#666666',
+                    background: '#fff',
+                  }}
+                >
+                  {petitionInfo?.content}
+                </div>
+              )}
             </div>
           </div>
-          <div
-            style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
-          >
-            {!isShow ? (
-              <div
-                style={{
-                  padding: '10px 10px 40px',
-                  border: 'none',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  color: '#666666',
-                  background: '#fff',
-                }}
-              >
-                비밀글 입니다.
-              </div>
-            ) : (
-              <div
-                style={{
-                  padding: '10px 10px 40px',
-                  border: 'none',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  color: '#666666',
-                  background: '#fff',
-                }}
-              >
-                {petitionInfo?.content}
-              </div>
-            )}
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </>
   );
 }

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import useAuth from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -98,8 +97,8 @@ export function SideMenuComponent({ func }) {
   const studentInfoList = useSelector(
     (state) => state.studentInfo.studentInfoList
   );
+  // console.log('studentInfoList', studentInfoList);
 
-  //이미지 모두 변환해야함
   const skillMappings = {
     0: {
       text: (

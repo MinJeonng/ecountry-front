@@ -168,9 +168,21 @@ $blue: #61759f;
 
   .navi-pre-btn {
     width: 30px;
+    margin: 10px 0;
     border: 1px solid transparent;
     background-color: transparent;
     filter: invert(66%) sepia(27%) saturate(399%) hue-rotate(81deg)
       brightness(87%) contrast(87%);
+  }
+  .pwFind-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .pwFind-text {
+      font-size: 14px;
+      font-weight: 800;
+      color: #093030;
+    }
   }
 }

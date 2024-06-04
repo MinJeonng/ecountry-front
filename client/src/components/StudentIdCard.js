@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { ToastContainer, toast } from 'react-toastify';
-import { profileImageUpload } from '../hooks/Functions';
+import { confirmCountry, profileImageUpload } from '../hooks/Functions';
 import { ref } from 'firebase/storage';
 import { storage } from '../config/Firebase';
 
@@ -102,6 +102,10 @@ export function StudentIdCard() {
         setRating(user.rating);
         if (user.img) {
           setImage(user.img);
+        } else {
+          setImage(
+            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+          );
         }
       } else {
         console.error(res.data.message);
@@ -111,19 +115,23 @@ export function StudentIdCard() {
     }
   };
 
+  const mountFunc = () => {
+    getUserInfo();
+    getCountryInfo();
+  };
+
   useEffect(() => {
     console.log(Image);
   }, [Image]);
 
   useEffect(() => {
-    if (userInfo?.authority) {
-      getUserInfo();
+    if (userInfo) {
+      confirmCountry(id, userInfo, mountFunc);
     }
   }, [userInfo]);
 
   useEffect(() => {
     setUserInfo();
-    getCountryInfo();
   }, []);
 
   return (

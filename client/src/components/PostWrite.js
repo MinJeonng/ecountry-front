@@ -13,7 +13,10 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 import '../styles/setting.scss';
 import '../styles/test.scss';
+
 import useAuth from '../hooks/useAuth';
+import { handleKeyDownNext } from '../hooks/Functions';
+
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -235,61 +238,79 @@ export function SetPostWrite({ ...rest }) {
   }, []);
 
   return (
-    <>
+    <div>
       <ToastContainer />
-      <form className="box-style">
-        <div
-          className="reset"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-          }}
-        >
-          <input
-            className="ql-snow ql-toolbar ql-title"
-            type="text"
-            placeholder="제목을 입력하세요."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+      <div className="pc-wrap">
+        <form className="box-style">
+          <div
+            className="reset"
             style={{
-              marginBottom: '10px',
-              border: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
             }}
-          />
+          >
+            <input
+              className="ql-snow ql-toolbar ql-title"
+              type="text"
+              placeholder="제목을 입력하세요."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              style={{
+                marginBottom: '10px',
+                border: 'none',
+              }}
+              onKeyDown={(e) => handleKeyDownNext(e, quillRef)}
+            />
 
-          <ReactQuill
-            style={{
-              height: 'fit-content',
-              border: 'none',
-              borderRadius: '18px',
-            }}
-            {...rest}
-            placeholder="뉴스 내용을 입력해주세요"
-            theme="snow"
-            ref={quillRef}
-            value={content || ''}
-            onChange={setContent}
-            modules={modules}
-            formats={formats}
-          />
-          <div className="postBtn">
-            <ConfirmBtn
-              btnName="취소"
-              onClick={() => document.location.reload()}
-              backgroundColor="#bacd92"
-              width="40vw"
-            ></ConfirmBtn>
+            <ReactQuill
+              style={{
+                height: 'fit-content',
+                border: 'none',
+                borderRadius: '18px',
+              }}
+              {...rest}
+              placeholder="뉴스 내용을 입력해주세요"
+              theme="snow"
+              ref={quillRef}
+              value={content || ''}
+              onChange={setContent}
+              modules={modules}
+              formats={formats}
+            />
+            <div className="postBtn">
+              <ConfirmBtn
+                btnName="취소"
+                onClick={() => document.location.reload()}
+                backgroundColor="#bacd92"
+                width="40vw"
+              ></ConfirmBtn>
 
-            <ConfirmBtn
-              btnName="작성"
-              backgroundColor="#61759f"
-              onClick={addFunc}
-              width="40vw"
-            ></ConfirmBtn>
+              <ConfirmBtn
+                btnName="작성"
+                backgroundColor="#61759f"
+                onClick={addFunc}
+                width="40vw"
+              ></ConfirmBtn>
+            </div>
+            <div className="pc-postBtn">
+              <ConfirmBtn
+                btnName="취소"
+                onClick={() => document.location.reload()}
+                backgroundColor="#bacd92"
+                width="24vw"
+              ></ConfirmBtn>
+
+              <ConfirmBtn
+                btnName="작성"
+                backgroundColor="#61759f"
+                onClick={addFunc}
+                width="24vw"
+              ></ConfirmBtn>
+            </div>
           </div>
-        </div>
-      </form>
-    </>
+        </form>
+      </div>
+    </div>
   );
 }

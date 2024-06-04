@@ -6,9 +6,8 @@ import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
-
-import '../styles/setting.scss';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import { ManagerHeader } from './ManagerHeader';
 
 export function AddInvestment() {
   const { id } = useParams();
@@ -255,75 +254,50 @@ export function AddInvestment() {
   return (
     <>
       <ToastContainer />
-      <div className="setting-wrap">
-        <ul className="title-list">
-          <li>투자 상품을 생성할 수 있습니다.</li>
-        </ul>
-      </div>
+      <div className="pc-wrap">
+        <div className="setting-wrap title-wrap">
+          <ul className="title-list">
+            <li>투자 상품을 생성할 수 있습니다.</li>
+          </ul>
+        </div>
 
-      {investmentList.map((invest, index) => (
-        <>
-          <div
-            className={`display ${
-              isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
-            } ${selectedIndex === index ? 'selected' : ''}`}
-            key={index}
-            onClick={() => selectInput(invest, index)}
-            style={{ fontSize: '14px', color: '#666666' }}
-          >
-            {invest.name}
-            <Arrow stroke="#ddd" className="accArrBtn" />
-          </div>
-          {isAccordionOpen && selectedIndex === index && (
-            <>
-              <form
-                style={{
-                  backgroundColor: 'none',
-                  zIndex: '10',
-                  width: '-webkit-fill-available',
-                  margin: '10px',
-                  padding: '5px',
-                  position: 'relative',
-                }}
-              >
-                <img
-                  className="resetBtn"
-                  style={{ position: 'absolute', right: 0 }}
-                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                  onClick={(e) => deleteBtn(e, invest.id)}
-                  alt="삭제"
-                />
-              </form>
-              <form className="box-style">
-                <div className="set-title">투자정보 업데이트</div>
-                <div
+        {investmentList.map((invest, index) => (
+          <>
+            <div
+              className={`display ${
+                isAccordionOpen && selectedIndex === index
+                  ? 'accordion-open'
+                  : ''
+              } ${selectedIndex === index ? 'selected' : ''}`}
+              key={index}
+              onClick={() => selectInput(invest, index)}
+              style={{ fontSize: '14px', color: '#666666' }}
+            >
+              {invest.name}
+              <Arrow stroke="#ddd" className="accArrBtn" />
+            </div>
+            {isAccordionOpen && selectedIndex === index && (
+              <>
+                <form
                   style={{
-                    color: '#666666',
-                    fontSize: '12px',
-                    paddingTop: '5px',
+                    backgroundColor: 'none',
+                    zIndex: '10',
+                    width: '-webkit-fill-available',
+                    margin: '10px',
+                    padding: '5px',
+                    position: 'relative',
                   }}
                 >
-                  최신 투자정보 | {invest.info}
-                </div>
-                <input
-                  className="set-input"
-                  type="text"
-                  value={investmentInfo}
-                  onChange={(e) => {
-                    setInvestmentInfo(e.target.value);
-                  }}
-                />
-                <ConfirmBtn
-                  onClick={() => {
-                    handleInvestmentInfo(invest.id);
-                  }}
-                  btnName="업데이트"
-                  backgroundColor="rgb(140 159 198)"
-                ></ConfirmBtn>
-              </form>
-              <form className="box-style">
-                <div className="set-title">이전 현황</div>
-                {statusList.length === 0 ? (
+                  <img
+                    className="resetBtn"
+                    style={{ position: 'absolute', right: 0 }}
+                    src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                    onClick={(e) => deleteBtn(e, invest.id)}
+                    alt="삭제"
+                  />
+                </form>
+                <form className="box-style">
+                  <div className="set-title">투자정보 업데이트</div>
                   <div
                     style={{
                       color: '#666666',
@@ -331,138 +305,167 @@ export function AddInvestment() {
                       paddingTop: '5px',
                     }}
                   >
-                    이전 현황이 없습니다.
+                    최신 투자정보 | {invest.info}
                   </div>
-                ) : (
-                  <div
-                    style={{
-                      marginTop: '15px',
-                      marginBottom: '15px',
-                      padding: '5px',
-                      borderBottom: '1px solid #e9ae24',
-                      maxHeight: '80px',
-                      overflowX: 'scroll',
-                      boxSizing: 'border-box',
-                      color: '#666666',
-                      fontSize: '12px',
+                  <input
+                    className="set-input"
+                    type="text"
+                    value={investmentInfo}
+                    onChange={(e) => {
+                      setInvestmentInfo(e.target.value);
                     }}
-                  >
-                    {statusList.map((data) => (
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginBottom: '3px',
-                        }}
-                      >
+                  />
+                  <ConfirmBtn
+                    onClick={() => {
+                      handleInvestmentInfo(invest.id);
+                    }}
+                    btnName="업데이트"
+                    backgroundColor="rgb(140 159 198)"
+                  ></ConfirmBtn>
+                </form>
+                <form className="box-style">
+                  <div className="set-title">이전 현황</div>
+                  {statusList.length === 0 ? (
+                    <div
+                      style={{
+                        color: '#666666',
+                        fontSize: '12px',
+                        paddingTop: '5px',
+                      }}
+                    >
+                      이전 현황이 없습니다.
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        marginTop: '15px',
+                        marginBottom: '15px',
+                        padding: '5px',
+                        borderBottom: '1px solid #e9ae24',
+                        maxHeight: '80px',
+                        overflowX: 'scroll',
+                        boxSizing: 'border-box',
+                        color: '#666666',
+                        fontSize: '12px',
+                      }}
+                    >
+                      {statusList.map((data) => (
                         <div
                           style={{
-                            color: '#666666',
-                            fontSize: '12px',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: '3px',
                           }}
                         >
-                          {getDate(data.createdAt)} {'   '}
-                          {data.status}
-                          {invest.unit}
+                          <div
+                            style={{
+                              color: '#666666',
+                              fontSize: '12px',
+                            }}
+                          >
+                            {getDate(data.createdAt)} {'   '}
+                            {data.status}
+                            {invest.unit}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              deleteStatus(
+                                data.id,
+                                invest.id,
+                                data.createdAt,
+                                data.status,
+                                invest.unit
+                              )
+                            }
+                            style={{ all: 'unset' }}
+                          >
+                            삭제
+                          </button>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            deleteStatus(
-                              data.id,
-                              invest.id,
-                              data.createdAt,
-                              data.status,
-                              invest.unit
-                            )
-                          }
-                          style={{ all: 'unset' }}
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    ))}
-                    {/* <div ref={endOfListRef} /> */}
-                  </div>
-                )}
+                      ))}
+                      {/* <div ref={endOfListRef} /> */}
+                    </div>
+                  )}
 
-                <div className="set-title">값</div>
-                <input
-                  className="set-input"
-                  type="number"
-                  min="0"
-                  value={value}
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                  }}
-                />
-                <ConfirmBtn
-                  onClick={() => {
-                    sendStatus(invest.id);
-                  }}
-                  btnName="업데이트"
-                  backgroundColor="rgb(140 159 198)"
-                ></ConfirmBtn>
-              </form>
-            </>
-          )}
-        </>
-      ))}
-      {isAccordionOpen && (
-        <ConfirmBtn
-          onClick={() => newAddBtn()}
-          btnName="완료"
-          backgroundColor="#bacd92"
-        ></ConfirmBtn>
-      )}
+                  <div className="set-title">값</div>
+                  <input
+                    className="set-input"
+                    type="number"
+                    min="0"
+                    value={value}
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                    }}
+                  />
+                  <ConfirmBtn
+                    onClick={() => {
+                      sendStatus(invest.id);
+                    }}
+                    btnName="업데이트"
+                    backgroundColor="rgb(140 159 198)"
+                  ></ConfirmBtn>
+                </form>
+              </>
+            )}
+          </>
+        ))}
+        {isAccordionOpen && (
+          <ConfirmBtn
+            onClick={() => newAddBtn()}
+            btnName="완료"
+            backgroundColor="#bacd92"
+          ></ConfirmBtn>
+        )}
 
-      {isAddOpen && (
-        <>
-          <form className="box-style">
-            <div className="reset">
-              <div className="set-title">투자 상품명</div>
-            </div>
-            <input
-              className="set-input"
-              type="text"
-              value={investmentName}
-              onChange={(e) => {
-                setInvestmentName(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDownNext(e, unitRef)}
-            />
-            <div className="set-title">단위</div>
-            <input
-              ref={unitRef}
-              className="set-input"
-              type="text"
-              value={unit}
-              placeholder="ex) kg,cm.."
-              onChange={(e) => {
-                setUnit(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDownNext(e, infoRef)}
-            />
-            <div className="set-title">오늘의 투자정보</div>
-            <input
-              ref={infoRef}
-              className="set-input"
-              type="text"
-              value={investmentInfo}
-              onChange={(e) => {
-                setInvestmentInfo(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDown(e, handleAddInvestments)}
-            />
-            <ConfirmBtn
-              onClick={handleAddInvestments}
-              btnName="상품 등록"
-              backgroundColor="#bacd92"
-            ></ConfirmBtn>
-          </form>
-        </>
-      )}
+        {isAddOpen && (
+          <>
+            <form className="box-style">
+              <div className="reset">
+                <div className="set-title">투자 상품명</div>
+              </div>
+              <input
+                className="set-input"
+                type="text"
+                value={investmentName}
+                onChange={(e) => {
+                  setInvestmentName(e.target.value);
+                }}
+                onKeyDown={(e) => handleKeyDownNext(e, unitRef)}
+              />
+              <div className="set-title">단위</div>
+              <input
+                ref={unitRef}
+                className="set-input"
+                type="text"
+                value={unit}
+                placeholder="ex) kg,cm.."
+                onChange={(e) => {
+                  setUnit(e.target.value);
+                }}
+                onKeyDown={(e) => handleKeyDownNext(e, infoRef)}
+              />
+              <div className="set-title">오늘의 투자정보</div>
+              <input
+                ref={infoRef}
+                className="set-input"
+                type="text"
+                value={investmentInfo}
+                onChange={(e) => {
+                  setInvestmentInfo(e.target.value);
+                }}
+                onKeyDown={(e) => handleKeyDown(e, handleAddInvestments)}
+              />
+              <ConfirmBtn
+                onClick={handleAddInvestments}
+                btnName="상품 등록"
+                backgroundColor="#bacd92"
+              ></ConfirmBtn>
+            </form>
+          </>
+        )}
+      </div>
     </>
   );
 }

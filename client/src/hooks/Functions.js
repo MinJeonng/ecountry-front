@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { getDownloadURL, uploadBytes } from 'firebase/storage';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export function GetTimeText(time) {
   const newTime = new Date(time);
@@ -244,5 +247,29 @@ export const profileImageUpload = async (e, id, ref, func) => {
   } else {
     // 업로드 취소할 시 기본 이미지로 설정
     return 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  }
+};
+
+export const confirmCountry = (id, userInfo, func) => {
+  if (userInfo.authority) {
+    if (func) {
+      func();
+    }
+  } else {
+    toast.error('접근 권한이 없습니다.', { autoClose: 1300 });
+    if (userInfo.isStudent) {
+      setTimeout(() => (document.location.href = `/${id}/login`), 1300);
+    } else {
+      setTimeout(() => (document.location.href = '/login'), 1300);
+    }
+  }
+};
+
+export const authFunc = () => {
+  if (localStorage.getItem('token')) {
+    return true;
+  } else {
+    toast.error('로그인 후 이용 가능합니다.', { autoClose: 1300 });
+    return false;
   }
 };

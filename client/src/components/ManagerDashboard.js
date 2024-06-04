@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { CheckInvestment } from './Investment';
+import '../styles/manager_dash.scss';
 
 const SideBox = styled.div`
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
+  @media (max-width: 1159px) {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  @media (min-width: 1160px) {
+    display: none;
+  }
 `;
 
 const MainDashboardBox = styled.div`
@@ -53,6 +58,11 @@ const MainDashboardBox = styled.div`
   }
 `;
 
+export const ManagerDesktopMain = styled.div`
+  padding: 20px;
+  margin-top: 70px;
+`;
+
 export function MainDashboard() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -64,7 +74,7 @@ export function MainDashboard() {
 
   return (
     <>
-      {innerWidth <= 1100 ? (
+      {innerWidth <= 1160 ? (
         <>
           <SideBox>
             <div className="sideBox">
@@ -77,7 +87,7 @@ export function MainDashboard() {
                     src={`${process.env.PUBLIC_URL}/images/icon-bank-color.png`}
                     alt="은행"
                   />
-                  <p>은행</p>
+                  <p>은행 설정</p>
                 </div>
                 <div
                   className="blueBox"
@@ -87,7 +97,7 @@ export function MainDashboard() {
                     src={`${process.env.PUBLIC_URL}/images/icon-investment-color.png`}
                     alt="투자"
                   />
-                  <p>투자</p>
+                  <p>투자 설정</p>
                 </div>
 
                 <div
@@ -98,7 +108,7 @@ export function MainDashboard() {
                     src={`${process.env.PUBLIC_URL}/images/icon-board-color.png`}
                     alt="국민 리스트"
                   />
-                  <p>국민 리스트</p>
+                  <p>국민 리스트 설정</p>
                 </div>
                 <div
                   className="blueBox"
@@ -108,7 +118,7 @@ export function MainDashboard() {
                     src={`${process.env.PUBLIC_URL}/images/icon-assembly-color.png`}
                     alt="국회"
                   />
-                  <p>국회</p>
+                  <p>국회 설정</p>
                 </div>
                 <div
                   className="skyblueBox"
@@ -129,7 +139,7 @@ export function MainDashboard() {
                     src={`${process.env.PUBLIC_URL}/images/icon-seats-color.png`}
                     alt="자리 배치도"
                   />
-                  <p>자리 배치도</p>
+                  <p>자리 배치 설정</p>
                 </div>
 
                 <div
@@ -140,7 +150,7 @@ export function MainDashboard() {
                     src={`${process.env.PUBLIC_URL}/images/icon-tax-color.png`}
                     alt="세법 관리"
                   />
-                  <p>세법 관리</p>
+                  <p>세법 설정</p>
                 </div>
 
                 <div style={{ visibility: 'hidden' }}>
@@ -152,11 +162,12 @@ export function MainDashboard() {
           </SideBox>
         </>
       ) : (
-        //pc버전임 여기 수정하기
+        //pc버전임
+        //학생꺼 가져오기
         <>
-          <SideBox>
-            <div className="sideBox"></div>
-          </SideBox>
+          <ManagerDesktopMain>
+            <p className="main-title">Dashboard</p>
+          </ManagerDesktopMain>
         </>
       )}
     </>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
 
-import '../styles/setting.scss';
 import axios from 'axios';
 import { handleKeyDown } from '../hooks/Functions';
 
@@ -56,10 +55,27 @@ export function AssemblyLawList() {
       },
       data: [{ countryId: id, rule: selectedDetail }],
     });
-    getRules();
+    if (res.data.success) {
+      toast.success('등록 완료되었습니다.', { autoClose: 1300 });
+      getRules();
+    }
   };
 
-  const deleteRule = async () => {};
+  const deleteRule = async (ruleId) => {
+    const res = await axios({
+      method: 'DELETE',
+      url: `${process.env.REACT_APP_HOST}/api/rule/${ruleId}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+      data: [{ countryId: id, rule: selectedDetail }],
+    });
+    if (res.data.success) {
+      toast.success('삭제 완료되었습니다.', { autoClose: 1300 });
+      getRules();
+    }
+  };
 
   const selectInput = (law, index) => {
     if (selectedIndex === index) {
@@ -110,10 +126,17 @@ export function AssemblyLawList() {
     setSelectedDetail('');
     setSelectedIndex(null);
   };
-  const deleteBtn = (e, id) => {
-    if (!window.confirm(`${id}항을 삭제하시겠습니까?`)) {
+  const deleteBtn = (e, index, id) => {
+    if (!window.confirm(`${index}항을 삭제하시겠습니까?`)) {
       return;
     }
+    deleteRule(id);
+
+    setIsAccordionOpen(false);
+    setIsAddOpen(true);
+    setSelectedIndex(null);
+    setSelectedId('');
+    setSelectedDetail('');
   };
 
   useEffect(() => {
@@ -123,96 +146,90 @@ export function AssemblyLawList() {
   return (
     <>
       <ToastContainer />
-      <div className="setting-wrap">
-        <ul className="title-list">
-          <li>국가에 필수인 기본법을 제정하세요&#46;</li>
-        </ul>
-      </div>
+      <div className="pc-wrap">
+        <div className="setting-wrap title-wrap">
+          <ul className="title-list">
+            <li className="underLine">
+              국가에 필수인 기본법을 제정하세요&#46;
+            </li>
+          </ul>
+        </div>
 
-      <div
-        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
-      ></div>
-      {laws.length !== 0 ? (
-        <>
-          <div className="newsInfo">
-            {laws.map((law, index) => (
-              <div key={index}>
-                <div
-                  className={`display ${
-                    isAccordionOpen && selectedIndex === index
-                      ? 'accordion-open'
-                      : ''
-                  } ${selectedIndex === index ? 'selected' : ''}`}
-                  onClick={() => selectInput(law, index)}
-                  style={{ fontSize: '13px' }}
-                >
-                  <div className="infoBox">
-                    <span className="line">{index + 1}항</span>
-                    <span className="pLine">{law.rule}</span>
-                  </div>
-                  <Arrow stroke="#ddd" className="accArrBtn" />
-                </div>
-                {isAccordionOpen && selectedIndex === index && (
-                  <form className="box-style">
-                    <div className="reset">
-                      <div className="set-title">{index + 1}항</div>
-                      <img
-                        className="resetBtn"
-                        src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                        onClick={(e) => deleteBtn(e, law.id)}
-                        alt="삭제"
-                      />
+        {laws.length !== 0 ? (
+          <>
+            <div className="newsInfo">
+              {laws.map((law, index) => (
+                <div key={index}>
+                  <div
+                    className={`display ${
+                      isAccordionOpen && selectedIndex === index
+                        ? 'accordion-open'
+                        : ''
+                    } ${selectedIndex === index ? 'selected' : ''}`}
+                    onClick={() => selectInput(law, index)}
+                    style={{ fontSize: '13px' }}
+                  >
+                    <div className="infoBox">
+                      <span className="line">{index + 1}항</span>
+                      <span className="pLine">{law.rule}</span>
                     </div>
-                    <input
-                      className="set-input"
-                      type="text"
-                      value={selectedDetail}
-                      onChange={(e) => {
-                        setSelectedDetail(e.target.value);
-                      }}
-                    />
 
-                    <ConfirmBtn
-                      onClick={() => {
-                        handleCloseAccordion();
-                        updateRule(law.id);
-                      }}
-                      btnName="업데이트"
-                      backgroundColor="#61759f"
-                    ></ConfirmBtn>
-                  </form>
-                )}
-              </div>
-            ))}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="non-law">제정된 기본법이 존재하지 않습니다.</div>
-        </>
-      )}
-      {isAddOpen && (
-        <form className="box-style">
-          <div className="reset">
-            <div className="set-title">{laws.length + 1}항</div>
-          </div>
-          <input
-            className="set-input"
-            type="text"
-            value={selectedDetail}
-            onChange={(e) => {
-              setSelectedDetail(e.target.value);
-              setSelectedIndex(laws.length);
-            }}
-            onKeyDown={(e) => handleKeyDown(e, handleNewLaw)}
-          />
-          <ConfirmBtn
-            onClick={handleNewLaw}
-            btnName="제정하기"
-            backgroundColor="#61759f"
-          ></ConfirmBtn>
-        </form>
-      )}
+                    <Arrow stroke="#ddd" className="accArrBtn" />
+                  </div>
+                  {isAccordionOpen && selectedIndex === index && (
+                    <form className="box-style">
+                      <div className="reset">
+                        <div className="set-title">{index + 1}항</div>
+                        <img
+                          className="resetBtn"
+                          src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                          onClick={(e) => deleteBtn(e, index + 1, law.id)}
+                          alt="삭제"
+                        />
+
+                        <ConfirmBtn
+                          onClick={() => {
+                            handleCloseAccordion();
+                            updateRule(law.id);
+                          }}
+                          btnName="업데이트"
+                          backgroundColor="#61759f"
+                        ></ConfirmBtn>
+                      </div>
+                    </form>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="non-law">제정된 기본법이 존재하지 않습니다.</div>
+          </>
+        )}
+        {isAddOpen && (
+          <form className="box-style">
+            <div className="reset">
+              <div className="set-title">{laws.length + 1}항</div>
+            </div>
+            <input
+              className="set-input"
+              type="text"
+              value={selectedDetail}
+              onChange={(e) => {
+                setSelectedDetail(e.target.value);
+                setSelectedIndex(laws.length);
+              }}
+              onKeyDown={(e) => handleKeyDown(e, handleNewLaw)}
+            />
+            <ConfirmBtn
+              onClick={handleNewLaw}
+              btnName="제정하기"
+              backgroundColor="#61759f"
+            ></ConfirmBtn>
+          </form>
+        )}
+      </div>
     </>
   );
 }

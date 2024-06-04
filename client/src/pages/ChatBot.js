@@ -9,6 +9,7 @@ import {
 import { compareTime, chatBotList, chatBotCard } from '../hooks/Functions';
 
 export default function ChatBot() {
+  const { id } = useParams();
   const [userInfo, setUserInfo] = useAuth(0);
   const [bottomSize, setBottomSize] = useState(60);
   const [chatList, setChatList] = useState([]);
@@ -128,6 +129,8 @@ export default function ChatBot() {
       await answerChat(chatBotCard, `${keyword} ${msg}`, 'bookList');
     } else if (msg === '선생님 로그인하기') {
       navigate('/login');
+    } else if (msg === '학생 로그인하기') {
+      navigate(`/${id}/login`);
     } else {
       await answerChat(chatBotCard, msg, 'bookList');
     }
@@ -167,7 +170,7 @@ export default function ChatBot() {
   }, [chatList]);
 
   useEffect(() => {
-    if (userInfo.id) {
+    if (userInfo?.id) {
       if (chatList.length === 0) {
         addChat([
           newChatMsg('bot', '무엇을 도와드릴까요?'),
@@ -183,11 +186,7 @@ export default function ChatBot() {
       if (chatList.length === 0) {
         addChat([
           newChatMsg('bot', '로그인 후 이용 가능한 서비스입니다.'),
-          newChatMsg(
-            'bot',
-            '선생님인 경우 아래 버튼을 클릭해서 로그인 해주시고, 학생인 경우 해당 국가의 페이지에서 로그인 해주세요.'
-          ),
-          newBtnMsg(['선생님 로그인하기']),
+          newBtnMsg(['선생님 로그인하기', '학생 로그인하기']),
         ]);
       }
     }

@@ -39,7 +39,7 @@ export function SetNewsRead({ auth }) {
         setWriteTime(GetTimeText(result.createdAt));
         setWriter(result.writerName);
       } else {
-        toast('유효하지 않은 접근입니다.');
+        toast.error('유효하지 않은 접근입니다.', { autoClose: 1300 });
       }
     } catch {
       toast('해당 뉴스를 불러올수 없습니다.');
@@ -83,135 +83,137 @@ export function SetNewsRead({ auth }) {
 
   return (
     <>
-      <div
-        className="reset"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-        }}
-      >
-        <div>
+      <div className="pc-wrap">
+        <div
+          className="reset"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+          }}
+        >
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                position: 'relative',
+                zIndex: 100,
+              }}
+            >
+              {auth && (
+                <img
+                  className="resetBtn"
+                  src={`${process.env.PUBLIC_URL}/images/icon-setting.png`}
+                  alt="Reset Button"
+                  onClick={handleSelectBox}
+                  style={{ width: '20px', height: '20px', right: '0' }}
+                />
+              )}
+              {showBox && (
+                <div
+                  className="selectBox"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'absolute',
+                    fontSize: '14px',
+                    textAlign: 'center',
+                    margin: '10px',
+                    boxSizing: 'border-box',
+                    top: '9px',
+                    color: '#5f6368',
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: 1,
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      borderBottom: '1px solid rgb(163 167 172)',
+                      margin: 4,
+                      marginBottom: 4,
+                    }}
+                    onClick={deleteNews}
+                  >
+                    삭제
+                  </div>
+                  <div
+                    style={{
+                      flex: 1,
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      borderBottom: '1px solid rgb(163 167 172)',
+                      padding: 4,
+                    }}
+                    onClick={editNews}
+                  >
+                    수정
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          {/* 뉴스 제목 */}
+          <div
+            style={{
+              border: 'none',
+              borderRadius: '18px',
+              color: '#666666',
+              fontSize: '20px',
+              paddingLeft: '5px',
+              marginTop: '30px',
+              marginBottom: '10px',
+            }}
+          >
+            {newsTitle}
+          </div>
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-              position: 'relative',
-              zIndex: 100,
-            }}
-          >
-            {auth && (
-              <img
-                className="resetBtn"
-                src={`${process.env.PUBLIC_URL}/images/icon-setting.png`}
-                alt="Reset Button"
-                onClick={handleSelectBox}
-                style={{ width: '20px', height: '20px', right: '0' }}
-              />
-            )}
-            {showBox && (
-              <div
-                className="selectBox"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  position: 'absolute',
-                  fontSize: '14px',
-                  textAlign: 'center',
-                  margin: '10px',
-                  boxSizing: 'border-box',
-                  top: '9px',
-                  color: '#5f6368',
-                }}
-              >
-                <div
-                  style={{
-                    flex: 1,
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    borderBottom: '1px solid rgb(163 167 172)',
-                    margin: 4,
-                    marginBottom: 4,
-                  }}
-                  onClick={deleteNews}
-                >
-                  삭제
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    borderBottom: '1px solid rgb(163 167 172)',
-                    padding: 4,
-                  }}
-                  onClick={editNews}
-                >
-                  수정
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        {/* 뉴스 제목 */}
-        <div
-          style={{
-            border: 'none',
-            borderRadius: '18px',
-            color: '#666666',
-            fontSize: '20px',
-            paddingLeft: '5px',
-            marginTop: '30px',
-            marginBottom: '10px',
-          }}
-        >
-          {newsTitle}
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            color: '#666666',
-            paddingLeft: '5px',
-            fontSize: '14px',
-            marginBottom: '10px',
-          }}
-        >
-          <p>{writeTime}</p>
-          <p style={{ paddingLeft: '14px' }}>글쓴이 : {writer}</p>
-        </div>
-        <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10px' }}
-        ></div>
-        {/* 뉴스 기사 */}
-        <div style={{ marginTop: '20px' }}>
-          <div
-            className="newsContent"
-            style={{
-              minHeight: '200px',
-              padding: '10px',
-              resize: 'none',
-              border: 'none',
+              flexDirection: 'row',
               color: '#666666',
-            }}
-          ></div>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <button
-            onClick={() => navigate(`/${id}/news`)}
-            style={{
-              all: 'unset',
-              margin: 10,
-              color: 'rgb(102, 102, 102)',
-              fontWeight: 500,
-              border: '1.2px solid #bacd92',
-              borderRadius: 8,
-              padding: '5px 15px',
+              paddingLeft: '5px',
+              fontSize: '14px',
+              marginBottom: '10px',
             }}
           >
-            목록
-          </button>
+            <p>{writeTime}</p>
+            <p style={{ paddingLeft: '14px' }}>글쓴이 : {writer}</p>
+          </div>
+          <div
+            style={{ borderBottom: '2px solid #bacd92', marginBottom: '10px' }}
+          ></div>
+          {/* 뉴스 기사 */}
+          <div style={{ marginTop: '20px' }}>
+            <div
+              className="newsContent"
+              style={{
+                minHeight: '200px',
+                padding: '10px',
+                resize: 'none',
+                border: 'none',
+                color: '#666666',
+              }}
+            ></div>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <button
+              onClick={() => navigate(`/${id}/news`)}
+              style={{
+                all: 'unset',
+                margin: 10,
+                color: 'rgb(102, 102, 102)',
+                fontWeight: 500,
+                border: '1.2px solid #bacd92',
+                borderRadius: 8,
+                padding: '5px 15px',
+              }}
+            >
+              목록
+            </button>
+          </div>
         </div>
       </div>
     </>

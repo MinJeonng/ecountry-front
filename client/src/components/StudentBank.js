@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import styled from 'styled-components';
 import '../styles/setting.scss';
 import { ConfirmBtn } from './Btns';
@@ -82,6 +88,7 @@ const TransferBtn = styled.button`
 function CheckingAccount({ account, unit }) {
   const { id, accountId } = useParams(); // 지금 id는 나라id
   const navigate = useNavigate();
+
   const [isAccordion, setIsAccordion] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [depositUser, setDepositUser] = useState(''); //받는 사람 id
@@ -89,7 +96,12 @@ function CheckingAccount({ account, unit }) {
   const [transferAmount, setTransferAmount] = useState(''); //이체금액
   const [transList, setTransList] = useState([]); //이체가능리스트
   const [memo, setMemo] = useState('');
-  // const filteredTransList = transList.filter((user) => user.id !== token);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const location = useLocation();
+
+  const shouldRender =
+    innerWidth <= 1160 ||
+    (innerWidth > 1160 && location.pathname === `/${id}/bank`);
 
   //이체 가능 리스트
   const transferList = async () => {
@@ -191,78 +203,103 @@ function CheckingAccount({ account, unit }) {
       setDepositUserName(selectedUser.name);
     }
   };
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
+
   return (
     <>
       <ToastContainer />
-      <MyAccount>
-        <AccountName>
-          <div className="accountName">{account.accountName}</div>
-        </AccountName>
-        <Balance>
-          <span>
-            {account.balance} {unit.unit}
-          </span>
-        </Balance>
-        <Btn>
-          <TransferBtn onClick={handleBtn} clicked={isClicked}>
-            이체하기
-          </TransferBtn>
-          <TransferBtn
-            onClick={() => navigate(`/${id}/bank/history/${account.id}`)}
-          >
-            거래내역
-          </TransferBtn>
-        </Btn>
-      </MyAccount>
-      {isAccordion && (
-        <form className="box-style">
-          <div className="set-title">예금주</div>
+      {shouldRender && (
+        <>
+          <MyAccount>
+            <AccountName>
+              <div className="accountName">{account.accountName}</div>
+            </AccountName>
+            <Balance>
+              <span>
+                {account.balance} {unit.unit}
+              </span>
+            </Balance>
+            <Btn>
+              <TransferBtn onClick={handleBtn} clicked={isClicked}>
+                이체하기
+              </TransferBtn>
+              <TransferBtn
+                onClick={() => navigate(`/${id}/bank/history/${account.id}`)}
+              >
+                거래내역
+              </TransferBtn>
+            </Btn>
+          </MyAccount>
+          {isAccordion && (
+            <form className="box-style">
+              <div className="set-title">예금주</div>
 
-          <select
-            id="name"
-            className="set-input"
-            value={depositUser}
-            onChange={handleDepositUserChange}
-          >
-            <option value="" disabled style={{ color: '#a5a5a5' }}>
-              예금주를 선택하세요
-            </option>
-            {transList.map((student) => {
-              if (student.id !== account.id) {
-                return (
-                  <option key={student.id} value={student.id}>
-                    {student.rollNumber}번 {student.name}
-                  </option>
-                );
-              }
-              return null;
-            })}
-          </select>
-          <div className="set-title">이체 금액</div>
-          <div className="container">
-            <input
-              className="set-input"
-              type="number"
-              min="0"
-              value={transferAmount}
-              onChange={(e) => setTransferAmount(e.target.value)}
-            />
-            <span className="unit">{unit.unit}</span>
-          </div>
-          <div className="set-title">메모 (필요 시 작성해주세요)</div>
-          <input
-            className="set-input"
-            type="text"
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-          />
-          <ConfirmBtn
-            onClick={handleTransfer}
-            btnName="이체"
-            width="100%"
-            backgroundColor="#61759f"
-          ></ConfirmBtn>
-        </form>
+              <select
+                id="name"
+                className="set-input"
+                value={depositUser}
+                onChange={handleDepositUserChange}
+              >
+                <option value="" disabled style={{ color: '#a5a5a5' }}>
+                  예금주를 선택하세요
+                </option>
+                {transList.map((student) => {
+                  if (student.id !== account.id) {
+                    return (
+                      <option key={student.id} value={student.id}>
+                        {student.rollNumber}번 {student.name}
+                      </option>
+                    );
+                  }
+                  return null;
+                })}
+              </select>
+              <div className="set-title">이체 금액</div>
+              <div className="container">
+                <input
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={transferAmount}
+                  onChange={(e) => setTransferAmount(e.target.value)}
+                />
+                <span className="unit">{unit.unit}</span>
+              </div>
+              <div className="set-title">메모 (필요 시 작성해주세요)</div>
+              <input
+                className="set-input"
+                type="text"
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
+              />
+              <ConfirmBtn
+                onClick={handleTransfer}
+                btnName="이체"
+                width="100%"
+                backgroundColor="#61759f"
+              ></ConfirmBtn>
+            </form>
+          )}
+        </>
+      )}
+      {innerWidth >= 1160 && location.pathname === `/${id}/main` && (
+        <>
+          <AccountName>
+            <div className="accountName">{account.accountName}</div>
+          </AccountName>
+          <Balance>
+            <span>
+              {account.balance} {unit.unit}
+            </span>
+          </Balance>
+        </>
       )}
     </>
   );
@@ -388,6 +425,8 @@ export function OwnAccount() {
   const [unit, setUnit] = useState('');
   const [withdrawId, setWithdrawId] = useState(null);
   const [withdrawBalance, setWithdrawBalance] = useState('');
+  const location = useLocation();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   const getUnit = async () => {
     try {
@@ -447,23 +486,33 @@ export function OwnAccount() {
     };
     getData();
   }, []);
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+  }, []);
   return (
     <>
-      {accounts.map((account) => (
-        <div key={account.id}>
-          {account.division === '입출금통장' && (
-            <CheckingAccount account={account} unit={unit} />
-          )}
-          {account.division === '적금통장' && (
-            <SavingAccount
-              account={account}
-              unit={unit}
-              withdrawId={withdrawId}
-              withdrawBalance={withdrawBalance}
-            />
-          )}
-        </div>
-      ))}
+
+      <div className="pc-wrap">
+        {accounts.map((account) => (
+          <div key={account.id}>
+            {account.division === '입출금통장' && (
+              <CheckingAccount account={account} unit={unit} />
+            )}
+             {location.pathname === `/${id}/bank` &&
+            account.division === '적금통장' && (
+
+              <SavingAccount
+                account={account}
+                unit={unit}
+                withdrawId={withdrawId}
+                withdrawBalance={withdrawBalance}
+              />
+            )}
+
+          </div>
+        ))}
+      </div>
+
     </>
   );
 }

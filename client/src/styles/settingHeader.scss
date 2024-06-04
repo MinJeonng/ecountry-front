@@ -21,7 +21,7 @@ $blue: #61759f;
     position: fixed;
     width: 250px;
     border-right: 1px solid #d9d9d9;
-
+    background: #eff4f0;
     .header-logo {
       width: 50px;
       margin: 50px 0;
@@ -32,16 +32,24 @@ $blue: #61759f;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      padding-right: 40px;
+      // padding-right: 40px;
     }
 
     .header-menu li {
       padding: 10px 20px;
     }
 
-    .header-menu li.active {
+    .header-menu li.active1 {
       background-color: rgba($deep-green, 0.2);
       border-radius: 8px;
+      padding: 10px 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-menu li.active2 {
+      background-color: rgba($deep-green, 0.2);
+      border-radius: 8px;
+      padding: 10px 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
     }
 
@@ -50,6 +58,9 @@ $blue: #61759f;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
       cursor: pointer;
+    }
+    li div {
+      font-size: 15px;
     }
   }
 }

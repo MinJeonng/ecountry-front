@@ -5,7 +5,7 @@ import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
 
 import axios from 'axios';
-import { handleKeyDown } from '../hooks/Functions';
+import { getExpire, handleKeyDown } from '../hooks/Functions';
 
 export function AssemblyLawList() {
   const { id } = useParams();
@@ -56,8 +56,24 @@ export function AssemblyLawList() {
       data: [{ countryId: id, rule: selectedDetail }],
     });
     if (res.data.success) {
-      toast.success('등록 완료되었습니다.', { autoClose: 1300 });
       getRules();
+      toast.success('법 등록이 완료되었습니다.', { autoClose: 1300 });
+      const res2 = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/student/notice/add/all/${id}`,
+        headers: {
+          Authorization: `Bearer ${getExpire()}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: {
+          content: `${selectedDetail} 법이 신규 생성되었습니다.`,
+        },
+      });
+    } else {
+      toast.error('법 생성에 실패했습니다. 다시 시도해주세요.', {
+        autoClose: 1300,
+      });
     }
   };
 

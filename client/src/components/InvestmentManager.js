@@ -6,7 +6,11 @@ import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
-import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import {
+  getExpire,
+  handleKeyDown,
+  handleKeyDownNext,
+} from '../hooks/Functions';
 import { ManagerHeader } from './ManagerHeader';
 
 export function AddInvestment() {
@@ -62,7 +66,26 @@ export function AddInvestment() {
         },
       ],
     });
-    getList();
+    if (res.data.success) {
+      getList();
+      toast.success('투자 상품 등록이 완료되었습니다.', { autoClose: 1300 });
+      const res2 = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/student/notice/add/all/${id}`,
+        headers: {
+          Authorization: `Bearer ${getExpire()}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: {
+          content: `${investmentName} 투자 상품이 신규 생성되었습니다.`,
+        },
+      });
+    } else {
+      toast.error('투자 상품 생성에 실패했습니다. 다시 시도해주세요.', {
+        autoClose: 1300,
+      });
+    }
   };
 
   const updateFunc = async (investId) => {

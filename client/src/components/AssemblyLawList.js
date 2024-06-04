@@ -186,8 +186,9 @@ export function AssemblyLawList() {
                     style={{ fontSize: '13px' }}
                   >
                     <div className="infoBox">
-                      <span className="line">{index + 1}항</span>
-                      <span className="pLine">{law.rule}</span>
+                      <span className="line">
+                        {index + 1}항. <span className="pLine">{law.rule}</span>
+                      </span>
                     </div>
 
                     <Arrow stroke="#ddd" className="accArrBtn" />
@@ -198,7 +199,7 @@ export function AssemblyLawList() {
                         <div className="set-title">{index + 1}항</div>
                       </div>
                       <img
-                        className="resetBtn"
+                        className="deleteBtn"
                         src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
                         onClick={(e) => deleteBtn(e, index + 1, law.id)}
                         alt="삭제"

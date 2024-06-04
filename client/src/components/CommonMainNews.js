@@ -16,6 +16,7 @@ export const Container = styled.div`
   align-items: center;
   box-sizing: border-box;
   border-radius: 9px;
+  position: relative;
 `;
 
 export const ImageCounterWrapper = styled.div`
@@ -73,7 +74,7 @@ const Image = styled.img`
 `;
 
 const NoneNews = styled.div`
-  border: 4px solid #9e9e9e29;
+  border: 1px solid #a7d2e4;
   border-radius: 10px;
   height: auto;
   padding: 20px;
@@ -83,21 +84,36 @@ const NoneNews = styled.div`
   p {
     font-size: 14px;
   }
+  @media (min-width: 1160px) {
+    border: none;
+    p {
+      font-size: 1.1rem;
+    }
+  }
 `;
 const ArrowLeft = styled.div`
   position: absolute;
-  left: 10px;
-  top: 50%;
+  left: 0%;
+  top: 30%;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 2;
+  img {
+    width: 18px;
+    height: 18px;
+  }
 `;
 
 const ArrowRight = styled.div`
   position: absolute;
-  right: 10px;
-  top: 50%;
+  right: 0%;
+  top: 30%;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 2;
+  img {
+    width: 18px;
+    height: 18px;
+    transform: rotate(180deg);
+  }
 `;
 
 export default function CommonMainNews() {
@@ -154,11 +170,19 @@ export default function CommonMainNews() {
   const handlePrevClick = () => {
     const prevImgCount = imgCount <= 1 ? displayNewsList.length : imgCount - 1;
     setImgCount(prevImgCount);
+    updatePosition(prevImgCount); // 위치 업데이트 함수 호출
   };
 
   const handleNextClick = () => {
     const nextImgCount = imgCount >= displayNewsList.length ? 1 : imgCount + 1;
     setImgCount(nextImgCount);
+    updatePosition(nextImgCount); // 위치 업데이트 함수 호출
+  };
+
+  // 위치를 업데이트하는 함수
+  const updatePosition = (imgCount) => {
+    const newPositionX = -(imgCount - 1) * 100;
+    setPositionx(newPositionX); // 새 위치 설정
   };
 
   const getNews = async () => {
@@ -235,18 +259,23 @@ export default function CommonMainNews() {
           )}
         </>
       )}
-      {innerWidth >= 1160 && location.pathname === `/${id}/main` && (
-        <>
-          {displayNewsList?.length > 0 && (
-            <Container>
-              <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
-                {/* 왼쪽 화살표 추가 */}
+      {innerWidth >= 1160 &&
+        (location.pathname === `/${id}/main` ||
+          location.pathname === `/${id}/manager`) && (
+          <>
+            {displayNewsList?.length > 0 ? (
+              <Container>
                 {displayNewsList.length > 1 && (
-                  <ArrowLeft onClick={handlePrevClick}>＜</ArrowLeft>
+                  <ArrowLeft onClick={handlePrevClick}>
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/icon-arrow-circle.png`}
+                      alt="화살표"
+                    />
+                  </ArrowLeft>
                 )}
                 <StyledImgDiv
                   imgCount={imgCount}
-                  positionx={positionx}
+                  positionx={positionx} // 수정된 위치를 사용하여 이미지를 이동
                   endSwipe={endSwipe}
                 >
                   {displayNewsList?.map((post, index) => (
@@ -262,26 +291,24 @@ export default function CommonMainNews() {
                     </ImageContainer>
                   ))}
                 </StyledImgDiv>
-                {/* 오른쪽 화살표 추가 */}
                 {displayNewsList.length > 1 && (
-                  <ArrowRight onClick={handleNextClick}>＞</ArrowRight>
-                )}
-              </Swipe>
-              {displayNewsList?.length > 1 && (
-                <ImageCounterWrapper>
-                  {displayNewsList.map((_, index) => (
-                    <ImageCounter
-                      key={index}
-                      index={index}
-                      imgCount={imgCount}
+                  <ArrowRight onClick={handleNextClick}>
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/icon-arrow-circle.png`}
+                      alt="화살표"
                     />
-                  ))}
-                </ImageCounterWrapper>
-              )}
-            </Container>
-          )}
-        </>
-      )}
+                  </ArrowRight>
+                )}
+              </Container>
+            ) : (
+              <>
+                <NoneNews>
+                  <p style={{ color: '#333' }}>뉴스 정보가 없습니다.</p>
+                </NoneNews>
+              </>
+            )}
+          </>
+        )}
     </>
   );
 }

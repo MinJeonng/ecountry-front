@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { ToastContainer, toast } from 'react-toastify';
 import {
@@ -18,9 +18,16 @@ const Name = styled.div`
   color: #333;
 `;
 
+const CountryName = styled.div`
+  font-size: 1.1rem;
+  color: #333;
+  padding-left: 310px;
+  font-weight: 600;
+`;
+
 export function StudentIdCard() {
   const { id } = useParams();
-
+  const location = useLocation();
   const [userInfo, setUserInfo] = useAuth(id);
   const [Image, setImage] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
@@ -33,6 +40,15 @@ export function StudentIdCard() {
 
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
 
   const updateProfile = async (imageUrl) => {
     try {
@@ -139,43 +155,55 @@ export function StudentIdCard() {
   }, []);
 
   return (
-    <div className="idCard-wrap">
-      <ToastContainer />
-      <div className="idCard-title">신분증</div>
-      <div className="idCard-list">
-        <div className="idCard-detail">
-          <Name>{name}</Name>
-          <div className="idCard-detail-list">
-            <div className="idCard-detail-content">{job}</div>
+
+    <>
+      {location.pathname === `/${id}/mypage` && (
+        <div className="idCard-wrap">
+          <ToastContainer />
+          <div className="idCard-list">
+            <div className="idCard-detail">
+              <div className="idCard-detail-title">신분증</div>
+              <Name>{name}</Name>
+              <div className="idCard-detail-list">
+                <div className="idCard-detail-content">{job}</div>
+              </div>
+              <div className="idCard-detail-list">
+                <div className="idCard-detail-content">{rating}등급</div>
+              </div>
+            </div>
+
+            <img
+              src={Image}
+              style={{
+                cursor: 'pointer',
+                width: 90,
+                height: 90,
+                borderRadius: 8,
+              }}
+              onClick={() => {
+                fileInputRef.current.click();
+              }}
+            />
+
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              accept="image/jpg,image/png,image/jpeg"
+              name="profile_img"
+              onChange={onChange}
+              ref={fileInputRef}
+            />
+
           </div>
-          <div className="idCard-detail-list">
-            <div className="idCard-detail-content">{rating}등급</div>
-          </div>
+          <div className="country-name">{countryName}</div>
         </div>
+      )}
 
-        <img
-          src={Image}
-          style={{
-            cursor: 'pointer',
-            width: 90,
-            height: 90,
-            borderRadius: 8,
-          }}
-          onClick={() => {
-            fileInputRef.current.click();
-          }}
-        />
-
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          accept="image/jpg,image/png,image/jpeg"
-          name="profile_img"
-          onChange={onChange}
-          ref={fileInputRef}
-        />
-      </div>
-      <div className="country-name">{countryName}</div>
-    </div>
+      {innerWidth >= 1160 &&
+        (location.pathname === `/${id}/main` ||
+          location.pathname === `/${id}/manager`) && (
+          <CountryName>{countryName}</CountryName>
+        )}
+    </>
   );
 }

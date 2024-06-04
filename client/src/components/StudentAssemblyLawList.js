@@ -33,13 +33,13 @@ export function StudentAssemblyLawList() {
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div
             className="newsHead"
-            style={{ color: '#666666', marginBottom: '10px' }}
+            style={{ color: '#333', marginBottom: '10px' }}
           >
             기본 법
           </div>
         </div>
         <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '7%' }}
         ></div>
         {laws.length !== 0 ? (
           <div className="newsInfo">
@@ -49,8 +49,9 @@ export function StudentAssemblyLawList() {
                 key={index}
                 style={{ fontSize: '14px', marginBottom: '10px' }}
               >
-                <p>{index + 1}항.</p>
-                <p>{law.rule}</p>
+                <div className="lawList">
+                  <span>{index + 1}항.</span> {law.rule}
+                </div>
               </div>
             ))}
           </div>

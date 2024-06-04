@@ -492,6 +492,7 @@ export function OwnAccount() {
   }, []);
   return (
     <>
+
       <div className="pc-wrap">
         {accounts.map((account) => (
           <div key={account.id}>
@@ -510,6 +511,7 @@ export function OwnAccount() {
           </div>
         ))}
       </div>
+
     </>
   );
 }

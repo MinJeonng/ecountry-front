@@ -269,6 +269,18 @@ function AddSaving() {
             toast('가입이 완료되었습니다.', {
               autoClose: 1300,
             });
+            const res2 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [selectedStudentId],
+                content: `신규 적금을 개설하였습니다.`,
+              },
+            });
             // setTimeout(() => {
             //   window.location.reload();
             // }, 1400);
@@ -413,9 +425,18 @@ function CancelSaving() {
             toast('해지가 완료되었습니다.', {
               autoClose: 1300,
             });
-            // setTimeout(() => {
-            //   window.location.reload();
-            // }, 1400);
+            const res2 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [selectedStudentId],
+                content: `적금을 해지하였습니다.`,
+              },
+            });
             console.log('success', res.data.success);
             console.log('balance', balance);
           } else {

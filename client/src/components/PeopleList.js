@@ -98,7 +98,7 @@ export function SetPeopleList() {
             studentId: [prevInfo.id],
             content: `직업이 ${prevInfo.job}에서 ${findJob(
               job
-            )}으로 변경되었습니다. `,
+            )}으로 변경되었습니다.`,
           },
         });
       }

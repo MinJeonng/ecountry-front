@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-import '../styles/setting.scss';
 import axios from 'axios';
 
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
@@ -244,7 +243,7 @@ export function TaxLaw() {
                 return (
                   <div key={index}>
                     <div
-                      className={`display ${
+                      className={`display display2 ${
                         selectedTaxLawIndex === globalIndex
                           ? 'accordion-open'
                           : ''
@@ -318,52 +317,58 @@ export function TaxLaw() {
       </div>
 
       {isAddOpen && (
-        <form className="box-style">
-          <div className="reset">
-            <div className="set-title">세금명</div>
+        <div className="pc-wrap">
+          <form className="box-style">
+            <div className="reset">
+              <div className="set-title">세금명</div>
 
-            <img
-              className="resetBtn"
-              src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-              onClick={resetInputs}
-              alt="삭제"
+              <img
+                className="resetBtn"
+                src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                onClick={resetInputs}
+                alt="삭제"
+              />
+            </div>
+            <input
+              type="text"
+              className="set-input"
+              value={lawName}
+              onChange={(e) => setLawName(e.target.value)}
+              style={{ imeMode: 'active' }}
             />
-          </div>
-          <input
-            type="text"
-            className="set-input"
-            value={lawName}
-            onChange={(e) => setLawName(e.target.value)}
-            style={{ imeMode: 'active' }}
-          />
-          <div className="set-title">구분</div>
-          <select
-            className="set-input"
-            value={division}
-            onChange={(e) => setDivision(e.target.value)}
-          >
-            <option value="" disabled>
-              선택해주세요
-            </option>
-            {divisionList.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
+            <div className="set-title">구분</div>
+            <select
+              className="set-input"
+              value={division}
+              onChange={(e) => setDivision(e.target.value)}
+            >
+              <option value="" disabled>
+                선택해주세요
               </option>
-            ))}
-          </select>
-          <div className="set-title">세금</div>
-          <input
-            className="set-input"
-            type="number"
-            value={tax}
-            min={0}
-            onChange={(e) => setTax(e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, handleAddTaxLaw)}
-          />
-          <button className="blue-btn" type="button" onClick={handleAddTaxLaw}>
-            등록
-          </button>
-        </form>
+              {divisionList.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <div className="set-title">세금</div>
+            <input
+              className="set-input"
+              type="number"
+              value={tax}
+              min={0}
+              onChange={(e) => setTax(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, handleAddTaxLaw)}
+            />
+            <button
+              className="blue-btn"
+              type="button"
+              onClick={handleAddTaxLaw}
+            >
+              등록
+            </button>
+          </form>
+        </div>
       )}
     </div>
   );

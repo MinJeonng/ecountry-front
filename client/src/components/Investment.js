@@ -186,45 +186,44 @@ export function CheckInvestment() {
 
   return (
     <>
-      <div
-        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
-      ></div>
-      {products.length === 0 ? (
-        <p style={{ marginBottom: '20px', fontSize: '0.8rem' }}>
-          <div
-            style={{
-              color: '#666666',
-              padding: '4px 10px 4px 10px',
-              borderRadius: '8px',
-              marginBottom: '10px',
-            }}
-          >
-            투자 상품이 존재하지 않습니다.
-          </div>
-        </p>
-      ) : (
-        <>
-          {products.map((product, index) => (
+      <div className="pc-wrap">
+        <div
+          style={{
+            borderBottom: '2px solid #bacd92',
+            marginBottom: '10%',
+            paddingBottom: '15px',
+          }}
+        >
+          투자 상품 확인
+        </div>
+        {products.length === 0 ? (
+          <p style={{ marginBottom: '20px', fontSize: '0.8rem' }}>
             <div
-              key={index}
               style={{
-                border: '1px solid #777777',
-                borderRadius: '12px',
-                padding: '10px',
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-                marginBottom: '30px',
-              }}
-              onClick={() => {
-                handleProductClick(index);
-                getStatus(product.id);
+                color: '#666666',
+                padding: '4px 10px 4px 10px',
+                borderRadius: '8px',
+                marginBottom: '10px',
               }}
             >
+              투자 상품이 존재하지 않습니다.
+            </div>
+          </p>
+        ) : (
+          <>
+            {products.map((product, index) => (
               <div
+                key={index}
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
+                  border: '1px solid #777777',
+                  borderRadius: '12px',
+                  padding: '10px',
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                  marginBottom: '30px',
+                }}
+                onClick={() => {
+                  handleProductClick(index);
+                  getStatus(product.id);
                 }}
               >
                 <div
@@ -232,77 +231,86 @@ export function CheckInvestment() {
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <div
                     style={{
-                      backgroundColor: 'rgb(149 177 230)',
-                      width: '20px',
-                      height: '20px',
-                      textAlign: 'center',
-                      borderRadius: '8px',
-                      color: 'white',
                       display: 'flex',
-                      justifyContent: 'center',
+                      flexDirection: 'row',
                       alignItems: 'center',
-                      padding: 'auto',
                     }}
                   >
-                    {product.id}
+                    <div
+                      style={{
+                        backgroundColor: 'rgb(149 177 230)',
+                        width: '20px',
+                        height: '20px',
+                        textAlign: 'center',
+                        borderRadius: '8px',
+                        color: 'white',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: 'auto',
+                      }}
+                    >
+                      {product.id}
+                    </div>
+                    <div
+                      style={{
+                        color: '#6789CA',
+                        fontSize: '15px',
+                        marginLeft: '10px',
+                      }}
+                    >
+                      {product.name}
+                    </div>
                   </div>
-                  <div
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/icon-drop-down.png`}
                     style={{
-                      color: '#6789CA',
-                      fontSize: '15px',
-                      marginLeft: '10px',
+                      ...rotate180Styles[index],
+                      width: '10%',
                     }}
-                  >
-                    {product.name}
-                  </div>
-                </div>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/icon-drop-down.png`}
-                  style={{
-                    ...rotate180Styles[index],
-                    width: '10%',
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  color: '#777777',
-                  fontSize: '11px',
-                  marginTop: '10px',
-                }}
-              >
-                <div>최신 투자 정보</div>
-                <div>{product.info}</div>
-              </div>
-              {height[index].height === '300px' && (
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    maxWidth: '600px', // 원하는 최대 너비 설정
-                    maxHeight: '400px', // 원하는 최대 높이 설정
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    overflow: 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Line
-                    options={options}
-                    data={data}
-                    onClick={(e) => e.stopPropagation()}
                   />
                 </div>
-              )}
-            </div>
-          ))}
-        </>
-      )}
+                <div
+                  style={{
+                    color: '#777777',
+                    fontSize: '11px',
+                    marginTop: '10px',
+                  }}
+                >
+                  <div>최신 투자 정보</div>
+                  <div>{product.info}</div>
+                </div>
+                {height[index].height === '300px' && (
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      maxWidth: '600px', // 원하는 최대 너비 설정
+                      maxHeight: '400px', // 원하는 최대 높이 설정
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      overflow: 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Line
+                      options={options}
+                      data={data}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     </>
   );
 }

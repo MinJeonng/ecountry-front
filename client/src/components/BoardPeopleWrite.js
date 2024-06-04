@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GetTimeText } from '../hooks/Functions';
+import { GetTimeText, handleKeyDownNext } from '../hooks/Functions';
 import { ConfirmBtn } from './Btns';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -96,88 +96,101 @@ export function BoardPeopleWrite() {
   useEffect(() => {
     console.log(isSecret);
   }, [isSecret]);
+
+  const contents = useRef();
+
   return (
     <>
-      <ToastContainer />
-      {/* <div style={{ color: '#666666', fontWeight: 'bolder' }}>
+      <div className="pc-wrap">
+        <ToastContainer />
+        {/* <div style={{ color: '#666666', fontWeight: 'bolder' }}>
         신문고 글쓰기
       </div> */}
-      <form className="box-style">
-        <div
-          className="reset"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-          }}
-        >
-          {/* 뉴스 제목 */}
+        <form className="box-style">
           <div
-            style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
+            className="reset"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+            }}
           >
-            <p
-              align="right"
+            {/* 뉴스 제목 */}
+            <div
               style={{
+                borderBottom: '2px solid #bacd92',
                 marginBottom: '20px',
-                fontSize: '0.9rem',
-                color: '#666666',
               }}
             >
-              <label>
-                <input
-                  type="checkbox"
-                  checked={isSecret}
-                  onChange={handleIsSecret}
-                />
-                비밀글
-              </label>
-            </p>
-            <input
-              type="text"
-              placeholder="제목을 입력하세요."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              <p
+                align="right"
+                style={{
+                  marginBottom: '20px',
+                  fontSize: '0.9rem',
+                  color: '#666666',
+                }}
+              >
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={isSecret}
+                    onChange={handleIsSecret}
+                  />
+                  비밀글
+                </label>
+              </p>
+              <input
+                type="text"
+                placeholder="제목을 입력하세요."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                style={{
+                  padding: '10px',
+                  border: 'none',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  color: '#666666',
+                }}
+                onFocus={(e) => (e.target.style.outline = 'none')}
+                onBlur={(e) => (e.target.style.outline = 'none')}
+                onKeyDown={(e) => handleKeyDownNext(e, contents)}
+              />
+            </div>
+            {/* 뉴스 기사 */}
+            <div
               style={{
-                padding: '10px',
-                border: 'none',
-                width: '100%',
-                boxSizing: 'border-box',
-                color: '#666666',
+                borderBottom: '2px solid #bacd92',
+                marginBottom: '20px',
               }}
-              onFocus={(e) => (e.target.style.outline = 'none')}
-              onBlur={(e) => (e.target.style.outline = 'none')}
-            />
-          </div>
-          {/* 뉴스 기사 */}
-          <div
-            style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
-          >
-            <textarea
-              placeholder="제안하고자 하는 내용을 입력하세요."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              style={{
-                height: '200px',
-                padding: '10px',
-                resize: 'none',
-                border: 'none',
-                width: '100%',
-                boxSizing: 'border-box',
-                color: '#666666',
-              }}
-              onFocus={(e) => (e.target.style.outline = 'none')}
-              onBlur={(e) => (e.target.style.outline = 'none')}
-            />
-          </div>
+            >
+              <textarea
+                ref={contents}
+                placeholder="제안하고자 하는 내용을 입력하세요."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                style={{
+                  height: '200px',
+                  padding: '10px',
+                  resize: 'none',
+                  border: 'none',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  color: '#666666',
+                }}
+                onFocus={(e) => (e.target.style.outline = 'none')}
+                onBlur={(e) => (e.target.style.outline = 'none')}
+              />
+            </div>
 
-          {/* 저장 버튼 */}
-          <ConfirmBtn
-            btnName="글 등록"
-            backgroundColor="#bacd92"
-            onClick={handleWrite}
-          ></ConfirmBtn>
-        </div>
-      </form>
+            {/* 저장 버튼 */}
+            <ConfirmBtn
+              btnName="글 등록"
+              backgroundColor="#bacd92"
+              onClick={handleWrite}
+            ></ConfirmBtn>
+          </div>
+        </form>
+      </div>
     </>
   );
 }

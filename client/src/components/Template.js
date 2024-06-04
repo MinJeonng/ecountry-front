@@ -9,12 +9,12 @@ const BgTop = styled.div`
   }
 
   @media (min-width: 1160px) {
-    /* background: none; */
     display: none;
 
-    /* &.auth-page2 {
+    &.auth-page2 {
+      display: block;
       width: 250px;
-    } */
+    }
   }
 `;
 

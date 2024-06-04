@@ -186,7 +186,7 @@ export function CheckInvestment() {
 
   return (
     <>
-      <div className="pc-wrap">
+      <div className="student-wrap">
         <div
           style={{
             borderBottom: '2px solid #bacd92',

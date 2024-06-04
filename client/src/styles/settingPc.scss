@@ -47,12 +47,14 @@ $blue: #61759f;
       }
     }
   }
+  .student-wrap {
+    margin: 130px 100px 50px;
+  }
 
   .pc-wrap {
-    width: 100%;
-    margin: 80px 100px 0;
 
-    // margin: 80px 100px 50px;
+    margin: 80px 100px 50px;
+
 
     .title-wrap {
       display: flex;
@@ -317,7 +319,7 @@ $blue: #61759f;
 
   .reset {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
   }
 
@@ -397,14 +399,13 @@ $blue: #61759f;
     font-size: 12px;
   }
 
-  .group-wrap {
-    border-bottom: 1px solid #b3b3b3;
-    margin: 0 100px;
-
-    .group-header {
-      margin: 20px 0;
-      font-size: 14px;
-      font-weight: 800;
-    }
+  .group-header {
+    margin: 20px 0;
+    font-size: 14px;
+    font-weight: 800;
   }
+}
+.delete-img {
+  width: 16px;
+  height: 16px;
 }

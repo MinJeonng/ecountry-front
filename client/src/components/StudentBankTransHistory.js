@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getExpire } from '../hooks/Functions';
 
@@ -337,6 +337,7 @@ export function TransHistory() {
   const { id, accountId } = useParams();
   const [accounts, setAccounts] = useState([]);
   const [unit, setUnit] = useState('');
+  const navigate = useNavigate();
 
   const getUnit = async () => {
     try {
@@ -391,7 +392,7 @@ export function TransHistory() {
   return (
     <>
       <div className="pc-wrap">
-        <div className="navi-pre-btn">
+        <div className="navi-pre-btn2" onClick={() => navigate(-1)}>
           <img
             src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
             alt="뒤로가기"

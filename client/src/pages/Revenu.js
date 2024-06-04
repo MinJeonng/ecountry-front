@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Template from '../components/Template';
 import Revune from '../components/Revune';
 
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { ChatBotBtn, LoginBtn } from '../components/Btns';
-import { StudentHeader } from '../components/StudentHeader';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { authFunc, confirmCountry } from '../hooks/Functions';
@@ -33,11 +32,16 @@ export default function Revenu({ position }) {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{position}</PageHeader>}
+          childrenTop={
+            <>
+              <CommonMainDesktopHeader />
+              <PageHeader>{position}</PageHeader>
+            </>
+          }
           childrenBottom={
             <>
               {position === '국세청' && <Revune />}

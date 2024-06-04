@@ -258,7 +258,7 @@ export function SetPostWrite({ ...rest }) {
   return (
     <div>
       <ToastContainer />
-      <div className="pc-wrap">
+      <div className="student-wrap">
         <form className="box-style">
           <div
             className="reset"

@@ -6,11 +6,17 @@ import Template from '../components/Template';
 
 import '../styles/login.scss';
 import { PageHeader } from '../components/Headers';
-import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import {
+  handleKeyDown,
+  handleKeyDownNext,
+  setExpire,
+} from '../hooks/Functions';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 export default function Login() {
+  const [userAuth, setUserAuth] = useAuth();
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
   const navigate = useNavigate();
@@ -21,7 +27,8 @@ export default function Login() {
       .post(`${process.env.REACT_APP_HOST}/api/user/login`, { userId, pw })
       .then((res) => {
         if (res.data.success) {
-          localStorage.setItem('token', res.data.result.token);
+          setExpire(res.data.result.token);
+          setUserAuth(res.data.result.token);
           toast.success('환영합니다!', {
             autoClose: 1300,
           });

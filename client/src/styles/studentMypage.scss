@@ -99,24 +99,21 @@ $blue: #61759f;
     border: 1px solid #b9c0be;
     border-radius: 6px;
     padding: 20px;
-    height: 300px;
-    overflow-x: hidden;
-    overflow-y: scroll;
 
     .payStub-receipt-title {
       font-size: 16px;
       font-weight: 700;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .payStub-item {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       display: flex;
       flex-direction: column;
 
       .payStub-img {
         width: 16px;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
       }
 
       .payStub-item-title,

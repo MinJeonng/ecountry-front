@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { GetTimeText } from '../hooks/Functions';
+import { GetTimeText, getExpire } from '../hooks/Functions';
 
 const SideMenuBox = styled.div`
   position: fixed;
@@ -273,7 +273,7 @@ export function AlarmComponent({ func }) {
         method: 'GET',
         url: `${process.env.REACT_APP_HOST}/api/student/notice`,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
         },

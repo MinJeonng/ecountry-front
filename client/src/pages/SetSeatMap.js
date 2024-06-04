@@ -6,6 +6,7 @@ import Template from '../components/Template';
 import SeatMap from '../components/SeatMap';
 import { PageHeader } from '../components/Headers';
 import { ChatBotBtn } from '../components/Btns';
+import { getExpire } from '../hooks/Functions';
 
 export default function SetSeatMap() {
   const { id } = useParams();
@@ -65,7 +66,7 @@ export default function SetSeatMap() {
       headers: {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getExpire()}`,
       },
     });
     console.log('Students:', res.data.result);

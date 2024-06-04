@@ -6,8 +6,11 @@ import axios from 'axios';
 import { PageHeader } from '../components/Headers';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { setExpire } from '../hooks/Functions';
+import useAuth from '../hooks/useAuth';
 
 export default function StudentLogin() {
+  const [userAuth, setUserAuth] = useAuth();
   const { id } = useParams();
   const [rollNumber, setRollNumber] = useState();
   const [userId, setUserId] = useState('');
@@ -24,7 +27,8 @@ export default function StudentLogin() {
       data: { rollNumber, name: userId, pw },
     });
     if (res.data.success) {
-      localStorage.setItem('token', res.data.result.token);
+      setExpire(res.data.result.token);
+      setUserAuth(res.data.result.token);
       toast('환영합니다!');
       window.location.href = `/${id}/main`;
     } else {

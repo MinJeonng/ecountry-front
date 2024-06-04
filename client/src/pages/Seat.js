@@ -10,6 +10,7 @@ import StudentSeatMap from '../components/StudentSeatMap';
 import { PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
 import { ChatBotBtn } from '../components/Btns';
+import { getExpire } from '../hooks/Functions';
 
 // 자리배치도
 export function SetSeat() {
@@ -56,7 +57,7 @@ export function SetSeat() {
       headers: {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getExpire()}`,
       },
     });
     setStudentList(res.data.result);

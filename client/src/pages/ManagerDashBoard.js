@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { ChatBotBtn } from '../components/Btns';
 import { useEffect, useState } from 'react';
 import { ManagerHeader } from '../components/ManagerHeader';
+import { getExpire } from '../hooks/Functions';
 
 const Btns = styled.button`
   border-radius: 11px;
@@ -57,7 +58,7 @@ export default function ManagerDashBoard() {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (!getExpire()) {
       toast.error('로그인 후 이용 가능합니다.', { autoClose: 1300 });
       setTimeout(() => navigate('/login'), 1300);
     }

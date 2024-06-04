@@ -96,6 +96,7 @@ function CheckingAccount({ account, unit }) {
   const [depositUserName, setDepositUserName] = useState('');
   const [transferAmount, setTransferAmount] = useState(''); //이체금액
   const [transList, setTransList] = useState([]); //이체가능리스트
+  const [username, setUsername] = useState('');
   const [memo, setMemo] = useState('');
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const location = useLocation();
@@ -125,6 +126,15 @@ function CheckingAccount({ account, unit }) {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (transList?.length > 0) {
+      transList.forEach((data) => {
+        if (data.id == account.id) {
+          setUsername(data.name);
+        }
+      });
+    }
+  }, [transList]);
   useEffect(() => {
     transferList();
   }, []);
@@ -168,6 +178,30 @@ function CheckingAccount({ account, unit }) {
           if (res.data.success) {
             toast('이체가 완료되었습니다.', {
               autoClose: 1300,
+            });
+            const res2 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [account.id],
+                content: `${depositUserName}님에게 ${transferAmount}${unit.unit} 이체했습니다. `,
+              },
+            });
+            const res3 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [depositUser],
+                content: `${username}님이 ${transferAmount}${unit.unit} 이체했습니다. `,
+              },
             });
 
             // toast가 닫힌 직후 페이지를 새로고침

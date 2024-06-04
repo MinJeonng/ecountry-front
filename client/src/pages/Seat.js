@@ -188,7 +188,6 @@ export function SetSeat() {
                     <li>교실 내의 자리 배치를 설정하세요&#46;</li>
                   </ul>
                 </div>
-
                 <div className="seat-title">
                   <button
                     className={`seat-user ${showStudentMap ? 'active' : ''}`}

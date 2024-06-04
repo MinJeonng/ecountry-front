@@ -1,13 +1,16 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { getExpire } from './Functions';
+import { useDispatch } from 'react-redux';
+import { auth } from '../store/userInfoReducer';
 
 // props값으로 countryId를 전달하면 사용 가능 여부를 반환
-export default function useAuth(id) {
+export default function useAuth() {
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState(0);
-  const [available, setAvaiable] = useState(false);
 
-  const confirmAuth = async () => {
-    if (localStorage.getItem('token')) {
+  const confirmAuth = async (token) => {
+    if (getExpire()) {
       try {
         const res = await axios({
           method: 'GET',
@@ -15,50 +18,16 @@ export default function useAuth(id) {
           headers: {
             'Content-Type': `application/json`,
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token ? token : getExpire()}`,
           },
         });
-        // 토큰이 유효하지 않으면 localStorage 삭제
-        if (!res.data.success) {
-          localStorage.removeItem('token');
-        }
-        if (!res.data.result.isStudent) {
-          let result = res.data.result;
-          const res2 = await axios({
-            method: 'GET',
-            url: `${process.env.REACT_APP_HOST}/api/user`,
-            headers: {
-              'Content-Type': `application/json`,
-              'ngrok-skip-browser-warning': '69420',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          });
-          result.authority = false;
-          res2.data.result.forEach((country) => {
-            if (country.id == id) {
-              result.authority = true;
-            }
-          });
-          setUserInfo(result);
-        } else if (res.data.result.isStudent) {
-          let result = res.data.result;
-          const res3 = await axios({
-            method: 'GET',
-            url: `${process.env.REACT_APP_HOST}/api/user/info`,
-            headers: {
-              'Content-Type': `application/json`,
-              'ngrok-skip-browser-warning': '69420',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          });
-          result.authority = res3.data.result.countryId == id;
-          setUserInfo(result);
-        }
+        dispatch(auth(res.data.result));
+        setUserInfo(res.data.result);
       } catch {
         localStorage.removeItem('token');
       }
     } else {
-      setUserInfo({ id: null, isStudent: null, authority: null });
+      setUserInfo({ id: null, isStudent: null, countryList: null });
     }
   };
 

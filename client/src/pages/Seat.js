@@ -9,17 +9,24 @@ import SeatMap from '../components/SeatMap';
 import StudentSeatMap from '../components/StudentSeatMap';
 import { PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
-import { ChatBotBtn } from '../components/Btns';
+import { ChatBotBtn, LoginBtn } from '../components/Btns';
+import { authFunc, confirmCountry, getExpire } from '../hooks/Functions';
+import { useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 // 자리배치도
 export function SetSeat() {
   const { id } = useParams();
 
+  const [loginBtn, setLoginBtn] = useState(false);
+  const [isShow, setIsShow] = useState(false);
   const [columns, setColumns] = useState([]);
   const [studentList, setStudentList] = useState([]);
   const [showStudentMap, setShowStudentMap] = useState(true);
   const [isSeatMapVisible, setIsSeatMapVisible] = useState(false);
   const [seatList, setSeatList] = useState([]);
+
+  const userInfo = useSelector((state) => state.auth);
 
   const getSeat = async () => {
     const res = await axios({
@@ -56,7 +63,7 @@ export function SetSeat() {
       headers: {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getExpire()}`,
       },
     });
     setStudentList(res.data.result);
@@ -149,62 +156,76 @@ export function SetSeat() {
     setIsSeatMapVisible(!isSeatMapVisible);
   };
 
-  useEffect(() => {
-    console.log(seatList);
-  }, [seatList]);
-
-  useEffect(() => {
+  const mountFunc = () => {
     getSeat();
     getStudent();
     getStatus();
+    setIsShow(true);
+  };
+
+  useEffect(() => {
+    if (authFunc()) {
+      confirmCountry(id, userInfo, mountFunc, true);
+    } else {
+      setLoginBtn(true);
+    }
   }, []);
 
   return (
     <>
+      <ToastContainer />
+      {loginBtn && <LoginBtn />}
       <ManagerHeader />
-      <Template
-        isAuthPage2={true}
-        childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
-        childrenBottom={
-          <div>
-            <div className="pc-seat-top">
-              <div className="seat-title">
-                <button
-                  className={`seat-user ${showStudentMap ? 'active' : ''}`}
-                  onClick={() => setShowStudentMap(true)}
-                >
-                  사용자
-                </button>
-                <button
-                  className={`seat-owner ${!showStudentMap ? 'active' : ''}`}
-                  onClick={() => setShowStudentMap(false)}
-                >
-                  소유자
-                </button>
-              </div>
-
-              <StudentSeatMap
-                columns={columns}
-                seatlist={seatList}
-                changelist={changeList}
-                studentlist={studentList}
-                isuser={showStudentMap}
-              />
-
-              <button className="blue-btn" onClick={toggleEdit}>
-                자리 배치 수정
-              </button>
-              {isSeatMapVisible && (
-                <div className="seat-map-container">
-                  {/* 배치표 추가 */}
-                  <SeatMap columns={columns} />
+      {isShow && (
+        <Template
+          isAuthPage2={true}
+          childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
+          childrenBottom={
+            <div>
+              <div className="pc-seat-top">
+                <div className="seat-wrap ">
+                  <ul className="title-list">
+                    <li>교실 내의 자리 배치를 설정하세요&#46;</li>
+                  </ul>
                 </div>
-              )}
-              <ChatBotBtn />
+                <div className="seat-title">
+                  <button
+                    className={`seat-user ${showStudentMap ? 'active' : ''}`}
+                    onClick={() => setShowStudentMap(true)}
+                  >
+                    사용자
+                  </button>
+                  <button
+                    className={`seat-owner ${!showStudentMap ? 'active' : ''}`}
+                    onClick={() => setShowStudentMap(false)}
+                  >
+                    소유자
+                  </button>
+                </div>
+
+                <StudentSeatMap
+                  columns={columns}
+                  seatlist={seatList}
+                  changelist={changeList}
+                  studentlist={studentList}
+                  isuser={showStudentMap}
+                />
+
+                <button className="blue-btn" onClick={toggleEdit}>
+                  자리 배치 수정
+                </button>
+                {isSeatMapVisible && (
+                  <div className="seat-map-container">
+                    {/* 배치표 추가 */}
+                    <SeatMap columns={columns} />
+                  </div>
+                )}
+                <ChatBotBtn />
+              </div>
             </div>
-          </div>
-        }
-      />
+          }
+        />
+      )}
     </>
   );
 }

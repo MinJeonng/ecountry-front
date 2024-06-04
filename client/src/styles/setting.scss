@@ -189,6 +189,7 @@ $blue: #61759f;
 
   .studentInfo-input {
     @include select-common;
+    width: -webkit-fill-available;
   }
 
   // 자리 배치도
@@ -325,11 +326,8 @@ $blue: #61759f;
 }
 
 .non-law {
-  margin: 0 20px 0 0;
   color: #666666;
   font-size: 12px;
-  display: flex;
-  justify-content: space-between;
 }
 
 // 세법 관리

@@ -250,26 +250,61 @@ export const profileImageUpload = async (e, id, ref, func) => {
   }
 };
 
-export const confirmCountry = (id, userInfo, func) => {
-  if (userInfo.authority) {
+export const confirmCountry = (id, userInfo, func, onlyTeacher) => {
+  if (userInfo.countryList?.includes(Number(id))) {
+    if (onlyTeacher) {
+      if (userInfo.isStudent) {
+        errorMsg('선생님만 접근 가능한 페이지입니다.', `/${id}/main`);
+        return;
+      }
+    }
     if (func) {
       func();
     }
   } else {
-    toast.error('접근 권한이 없습니다.', { autoClose: 1300 });
     if (userInfo.isStudent) {
-      setTimeout(() => (document.location.href = `/${id}/login`), 1300);
+      errorMsg('접근 권한이 없습니다.', `/${id}/login`);
     } else {
-      setTimeout(() => (document.location.href = '/login'), 1300);
+      errorMsg('접근 권한이 없습니다.', `login`);
     }
   }
 };
 
 export const authFunc = () => {
-  if (localStorage.getItem('token')) {
+  if (getExpire()) {
     return true;
   } else {
     toast.error('로그인 후 이용 가능합니다.', { autoClose: 1300 });
+
     return false;
   }
+};
+
+export const setExpire = (token) => {
+  const obj = {
+    token,
+    expire: Date.now() + 43200 * 1000,
+  };
+  const objString = JSON.stringify(obj);
+  localStorage.setItem('token', objString);
+};
+
+export const getExpire = () => {
+  const objString = localStorage.getItem('token');
+  if (objString) {
+    const obj = JSON.parse(objString);
+    if (Date.now() > obj.expire) {
+      localStorage.removeItem('token');
+    } else {
+      return obj.token;
+    }
+  }
+  return null;
+};
+
+export const errorMsg = (msg, url) => {
+  toast.error(msg, { autoClose: 1300 });
+  setTimeout(() => {
+    document.location.href = url;
+  }, 1300);
 };

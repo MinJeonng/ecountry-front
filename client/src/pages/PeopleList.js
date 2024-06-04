@@ -8,26 +8,49 @@ import '../styles/_button_common.scss';
 import { PageHeader } from '../components/Headers';
 import { useParams } from 'react-router-dom';
 import { ManagerHeader } from '../components/ManagerHeader';
-import { ChatBotBtn } from '../components/Btns';
-
+import { ChatBotBtn, LoginBtn } from '../components/Btns';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { authFunc, confirmCountry } from '../hooks/Functions';
+import { ToastContainer } from 'react-toastify';
 
 export default function PeopleList({ position }) {
   const { id } = useParams();
+  const [loginBtn, setLoginBtn] = useState(false);
+  const [isShow, setIsShow] = useState(false);
+
+  const userInfo = useSelector((state) => state.auth);
+
+  const showItem = () => {
+    setIsShow(true);
+  };
+
+  useEffect(() => {
+    if (authFunc()) {
+      confirmCountry(id, userInfo, showItem, true);
+    } else {
+      setLoginBtn(true);
+    }
+  }, [userInfo]);
   return (
     <>
+      <ToastContainer />
       <ManagerHeader />
-      <Template
-        isAuthPage2={true}
-        childrenTop={
-          <PageHeader path={`/${id}/manager`}>{'국민 리스트'}</PageHeader>
-        }
-        childrenBottom={
-          <>
-            <SetPeopleList />
-            <ChatBotBtn />
-          </>
-        }
-      />
+      {loginBtn && <LoginBtn />}
+      {isShow && (
+        <Template
+          isAuthPage2={true}
+          childrenTop={
+            <PageHeader path={`/${id}/manager`}>{'국민 리스트'}</PageHeader>
+          }
+          childrenBottom={
+            <>
+              <SetPeopleList />
+              <ChatBotBtn />
+            </>
+          }
+        />
+      )}
     </>
   );
 }

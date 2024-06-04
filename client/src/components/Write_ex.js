@@ -13,6 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 import '../styles/setting.scss';
 import '../styles/test.scss';
+import { getExpire } from '../hooks/Functions';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -125,7 +126,7 @@ export function Practice({ placeholder, value, ...rest }) {
       method: 'POST',
       url: `${process.env.REACT_APP_HOST}/api/post/article`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getExpire()}`,
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
@@ -158,7 +159,7 @@ export function Practice({ placeholder, value, ...rest }) {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (getExpire()) {
       // setUser();
     } else {
       // alert('로그인 후 이용해주세요.');

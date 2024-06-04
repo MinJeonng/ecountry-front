@@ -5,7 +5,7 @@ import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
 
 import axios from 'axios';
-import { handleKeyDown } from '../hooks/Functions';
+import { getExpire, handleKeyDown } from '../hooks/Functions';
 
 export function AssemblyLawList() {
   const { id } = useParams();
@@ -40,7 +40,7 @@ export function AssemblyLawList() {
       data: { id: ruleId, rule: selectedDetail },
     });
     if (res.data.success) {
-      toast('규칙 수정이 완료되었습니다.');
+      toast.success('규칙 수정이 완료되었습니다.');
       getRules();
     }
   };
@@ -56,8 +56,24 @@ export function AssemblyLawList() {
       data: [{ countryId: id, rule: selectedDetail }],
     });
     if (res.data.success) {
-      toast.success('등록 완료되었습니다.', { autoClose: 1300 });
       getRules();
+      toast.success('법 등록이 완료되었습니다.', { autoClose: 1300 });
+      const res2 = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/student/notice/add/all/${id}`,
+        headers: {
+          Authorization: `Bearer ${getExpire()}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: {
+          content: `${selectedDetail} 법이 신규 생성되었습니다.`,
+        },
+      });
+    } else {
+      toast.error('법 생성에 실패했습니다. 다시 시도해주세요.', {
+        autoClose: 1300,
+      });
     }
   };
 
@@ -178,33 +194,33 @@ export function AssemblyLawList() {
                     <Arrow stroke="#ddd" className="accArrBtn" />
                   </div>
                   {isAccordionOpen && selectedIndex === index && (
-                    <form className="box-style">
+                    <div className="box-style">
                       <div className="reset">
                         <div className="set-title">{index + 1}항</div>
-                        <img
-                          className="deleteBtn"
-                          src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                          onClick={(e) => deleteBtn(e, index + 1, law.id)}
-                          alt="삭제"
-                        />
-                        <input
-                          className="set-input"
-                          type="text"
-                          value={selectedDetail}
-                          onChange={(e) => {
-                            setSelectedDetail(e.target.value);
-                          }}
-                        />
-                        <ConfirmBtn
-                          onClick={() => {
-                            handleCloseAccordion();
-                            updateRule(law.id);
-                          }}
-                          btnName="업데이트"
-                          backgroundColor="#61759f"
-                        ></ConfirmBtn>
                       </div>
-                    </form>
+                      <img
+                        className="deleteBtn"
+                        src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                        onClick={(e) => deleteBtn(e, index + 1, law.id)}
+                        alt="삭제"
+                      />
+                      <input
+                        className="set-input"
+                        type="text"
+                        value={selectedDetail}
+                        onChange={(e) => {
+                          setSelectedDetail(e.target.value);
+                        }}
+                      />
+                      <ConfirmBtn
+                        onClick={() => {
+                          handleCloseAccordion();
+                          updateRule(law.id);
+                        }}
+                        btnName="업데이트"
+                        backgroundColor="#61759f"
+                      ></ConfirmBtn>
+                    </div>
                   )}
                 </div>
               ))}

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { authFunc } from '../hooks/Functions';
+import { authFunc, getExpire } from '../hooks/Functions';
 
 const MenuContainer = styled.div`
   border: 1px solid #a7d2e4;
@@ -23,6 +23,7 @@ const MenuContainer = styled.div`
 export function StudentPayStub() {
   const { id } = useParams();
 
+  const [unit, setUnit] = useState('');
   const [paysStub, setPaysStub] = useState([]);
 
   const getPay = async () => {
@@ -30,7 +31,7 @@ export function StudentPayStub() {
       method: 'GET',
       url: `${process.env.REACT_APP_HOST}/api/bank/paystub`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getExpire()}`,
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },
@@ -81,7 +82,10 @@ export function StudentPayStub() {
 
           <div className="payStub-total">
             <div className="total">실수령액</div>
-            <div className="total-pay">{totalAmount()}</div>
+            <div className="total-pay">
+              {totalAmount()}
+              {}
+            </div>
           </div>
         </div>
       ) : (

@@ -13,6 +13,7 @@ import '../styles/setting.scss';
 import { ConfirmBtn } from './Btns';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { getExpire } from '../hooks/Functions';
 
 const MyAccount = styled.div`
   border: none;
@@ -459,7 +460,7 @@ export function OwnAccount() {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${getExpire()}`,
           },
         });
         if (res.data.success) {
@@ -491,22 +492,26 @@ export function OwnAccount() {
   }, []);
   return (
     <>
-      {accounts.map((account) => (
-        <div key={account.id}>
-          {account.division === '입출금통장' && (
-            <CheckingAccount account={account} unit={unit} />
-          )}
-          {location.pathname === `/${id}/bank` &&
-            account.division === '적금통장' && (
-              <SavingAccount
-                account={account}
-                unit={unit}
-                withdrawId={withdrawId}
-                withdrawBalance={withdrawBalance}
-              />
+
+      <div className="pc-wrap">
+        {accounts.map((account) => (
+          <div key={account.id}>
+            {account.division === '입출금통장' && (
+              <CheckingAccount account={account} unit={unit} />
             )}
-        </div>
-      ))}
+            {location.pathname === `/${id}/bank` &&
+              account.division === '적금통장' && (
+                <SavingAccount
+                  account={account}
+                  unit={unit}
+                  withdrawId={withdrawId}
+                  withdrawBalance={withdrawBalance}
+                />
+              )}
+          </div>
+        ))}
+      </div>
+
     </>
   );
 }

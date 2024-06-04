@@ -5,17 +5,20 @@ import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setStudentInfoList } from '../store/studentInfoReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { storage } from '../config/Firebase';
 import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
 import {
+  authFunc,
   chatBotList,
   confirmCountry,
+  getExpire,
   profileImageUpload,
 } from '../hooks/Functions';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../store';
 import { persistor } from '../';
+import { auth } from '../store/userInfoReducer';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -129,12 +132,16 @@ export function MainProfile() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useAuth(id);
   const fileInputRef = useRef(null);
+
   const [uploadedImageUrl, setUploadedImageUrl] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
   );
-  const [selectedFile, setSelectedFile] = useState(null);
   const [name, setName] = useState('');
+
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  const userInfo = useSelector((state) => state.auth);
+
 
   //정보 불러오기
   const getInfo = async () => {
@@ -145,7 +152,7 @@ export function MainProfile() {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
         },
       });
 
@@ -174,7 +181,7 @@ export function MainProfile() {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          // Authorization: `Bearer ${localStorage.getItem('token')}`,
+          // Authorization: `Bearer ${getExpire()}`,
         },
         data: {
           id: userInfo.id,
@@ -199,12 +206,8 @@ export function MainProfile() {
   };
 
   useEffect(() => {
-    setUserInfo();
-  }, []);
-
-  useEffect(() => {
     if (userInfo) {
-      confirmCountry(id, userInfo, getInfo);
+      getInfo();
     }
   }, [userInfo]);
 
@@ -290,7 +293,7 @@ export function GetName() {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
         },
       });
 
@@ -316,10 +319,10 @@ export function GetName() {
     if (!window.confirm('로그아웃 하시겠습니까?')) {
       return;
     }
-
+    dispatch(auth(null));
     dispatch({ type: 'LOGOUT' });
     await persistor.purge();
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate(`/${id}/login`, { replace: true });
   };
 
@@ -327,10 +330,7 @@ export function GetName() {
     navigate(`/${id}/manager`);
   };
 
-  useEffect(() => {
-    setUserInfo();
-    console.log('setUserInfo');
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (userInfo) {

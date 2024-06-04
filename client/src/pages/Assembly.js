@@ -4,7 +4,6 @@ import { PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
 import { ChatBotBtn } from '../components/Btns';
 
-
 //국회
 export function SetAssembly({ position }) {
   return (

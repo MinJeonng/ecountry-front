@@ -81,7 +81,8 @@ $blue: #61759f;
     display: none;
   }
 
-  .pc-background {
+  .pc-background,
+  .pc-background-log {
     display: flex;
     align-items: center;
     height: 100vh;
@@ -116,6 +117,7 @@ $blue: #61759f;
         display: flex;
         flex-direction: column;
         width: 300px;
+        margin: 20px;
       }
 
       .pc-info {
@@ -123,7 +125,7 @@ $blue: #61759f;
         flex-direction: column;
         align-items: center;
         margin: 30px 0;
-        width: 400px;
+        width: 480px;
 
         .pc-info1 {
           font-size: 20px;
@@ -161,19 +163,7 @@ $blue: #61759f;
   /* NationBuilding */
 
   .background2 {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    .logo-wrap {
-      display: flex;
-      flex-direction: column;
-      width: 300px;
-      margin: 30px 0;
-    }
+    display: none;
   }
 
   .button-wrap2 {

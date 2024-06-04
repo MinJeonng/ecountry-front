@@ -181,59 +181,58 @@ export default function SalaryTeller() {
       <ToastContainer />
 
       {/* <div className="salary-title">월급 지급</div> */}
-      <div className="student-wrap">
-        <form className="box-style">
-          <div className="set-title">예금주</div>
-          <select
-            id="name"
-            className="set-input"
-            value={depositUser}
-            onChange={(e) => {
-              const selectedStudent = studentList.find(
-                (student) => student.id === Number(e.target.value)
-              );
 
-              handleSelectStudent(selectedStudent);
-            }}
-          >
-            <option value="" disabled style={{ color: '#a5a5a5' }}>
-              예금주를 선택하세요
-            </option>
-            {studentList.map((student) => {
-              return (
-                <option key={student.id} value={student.id}>
-                  {student.rollNumber}번 {student.name}
-                </option>
-              );
-            })}
-          </select>
-          <div className="set-title">이체 금액</div>
-          <div className="container">
-            <input
-              className="set-input"
-              type="number"
-              min="0"
-              value={transferSalary}
-              onChange={(e) => setTransferSalary(e.target.value)}
-            />
-            {/* {unit.unit} */}
-            <span className="unit">{unit.unit}</span>
-          </div>
-          <div className="set-title">메모(필요 시 입력하세요)</div>
+      <form className="box-style">
+        <div className="set-title">예금주</div>
+        <select
+          id="name"
+          className="set-input"
+          value={depositUser}
+          onChange={(e) => {
+            const selectedStudent = studentList.find(
+              (student) => student.id === Number(e.target.value)
+            );
+
+            handleSelectStudent(selectedStudent);
+          }}
+        >
+          <option value="" disabled style={{ color: '#a5a5a5' }}>
+            예금주를 선택하세요
+          </option>
+          {studentList.map((student) => {
+            return (
+              <option key={student.id} value={student.id}>
+                {student.rollNumber}번 {student.name}
+              </option>
+            );
+          })}
+        </select>
+        <div className="set-title">이체 금액</div>
+        <div className="container">
           <input
             className="set-input"
-            type="text"
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
+            type="number"
+            min="0"
+            value={transferSalary}
+            onChange={(e) => setTransferSalary(e.target.value)}
           />
-          <ConfirmBtn
-            onClick={PaymentSalary}
-            btnName="이체"
-            width="100%"
-            backgroundColor="#61759f"
-          ></ConfirmBtn>
-        </form>
-      </div>
+          {/* {unit.unit} */}
+          <span className="unit">{unit.unit}</span>
+        </div>
+        <div className="set-title">메모(필요 시 입력하세요)</div>
+        <input
+          className="set-input"
+          type="text"
+          value={memo}
+          onChange={(e) => setMemo(e.target.value)}
+        />
+        <ConfirmBtn
+          onClick={PaymentSalary}
+          btnName="이체"
+          width="100%"
+          backgroundColor="#61759f"
+        ></ConfirmBtn>
+      </form>
     </>
   );
 }

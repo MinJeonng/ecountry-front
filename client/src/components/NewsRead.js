@@ -39,7 +39,7 @@ export function SetNewsRead({ auth }) {
         setWriteTime(GetTimeText(result.createdAt));
         setWriter(result.writerName);
       } else {
-        toast('유효하지 않은 접근입니다.');
+        toast.error('유효하지 않은 접근입니다.', { autoClose: 1300 });
       }
     } catch {
       toast('해당 뉴스를 불러올수 없습니다.');

@@ -32,8 +32,10 @@ const PcContainer = styled.div`
     width: 100%;
   }
 `;
-const Left = styled.div``;
-const Right = styled.div``;
+const Block = styled.div`
+  width: 50%;
+  height: 30%;
+`;
 
 export function CommonMain() {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);

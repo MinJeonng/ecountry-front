@@ -5,12 +5,12 @@ import { MainProfile } from '../components/MainProfile';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-// import '..styles/toast.css';
 import '../styles/manager_dash.scss';
 
 import { MainDashboard } from '../components/ManagerDashboard';
 import styled from 'styled-components';
 import { ChatBotBtn } from '../components/Btns';
+import { useEffect } from 'react';
 
 const Btns = styled.button`
   border-radius: 11px;
@@ -32,7 +32,6 @@ const Btns = styled.button`
 `;
 
 export default function ManagerDashBoard() {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -47,12 +46,19 @@ export default function ManagerDashBoard() {
     navigate(`/countryList`);
   };
 
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      toast.error('로그인 후 이용 가능합니다.', { autoClose: 1300 });
+      setTimeout(() => navigate('/login'), 1300);
+    }
+  }, []);
+
   return (
     <>
+      <ToastContainer />
       <Template
         childrenTop={
           <>
-            <ToastContainer />
             <div className="managerInfo">
               <div className="InfoPart1">
                 <div className="MainProfileBox">

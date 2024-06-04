@@ -14,7 +14,7 @@ import {
   seatRentalFee,
   Fine,
 } from '../store/settingReducer';
-import { toast, ToastContainer } from 'react-toastify';
+import { CloseButton, toast, ToastContainer } from 'react-toastify';
 import Loading from './Loading';
 
 import '../styles/_input_common.scss';
@@ -402,36 +402,42 @@ export function Setting3() {
   };
   const nextSetting = () => {
     if (selectedFile) {
+      if (studentInfoState.studentList.length === 0) {
+        toast.error('업로드 버튼을 눌러주세요.', { autoClose: 1300 });
+        return;
+      }
+
       navigate('/setting/seatingMap');
-      const newInfo = [];
-      attendees.forEach((data) => {
-        newInfo.push({
-          password,
-          attendanceNumber: data.attendanceNumber,
-          name: data.name,
-        });
-      });
-      dispatch(
-        studentInfo({
-          studentList: newInfo,
-        })
-      );
     } else {
-      if (password.length === 4) {
-        if (attendees.length > 0) {
-          navigate('/setting/seatingMap');
-          dispatch(
-            studentInfo({
-              password: password,
-              studentList: attendees,
-            })
-          );
-        } else {
-          toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
-        }
+      if (attendees.some((student) => student.password === false)) {
+        return toast.error('학생정보를 모두 입력해주세요.', {
+          autoClose: 1300,
+        });
+      }
+
+      // if (password.length === 4) {
+      if (attendees.length > 0) {
+        const newInfo = [];
+        attendees.forEach((data) => {
+          newInfo.push({
+            password: data.password,
+            attendanceNumber: data.attendanceNumber,
+            name: data.name,
+          });
+        });
+        dispatch(
+          studentInfo({
+            password,
+            studentList: newInfo,
+          })
+        );
+        navigate('/setting/seatingMap');
       } else {
         toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
       }
+      // } else {
+      //   toast.error('학생정보를 모두 입력하세요', { autoClose: 1300 });
+      // }
     }
   };
 
@@ -441,7 +447,7 @@ export function Setting3() {
     }
     if (checkPassword) {
       if (attendanceNumber && name) {
-        setAttendees([...attendees, { attendanceNumber, name }]);
+        setAttendees([...attendees, { attendanceNumber, name, password }]);
         setAttendanceNumber('');
         setName('');
       } else {
@@ -545,6 +551,7 @@ export function Setting3() {
       console.log(attendees);
       dispatch(
         studentInfo({
+          password: null,
           studentList: [...attendees],
         })
       );
@@ -591,6 +598,9 @@ export function Setting3() {
                     각각의 비밀번호는 국민 개인 계정에서 변경가능하며, 관리자
                     페이지에서 재설정 가능합니다.
                   </li>
+                  <li>
+                    직접 입력시, 국민들의 비밀번호는 하나의 값으로 통일됩니다.
+                  </li>
                 </ul>
                 <input
                   className="set-input"
@@ -602,7 +612,9 @@ export function Setting3() {
                     if (val.length <= 4) {
                       setPassword(val);
                     } else {
-                      toast.error('비밀번호는 4자리로 설정해주세요.');
+                      toast.error('비밀번호는 4자리로 설정해주세요.', {
+                        autoClose: 1300,
+                      });
                     }
                   }}
                   onKeyDown={(e) => handleKeyDown(e, handleCheckPassword)}
@@ -917,7 +929,7 @@ export function Setting5() {
   const headcountRef = useRef(null);
   const standardRef = useRef(null);
 
-  console.log(jobsDisplay);
+  // console.log(jobsDisplay);
   useEffect(() => {
     setJobsDisplay(jobListState?.jobsDisplay);
   }, [jobListState]);
@@ -951,6 +963,11 @@ export function Setting5() {
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
   const nextSetting = () => {
+    if (jobsDisplay.length === 0) {
+      toast.error('최소 하나의 값을 입력해주세요.', { autoClose: 1300 });
+      return;
+    }
+    console.log(jobsDisplay);
     navigate('/setting/law');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
@@ -999,7 +1016,6 @@ export function Setting5() {
 
     // 모든 입력값이 유효한 경우
     if (selectedIndex !== null) {
-      console.log('first');
       // 이미 목록에 있는 직업을 업데이트
       const updatedJobs = [...jobsDisplay];
       updatedJobs[selectedIndex] = {
@@ -1379,20 +1395,14 @@ export function Setting5() {
           </form>
         )}
 
-        <form>
-          <div className="navi-btn">
-            <button
-              className="next-button"
-              type="submit"
-              onClick={beforeSetting}
-            >
-              이전
-            </button>
-            <button className="next-button" type="submit" onClick={nextSetting}>
-              다음
-            </button>
-          </div>
-        </form>
+        <div className="navi-btn">
+          <button className="next-button" type="submit" onClick={beforeSetting}>
+            이전
+          </button>
+          <button className="next-button" type="submit" onClick={nextSetting}>
+            다음
+          </button>
+        </div>
       </div>
     </>
   );
@@ -1423,13 +1433,19 @@ export function Setting6() {
       navigate('/setting/taxLaw');
       dispatch(basicLaw({ basicLaw: laws }));
     } else {
-      toast.error('기본법을 제정하세요', { autoClose: 1300 });
+      toast.error('최소 하나의 기본법을 제정하세요', { autoClose: 1300 });
       return;
     }
   };
 
   // 법 추가
   const handleAddLaw = () => {
+    if (!detail) {
+      toast.error('값을 입력해주세요', {
+        autoClose: 1300,
+      });
+      return;
+    }
     if (detail.trim() !== '') {
       setLaws([...laws, { detail }]);
       setDetail('');
@@ -1472,96 +1488,102 @@ export function Setting6() {
   };
 
   return (
-    <div className="setting-wrap">
+    <>
       <ToastContainer />
+      <div className="setting-wrap">
+        <ul className="title-list">
+          <li>국가에 필수인 기본법을 제정하세요&#46;</li>
+        </ul>
 
-      <ul className="title-list">
-        <li>국가에 필수인 기본법을 제정하세요&#46;</li>
-      </ul>
-
-      <div className="newsInfo">
-        {laws.map((law, index) => (
-          <div key={index}>
-            <div
-              className={`display ${
-                isAccordionOpen && selectedIndex === index
-                  ? 'accordion-open'
-                  : ''
-              } ${selectedIndex === index ? 'selected' : ''}`}
-              key={index}
-              onClick={() => {
-                handleEditLaw(index);
-              }}
-              style={{ fontSize: '14px', color: '#666666' }}
-            >
-              <div className="law-count">{index + 1}항.</div>
-              <div className="law-detail">{law.detail}</div>
-              <Arrow stroke="#ddd" className="accArrBtn" />
-            </div>
-            {isAccordionOpen && selectedIndex === index && (
-              <form className="box-style">
-                <div className="reset">
-                  <div className="set-title">{index + 1}항</div>
-                  <img
-                    className="delete-btn"
-                    src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteLaw(index);
-                    }}
-                  />
+        <div className="newsInfo">
+          {laws.map((law, index) => (
+            <div key={index}>
+              <div
+                className={`display ${
+                  isAccordionOpen && selectedIndex === index
+                    ? 'accordion-open'
+                    : ''
+                } ${selectedIndex === index ? 'selected' : ''}`}
+                key={index}
+                onClick={() => {
+                  handleEditLaw(index);
+                }}
+                style={{ fontSize: '14px', color: '#666666' }}
+              >
+                <div className="law-count">
+                  {index + 1}항. {law.detail}
                 </div>
-                <input
-                  className="law-input"
-                  type="text"
-                  placeholder="기본 법을 입력해주세요"
-                  value={detail}
-                  onChange={(e) => setDetail(e.target.value)}
-                  style={{
-                    imeMode: 'active',
-                    fontSize: '14px',
-                    color: '#666666',
-                  }}
-                  onKeyDown={(e) => handleKeyDown(e, updateLaw)}
-                />
-                <button className="edit-btn" type="button" onClick={updateLaw}>
-                  수정
-                </button>
-              </form>
-            )}
-          </div>
-        ))}
-      </div>
-      {isAddOpen && (
-        <div className="box-style">
-          <div className="reset"></div>
-          <div className="set-title">{laws.length + 1}항</div>
-          <input
-            className="law-input"
-            type="text"
-            placeholder="내용"
-            value={detail}
-            onChange={(e) => setDetail(e.target.value)}
-            style={{ imeMode: 'active', fontSize: '14px', color: '#666666' }}
-            onKeyDown={(e) => handleKeyDown(e, handleAddLaw)}
-          />
-          <ConfirmBtn
-            onClick={handleAddLaw}
-            btnName="제정하기"
-            backgroundColor="#61759f"
-          ></ConfirmBtn>
+                <Arrow stroke="#ddd" className="accArrBtn" />
+              </div>
+              {isAccordionOpen && selectedIndex === index && (
+                <form className="box-style">
+                  <div className="reset">
+                    <div className="set-title">{index + 1}항</div>
+                    <img
+                      className="delete-btn"
+                      src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteLaw(index);
+                      }}
+                    />
+                  </div>
+                  <input
+                    className="law-input"
+                    type="text"
+                    placeholder="기본 법을 입력해주세요"
+                    value={detail}
+                    onChange={(e) => setDetail(e.target.value)}
+                    style={{
+                      imeMode: 'active',
+                      fontSize: '14px',
+                      color: '#666666',
+                    }}
+                    onKeyDown={(e) => handleKeyDown(e, updateLaw)}
+                  />
+                  <button
+                    className="edit-btn"
+                    type="button"
+                    onClick={updateLaw}
+                  >
+                    수정
+                  </button>
+                </form>
+              )}
+            </div>
+          ))}
         </div>
-      )}
+        {isAddOpen && (
+          <div className="box-style">
+            <div className="reset"></div>
+            <div className="set-title">{laws.length + 1}항</div>
+            <input
+              className="law-input"
+              type="text"
+              placeholder="내용"
+              value={detail}
+              onChange={(e) => setDetail(e.target.value)}
+              style={{ imeMode: 'active', fontSize: '14px', color: '#666666' }}
+              onKeyDown={(e) => handleKeyDown(e, handleAddLaw)}
+            />
+            <ConfirmBtn
+              onClick={handleAddLaw}
+              btnName="제정하기"
+              backgroundColor="#61759f"
+            ></ConfirmBtn>
+          </div>
+        )}
 
-      <div className="navi-btn">
-        <button className="next-button" onClick={beforeSetting}>
-          이전
-        </button>
-        <button className="next-button" onClick={nextSetting}>
-          다음
-        </button>
+        <div className="navi-btn">
+          <button className="next-button" onClick={beforeSetting}>
+            이전
+          </button>
+          <button className="next-button" onClick={nextSetting}>
+            다음
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 //Setting7 - 세법 설정 (0/1)
@@ -1586,7 +1608,6 @@ export function Setting7() {
   ];
 
   const taxLawState = useSelector((state) => state.setting7);
-
   const priceRef = useRef(null);
 
   useEffect(() => {
@@ -1636,6 +1657,11 @@ export function Setting7() {
   };
 
   const addTaxLaw = () => {
+    if (!lawNameValue || !rateValue || !selectedUnit) {
+      toast.error('모든 값을 입력해주세요', { autoClose: 1300 });
+      return;
+    }
+    console.log(taxLawState);
     const newTaxLaw = isCustomUnit ? customUnit : selectedUnit;
     if (newTaxLaw === '') return;
     if (selectedIndex !== null) {
@@ -1678,14 +1704,15 @@ export function Setting7() {
       setSelectedUnit('');
       setIsAccordionOpen(false);
       setIsAddOpen(true);
+    } else {
+      setCustomUnit(taxLaw.label);
+      setSelectedUnit(taxLaw.label);
+      setRateValue(taxLaw.rate);
+      setLawNameValue(taxLaw.name);
+      setSelectedIndex(index);
+      setIsAccordionOpen(true);
+      setIsAddOpen(false);
     }
-    setCustomUnit(taxLaw.label);
-    setSelectedUnit(taxLaw.label);
-    setRateValue(taxLaw.rate);
-    setLawNameValue(taxLaw.name);
-    setSelectedIndex(index);
-    setIsAccordionOpen(true);
-    setIsAddOpen(false);
   };
   const deleteBtn = (index) => (e) => {
     e.stopPropagation(); // 이벤트 버블링 방지
@@ -1700,6 +1727,7 @@ export function Setting7() {
   };
   return (
     <div className="setting-wrap">
+      <ToastContainer />
       <ul className="title-list">
         <li>국가에 필수인 세법을 제정하세요&#46;</li>
         <li>부가 단위는 세율을 계산할 시 사용됩니다&#46;</li>
@@ -1844,16 +1872,14 @@ export function Setting7() {
         </form>
       )}
 
-      <form>
-        <div className="navi-btn">
-          <button className="next-button" type="submit" onClick={beforeSetting}>
-            이전
-          </button>
-          <button className="next-button" type="submit" onClick={nextSetting}>
-            다음
-          </button>
-        </div>
-      </form>
+      <div className="navi-btn">
+        <button className="next-button" type="submit" onClick={beforeSetting}>
+          이전
+        </button>
+        <button className="next-button" type="submit" onClick={nextSetting}>
+          다음
+        </button>
+      </div>
     </div>
   );
 }
@@ -1883,6 +1909,12 @@ export function Setting8() {
     );
   };
   const nextSetting = () => {
+    if (!fee) {
+      toast.error('금액을 입력해주세요', {
+        autoClose: 1300,
+      });
+      return;
+    }
     navigate('/setting/fine');
     if (taxName === null) {
       setTaxName('자리임대료');
@@ -1895,60 +1927,67 @@ export function Setting8() {
     );
   };
   return (
-    <div className="setting-wrap">
-      <ul className="title-list">
-        <li>자리 임대료를 설정하세요&#46;</li>
-        <li>월마다 부과됩니다&#46;</li>
-      </ul>
+    <>
+      <ToastContainer />
+      <div className="setting-wrap">
+        <ul className="title-list">
+          <li>자리 임대료를 설정하세요&#46;</li>
+          <li>월마다 부과됩니다&#46;</li>
+          <li>
+            자리 임대료 이름을 변경할 수 있습니다. <br />
+            (따로 설정하지 않을 시, '자리 임대료' 이름으로 설정됩니다.)
+          </li>
+        </ul>
 
-      <form className="box-style">
-        <div className="set-country">
-          <div className="set-country-title set-title">세금 명</div>
-          <input
-            className="set-country-detail"
-            type="text"
-            value={taxName}
-            onChange={(e) => {
-              setTaxName(e.target.value);
-            }}
-            placeholder="자리임대료"
-            style={{ imeMode: 'active' }}
-            onKeyDown={(e) => handleKeyDownNext(e, taxPrice)}
-          />
+        <form className="box-style">
+          <div className="set-country">
+            <div className="set-country-title set-title">세금 명</div>
+            <input
+              className="set-country-detail"
+              type="text"
+              value={taxName}
+              onChange={(e) => {
+                setTaxName(e.target.value);
+              }}
+              placeholder="자리임대료"
+              style={{ imeMode: 'active' }}
+              onKeyDown={(e) => handleKeyDownNext(e, taxPrice)}
+            />
+          </div>
+          <div className="set-country">
+            <div className="set-country-title set-title">금액</div>
+            <input
+              ref={taxPrice}
+              className="set-country-detail"
+              type="number"
+              value={fee}
+              min="0"
+              onChange={(e) => {
+                setFee(e.target.value);
+              }}
+              onKeyDown={(e) => handleKeyDown(e, nextSetting)}
+            />
+          </div>
+          <div className="set-country">
+            <div className="set-country-title set-title">부가 단위</div>
+            <input
+              className="set-country-detail"
+              type="text"
+              value={moneyUnit}
+              disabled
+            />
+          </div>
+        </form>
+        <div className="navi-btn">
+          <button className="next-button" onClick={beforeSetting}>
+            이전
+          </button>
+          <button className="next-button" onClick={nextSetting}>
+            다음
+          </button>
         </div>
-        <div className="set-country">
-          <div className="set-country-title set-title">금액</div>
-          <input
-            ref={taxPrice}
-            className="set-country-detail"
-            type="number"
-            value={fee}
-            min="0"
-            onChange={(e) => {
-              setFee(e.target.value);
-            }}
-            onKeyDown={(e) => handleKeyDown(e, nextSetting)}
-          />
-        </div>
-        <div className="set-country">
-          <div className="set-country-title set-title">부가 단위</div>
-          <input
-            className="set-country-detail"
-            type="text"
-            value={moneyUnit}
-            disabled
-          />
-        </div>
-      </form>
-      <div className="navi-btn">
-        <button className="next-button" onClick={beforeSetting}>
-          이전
-        </button>
-        <button className="next-button" onClick={nextSetting}>
-          다음
-        </button>
       </div>
-    </div>
+    </>
   );
 }
 //Setting9 - 과태료 설정 (3)
@@ -1978,7 +2017,9 @@ export function Setting9() {
 
   const handleAddFine = () => {
     if (!reasonFine || !fineValue) {
-      toast('모든 값을 입력해주세요');
+      toast.error('모든 값을 입력해주세요', {
+        autoClose: 1300,
+      });
       return;
     }
     if (selectedIndex !== null) {
@@ -2035,145 +2076,148 @@ export function Setting9() {
   };
 
   return (
-    <div className="setting-wrap">
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div>
-          <ul className="title-list">
-            <li>국가에 필수인 과태료를 제정하세요&#46;</li>
-            <li>특수 상황에만 부과됩니다&#46;</li>
-          </ul>
-
+    <>
+      <ToastContainer />
+      <div className="setting-wrap">
+        {isLoading ? (
+          <Loading />
+        ) : (
           <div>
-            {fineList.map((fine, index) => (
-              <div key={index}>
-                <div
-                  className={`display ${
-                    isAccordionOpen && selectedIndex === index
-                      ? 'accordion-open'
-                      : ''
-                  } ${selectedIndex === index ? 'selected' : ''}`}
-                  onClick={() => selectInput(fine, index)}
-                  style={{ fontSize: '13px', color: '#666666' }}
-                >
-                  {fine.reason} {fine.fine}
-                  {moneyUnit}
-                  <Arrow stroke="#ddd" className="accArrBtn" />
+            <ul className="title-list">
+              <li>국가에 필수인 과태료를 제정하세요&#46;</li>
+              <li>특수 상황에만 부과됩니다&#46;</li>
+            </ul>
+
+            <div>
+              {fineList.map((fine, index) => (
+                <div key={index}>
+                  <div
+                    className={`display ${
+                      isAccordionOpen && selectedIndex === index
+                        ? 'accordion-open'
+                        : ''
+                    } ${selectedIndex === index ? 'selected' : ''}`}
+                    onClick={() => selectInput(fine, index)}
+                    style={{ fontSize: '13px', color: '#666666' }}
+                  >
+                    {fine.reason} {fine.fine}
+                    {moneyUnit}
+                    <Arrow stroke="#ddd" className="accArrBtn" />
+                  </div>
+                  {isAccordionOpen && selectedIndex === index && (
+                    <form className="box-style">
+                      <img
+                        className="deleteBtn"
+                        src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                        onClick={deleteBtn(index)}
+                      />
+                      <div className="reset">
+                        <div className="set-title">과태료 사유</div>
+                      </div>
+                      <input
+                        className="set-input"
+                        type="text"
+                        value={reasonFine}
+                        onChange={(e) => {
+                          setReasonFine(e.target.value);
+                        }}
+                        style={{ imeMode: 'active' }}
+                        onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
+                      />
+
+                      <div className="set-title">금액</div>
+                      <input
+                        ref={priceRef}
+                        className="set-input"
+                        type="number"
+                        min="0"
+                        value={fineValue}
+                        onChange={(e) => {
+                          setFineValue(e.target.value);
+                        }}
+                        onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
+                      />
+
+                      <div className="set-title">단위</div>
+
+                      <input
+                        className="set-input"
+                        type="text"
+                        value={moneyUnit}
+                        disabled
+                      />
+
+                      <ConfirmBtn
+                        onClick={handleAddFine}
+                        btnName="수정"
+                        backgroundColor="#bacd92"
+                      ></ConfirmBtn>
+                    </form>
+                  )}
                 </div>
-                {isAccordionOpen && selectedIndex === index && (
-                  <form className="box-style">
-                    <img
-                      className="deleteBtn"
-                      src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                      onClick={deleteBtn(index)}
-                    />
-                    <div className="reset">
-                      <div className="set-title">과태료 사유</div>
-                    </div>
-                    <input
-                      className="set-input"
-                      type="text"
-                      value={reasonFine}
-                      onChange={(e) => {
-                        setReasonFine(e.target.value);
-                      }}
-                      style={{ imeMode: 'active' }}
-                      onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
-                    />
-
-                    <div className="set-title">금액</div>
-                    <input
-                      ref={priceRef}
-                      className="set-input"
-                      type="number"
-                      min="0"
-                      value={fineValue}
-                      onChange={(e) => {
-                        setFineValue(e.target.value);
-                      }}
-                      onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
-                    />
-
-                    <div className="set-title">단위</div>
-
-                    <input
-                      className="set-input"
-                      type="text"
-                      value={moneyUnit}
-                      disabled
-                    />
-
-                    <ConfirmBtn
-                      onClick={handleAddFine}
-                      btnName="수정"
-                      backgroundColor="#bacd92"
-                    ></ConfirmBtn>
-                  </form>
-                )}
-              </div>
-            ))}
-          </div>
-          {isAddOpen && (
-            <form className="box-style">
-              <div className="reset">
-                <div className="set-title">과태료 사유</div>
-                <img
-                  className="resetBtn"
-                  src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                  onClick={resetBtn}
+              ))}
+            </div>
+            {isAddOpen && (
+              <form className="box-style">
+                <div className="reset">
+                  <div className="set-title">과태료 사유</div>
+                  <img
+                    className="resetBtn"
+                    src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
+                    onClick={resetBtn}
+                  />
+                </div>
+                <input
+                  className="set-input"
+                  type="text"
+                  value={reasonFine}
+                  onChange={(e) => {
+                    setReasonFine(e.target.value);
+                  }}
+                  style={{ imeMode: 'active' }}
+                  onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
                 />
-              </div>
-              <input
-                className="set-input"
-                type="text"
-                value={reasonFine}
-                onChange={(e) => {
-                  setReasonFine(e.target.value);
-                }}
-                style={{ imeMode: 'active' }}
-                onKeyDown={(e) => handleKeyDownNext(e, priceRef)}
-              />
-              <div className="set-title">금액</div>
-              <input
-                ref={priceRef}
-                className="set-input"
-                type="number"
-                min="0"
-                value={fineValue}
-                onChange={(e) => {
-                  setFineValue(e.target.value);
-                }}
-                style={{ imeMode: 'active' }}
-                onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
-              />
+                <div className="set-title">금액</div>
+                <input
+                  ref={priceRef}
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={fineValue}
+                  onChange={(e) => {
+                    setFineValue(e.target.value);
+                  }}
+                  style={{ imeMode: 'active' }}
+                  onKeyDown={(e) => handleKeyDown(e, handleAddFine)}
+                />
 
-              <div className="set-title">단위</div>
-              <input
-                className="set-input"
-                type="text"
-                value={moneyUnit}
-                disabled
-              />
-              <ConfirmBtn
-                onClick={handleAddFine}
-                btnName="확인"
-                backgroundColor="#bacd92"
-              ></ConfirmBtn>
-            </form>
-          )}
-          <div className="navi-btn">
-            <button className="next-button" onClick={beforeSetting}>
-              이전
-            </button>
-            <NextBtn
-              onClick={finishSetting}
-              btnName="완료"
-              width={'40%'}
-            ></NextBtn>
+                <div className="set-title">단위</div>
+                <input
+                  className="set-input"
+                  type="text"
+                  value={moneyUnit}
+                  disabled
+                />
+                <ConfirmBtn
+                  onClick={handleAddFine}
+                  btnName="확인"
+                  backgroundColor="#bacd92"
+                ></ConfirmBtn>
+              </form>
+            )}
+            <div className="navi-btn">
+              <button className="next-button" onClick={beforeSetting}>
+                이전
+              </button>
+              <NextBtn
+                onClick={finishSetting}
+                btnName="완료"
+                width={'40%'}
+              ></NextBtn>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }

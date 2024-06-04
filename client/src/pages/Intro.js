@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/intro.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const IntroBackGround = styled.div`
   background: #fcffe0;
@@ -16,9 +18,56 @@ const IntroBackGround = styled.div`
     display: none;
   }
 `;
+
 export default function Intro() {
+  const navigate = useNavigate();
+
+  const testLogin = async (isStudent) => {
+    const successFunc = (result, url) => {
+      localStorage.setItem('token', result.token);
+      toast.success('환영합니다!');
+      setTimeout(() => {
+        navigate(url);
+      }, 1300);
+    };
+    const falseFunc = () => {
+      toast.error('다시 시도해주세요', {
+        autoClose: 1300,
+      });
+    };
+    if (!isStudent) {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/user/login`,
+        data: { userId: 'test', pw: '1234' },
+      });
+      if (res.data.success) {
+        successFunc(res.data.result, '/country');
+      } else {
+        falseFunc();
+      }
+    } else {
+      const res = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/student/user/1`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: { rollNumber: 7, name: '테스트 국민', pw: '1234' },
+      });
+      console.log(res.data.success);
+      if (res.data.success) {
+        successFunc(res.data.result, '/1/main');
+      } else {
+        falseFunc();
+      }
+    }
+  };
+
   return (
     <div>
+      <ToastContainer />
       <IntroBackGround>
         <div className="logo-wrap">
           <img
@@ -33,6 +82,12 @@ export default function Intro() {
           <Link to="/signup">
             <button className="big-button">회원가입</button>
           </Link>
+          <button className="big-button" onClick={() => testLogin(false)}>
+            테스트 로그인 (선생님)
+          </button>
+          <button className="big-button" onClick={() => testLogin(true)}>
+            테스트 로그인 (학생)
+          </button>
         </div>
       </IntroBackGround>
 

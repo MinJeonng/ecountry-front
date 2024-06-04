@@ -1,6 +1,8 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { authFunc } from '../hooks/Functions';
 
 const MenuContainer = styled.div`
   border: 1px solid #a7d2e4;
@@ -23,6 +25,21 @@ export function StudentPayStub() {
 
   const [paysStub, setPaysStub] = useState([]);
 
+  const getPay = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/bank/paystub`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    if (res.data.success) {
+      setPaysStub(res.data.result);
+    }
+  };
+
   const totalAmount = () => {
     let total = 0;
     paysStub.forEach((item) => {
@@ -30,6 +47,12 @@ export function StudentPayStub() {
     });
     return total;
   };
+
+  useEffect(() => {
+    if (authFunc()) {
+      getPay();
+    }
+  }, []);
 
   return (
     <>

@@ -173,29 +173,29 @@ export function AssemblyLawList() {
                       <span className="line">{index + 1}항</span>
                       <span className="pLine">{law.rule}</span>
                     </div>
-                    
 
-                  <Arrow stroke="#ddd" className="accArrBtn" />
-                </div>
-                {isAccordionOpen && selectedIndex === index && (
-                  <form className="box-style">
-                    <div className="reset">
-                      <div className="set-title">{index + 1}항</div>
-                      <img
-                        className="resetBtn"
-                        src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                        onClick={(e) => deleteBtn(e, index + 1, law.id)}
-                        alt="삭제"
-                      />
+                    <Arrow stroke="#ddd" className="accArrBtn" />
+                  </div>
+                  {isAccordionOpen && selectedIndex === index && (
+                    <form className="box-style">
+                      <div className="reset">
+                        <div className="set-title">{index + 1}항</div>
+                        <img
+                          className="resetBtn"
+                          src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                          onClick={(e) => deleteBtn(e, index + 1, law.id)}
+                          alt="삭제"
+                        />
 
-                      <ConfirmBtn
-                        onClick={() => {
-                          handleCloseAccordion();
-                          updateRule(law.id);
-                        }}
-                        btnName="업데이트"
-                        backgroundColor="#61759f"
-                      ></ConfirmBtn>
+                        <ConfirmBtn
+                          onClick={() => {
+                            handleCloseAccordion();
+                            updateRule(law.id);
+                          }}
+                          btnName="업데이트"
+                          backgroundColor="#61759f"
+                        ></ConfirmBtn>
+                      </div>
                     </form>
                   )}
                 </div>

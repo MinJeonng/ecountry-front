@@ -138,6 +138,7 @@ export default function RevenueCollect() {
             marginBottom: '10%',
             borderBottom: '2px solid #bacd92',
             paddingBottom: '10px',
+            width: '-webkit-fill-available',
           }}
         >
           과태료 징수

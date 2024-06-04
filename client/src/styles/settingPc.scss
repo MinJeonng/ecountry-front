@@ -51,10 +51,28 @@ $blue: #61759f;
     margin: 130px 100px 50px;
   }
 
+  .title-wrap-st {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-bottom: 10px;
+    border-bottom: 2px solid #bacd92;
+    margin: 0;
+
+    .title-list-st {
+      width: -webkit-fill-available;
+
+      li {
+        margin-left: 20px;
+        list-style: disc;
+        font-size: 16px;
+        color: #777777;
+      }
+    }
+  }
+
   .pc-wrap {
-
     margin: 80px 100px 50px;
-
 
     .title-wrap {
       display: flex;

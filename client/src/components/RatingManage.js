@@ -94,9 +94,12 @@ export default function RatingManage() {
   return (
     <>
       <ToastContainer />
-      <ul className="title-list">
-        <li>국민들의 신용 등급을 수정할 수 있습니다.</li>
-      </ul>
+      <div className="title-wrap-st">
+        <ul className="title-list-st title-list">
+          <li>국민들의 신용 등급을 수정할 수 있습니다.</li>
+        </ul>
+      </div>
+
       <form className="box-style">
         <div className="set-title">변경 대상자</div>
         <select

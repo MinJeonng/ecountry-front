@@ -31,6 +31,16 @@ export function SetPeopleList() {
   const editResetPwRef = useRef();
 
   console.log(studentList);
+
+  const findJob = (jobId) => {
+    let jobName = '무직';
+    jobList?.forEach((data) => {
+      if (data.id == jobId) {
+        jobName = data.name;
+      }
+    });
+    return jobName;
+  };
   const getInfo = async () => {
     const res = await axios({
       method: 'GET',
@@ -50,16 +60,17 @@ export function SetPeopleList() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
+    console.log(res2.data.result);
     setJobList(res2.data.result);
   };
   //업데이트 -DB
-  const updateStudent = async (studentId) => {
+  const updateStudent = async (prevInfo) => {
     const res = await axios({
       method: 'PATCH',
       url: `${process.env.REACT_APP_HOST}/api/student/${id}`,
       data: [
         {
-          id: studentId,
+          id: prevInfo.id,
           name: studentName,
           rollNumber: attendanceNumber,
           pw: resetPassword ? resetPassword : null,
@@ -73,6 +84,38 @@ export function SetPeopleList() {
       },
     });
     if (res.data.success) {
+      toast.success('국민 수정이 완료되었습니다', { autoClose: 1300 });
+      console.log(findJob(job));
+      if (prevInfo.jobId != job) {
+        const res2 = await axios({
+          method: 'POST',
+          url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+          headers: {
+            'Content-Type': `application/json`,
+            'ngrok-skip-browser-warning': '69420',
+          },
+          data: {
+            studentId: [prevInfo.id],
+            content: `직업이 ${prevInfo.job}에서 ${findJob(
+              job
+            )}으로 변경되었습니다. `,
+          },
+        });
+      }
+      if (prevInfo.rating != rating) {
+        const res3 = await axios({
+          method: 'POST',
+          url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+          headers: {
+            'Content-Type': `application/json`,
+            'ngrok-skip-browser-warning': '69420',
+          },
+          data: {
+            studentId: [prevInfo.id],
+            content: `신용등급이 ${prevInfo.rating}등급에서 ${rating}등급으로 변경되었습니다. `,
+          },
+        });
+      }
       handleCloseAccordion();
       getInfo();
     }
@@ -144,7 +187,6 @@ export function SetPeopleList() {
       setJob('');
       setResetPassword('');
       setSelectedIndex(null);
-      updateStudent(student.id);
     } else {
       //새로 추가
       setAttendanceNumber(student.rollNumber);
@@ -329,11 +371,11 @@ export function SetPeopleList() {
                   onChange={(e) => {
                     setResetPassword(e.target.value);
                   }}
-                  onKeyDown={(e) => handleKeyDown(e, updateStudent)}
+                  // onKeyDown={(e) => handleKeyDown(e, updateStudent)}
                 />
                 <ConfirmBtn
                   onClick={() => {
-                    updateStudent(student.id);
+                    updateStudent(student);
                   }}
                   btnName="업데이트"
                   backgroundColor="#61759f"

@@ -73,7 +73,6 @@ export function AddInvestment() {
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/student/notice/add/all/${id}`,
         headers: {
-          Authorization: `Bearer ${getExpire()}`,
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
         },

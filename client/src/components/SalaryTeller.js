@@ -16,6 +16,17 @@ export default function SalaryTeller() {
   const [unit, setUnit] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState(''); //studentId
 
+  // accoutId로 학생 id 가져오기
+  const findStudentId = (accountId) => {
+    let result = null;
+    studentList?.forEach((data) => {
+      if (data.id == accountId) {
+        result = data.studentId;
+      }
+    });
+    return result;
+  };
+
   //이체 가능 리스트(입금가능리스트)
   const studentListFunc = async () => {
     try {
@@ -99,7 +110,7 @@ export default function SalaryTeller() {
   const PaymentSalary = async () => {
     if (depositUser && transferSalary) {
       const isConfirmed = window.confirm(
-        `${depositUserName}님에게 ${transferSalary}${unit.unit} 이체하시겠습니까?`
+        `${depositUserName}님에게 ${transferSalary}${unit.unit} 월급을 지급하시겠습니까?`
       );
       if (isConfirmed) {
         try {
@@ -121,6 +132,18 @@ export default function SalaryTeller() {
           if (res.data.success) {
             toast.success('이체가 완료되었습니다.', {
               autoClose: 1200,
+            });
+            const res2 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [findStudentId(depositUser)],
+                content: `월급 ${transferSalary}${unit.unit}이 지급되었습니다.`,
+              },
             });
             setDepositUser('');
             setMemo('');

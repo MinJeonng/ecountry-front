@@ -42,23 +42,75 @@ const FineList = styled.div`
 
 const TreasuryBox = styled.div`
   display: flex;
-  flex-direction: column;
-  /* align-items: center; */
+  align-items: flex-end;
+  justify-content: space-between;
   color: #093030;
   font-weight: 500;
   border-radius: 14px;
   width: 100%;
-  margin-bottom: 10%;
-  padding-left: 10px;
+  margin-bottom: 15px;
+  padding: 0 10px;
+  box-sizing: border-box;
   /* background: #e3ead5; */
-  .pList {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    height: 20px;
+  .treasuryBox {
+    .pList {
+      display: flex;
+      gap: 4px;
+      align-items: baseline;
+    }
+  }
+  .revenueList {
+    &::after {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-left: 2px solid #999;
+      border-bottom: 2px solid #999;
+      transform: rotate(-45deg);
+      position: relative;
+      left: 10px;
+      top: -2px;
+      transition: all 0.3s ease-in-out;
+    }
+    &.open::after {
+      transform: rotate(-225deg);
+      top: 4px;
+    }
   }
 `;
 
+const TaxLawBox = styled.div`
+  position: relative;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease-in-out;
+  .taxLawBox {
+    display: block;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    .division {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .taxLaw {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      border: 1px solid #75a47f;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      .money {
+        font-weight: 700;
+      }
+    }
+  }
+  &.open {
+    max-height: 1000px;
+    .taxLawBox {
+    }
+  }
+`;
 export default function Revune() {
   //국고, 화폐단위,
   const { id } = useParams();
@@ -68,8 +120,10 @@ export default function Revune() {
   const [treasury, setTreasury] = useState(0);
   const [unit, setUnit] = useState('');
   const [showList, setShowList] = useState([]);
+  const [taxLaw, setTaxLaw] = useState([]);
 
   const [displayedValue, setDisplayedValue] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   const nameSelect = (e) => {
     setSelectedName(e.target.value);
@@ -123,6 +177,19 @@ export default function Revune() {
     setUnit(res2.data.result.unit);
   };
 
+  const getTaxLaw = async () => {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/tax/${id}`,
+      headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+    console.log(res.data.result);
+    setTaxLaw(res.data.result);
+  };
+
   useEffect(() => {
     // 학생 검색 기능
     // selectedName과 withdrawId가 일치하는 데이터만 showData에 담기
@@ -140,11 +207,6 @@ export default function Revune() {
     }
   }, [selectedName]);
 
-  useEffect(() => {
-    getTreasury();
-    getStudent();
-    getTax();
-  }, []);
   useEffect(() => {
     const duration = 666;
     const startTime = performance.now();
@@ -164,19 +226,77 @@ export default function Revune() {
     requestAnimationFrame(animate);
   }, [treasury]);
 
+  useEffect(() => {
+    getTreasury();
+    getStudent();
+    getTax();
+    getTaxLaw();
+  }, []);
+
   return (
     <>
       <div className="pc-wrap">
         <TreasuryBox>
           {/* 국고, 화폐단위 */}
-          <p style={{ fontSize: '15px' }}>국고</p>
-          <div className="pList">
-            <p style={{ fontSize: '35px', fontWeight: 'bold' }}>
-              {displayedValue}
-            </p>
-            <p style={{ fontSize: '16px', paddingTop: '13px' }}>{unit}</p>
+          <div className="treasuryBox">
+            <p style={{ fontSize: '15px', margin: '0 0 4px 0' }}>국고</p>
+            <div className="pList">
+              <p
+                style={{
+                  fontSize: '35px',
+                  fontWeight: 'bold',
+                  margin: 0,
+                  lineHeight: 1,
+                }}
+              >
+                {displayedValue}
+              </p>
+              <p style={{ fontSize: '16px', margin: 0 }}>{unit}</p>
+            </div>
+          </div>
+          <div
+            className={`revenueList ${isOpen ? 'open' : 'close'}`}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            세법 확인하기
           </div>
         </TreasuryBox>
+        {/* {isOpen && taxLaw?.length > 0 && ( */}
+        <TaxLawBox className={isOpen ? 'open' : 'close'}>
+          <div className="taxLawBox">
+            <div className="division">매달 부과</div>
+            {taxLaw?.map((data) => {
+              if (data.division < 3) {
+                return (
+                  <div className="taxLaw">
+                    <p>{data.name}</p>
+                    <p>
+                      <span className="money">{data.tax}</span>
+                      {unit}
+                    </p>
+                  </div>
+                );
+              }
+            })}
+          </div>
+          <div className="taxLawBox">
+            <div className="division">과태료</div>
+            {taxLaw?.map((data) => {
+              if (data.division === 3) {
+                return (
+                  <div className="taxLaw">
+                    <p>{data.name}</p>
+                    <p>
+                      <span className="money">{data.tax}</span>
+                      {unit}
+                    </p>
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </TaxLawBox>
+        {/* )} */}
         <div
           style={{
             width: '100%',

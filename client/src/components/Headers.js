@@ -262,6 +262,11 @@ export function CommonMainDesktopHeader() {
         src={`${process.env.PUBLIC_URL}/images/logo-defaultImg.jpg`}
         alt="로고"
       />
+      <img
+        className="header-logo2"
+        src={`${process.env.PUBLIC_URL}/images/logo-text.png`}
+        alt="로고"
+      />
       <nav>
         <ul className="header-menu">
           {positions.map(({ name, path }) => (

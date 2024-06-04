@@ -43,7 +43,7 @@ export default function Setting({ position }) {
       <SettingHeader position={position} positions={settingPositions} />
       <Template
         // {innerWidth ? }
-        // isAuthPage2={true}
+        isAuthPage2={true}
         childrenTop={<PageHeader>{position}</PageHeader>}
         childrenBottom={
           <>
@@ -59,7 +59,6 @@ export default function Setting({ position }) {
           </>
         }
       />
-      {/* <Footer /> */}
     </>
   );
 }

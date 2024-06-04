@@ -41,18 +41,26 @@ export default function Footer() {
           </div>
           <div className="fRight">
             <div className="fText">
-              <span>
+              <span className="fText-span">
                 경제나라 | 남현경, 최지은, 성명규, 김민정, 박시영, 김지혜
               </span>
-              <span>프로젝트 기간 2024.05.02 ~ 2024.06.05</span>
-              <a href="https://github.com/MinJeonng/ecountry-front">
+              <span className="fText-span">
+                {' '}
+                프로젝트 기간 | 2024.05.02 ~ 2024.06.05
+              </span>
+              <a
+                className="fText-span"
+                href="https://github.com/MinJeonng/ecountry-front"
+              >
                 <span>GitHub 경제나라</span>
               </a>
-              <a href="https://github.com/cje206/econtry-back">
+              <a
+                className="fText-span"
+                href="https://github.com/cje206/econtry-back"
+              >
                 <span>GitHub 경제나라</span>
               </a>
-
-              <span>
+              <span className="fText-span">
                 (본사) 서울시 마포구 숭문 4길 6, 지하 1층 포스코X코딩온 교육장
               </span>
             </div>

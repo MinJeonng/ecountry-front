@@ -1,9 +1,8 @@
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { OwnAccount } from '../components/StudentBank';
 import Template from '../components/Template';
 import { TransHistory } from '../components/StudentBankTransHistory';
 import { ChatBotBtn, LoginBtn } from '../components/Btns';
-import { StudentHeader } from '../components/StudentHeader';
 import { ToastContainer } from 'react-toastify';
 import { authFunc, confirmCountry } from '../hooks/Functions';
 import { useEffect, useState } from 'react';
@@ -32,12 +31,13 @@ export default function StudentBank({ position }) {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+
       {isShow && (
         <Template
           isAuthPage2={true}
           childrenTop={
             <>
+              <CommonMainDesktopHeader />
               <PageHeader>{position}</PageHeader>
             </>
           }

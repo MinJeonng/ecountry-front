@@ -72,7 +72,7 @@ export default function CountryList() {
       <ToastContainer />
       <Template
         isAuthPage={true}
-        isAuthPage2={true}
+        isAuthPage2={false}
         childrenTop={<PageHeader path={'/country'}>{'국가 리스트'}</PageHeader>}
         childrenBottom={
           <div>

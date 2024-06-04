@@ -183,29 +183,31 @@ function SearchStudent() {
   return (
     <>
       <SearchStudentStyle>
-        <div className="container">
-          <input
-            className="findStudent"
-            type="text"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onFocus={handleFocus}
-            placeholder="출석번호 또는 국민 이름으로 검색해보세요"
-          />
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-search.png`}
-            alt="검색"
-          />
+        <div className="student-wrap">
+          <div className="container">
+            <input
+              className="findStudent"
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onFocus={handleFocus}
+              placeholder="출석번호 또는 국민 이름으로 검색해보세요"
+            />
+            <img
+              src={`${process.env.PUBLIC_URL}/images/icon-search.png`}
+              alt="검색"
+            />
+          </div>
+          {filteredStudents.map((student) => (
+            <ResultList
+              key={student.id}
+              data-id={student.id}
+              onClick={() => handleSelectStudent(student)}
+            >
+              {student.rollNumber}번 {student.name}
+            </ResultList>
+          ))}
         </div>
-        {filteredStudents.map((student) => (
-          <ResultList
-            key={student.id}
-            data-id={student.id}
-            onClick={() => handleSelectStudent(student)}
-          >
-            {student.rollNumber}번 {student.name}
-          </ResultList>
-        ))}
       </SearchStudentStyle>
     </>
   );
@@ -266,7 +268,7 @@ function AddSaving() {
             },
           });
           if (res.data.success) {
-            toast('가입이 완료되었습니다.', {
+            toast.success('가입이 완료되었습니다.', {
               autoClose: 1300,
             });
             // setTimeout(() => {
@@ -281,7 +283,7 @@ function AddSaving() {
           }
         });
       } catch (error) {
-        toast('적금 가입에 실패했습니다.');
+        toast.error('적금 가입에 실패했습니다.');
         console.log(error);
       }
     }
@@ -292,48 +294,53 @@ function AddSaving() {
   return (
     <>
       <ToastContainer />
-      <div className="saving-title">적금 가입</div>
-      <AvailableListStyle>
-        <div className="title">개설 가능 적금 리스트</div>
-        <div className="savingInfoTitle">
-          <span>적금이름</span>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-            alt="구분선"
-          />
-          <span>이율(%)</span>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-            alt="구분선"
-          />
-          <span>가입기간(일)</span>
-        </div>
-        <ListContainer>
-          {availableList.map((saving) => {
-            return (
-              <div
-                className="savingListBox"
-                key={saving.id}
-                value={saving.id}
-                onClick={() => handleDivClick(saving.id)}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedSavingId.includes(saving.id)}
-                  onChange={() => handleSelectSaving(saving.id)}
-                  onClick={(e) => e.stopPropagation()}
-                />
-                <span>{saving.name}</span>
-                <span>{saving.interest}</span>
-                <span>{saving.dueDate}</span>
-              </div>
-            );
-          })}
-        </ListContainer>
-      </AvailableListStyle>
-      <AddBtn onClick={addSavingFunc} disabled={selectedSavingId.length === 0}>
-        가입
-      </AddBtn>
+      <div className="student-wrap">
+        <div className="saving-title">적금 가입</div>
+        <AvailableListStyle>
+          <div className="title">개설 가능 적금 리스트</div>
+          <div className="savingInfoTitle">
+            <span>적금이름</span>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+              alt="구분선"
+            />
+            <span>이율(%)</span>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+              alt="구분선"
+            />
+            <span>가입기간(일)</span>
+          </div>
+          <ListContainer>
+            {availableList.map((saving) => {
+              return (
+                <div
+                  className="savingListBox"
+                  key={saving.id}
+                  value={saving.id}
+                  onClick={() => handleDivClick(saving.id)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedSavingId.includes(saving.id)}
+                    onChange={() => handleSelectSaving(saving.id)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <span>{saving.name}</span>
+                  <span>{saving.interest}</span>
+                  <span>{saving.dueDate}</span>
+                </div>
+              );
+            })}
+          </ListContainer>
+        </AvailableListStyle>
+        <AddBtn
+          onClick={addSavingFunc}
+          disabled={selectedSavingId.length === 0}
+        >
+          가입
+        </AddBtn>
+      </div>
     </>
   );
 }
@@ -410,7 +417,7 @@ function CancelSaving() {
           });
 
           if (res.data.success) {
-            toast('해지가 완료되었습니다.', {
+            toast.success('해지가 완료되었습니다.', {
               autoClose: 1300,
             });
             // setTimeout(() => {
@@ -423,7 +430,7 @@ function CancelSaving() {
           }
         }
       } catch (error) {
-        toast('적금 해지에 실패했습니다.');
+        toast.error('적금 해지에 실패했습니다.');
         console.log(error);
       }
     }
@@ -434,53 +441,55 @@ function CancelSaving() {
   return (
     <>
       <ToastContainer />
-      <div className="saving-title">적금 해지</div>
-      <AvailableListStyle>
-        <div className="title">{selectedStudentName}</div>
-        <div className="savingInfoTitle">
-          <span>적금이름</span>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-            alt="구분선"
-          />
-          <span>만기일</span>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-            alt="구분선"
-          />
-          <span>예상해지금액</span>
-        </div>
-        <ListContainer>
-          {ownSavingList.map((saving) => {
-            const date = new Date(saving.expirationDate);
-            const formattedDate = format(date, 'yyyy년 MM월 dd일');
-            return (
-              <div
-                className="savingListBox"
-                key={saving.id}
-                value={saving.id}
-                onClick={() => handleDivClick(saving.id)}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedSavingId.includes(saving.id)}
-                  onChange={() => handleSelectSaving(saving.id)}
-                  onClick={(e) => e.stopPropagation()}
-                />
-                <span>{saving.name}</span>
-                <span>{formattedDate}</span>
-                <span>{saving.balance}</span>
-              </div>
-            );
-          })}
-        </ListContainer>
-      </AvailableListStyle>
-      <AddBtn
-        onClick={cancelSavingFunc}
-        disabled={selectedSavingId.length === 0}
-      >
-        해지
-      </AddBtn>
+      <div className="student-wrap">
+        <div className="saving-title">적금 해지</div>
+        <AvailableListStyle>
+          <div className="title">{selectedStudentName}</div>
+          <div className="savingInfoTitle">
+            <span>적금이름</span>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+              alt="구분선"
+            />
+            <span>만기일</span>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+              alt="구분선"
+            />
+            <span>예상해지금액</span>
+          </div>
+          <ListContainer>
+            {ownSavingList.map((saving) => {
+              const date = new Date(saving.expirationDate);
+              const formattedDate = format(date, 'yyyy년 MM월 dd일');
+              return (
+                <div
+                  className="savingListBox"
+                  key={saving.id}
+                  value={saving.id}
+                  onClick={() => handleDivClick(saving.id)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedSavingId.includes(saving.id)}
+                    onChange={() => handleSelectSaving(saving.id)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <span>{saving.name}</span>
+                  <span>{formattedDate}</span>
+                  <span>{saving.balance}</span>
+                </div>
+              );
+            })}
+          </ListContainer>
+        </AvailableListStyle>
+        <AddBtn
+          onClick={cancelSavingFunc}
+          disabled={selectedSavingId.length === 0}
+        >
+          해지
+        </AddBtn>
+      </div>
     </>
   );
 }

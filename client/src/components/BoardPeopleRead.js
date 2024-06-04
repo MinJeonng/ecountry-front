@@ -71,7 +71,7 @@ export function BoardPeopleRead() {
   }, [userInfo]);
   return (
     <>
-      <div className="pc-wrap">
+      <div className="student-wrap">
         <ToastContainer />
         <ChatBotBtn />
         <p align="right">
@@ -173,6 +173,13 @@ export function BoardPeopleRead() {
             </div>
           </div>
         </form>
+
+        <div className="navi-pre-btn2" onClick={(e) => navigate(-1)}>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+            alt="뒤로가기"
+          />
+        </div>
       </div>
     </>
   );

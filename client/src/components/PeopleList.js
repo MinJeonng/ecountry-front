@@ -260,7 +260,7 @@ export function SetPeopleList() {
                 <div className="reset">
                   <div className="set-title">이름</div>
                   <img
-                    className="resetBtn"
+                    className="delete-img"
                     src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
                     onClick={(e) => deleteBtn(index)}
                     alt="삭제"

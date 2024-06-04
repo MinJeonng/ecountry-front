@@ -71,7 +71,7 @@ export function SetNewsDetail() {
   return (
     <>
       {/* <div className="content"> */}
-      <div className="pc-wrap">
+      <div className="student-wrap">
         {/* <div style={{ display: 'flex', flexDirection: 'row' }}>
           
         </div> */}

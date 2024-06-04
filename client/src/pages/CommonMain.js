@@ -24,7 +24,6 @@ import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { authFunc, confirmCountry } from '../hooks/Functions';
 
-
 export const CommonMainDashboard = styled.div`
   padding: 35px 40px 10px 310px;
   box-sizing: border-box;

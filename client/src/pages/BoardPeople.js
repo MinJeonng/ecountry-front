@@ -3,7 +3,7 @@ import Template from '../components/Template';
 import { BoardPeopleList } from '../components/BoardPeople';
 import { BoardPeopleWrite } from '../components/BoardPeopleWrite';
 import { BoardPeopleRead } from '../components/BoardPeopleRead';
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 
 import { StudentHeader } from '../components/StudentHeader';
 
@@ -36,8 +36,6 @@ export function SetBoardPeople({ position }) {
 
   return (
     <>
-      <StudentHeader />
-
       <ToastContainer />
       {loginBtn && <LoginBtn />}
 
@@ -46,6 +44,7 @@ export function SetBoardPeople({ position }) {
           isAuthPage2={true}
           childrenTop={
             <>
+              <CommonMainDesktopHeader />
               <PageHeader>{position}</PageHeader>
             </>
           }

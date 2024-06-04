@@ -197,13 +197,14 @@ export function AssemblyLawList() {
                     <div className="box-style">
                       <div className="reset">
                         <div className="set-title">{index + 1}항</div>
+                        <img
+                          className="delete-img"
+                          src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                          onClick={(e) => deleteBtn(e, index + 1, law.id)}
+                          alt="삭제"
+                        />
                       </div>
-                      <img
-                        className="deleteBtn"
-                        src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                        onClick={(e) => deleteBtn(e, index + 1, law.id)}
-                        alt="삭제"
-                      />
+
                       <input
                         className="set-input"
                         type="text"

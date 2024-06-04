@@ -50,7 +50,7 @@ export default function Login() {
   return (
     <Template
       isAuthPage={true}
-      isAuthPage2={true}
+      isAuthPage2={false}
       childrenTop={<PageHeader>{'회원가입'}</PageHeader>}
       childrenBottom={
         <>

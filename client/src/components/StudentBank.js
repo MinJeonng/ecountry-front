@@ -134,7 +134,7 @@ function CheckingAccount({ account, unit }) {
     if (depositUser && transferAmount) {
       //잔액보다 큰 값 인출 방지
       if (parseInt(transferAmount) > account.balance) {
-        toast('출금할 통장의 잔액이 부족합니다.', {
+        toast.error('출금할 통장의 잔액이 부족합니다.', {
           autoClose: 1300,
         });
         return;
@@ -166,7 +166,7 @@ function CheckingAccount({ account, unit }) {
             },
           });
           if (res.data.success) {
-            toast('이체가 완료되었습니다.', {
+            toast.success('이체가 완료되었습니다.', {
               autoClose: 1300,
             });
 
@@ -186,7 +186,7 @@ function CheckingAccount({ account, unit }) {
         }
       }
     } else {
-      toast('이체 정보를 모두 입력해주세요.');
+      toast.error('이체 정보를 모두 입력해주세요.');
     }
   };
 
@@ -332,7 +332,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
     // console.log(account.id);
     if (savingAmount) {
       if (parseInt(savingAmount) > withdrawBalance) {
-        toast('출금할 통장의 잔액을 확인해주세요', {
+        toast.error('출금할 통장의 잔액을 확인해주세요', {
           autoClose: 1300,
         });
         return;
@@ -352,7 +352,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
           },
         });
         if (res.data.success) {
-          toast('이체가 완료되었습니다.', {
+          toast.success('이체가 완료되었습니다.', {
             autoClose: 1300,
           });
           setTimeout(() => {
@@ -372,6 +372,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
   };
   return (
     <>
+      <ToastContainer />
       <SavingComponent>
         <AccountName>
           <div className="accountName savingAccount">{account.accountName}</div>
@@ -492,8 +493,9 @@ export function OwnAccount() {
   }, []);
   return (
     <>
+      <ToastContainer />
 
-      <div className="pc-wrap">
+      <div className="student-wrap">
         {accounts.map((account) => (
           <div key={account.id}>
             {account.division === '입출금통장' && (
@@ -511,7 +513,6 @@ export function OwnAccount() {
           </div>
         ))}
       </div>
-
     </>
   );
 }

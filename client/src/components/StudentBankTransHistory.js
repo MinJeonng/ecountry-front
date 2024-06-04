@@ -390,6 +390,12 @@ export function TransHistory() {
   return (
     <>
       <div className="pc-wrap">
+        <div className="navi-pre-btn">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+            alt="뒤로가기"
+          />
+        </div>
         {accounts.map((account) => (
           <div key={account.id}>
             {account.division === '입출금통장' && (

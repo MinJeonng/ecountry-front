@@ -101,11 +101,19 @@ export function BoardPeopleWrite() {
 
   return (
     <>
+      <ToastContainer />
       <div className="pc-wrap">
-        <ToastContainer />
+        <div className="navi-pre-btn">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+            alt="뒤로가기"
+          />
+        </div>
+
         {/* <div style={{ color: '#666666', fontWeight: 'bolder' }}>
         신문고 글쓰기
       </div> */}
+
         <form className="box-style">
           <div
             className="reset"

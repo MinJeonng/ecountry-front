@@ -40,7 +40,7 @@ export function AssemblyLawList() {
       data: { id: ruleId, rule: selectedDetail },
     });
     if (res.data.success) {
-      toast('규칙 수정이 완료되었습니다.');
+      toast.success('규칙 수정이 완료되었습니다.');
       getRules();
     }
   };
@@ -177,26 +177,33 @@ export function AssemblyLawList() {
                     <Arrow stroke="#ddd" className="accArrBtn" />
                   </div>
                   {isAccordionOpen && selectedIndex === index && (
-                    <form className="box-style">
+                    <div className="box-style">
                       <div className="reset">
                         <div className="set-title">{index + 1}항</div>
-                        <img
-                          className="resetBtn"
-                          src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                          onClick={(e) => deleteBtn(e, index + 1, law.id)}
-                          alt="삭제"
-                        />
-
-                        <ConfirmBtn
-                          onClick={() => {
-                            handleCloseAccordion();
-                            updateRule(law.id);
-                          }}
-                          btnName="업데이트"
-                          backgroundColor="#61759f"
-                        ></ConfirmBtn>
                       </div>
-                    </form>
+                      <img
+                        className="resetBtn"
+                        src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                        onClick={(e) => deleteBtn(e, index + 1, law.id)}
+                        alt="삭제"
+                      />
+                      <input
+                        className="set-input"
+                        type="text"
+                        value={selectedDetail}
+                        onChange={(e) => {
+                          setSelectedDetail(e.target.value);
+                        }}
+                      />
+                      <ConfirmBtn
+                        onClick={() => {
+                          handleCloseAccordion();
+                          updateRule(law.id);
+                        }}
+                        btnName="업데이트"
+                        backgroundColor="#61759f"
+                      ></ConfirmBtn>
+                    </div>
                   )}
                 </div>
               ))}

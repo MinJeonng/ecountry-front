@@ -11,7 +11,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { ChatBotBtn, NewsPostBtn } from '../components/Btns';
 import axios from 'axios';
+
+import { StudentHeader } from '../components/StudentHeader';
+
 import { authFunc, confirmCountry } from '../hooks/Functions';
+
 
 export function SetNews({ position }) {
   const { id } = useParams();
@@ -61,8 +65,10 @@ export function SetNews({ position }) {
   }, []);
   return (
     <>
+      <StudentHeader />
       <ToastContainer />
       <Template
+        isAuthPage2={true}
         childrenTop={
           <>
             <PageHeader>{position}</PageHeader>

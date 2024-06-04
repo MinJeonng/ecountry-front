@@ -229,39 +229,124 @@ export function SetPeopleList() {
   return (
     <>
       <ToastContainer />
-      <div className="setting-wrap">
-        {/* <div>국민 리스트</div> */}
-        <ul className="title-list">
-          <li>국민리스트를 확인할 수 있습니다.</li>
-          <li>국민 정보를 추가, 수정 및 삭제할 수 있습니다.</li>
-          <li>학생마다 비밀번호를 재설정 할 수 있습니다.</li>
-          <li>학생에게 직업을 부여할 수 있습니다.</li>
-        </ul>
-      </div>
+      <div className="pc-wrap">
+        <div className="setting-wrap title-wrap">
+          {/* <div>국민 리스트</div> */}
+          <ul className="title-list">
+            <li>국민리스트를 확인할 수 있습니다.</li>
+            <li>국민 정보를 추가, 수정 및 삭제할 수 있습니다.</li>
+            <li>학생마다 비밀번호를 재설정 할 수 있습니다.</li>
+            <li>학생에게 직업을 부여할 수 있습니다.</li>
+          </ul>
+        </div>
 
-      {studentList?.map((student, index) => (
-        <>
-          <div
-            className={`display ${
-              isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
-            } ${selectedIndex === index ? 'selected' : ''}`}
-            key={index}
-            onClick={() => selectInput(student, index)}
-            style={{ fontSize: '14px', color: '#666666' }}
-          >
-            {student.rollNumber}번 {student.name}
-            <Arrow stroke="#ddd" className="accArrBtn" />
-          </div>
-          {isAccordionOpen && selectedIndex === index && (
+        {studentList?.map((student, index) => (
+          <>
+            <div
+              className={`display ${
+                isAccordionOpen && selectedIndex === index
+                  ? 'accordion-open'
+                  : ''
+              } ${selectedIndex === index ? 'selected' : ''}`}
+              key={index}
+              onClick={() => selectInput(student, index)}
+              style={{ fontSize: '14px', color: '#666666' }}
+            >
+              {student.rollNumber}번 {student.name}
+              <Arrow stroke="#ddd" className="accArrBtn" />
+            </div>
+            {isAccordionOpen && selectedIndex === index && (
+              <form className="box-style">
+                <div className="reset">
+                  <div className="set-title">이름</div>
+                  <img
+                    className="resetBtn"
+                    src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
+                    onClick={(e) => deleteBtn(index)}
+                    alt="삭제"
+                  />
+                </div>
+                <input
+                  className="set-input"
+                  type="text"
+                  value={studentName}
+                  onChange={(e) => {
+                    setStudentName(e.target.value);
+                  }}
+                  onKeyDown={(e) => handleKeyDownNext(e, editAttendanceNumRef)}
+                />
+                <div className="set-title">출석번호</div>
+                <input
+                  ref={editAttendanceNumRef}
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={attendanceNumber}
+                  onChange={(e) => {
+                    setAttendanceNumber(e.target.value);
+                  }}
+                  onKeyDown={(e) => handleKeyDownNext(e, editRateRef)}
+                />
+                <div className="set-title">신용등급</div>
+                <input
+                  ref={editRateRef}
+                  className="set-input"
+                  type="number"
+                  min="0"
+                  value={rating}
+                  onChange={(e) => {
+                    setRating(e.target.value);
+                  }}
+                />
+                <div className="set-title">직업</div>
+                <select
+                  id="job"
+                  value={job}
+                  onChange={(e) => setJob(e.target.value)}
+                  style={{
+                    marginTop: '10px',
+                    marginBottom: '20px',
+                    width: '100%',
+                    border: 'none',
+                    borderBottom: '1px solid #e9ae24',
+                    backgroundColor: '#f5f6f6',
+                    padding: '5px',
+                  }}
+                >
+                  <option value="">무직</option>
+                  {jobList.map((data, index) => (
+                    <option key={data.id} value={data.id}>
+                      {data.name} {<SkillList skills={data.skills} />}
+                    </option>
+                  ))}
+                </select>
+                <div className="set-title">비밀번호 재설정</div>
+                <input
+                  className="set-input"
+                  type="number"
+                  maxLength={4}
+                  value={resetPassword}
+                  onChange={(e) => {
+                    setResetPassword(e.target.value);
+                  }}
+                  onKeyDown={(e) => handleKeyDown(e, updateStudent)}
+                />
+                <ConfirmBtn
+                  onClick={() => {
+                    updateStudent(student.id);
+                  }}
+                  btnName="업데이트"
+                  backgroundColor="#61759f"
+                ></ConfirmBtn>
+              </form>
+            )}
+          </>
+        ))}
+        {isAddOpen && (
+          <>
             <form className="box-style">
               <div className="reset">
                 <div className="set-title">이름</div>
-                <img
-                  className="resetBtn"
-                  src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
-                  onClick={(e) => deleteBtn(index)}
-                  alt="삭제"
-                />
               </div>
               <input
                 className="set-input"
@@ -270,11 +355,11 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setStudentName(e.target.value);
                 }}
-                onKeyDown={(e) => handleKeyDownNext(e, editAttendanceNumRef)}
+                onKeyDown={(e) => handleKeyDownNext(e, attendanceNumRef)}
               />
               <div className="set-title">출석번호</div>
               <input
-                ref={editAttendanceNumRef}
+                ref={attendanceNumRef}
                 className="set-input"
                 type="number"
                 min="0"
@@ -282,43 +367,11 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setAttendanceNumber(e.target.value);
                 }}
-                onKeyDown={(e) => handleKeyDownNext(e, editRateRef)}
+                onKeyDown={(e) => handleKeyDownNext(e, resetPwRef)}
               />
-              <div className="set-title">신용등급</div>
+              <div className="set-title">초기 비밀번호</div>
               <input
-                ref={editRateRef}
-                className="set-input"
-                type="number"
-                min="0"
-                value={rating}
-                onChange={(e) => {
-                  setRating(e.target.value);
-                }}
-              />
-              <div className="set-title">직업</div>
-              <select
-                id="job"
-                value={job}
-                onChange={(e) => setJob(e.target.value)}
-                style={{
-                  marginTop: '10px',
-                  marginBottom: '20px',
-                  width: '100%',
-                  border: 'none',
-                  borderBottom: '1px solid #e9ae24',
-                  backgroundColor: '#f5f6f6',
-                  padding: '5px',
-                }}
-              >
-                <option value="">무직</option>
-                {jobList.map((data, index) => (
-                  <option key={data.id} value={data.id}>
-                    {data.name} {<SkillList skills={data.skills} />}
-                  </option>
-                ))}
-              </select>
-              <div className="set-title">비밀번호 재설정</div>
-              <input
+                ref={resetPwRef}
                 className="set-input"
                 type="number"
                 maxLength={4}
@@ -326,66 +379,17 @@ export function SetPeopleList() {
                 onChange={(e) => {
                   setResetPassword(e.target.value);
                 }}
-                onKeyDown={(e) => handleKeyDown(e, updateStudent)}
+                onKeyDown={(e) => handleKeyDown(e, handleAddPeopleList)}
               />
               <ConfirmBtn
-                onClick={() => {
-                  updateStudent(student.id);
-                }}
-                btnName="업데이트"
-                backgroundColor="#61759f"
+                onClick={handleAddPeopleList}
+                btnName="국민 추가"
+                backgroundColor="#bacd92"
               ></ConfirmBtn>
             </form>
-          )}
-        </>
-      ))}
-      {isAddOpen && (
-        <>
-          <form className="box-style">
-            <div className="reset">
-              <div className="set-title">이름</div>
-            </div>
-            <input
-              className="set-input"
-              type="text"
-              value={studentName}
-              onChange={(e) => {
-                setStudentName(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDownNext(e, attendanceNumRef)}
-            />
-            <div className="set-title">출석번호</div>
-            <input
-              ref={attendanceNumRef}
-              className="set-input"
-              type="number"
-              min="0"
-              value={attendanceNumber}
-              onChange={(e) => {
-                setAttendanceNumber(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDownNext(e, resetPwRef)}
-            />
-            <div className="set-title">초기 비밀번호</div>
-            <input
-              ref={resetPwRef}
-              className="set-input"
-              type="number"
-              maxLength={4}
-              value={resetPassword}
-              onChange={(e) => {
-                setResetPassword(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDown(e, handleAddPeopleList)}
-            />
-            <ConfirmBtn
-              onClick={handleAddPeopleList}
-              btnName="국민 추가"
-              backgroundColor="#bacd92"
-            ></ConfirmBtn>
-          </form>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 }

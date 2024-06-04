@@ -491,13 +491,16 @@ export function OwnAccount() {
   }, []);
   return (
     <>
-      {accounts.map((account) => (
-        <div key={account.id}>
-          {account.division === '입출금통장' && (
-            <CheckingAccount account={account} unit={unit} />
-          )}
-          {location.pathname === `/${id}/bank` &&
+
+      <div className="pc-wrap">
+        {accounts.map((account) => (
+          <div key={account.id}>
+            {account.division === '입출금통장' && (
+              <CheckingAccount account={account} unit={unit} />
+            )}
+             {location.pathname === `/${id}/bank` &&
             account.division === '적금통장' && (
+
               <SavingAccount
                 account={account}
                 unit={unit}
@@ -505,8 +508,11 @@ export function OwnAccount() {
                 withdrawBalance={withdrawBalance}
               />
             )}
-        </div>
-      ))}
+
+          </div>
+        ))}
+      </div>
+
     </>
   );
 }

@@ -102,6 +102,10 @@ export function StudentIdCard() {
         setRating(user.rating);
         if (user.img) {
           setImage(user.img);
+        } else {
+          setImage(
+            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+          );
         }
       } else {
         console.error(res.data.message);

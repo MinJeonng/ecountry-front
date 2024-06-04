@@ -256,153 +256,153 @@ export default function Revune() {
     <>
       {shouldRender && (
         <>
-          {/* <div className="pc-wrap"> */}
-          <TreasuryBox>
-            {/* 국고, 화폐단위 */}
-            <p style={{ fontSize: '15px' }}>국고</p>
-            <div className="pList">
-              <p style={{ fontSize: '35px', fontWeight: 'bold' }}>
-                {displayedValue}
-              </p>
-              <p style={{ fontSize: '16px', paddingTop: '13px' }}>{unit}</p>
-            </div>
-          </TreasuryBox>
-          <div
-            className={`revenueList ${isOpen ? 'open' : 'close'}`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            세법 확인하기
-          </div>
-
-          {/* {isOpen && taxLaw?.length > 0 && ( */}
-          <TaxLawBox className={isOpen ? 'open' : 'close'}>
-            <div className="taxLawBox">
-              <div className="division">매달 부과</div>
-              {taxLaw?.map((data) => {
-                if (data.division < 3) {
-                  return (
-                    <div className="taxLaw">
-                      <p>{data.name}</p>
-                      <p>
-                        <span className="money">{data.tax}</span>
-                        {unit}
-                      </p>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-            <div className="taxLawBox">
-              <div className="division">과태료</div>
-              {taxLaw?.map((data) => {
-                if (data.division === 3) {
-                  return (
-                    <div className="taxLaw">
-                      <p>{data.name}</p>
-                      <p>
-                        <span className="money">{data.tax}</span>
-                        {unit}
-                      </p>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </TaxLawBox>
-          <div
-            style={{
-              width: '100%',
-              minHeight: '150px',
-              border: '1px solid #B9C0BE',
-              borderRadius: '9px',
-              padding: '5%',
-              boxSizing: 'border-box',
-              overflowX: 'hidden',
-              overflowY: 'scroll',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span style={{ fontSize: '17px' }}>과태료</span>
-              {/* 학생 리스트 */}
-              <div
-                style={{
-                  width: '100px',
-                }}
-              >
-                <select
-                  style={{
-                    width: '100px',
-                    padding: '0 5%',
-                    border: '0.5px solid #999999',
-                    borderRadius: '7px',
-                    fontSize: '12px',
-                    height: '27px',
-                    color: '#777777',
-                  }}
-                  id="name"
-                  value={selectedName}
-                  onChange={nameSelect}
-                >
-                  <option value="" selected>
-                    전체 보기
-                  </option>
-                  {studentList.map((student) => (
-                    <option key={student.id} value={student.id}>
-                      {student.name}({student.rollNumber})
-                    </option>
-                  ))}
-                </select>
+          <div className="pc-wrap">
+            <TreasuryBox>
+              {/* 국고, 화폐단위 */}
+              <p style={{ fontSize: '15px' }}>국고</p>
+              <div className="pList">
+                <p style={{ fontSize: '35px', fontWeight: 'bold' }}>
+                  {displayedValue}
+                </p>
+                <p style={{ fontSize: '16px', paddingTop: '13px' }}>{unit}</p>
               </div>
+            </TreasuryBox>
+            <div
+              className={`revenueList ${isOpen ? 'open' : 'close'}`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              세법 확인하기
             </div>
+
+            {/* {isOpen && taxLaw?.length > 0 && ( */}
+            <TaxLawBox className={isOpen ? 'open' : 'close'}>
+              <div className="taxLawBox">
+                <div className="division">매달 부과</div>
+                {taxLaw?.map((data) => {
+                  if (data.division < 3) {
+                    return (
+                      <div className="taxLaw">
+                        <p>{data.name}</p>
+                        <p>
+                          <span className="money">{data.tax}</span>
+                          {unit}
+                        </p>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+              <div className="taxLawBox">
+                <div className="division">과태료</div>
+                {taxLaw?.map((data) => {
+                  if (data.division === 3) {
+                    return (
+                      <div className="taxLaw">
+                        <p>{data.name}</p>
+                        <p>
+                          <span className="money">{data.tax}</span>
+                          {unit}
+                        </p>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            </TaxLawBox>
             <div
               style={{
                 width: '100%',
-                borderBottom: '1px solid #777777',
-                marginTop: '5px',
-                marginBottom: '6%',
+                minHeight: '150px',
+                border: '1px solid #B9C0BE',
+                borderRadius: '9px',
+                padding: '5%',
+                boxSizing: 'border-box',
+                overflowX: 'hidden',
+                overflowY: 'scroll',
               }}
-            ></div>
-            {/* 여기서부터 과태료 리스트 */}
-            {showList.map((tax) => (
-              <>
-                <FineList>
-                  <div className="infoList">
-                    <div className="spanList">
-                      <span>
-                        {studentList.map((student) =>
-                          student.id === tax.withdrawId
-                            ? `${student.name}(${student.rollNumber})`
-                            : null
-                        )}
-                      </span>
-                      <span style={{ fontSize: '0.7rem' }}>
-                        {getOnlyDate(tax.createdAt)}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <span style={{ fontSize: '17px' }}>과태료</span>
+                {/* 학생 리스트 */}
+                <div
+                  style={{
+                    width: '100px',
+                  }}
+                >
+                  <select
+                    style={{
+                      width: '100px',
+                      padding: '0 5%',
+                      border: '0.5px solid #999999',
+                      borderRadius: '7px',
+                      fontSize: '12px',
+                      height: '27px',
+                      color: '#777777',
+                    }}
+                    id="name"
+                    value={selectedName}
+                    onChange={nameSelect}
+                  >
+                    <option value="" selected>
+                      전체 보기
+                    </option>
+                    {studentList.map((student) => (
+                      <option key={student.id} value={student.id}>
+                        {student.name}({student.rollNumber})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  borderBottom: '1px solid #777777',
+                  marginTop: '5px',
+                  marginBottom: '6%',
+                }}
+              ></div>
+              {/* 여기서부터 과태료 리스트 */}
+              {showList.map((tax) => (
+                <>
+                  <FineList>
+                    <div className="infoList">
+                      <div className="spanList">
+                        <span>
+                          {studentList.map((student) =>
+                            student.id === tax.withdrawId
+                              ? `${student.name}(${student.rollNumber})`
+                              : null
+                          )}
+                        </span>
+                        <span style={{ fontSize: '0.7rem' }}>
+                          {getOnlyDate(tax.createdAt)}
+                        </span>
+                      </div>
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+                        alt="구분선"
+                      />
+                      <span className="taxSpan">{tax.memo}</span>
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
+                        alt="구분선"
+                      />
+                      <span className="taxSpan">
+                        {tax.transaction} {unit}
                       </span>
                     </div>
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-                      alt="구분선"
-                    />
-                    <span className="taxSpan">{tax.memo}</span>
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/icon-line.png`}
-                      alt="구분선"
-                    />
-                    <span className="taxSpan">
-                      {tax.transaction} {unit}
-                    </span>
-                  </div>
-                </FineList>
-              </>
-            ))}
+                  </FineList>
+                </>
+              ))}
+            </div>
           </div>
-          {/* </div> */}
         </>
       )}
       {innerWidth >= 1160 && location.pathname === `/${id}/manager` && (

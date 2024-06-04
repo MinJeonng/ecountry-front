@@ -328,7 +328,11 @@ export function GetName() {
     navigate(`/${id}/manager`);
   };
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
+  useEffect(() => {
+    setUserInfo();
+    console.log('setUserInfo');
+  }, []);
 
   useEffect(() => {
     if (userInfo) {

@@ -16,7 +16,10 @@ import styled from 'styled-components';
 import { ManagerTopHeader } from './ManagerDashBoard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { OwnAccount } from '../components/StudentBank';
-import { ChatBotBtn } from '../components/Btns';
+import { ChatBotBtn, LoginBtn } from '../components/Btns';
+import { useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import { authFunc, confirmCountry } from '../hooks/Functions';
 
 const PcContainer = styled.div`
   .block {
@@ -73,16 +76,32 @@ export const BlockLine = styled.div`
 `;
 
 export function CommonMain() {
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const navigate = useNavigate();
   const { id } = useParams();
+
+  const [loginBtn, setLoginBtn] = useState(false);
+  const [isShow, setIsShow] = useState(false);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.auth);
+
+  const showItem = () => {
+    setIsShow(true);
+  };
 
   useEffect(() => {
     window.addEventListener('resize', () => setInnerWidth(window.innerWidth));
+    if (authFunc()) {
+      confirmCountry(id, userInfo, showItem);
+    } else {
+      setLoginBtn(true);
+    }
   }, []);
   return (
     <>
-      {innerWidth <= 1160 ? (
+      <ToastContainer />
+      {loginBtn && <LoginBtn />}
+      {isShow && innerWidth <= 1160 && (
         <>
           <Template
             childrenTop={
@@ -106,7 +125,8 @@ export function CommonMain() {
             }
           />
         </>
-      ) : (
+      )}
+      {isShow && innerWidth > 1160 && (
         <>
           <CommonMainDesktopHeader />
           <ChatBotBtn />

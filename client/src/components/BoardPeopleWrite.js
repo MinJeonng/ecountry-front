@@ -38,6 +38,12 @@ export function BoardPeopleWrite() {
           document.location.href = `/${id}/boardPeople`;
         }
       } else {
+        console.log({
+          title,
+          content,
+          isSecret,
+          countryId: id,
+        });
         const res = await axios({
           method: 'POST',
           url: `${process.env.REACT_APP_HOST}/api/post/petition`,
@@ -61,6 +67,10 @@ export function BoardPeopleWrite() {
           setTimeout(() => {
             document.location.href = `/${id}/boardPeople`;
           }, 1400);
+        } else {
+          toast.error('글 등록에 실패하였습니다. 다시 시도해주세요.', {
+            autoClose: 1300,
+          });
         }
       }
     } catch (error) {

@@ -18,6 +18,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../store';
 import { persistor } from '../';
+import { auth } from '../store/userInfoReducer';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -104,10 +105,7 @@ export function MainProfile() {
   const [uploadedImageUrl, setUploadedImageUrl] = useState(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
   );
-  const [selectedFile, setSelectedFile] = useState(null);
   const [name, setName] = useState('');
-
-  const navigate = useNavigate();
 
   const userInfo = useSelector((state) => state.auth);
 
@@ -175,9 +173,7 @@ export function MainProfile() {
 
   useEffect(() => {
     if (userInfo) {
-      if (authFunc()) {
-        confirmCountry(id, userInfo, getInfo);
-      }
+      getInfo();
     }
   }, [userInfo]);
 
@@ -251,10 +247,10 @@ export function GetName() {
     if (!window.confirm('로그아웃 하시겠습니까?')) {
       return;
     }
-
+    dispatch(auth(null));
     dispatch({ type: 'LOGOUT' });
     await persistor.purge();
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate(`/${id}/login`, { replace: true });
   };
 

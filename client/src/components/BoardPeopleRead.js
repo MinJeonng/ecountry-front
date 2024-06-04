@@ -4,8 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText, confirmCountry } from '../hooks/Functions';
 import { ChatBotBtn, ConfirmBtn } from './Btns';
 import { ToastContainer, toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
-export function BoardPeopleRead({ userinfo }) {
+export function BoardPeopleRead() {
   // 데이터
   // id : long,
   // title : string,
@@ -17,6 +18,9 @@ export function BoardPeopleRead({ userinfo }) {
   const navigate = useNavigate();
   const [petitionInfo, setPetitionInfo] = useState();
   const [isShow, setIsShow] = useState(false);
+
+  const userInfo = useSelector((state) => state.auth);
+
   const getPetiton = async () => {
     const res = await axios({
       method: 'GET',
@@ -28,21 +32,10 @@ export function BoardPeopleRead({ userinfo }) {
     });
     console.log(res.data.result);
     if (res.data.success) {
-      if (res.data.result.countryId != id) {
-        toast.error('잘못된 접근입니다.', { autoClose: 1300 });
-        if (userinfo?.isStudent) {
-          setTimeout(() => navigate(`/${id}/login`), 1300);
-        } else {
-          setTimeout(() => navigate('/login'), 1300);
-        }
-        if (!userinfo) {
-          setTimeout(() => navigate('/'), 1300);
-        }
-      }
       setPetitionInfo(res.data.result);
       setIsShow(!res.data.result.isSecret);
-      if (userinfo?.isStudent) {
-        if (userinfo?.id == petitionInfo?.writerId) {
+      if (userInfo?.isStudent) {
+        if (userInfo?.id == petitionInfo?.writerId) {
           setIsShow(true);
         }
       } else {
@@ -78,10 +71,10 @@ export function BoardPeopleRead({ userinfo }) {
   };
 
   useEffect(() => {
-    if (userinfo) {
+    if (userInfo) {
       getPetiton();
     }
-  }, [userinfo]);
+  }, [userInfo]);
   return (
     <>
       <div className="pc-wrap">

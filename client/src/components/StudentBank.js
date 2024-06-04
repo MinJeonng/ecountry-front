@@ -105,6 +105,17 @@ function CheckingAccount({ account, unit }) {
     innerWidth <= 1160 ||
     (innerWidth > 1160 && location.pathname === `/${id}/bank`);
 
+  const findStudentId = (accountId) => {
+    let result;
+    transList?.forEach((data) => {
+      if (data.id == accountId) {
+        console.log(data.studentId);
+        result = data.studentId;
+      }
+    });
+    return result;
+  };
+
   //이체 가능 리스트
   const transferList = async () => {
     try {
@@ -117,7 +128,6 @@ function CheckingAccount({ account, unit }) {
         },
       });
       if (res.data.success) {
-        console.log(res.data.result);
         setTransList(res.data.result);
       } else {
         console.log(res.data.result.message);
@@ -187,7 +197,7 @@ function CheckingAccount({ account, unit }) {
                 'ngrok-skip-browser-warning': '69420',
               },
               data: {
-                studentId: [account.id],
+                studentId: [findStudentId(account.id)],
                 content: `${depositUserName}님에게 ${transferAmount}${unit.unit} 이체했습니다. `,
               },
             });
@@ -199,7 +209,7 @@ function CheckingAccount({ account, unit }) {
                 'ngrok-skip-browser-warning': '69420',
               },
               data: {
-                studentId: [depositUser],
+                studentId: [findStudentId(depositUser)],
                 content: `${username}님이 ${transferAmount}${unit.unit} 이체했습니다. `,
               },
             });
@@ -526,7 +536,6 @@ export function OwnAccount() {
   }, []);
   return (
     <>
-
       <div className="pc-wrap">
         {accounts.map((account) => (
           <div key={account.id}>
@@ -545,7 +554,6 @@ export function OwnAccount() {
           </div>
         ))}
       </div>
-
     </>
   );
 }

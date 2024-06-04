@@ -98,7 +98,7 @@ function App() {
             path="/:id/manager/assembly"
             element={<SetAssembly position="국회" />}
           />
-          <Route path="/:id/manager/seatMap" element={<SetSeat />} />{' '}
+          <Route path="/:id/manager/seatMap" element={<SetSeat />} />
           <Route
             path="/:id/manager/taxLawList"
             element={<TaxLawList position="세법 관리" />}

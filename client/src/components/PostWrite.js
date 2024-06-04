@@ -138,6 +138,10 @@ export function SetPostWrite({ ...rest }) {
         toast.success('글이 수정되었습니다.', {
           autoClose: 1200,
         });
+
+        setTimeout(() => {
+          document.location.href = `/${id}/news`;
+        }, 1400);
       }
     } else {
       const res = await axios({
@@ -158,6 +162,24 @@ export function SetPostWrite({ ...rest }) {
         toast.success('글이 등록되었습니다.', {
           autoClose: 1200,
         });
+        console.log(getExpire());
+        const res2 = await axios({
+          method: 'POST',
+          url: `${process.env.REACT_APP_HOST}/api/student/notice/add/all/${id}`,
+          headers: {
+            Authorization: `Bearer ${getExpire()}`,
+            'Content-Type': `application/json`,
+            'ngrok-skip-browser-warning': '69420',
+          },
+          data: {
+            content: '새로운 뉴스가 등록되었습니다.',
+          },
+        });
+        if (res2.data.success) {
+          setTimeout(() => {
+            document.location.href = `/${id}/news`;
+          }, 1400);
+        }
       }
     }
   };
@@ -209,9 +231,6 @@ export function SetPostWrite({ ...rest }) {
     }
     try {
       sendNews();
-      setTimeout(() => {
-        document.location.href = `/${id}/news`;
-      }, 1400);
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import '../styles/setting.scss';
@@ -10,12 +10,10 @@ import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export function AddSavings() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [savingName, setSavingName] = useState('');
   const [savingDeadLine, setSavingDeadLine] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [savingList, setSavingList] = useState([]);
-  const [registerDate, setRegisterDate] = useState(new Date());
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(true);
@@ -54,8 +52,6 @@ export function AddSavings() {
   };
 
   useEffect(() => {
-    // 등록 날짜를 오늘 날짜로 설정
-    setRegisterDate(new Date());
     getList();
   }, []);
 

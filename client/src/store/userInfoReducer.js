@@ -13,7 +13,7 @@ const authReducer = (state = initialState, action) => {
       if (action.info) {
         return action.info;
       } else {
-        return state;
+        return initialState;
       }
     default:
       return state;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, Button } from 'antd';
+import { Avatar } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
@@ -14,6 +14,8 @@ import {
   profileImageUpload,
 } from '../hooks/Functions';
 import { ToastContainer, toast } from 'react-toastify';
+import { useAppDispatch, useAppSelector } from '../store';
+import { persistor } from '../';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -75,6 +77,20 @@ const LogoutBtn = styled.button`
   img {
     width: 16px;
     height: 16px;
+  }
+`;
+
+export const DesktopContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  .name {
+    font-size: 20px;
+    color: #333;
+    font-weight: 600;
+  }
+  .job {
+    font-size: 15px;
+    color: #606060;
   }
 `;
 
@@ -191,6 +207,7 @@ export function GetName() {
   const dispatch = useDispatch();
   const [isManager, setIsManager] = useState(false);
   const navigate = useNavigate();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   const getUserName = async () => {
     try {
@@ -221,12 +238,16 @@ export function GetName() {
       console.error('정보 요청 실패:', error);
     }
   };
-  const logoutFunc = () => {
+
+  const logoutFunc = async () => {
     if (!window.confirm('로그아웃 하시겠습니까?')) {
       return;
     }
+
+    dispatch({ type: 'LOGOUT' });
+    await persistor.purge();
     localStorage.removeItem('token');
-    window.location.href = `/${id}/login`;
+    navigate(`/${id}/login`, { replace: true });
   };
 
   const movetoManager = () => {
@@ -244,23 +265,35 @@ export function GetName() {
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+  }, []);
   return (
-    <ProfileContainer>
-      <ProfileName>
-        {name} <div className="job">{job}</div>
-      </ProfileName>
-      <div className="btnBox">
-        <LogoutBtn onClick={logoutFunc}>
-          로그아웃
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
-            alt="복사"
-          />
-        </LogoutBtn>
-        {isManager && (
-          <ToManagerBtn onClick={movetoManager}>관리자 페이지</ToManagerBtn>
-        )}
-      </div>
-    </ProfileContainer>
+    <>
+      {innerWidth <= 1160 ? (
+        <ProfileContainer>
+          <ProfileName>
+            {name} <div className="job">{job}</div>
+          </ProfileName>
+          <div className="btnBox">
+            <LogoutBtn onClick={async () => logoutFunc()}>
+              로그아웃
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+                alt="로그아웃"
+              />
+            </LogoutBtn>
+            {isManager && (
+              <ToManagerBtn onClick={movetoManager}>관리자 페이지</ToManagerBtn>
+            )}
+          </div>
+        </ProfileContainer>
+      ) : (
+        <DesktopContainer>
+          <div className="name">{name}</div>
+          <div className="job">{job}</div>
+        </DesktopContainer>
+      )}
+    </>
   );
 }

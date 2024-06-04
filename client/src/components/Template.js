@@ -9,7 +9,8 @@ const BgTop = styled.div`
   }
 
   @media (min-width: 1160px) {
-    background: none;
+    /* background: none; */
+    display: none;
 
     &.auth-page2 {
       width: 250px;

@@ -13,13 +13,13 @@ export function ManagerHeader() {
 
   const positions = [
     { name: '홈', path: `/${id}/manager` },
-    { name: '은행', path: `/${id}/manager/bank` },
-    { name: '투자', path: `/${id}/manager/investment` },
-    { name: '국민 리스트', path: `/${id}/manager/peopleList` },
-    { name: '국회', path: `/${id}/manager/assembly` },
-    { name: '자리 배치도', path: `/${id}/manager/seatMap` },
-    { name: '세법 관리 페이지', path: `/${id}/manager/taxLawList` },
-    { name: '직업 관리', path: `/${id}/manager/jobList` },
+    { name: '은행 설정', path: `/${id}/manager/bank` },
+    { name: '투자 설정', path: `/${id}/manager/investment` },
+    { name: '국민 리스트 설정', path: `/${id}/manager/peopleList` },
+    { name: '국회 설정 ', path: `/${id}/manager/assembly` },
+    { name: '자리 배치 설정', path: `/${id}/manager/seatMap` },
+    { name: '세법 설정', path: `/${id}/manager/taxLawList` },
+    { name: '직업 설정', path: `/${id}/manager/jobList` },
   ];
 
   return (

@@ -4,6 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { setExpire } from '../hooks/Functions';
+import { useDispatch } from 'react-redux';
+import useAuth from '../hooks/useAuth';
 
 const IntroBackGround = styled.div`
   background: #fcffe0;
@@ -20,11 +23,14 @@ const IntroBackGround = styled.div`
 `;
 
 export default function Intro() {
+  const [userAuth, setUserAuth] = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const testLogin = async (isStudent) => {
     const successFunc = (result, url) => {
-      localStorage.setItem('token', result.token);
+      setExpire(result.token);
+      setUserAuth(result.token);
       toast.success('환영합니다!');
       setTimeout(() => {
         navigate(url);

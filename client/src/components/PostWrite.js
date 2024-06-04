@@ -15,8 +15,7 @@ import '../styles/setting.scss';
 import '../styles/test.scss';
 
 import useAuth from '../hooks/useAuth';
-import { handleKeyDownNext } from '../hooks/Functions';
-
+import { getExpire, handleKeyDownNext } from '../hooks/Functions';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -145,7 +144,7 @@ export function SetPostWrite({ ...rest }) {
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/post/article`,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
         },
@@ -184,7 +183,7 @@ export function SetPostWrite({ ...rest }) {
   };
 
   // useEffect(() => {
-  //   if (localStorage.getItem('token')) {
+  //   if (getExpire()) {
   //     // 사용자 인증 후 권한이 없으면 작성 불가
   //     // setUser();
   //   } else {

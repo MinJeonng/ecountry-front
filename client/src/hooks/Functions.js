@@ -251,7 +251,7 @@ export const profileImageUpload = async (e, id, ref, func) => {
 };
 
 export const confirmCountry = (id, userInfo, func) => {
-  if (userInfo.authority) {
+  if (userInfo.countryList?.includes(Number(id))) {
     if (func) {
       func();
     }
@@ -266,10 +266,33 @@ export const confirmCountry = (id, userInfo, func) => {
 };
 
 export const authFunc = () => {
-  if (localStorage.getItem('token')) {
+  if (getExpire()) {
     return true;
   } else {
     toast.error('로그인 후 이용 가능합니다.', { autoClose: 1300 });
+
     return false;
   }
+};
+
+export const setExpire = (token) => {
+  const obj = {
+    token,
+    expire: Date.now() + 43200 * 1000,
+  };
+  const objString = JSON.stringify(obj);
+  localStorage.setItem('token', objString);
+};
+
+export const getExpire = () => {
+  const objString = localStorage.getItem('token');
+  if (objString) {
+    const obj = JSON.parse(objString);
+    if (Date.now() > obj.expire) {
+      localStorage.removeItem('token');
+    } else {
+      return obj.token;
+    }
+  }
+  return null;
 };

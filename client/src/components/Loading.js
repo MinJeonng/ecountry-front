@@ -5,6 +5,7 @@ import '../styles/loading.scss';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import { getExpire } from '../hooks/Functions';
 
 export default function Loading({ countryid }) {
   const [loading, setLoading] = useState(true);
@@ -54,7 +55,7 @@ export default function Loading({ countryid }) {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
         },
         data: {
           name: setInfo.setting2.countryName,

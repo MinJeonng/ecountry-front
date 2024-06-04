@@ -4,7 +4,11 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { ToastContainer, toast } from 'react-toastify';
-import { confirmCountry, profileImageUpload } from '../hooks/Functions';
+import {
+  confirmCountry,
+  getExpire,
+  profileImageUpload,
+} from '../hooks/Functions';
 import { ref } from 'firebase/storage';
 import { storage } from '../config/Firebase';
 
@@ -38,7 +42,7 @@ export function StudentIdCard() {
         headers: {
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
         },
         data: {
           img: imageUrl,
@@ -88,7 +92,7 @@ export function StudentIdCard() {
         method: 'GET',
         url: `${process.env.REACT_APP_HOST}/api/user/info`,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
         },

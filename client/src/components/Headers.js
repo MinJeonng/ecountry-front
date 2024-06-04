@@ -9,6 +9,7 @@ import Template from './Template';
 import axios from 'axios';
 import '../styles/settingHeader.scss';
 import { useSelector } from 'react-redux';
+import { getExpire } from '../hooks/Functions';
 
 const CommonHeader = styled.div`
   display: flex;
@@ -96,7 +97,7 @@ export function CommonMainHeader() {
         method: 'GET',
         url: `${process.env.REACT_APP_HOST}/api/student/notice/count`,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getExpire()}`,
           'Content-Type': `application/json`,
           'ngrok-skip-browser-warning': '69420',
         },

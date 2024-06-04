@@ -6,6 +6,7 @@ import Template from '../components/Template';
 import { PageHeader } from '../components/Headers';
 import {
   chatBotList,
+  getExpire,
   handleKeyDown,
   handleKeyDownNext,
 } from '../hooks/Functions';
@@ -28,7 +29,7 @@ export function ChangePassword() {
       url: `${process.env.REACT_APP_HOST}/api/student/user`,
       data: { pw: newPassword },
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getExpire()}`,
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
       },

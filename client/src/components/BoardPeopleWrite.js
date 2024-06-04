@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GetTimeText, handleKeyDownNext } from '../hooks/Functions';
+import { GetTimeText, getExpire, handleKeyDownNext } from '../hooks/Functions';
 import { ConfirmBtn } from './Btns';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -44,7 +44,7 @@ export function BoardPeopleWrite() {
           headers: {
             'Content-Type': `application/json`,
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${getExpire()}`,
           },
           data: {
             title,

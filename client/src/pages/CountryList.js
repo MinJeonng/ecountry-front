@@ -8,6 +8,7 @@ import { PageHeader } from '../components/Headers';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { getExpire } from '../hooks/Functions';
 
 export default function CountryList() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function CountryList() {
       headers: {
         'Content-Type': `application/json`,
         'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getExpire()}`,
       },
     });
     if (res.data.result.length > 0) {

@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { GetTimeText, confirmCountry } from '../hooks/Functions';
 import { ChatBotBtn, ConfirmBtn } from './Btns';
 import { ToastContainer, toast } from 'react-toastify';
-import useAuth from '../hooks/useAuth';
 
 export function BoardPeopleRead({ userinfo }) {
   // 데이터

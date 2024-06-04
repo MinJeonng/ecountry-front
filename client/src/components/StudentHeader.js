@@ -13,18 +13,17 @@ export function StudentHeader() {
 
   const positions = [
     { name: '홈', path: `/${id}/main` },
-    { name: '신문고', path: `/${id}/boardPeople` },
-    // { name: '신문고 글쓰기', path: `/${id}/boardPeople/write` },
-    // { name: '신문고 리스트', path: `/${id}/boardPeople/read/${contentId}` },
-    { name: '뉴스', path: `/${id}/news` },
-    // { name: '뉴스 글쓰기', path: `/${id}/news/write` },
-    // { name: '뉴스 리스트', path: `/${id}/news/read/${newsId}` },
-    { name: '투자 상품', path: `/${id}/investment` },
     { name: '은행', path: `/${id}/bank` },
     // { name: '거래 내역', path: `/${id}/bank/history/${accountId}` },
+    { name: '투자 상품', path: `/${id}/investment` },
     { name: '국회', path: `/${id}/assembly` },
-    { name: '국세청', path: `/${id}/revenue` },
+    { name: '뉴스', path: `/${id}/news` },
+    // { name: '뉴스 글쓰기', path: `/${id}/news/write` },
+    { name: '신문고', path: `/${id}/boardPeople` },
+    // { name: '신문고 글쓰기', path: `/${id}/boardPeople/write` },
+    // { name: '신문고 리스트', path: `/${id}/oardPeople/read/${contentId}` },
 
+    { name: '국세청', path: `/${id}/revenue` },
     { name: '마이페이지', path: `/${id}/mypage` },
   ];
 

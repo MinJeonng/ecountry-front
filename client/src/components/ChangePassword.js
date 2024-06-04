@@ -61,7 +61,7 @@ export function ChangePassword() {
             <div className="box-style">
               <div className="user-signup-title">새 비밀번호</div>
               <input
-                className="user-signup"
+                className="new-password"
                 type="password"
                 value={newPassword}
                 maxLength={4}
@@ -71,7 +71,7 @@ export function ChangePassword() {
               <div className="user-signup-title">새 비밀번호 확인</div>
               <input
                 ref={confirmNewPwRef}
-                className="user-signup"
+                className="new-password"
                 type="password"
                 maxLength={4}
                 onChange={(e) => setConfirmPw(e.target.value)}

@@ -36,7 +36,7 @@ export default function Login() {
             navigate('/country');
           }, 2000);
         } else {
-          toast('아이디 또는 비밀번호가 틀렸습니다.', {
+          toast.error('아이디 또는 비밀번호가 틀렸습니다.', {
             autoClose: 1300,
           });
         }

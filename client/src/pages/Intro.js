@@ -130,6 +130,12 @@ export default function Intro() {
             <Link to="/signup">
               <button className="big-button">회원가입</button>
             </Link>
+            <button className="big-button" onClick={() => testLogin(false)}>
+              테스트 로그인 (선생님)
+            </button>
+            <button className="big-button" onClick={() => testLogin(true)}>
+              테스트 로그인 (학생)
+            </button>
           </div>
         </div>
       </div>

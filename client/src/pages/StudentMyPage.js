@@ -24,15 +24,17 @@ export default function StudentMyPage() {
         childrenTop={<PageHeader>{'마이페이지'}</PageHeader>}
         childrenBottom={
           <>
-            <button
-              className="changePassword-btn"
-              onClick={handleChangePassword}
-            >
-              비밀번호 변경
-            </button>
+            <div className="pc-wrap">
+              <button
+                className="changePassword-btn"
+                onClick={handleChangePassword}
+              >
+                비밀번호 변경
+              </button>
 
-            <StudentIdCard />
-            <StudentPayStub />
+              <StudentIdCard />
+              <StudentPayStub />
+            </div>
           </>
         }
       />

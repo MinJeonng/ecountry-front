@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import Template from '../components/Template';
 import { useParams } from 'react-router-dom';
@@ -6,12 +6,15 @@ import axios from 'axios';
 import { PageHeader } from '../components/Headers';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 
 export default function StudentLogin() {
   const { id } = useParams();
   const [rollNumber, setRollNumber] = useState();
   const [userId, setUserId] = useState('');
   const [pw, setPw] = useState('');
+  const userIdRef = useRef('');
+  const pwRef = useRef('');
 
   const loginFunc = async () => {
     const res = await axios({
@@ -25,10 +28,10 @@ export default function StudentLogin() {
     });
     if (res.data.success) {
       localStorage.setItem('token', res.data.result.token);
-      toast('환영합니다!');
+      toast.success('환영합니다!');
       window.location.href = `/${id}/main`;
     } else {
-      toast('입력하신 정보가 틀렸습니다.', {
+      toast.error('입력하신 정보가 틀렸습니다.', {
         autoClose: 1300,
       });
     }
@@ -44,31 +47,36 @@ export default function StudentLogin() {
         childrenBottom={
           <>
             <div className="login-wrap">
-              <form className="box-style">
+              <div className="box-style">
                 <div className="user-login-title">출석번호</div>
                 <input
                   className="user-login"
                   type="number"
                   min={1}
                   onChange={(e) => setRollNumber(e.target.value)}
+                  onKeyDown={(e) => handleKeyDownNext(e, userIdRef)}
                 ></input>
                 <div className="user-login-title">이름</div>
                 <input
+                  ref={userIdRef}
                   className="user-login"
                   type="text"
                   onChange={(e) => setUserId(e.target.value)}
+                  onKeyDown={(e) => handleKeyDownNext(e, pwRef)}
                 ></input>
                 <div className="user-login-title">비밀번호</div>
                 <input
+                  ref={pwRef}
                   className="user-login"
                   type="password"
                   maxLength={4}
                   onChange={(e) => setPw(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, loginFunc)}
                 ></input>
                 <button className="login-btn" type="button" onClick={loginFunc}>
                   로그인
                 </button>
-              </form>
+              </div>
               <div className="pwFind-info">
                 <div className="pwFind-text">비밀번호 잊은 사람은?</div>
                 <div className="pwFind-text">담임 선생님께!</div>
@@ -85,26 +93,31 @@ export default function StudentLogin() {
               </div>
               <div className="pc-right">
                 <div>국민 로그인</div>
-                <form className="login-box-style">
+                <div className="login-box-style">
                   <div className="user-login-title">출석번호</div>
                   <input
                     className="user-login"
                     type="number"
                     min={1}
                     onChange={(e) => setRollNumber(e.target.value)}
+                    onKeyDown={(e) => handleKeyDownNext(e, userIdRef)}
                   ></input>
                   <div className="user-login-title">이름</div>
                   <input
+                    ref={userIdRef}
                     className="user-login"
                     type="text"
                     onChange={(e) => setUserId(e.target.value)}
+                    onKeyDown={(e) => handleKeyDownNext(e, pwRef)}
                   ></input>
                   <div className="user-login-title">비밀번호</div>
                   <input
+                    ref={pwRef}
                     className="user-login"
                     type="password"
                     maxLength={4}
                     onChange={(e) => setPw(e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, loginFunc)}
                   ></input>
                   <button
                     className="login-btn"
@@ -113,7 +126,7 @@ export default function StudentLogin() {
                   >
                     로그인
                   </button>
-                </form>
+                </div>
                 <div className="pwFind-info">
                   <div className="pwFind-text">비밀번호 잊은 사람은?</div>
                   <div className="pwFind-text">담임 선생님께!</div>

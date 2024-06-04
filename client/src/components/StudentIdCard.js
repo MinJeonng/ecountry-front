@@ -137,9 +137,9 @@ export function StudentIdCard() {
   return (
     <div className="idCard-wrap">
       <ToastContainer />
+      <div className="idCard-title">신분증</div>
       <div className="idCard-list">
         <div className="idCard-detail">
-          <div className="idCard-detail-title">신분증</div>
           <Name>{name}</Name>
           <div className="idCard-detail-list">
             <div className="idCard-detail-content">{job}</div>

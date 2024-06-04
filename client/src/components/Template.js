@@ -12,9 +12,9 @@ const BgTop = styled.div`
     /* background: none; */
     display: none;
 
-    &.auth-page2 {
+    /* &.auth-page2 {
       width: 250px;
-    }
+    } */
   }
 `;
 

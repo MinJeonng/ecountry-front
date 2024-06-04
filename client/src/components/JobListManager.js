@@ -291,6 +291,11 @@ export default function JobListManager() {
     <div className="setting-wrap">
       <ToastContainer />
       <div>
+        <ul className="title-list">
+          <li className="underLine">
+            직업 설정을 수정 &#183; 추가&#183; 삭제할 수 있습니다&#46;
+          </li>
+        </ul>
         {jobsDisplay.map((job, index) => (
           <div key={index}>
             <div

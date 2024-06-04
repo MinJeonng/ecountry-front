@@ -19,6 +19,7 @@ import '../styles/setting.scss';
 import '../styles/settingPc.scss';
 import '../styles/_button_common.scss';
 import { PageHeader } from '../components/Headers';
+import Footer from '../components/Footer';
 
 export default function Setting({ position }) {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -42,7 +43,7 @@ export default function Setting({ position }) {
       <SettingHeader position={position} positions={settingPositions} />
       <Template
         // {innerWidth ? }
-        isAuthPage2={true}
+        // isAuthPage2={true}
         childrenTop={<PageHeader>{position}</PageHeader>}
         childrenBottom={
           <>
@@ -58,6 +59,7 @@ export default function Setting({ position }) {
           </>
         }
       />
+      {/* <Footer /> */}
     </>
   );
 }

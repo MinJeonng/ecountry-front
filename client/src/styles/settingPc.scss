@@ -28,6 +28,26 @@ $blue: #61759f;
     }
   }
 
+  .setting-wrap2 {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 30px 0;
+    border-bottom: 10px;
+
+    .title-list {
+      width: -webkit-fill-available;
+      margin: 50px 0 20px;
+
+      li {
+        margin-left: 20px;
+        list-style: disc;
+        font-size: 16px;
+        color: #777777;
+      }
+    }
+  }
+
   .pc-wrap {
     margin: 80px 100px 50px;
 
@@ -135,7 +155,7 @@ $blue: #61759f;
     display: flex;
     text-align: center;
     justify-content: space-between;
-    margin: 0 100px 50px;
+    // margin: 0 100px 50px;
 
     .next-button {
       @include button-style;
@@ -147,9 +167,9 @@ $blue: #61759f;
     }
   }
 
-  .setting-st {
-    margin: 0 100px;
-  }
+  // .setting-st {
+  //   margin: 0 100px;
+  // }
 
   .pw-title-list {
     margin: 10px 0 !important;
@@ -368,11 +388,9 @@ $blue: #61759f;
   }
 
   .non-law {
-    margin: 0 100px 20px;
+    margin: 20px 0;
     color: #666666;
     font-size: 12px;
-    display: flex;
-    justify-content: space-between;
   }
 
   .group-wrap {

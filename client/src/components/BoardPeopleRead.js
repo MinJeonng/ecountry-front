@@ -7,18 +7,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
 export function BoardPeopleRead() {
-  // 데이터
-  // id : long,
-  // title : string,
-  // content : string,
-  // createdAt : timestamp,
-  // writerId : long,
-  // writerName : string
   const { id, contentId } = useParams();
-  const navigate = useNavigate();
   const [petitionInfo, setPetitionInfo] = useState();
   const [isShow, setIsShow] = useState(false);
 
+  const navigate = useNavigate();
   const userInfo = useSelector((state) => state.auth);
 
   const getPetiton = async () => {
@@ -35,7 +28,8 @@ export function BoardPeopleRead() {
       setPetitionInfo(res.data.result);
       setIsShow(!res.data.result.isSecret);
       if (userInfo?.isStudent) {
-        if (userInfo?.id == petitionInfo?.writerId) {
+        if (userInfo?.id == res.data.result.writerId) {
+          console.log('학생');
           setIsShow(true);
         }
       } else {

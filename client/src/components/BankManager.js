@@ -6,7 +6,11 @@ import '../styles/setting.scss';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
+import {
+  getExpire,
+  handleKeyDown,
+  handleKeyDownNext,
+} from '../hooks/Functions';
 
 export function AddSavings() {
   const { id } = useParams();
@@ -47,8 +51,27 @@ export function AddSavings() {
         dueDate: savingDeadLine,
       },
     });
-    console.log(res.data.message);
-    getList();
+
+    if (res.data.success) {
+      getList();
+      toast.success('적금 상품 등록이 완료되었습니다.', { autoClose: 1300 });
+      const res2 = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/student/notice/add/all/${id}`,
+        headers: {
+          Authorization: `Bearer ${getExpire()}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: {
+          content: `${savingName} 적금 상품이 신규 생성되었습니다.`,
+        },
+      });
+    } else {
+      toast.error('적금 상품 생성에 실패했습니다. 다시 시도해주세요.', {
+        autoClose: 1300,
+      });
+    }
   };
 
   useEffect(() => {

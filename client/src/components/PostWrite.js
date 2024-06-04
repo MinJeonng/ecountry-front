@@ -172,7 +172,7 @@ export function SetPostWrite({ ...rest }) {
             'ngrok-skip-browser-warning': '69420',
           },
           data: {
-            content: '새로운 뉴스가 등록되었습니다.',
+            content: `${title} 뉴스가 새로 등록되었습니다.`,
           },
         });
         if (res2.data.success) {

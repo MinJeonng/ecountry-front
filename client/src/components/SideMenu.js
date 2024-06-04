@@ -97,8 +97,8 @@ export function SideMenuComponent({ func }) {
   const studentInfoList = useSelector(
     (state) => state.studentInfo.studentInfoList
   );
+  // console.log('studentInfoList', studentInfoList);
 
-  //이미지 모두 변환해야함
   const skillMappings = {
     0: {
       text: (

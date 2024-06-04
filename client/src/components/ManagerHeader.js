@@ -20,6 +20,7 @@ export function ManagerHeader() {
     { name: '직업 설정', path: `/${id}/manager/jobList` },
     { name: '자리 배치 설정', path: `/${id}/manager/seatMap` },
     { name: '세법 설정', path: `/${id}/manager/taxLawList` },
+
   ];
 
   return (

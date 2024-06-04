@@ -6,8 +6,6 @@ import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import axios from 'axios';
-
-import '../styles/setting.scss';
 import { handleKeyDown, handleKeyDownNext } from '../hooks/Functions';
 import { ManagerHeader } from './ManagerHeader';
 

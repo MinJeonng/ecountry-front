@@ -8,7 +8,7 @@ import { AssemblyLawList } from '../components/AssemblyLawList';
 import RevenueCollect from '../components/RevenueCollect';
 import RatingManage from '../components/RatingManage';
 
-export default function Skills({ position }) {
+export default function Skills() {
   const [skillId, setSkillId] = useState();
   const { id } = useParams();
   const navigate = useNavigate();

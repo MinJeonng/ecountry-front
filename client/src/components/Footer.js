@@ -25,7 +25,7 @@ export default function Footer() {
         </div>
         <div className="pcFooter">
           <div className="fLeft">
-            <a href="/">
+            <a href="/" style={{ color: '#333', textDecorationLine: 'none' }}>
               <div className="flogo">자라나라 경제나라</div>
             </a>
             <div className="fTel">
@@ -51,12 +51,14 @@ export default function Footer() {
               <a
                 className="fText-span"
                 href="https://github.com/MinJeonng/ecountry-front"
+                style={{ color: '#333', textDecorationLine: 'none' }}
               >
                 <span>GitHub 경제나라</span>
               </a>
               <a
                 className="fText-span"
                 href="https://github.com/cje206/econtry-back"
+                style={{ color: '#333', textDecorationLine: 'none' }}
               >
                 <span>GitHub 경제나라</span>
               </a>

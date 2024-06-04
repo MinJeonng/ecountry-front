@@ -195,29 +195,108 @@ export function AddSavings() {
   return (
     <>
       <ToastContainer />
-      <div className="setting-wrap">
-        <ul className="title-list">
-          <li>적금 상품을 생성할 수 있습니다.</li>
-          <li>생성 후 수정이 불가하오니 유의해주시기 바랍니다.</li>
-        </ul>
-      </div>
+      <div className="pc-wrap">
+        <div className="setting-wrap title-wrap">
+          <ul className="title-list">
+            <li>적금 상품을 생성할 수 있습니다.</li>
+            <li>생성 후 수정이 불가하오니 유의해주시기 바랍니다.</li>
+          </ul>
+        </div>
 
-      {savingList.map((saving, index) => (
-        <>
-          <div
-            className={`display ${
-              isAccordionOpen && selectedIndex === index ? 'accordion-open' : ''
-            } ${selectedIndex === index ? 'selected' : ''}`}
-            key={index}
-            onClick={() => selectInput(saving, index)}
-          >
-            {saving.name} (금리 {saving.interest}%)
-            <Arrow stroke="#ddd" className="accArrBtn" />
-          </div>
-          {isAccordionOpen && selectedIndex === index && (
+        {savingList.map((saving, index) => (
+          <>
+            <div
+              className={`display ${
+                isAccordionOpen && selectedIndex === index
+                  ? 'accordion-open'
+                  : ''
+              } ${selectedIndex === index ? 'selected' : ''}`}
+              key={index}
+              onClick={() => selectInput(saving, index)}
+            >
+              {saving.name} (금리 {saving.interest}%)
+              <Arrow stroke="#ddd" className="accArrBtn" />
+            </div>
+            {isAccordionOpen && selectedIndex === index && (
+              <form className="box-style">
+                <div className="reset">
+                  <div className="set-title">적금 상품명</div>
+                </div>
+                <input
+                  className="set-input"
+                  type="text"
+                  value={savingName}
+                  onChange={(e) => {
+                    setSavingName(e.target.value);
+                  }}
+                  onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
+                  disabled
+                />
+                <div className="set-title">적금 기간</div>
+                <div className="container">
+                  <input
+                    ref={deadLineRef}
+                    className="set-input"
+                    type="number"
+                    min="0"
+                    value={savingDeadLine}
+                    onChange={(e) => {
+                      setSavingDeadLine(e.target.value);
+                    }}
+                    onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
+                    disabled
+                  />
+                  <div className="unit">일</div>
+                </div>
+                <div className="set-title">금리 설정</div>
+                <div className="container">
+                  <input
+                    ref={rateRef}
+                    className="set-input"
+                    type="number"
+                    min="0"
+                    value={interestRate}
+                    onChange={(e) => {
+                      setInterestRate(e.target.value);
+                    }}
+                    disabled
+                  />
+                  <span className="unit">%</span>
+                </div>
+                <ConfirmBtn
+                  onClick={(e) => {
+                    handleCloseAccordion();
+                    // updateFunc(saving.id);
+                    deleteBtn(e, saving.id);
+                  }}
+                  btnName="삭제"
+                  backgroundColor="#61759f"
+                ></ConfirmBtn>
+              </form>
+            )}
+          </>
+        ))}
+
+        {isAccordionOpen && (
+          <ConfirmBtn
+            onClick={() => newAddBtn()}
+            btnName="상품 등록"
+            // width={'80%'}
+            backgroundColor="#bacd92"
+          ></ConfirmBtn>
+        )}
+
+        {isAddOpen && (
+          <>
             <form className="box-style">
               <div className="reset">
                 <div className="set-title">적금 상품명</div>
+                <img
+                  className="resetBtn"
+                  src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
+                  onClick={resetBtn}
+                  alt="초기화"
+                />
               </div>
               <input
                 className="set-input"
@@ -227,7 +306,6 @@ export function AddSavings() {
                   setSavingName(e.target.value);
                 }}
                 onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
-                disabled
               />
               <div className="set-title">적금 기간</div>
               <div className="container">
@@ -241,7 +319,6 @@ export function AddSavings() {
                     setSavingDeadLine(e.target.value);
                   }}
                   onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
-                  disabled
                 />
                 <div className="unit">일</div>
               </div>
@@ -256,93 +333,20 @@ export function AddSavings() {
                   onChange={(e) => {
                     setInterestRate(e.target.value);
                   }}
-                  disabled
+                  onKeyDown={(e) => handleKeyDown(e, handleAddSavings)}
                 />
                 <span className="unit">%</span>
               </div>
               <ConfirmBtn
-                onClick={(e) => {
-                  handleCloseAccordion();
-                  // updateFunc(saving.id);
-                  deleteBtn(e, saving.id);
-                }}
-                btnName="삭제"
-                backgroundColor="#61759f"
+                onClick={handleAddSavings}
+                btnName="상품 등록"
+                backgroundColor="#bacd92"
+                width="100%"
               ></ConfirmBtn>
             </form>
-          )}
-        </>
-      ))}
-
-      {isAccordionOpen && (
-        <ConfirmBtn
-          onClick={() => newAddBtn()}
-          btnName="상품 등록"
-          // width={'80%'}
-          backgroundColor="#bacd92"
-        ></ConfirmBtn>
-      )}
-
-      {isAddOpen && (
-        <>
-          <form className="box-style">
-            <div className="reset">
-              <div className="set-title">적금 상품명</div>
-              <img
-                className="resetBtn"
-                src={`${process.env.PUBLIC_URL}/images/icon-reset.png`}
-                onClick={resetBtn}
-                alt="초기화"
-              />
-            </div>
-            <input
-              className="set-input"
-              type="text"
-              value={savingName}
-              onChange={(e) => {
-                setSavingName(e.target.value);
-              }}
-              onKeyDown={(e) => handleKeyDownNext(e, deadLineRef)}
-            />
-            <div className="set-title">적금 기간</div>
-            <div className="container">
-              <input
-                ref={deadLineRef}
-                className="set-input"
-                type="number"
-                min="0"
-                value={savingDeadLine}
-                onChange={(e) => {
-                  setSavingDeadLine(e.target.value);
-                }}
-                onKeyDown={(e) => handleKeyDownNext(e, rateRef)}
-              />
-              <div className="unit">일</div>
-            </div>
-            <div className="set-title">금리 설정</div>
-            <div className="container">
-              <input
-                ref={rateRef}
-                className="set-input"
-                type="number"
-                min="0"
-                value={interestRate}
-                onChange={(e) => {
-                  setInterestRate(e.target.value);
-                }}
-                onKeyDown={(e) => handleKeyDown(e, handleAddSavings)}
-              />
-              <span className="unit">%</span>
-            </div>
-            <ConfirmBtn
-              onClick={handleAddSavings}
-              btnName="상품 등록"
-              backgroundColor="#bacd92"
-              width="100%"
-            ></ConfirmBtn>
-          </form>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 }

@@ -4,12 +4,16 @@ import { BoardPeopleList } from '../components/BoardPeople';
 import { BoardPeopleWrite } from '../components/BoardPeopleWrite';
 import { BoardPeopleRead } from '../components/BoardPeopleRead';
 import { PageHeader } from '../components/Headers';
+
+import { StudentHeader } from '../components/StudentHeader';
+
 import { useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { ToastContainer } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { LoginBtn } from '../components/Btns';
 import { authFunc, confirmCountry } from '../hooks/Functions';
+
 export function SetBoardPeople({ position }) {
   const { id } = useParams();
   const [loginBtn, setLoginBtn] = useState(false);
@@ -31,9 +35,14 @@ export function SetBoardPeople({ position }) {
 
   return (
     <>
+
+      <StudentHeader />
+
       <ToastContainer />
       {loginBtn && <LoginBtn />}
+
       <Template
+        isAuthPage2={true}
         childrenTop={
           <>
             <PageHeader>{position}</PageHeader>

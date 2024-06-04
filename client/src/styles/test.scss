@@ -84,3 +84,21 @@
   justify-content: space-between;
   gap: 5px;
 }
+
+.pc-postBtn {
+  display: none;
+}
+
+@media screen and (min-width: 1160px) {
+  .postBtn {
+    display: none;
+  }
+
+  .pc-postBtn {
+    display: flex;
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+  }
+}

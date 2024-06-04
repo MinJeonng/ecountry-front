@@ -28,44 +28,46 @@ export function StudentAssemblyLawList() {
 
   return (
     <>
-      <ToastContainer />
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div
-          className="newsHead"
-          style={{ color: '#666666', marginBottom: '10px' }}
-        >
-          기본 법
+      <div className="pc-wrap">
+        <ToastContainer />
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div
+            className="newsHead"
+            style={{ color: '#666666', marginBottom: '10px' }}
+          >
+            기본 법
+          </div>
         </div>
+        <div
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+        ></div>
+        {laws.length !== 0 ? (
+          <div className="newsInfo">
+            {laws.map((law, index) => (
+              <div
+                className="display"
+                key={index}
+                style={{ fontSize: '14px', marginBottom: '10px' }}
+              >
+                <p>{index + 1}항.</p>
+                <p>{law.rule}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            style={{
+              color: '#666666',
+              marginBottom: '20px',
+              fontSize: '13px',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span>제정된 세법이 존재하지 않습니다.</span>
+          </div>
+        )}
       </div>
-      <div
-        style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
-      ></div>
-      {laws.length !== 0 ? (
-        <div className="newsInfo">
-          {laws.map((law, index) => (
-            <div
-              className="display"
-              key={index}
-              style={{ fontSize: '14px', marginBottom: '10px' }}
-            >
-              <p>{index + 1}항.</p>
-              <p>{law.rule}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div
-          style={{
-            color: '#666666',
-            marginBottom: '20px',
-            fontSize: '13px',
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <span>제정된 세법이 존재하지 않습니다.</span>
-        </div>
-      )}
     </>
   );
 }

@@ -10,6 +10,7 @@ import {
   handleKeyDownNext,
 } from '../hooks/Functions';
 import { ToastContainer, toast } from 'react-toastify';
+import { StudentHeader } from './StudentHeader';
 
 export function ChangePassword() {
   const { id } = useParams();
@@ -45,43 +46,47 @@ export function ChangePassword() {
   };
 
   const handlePrevPage = () => {
-      navigate(`/${id}/mypage`);
-    };
+    navigate(`/${id}/mypage`);
+  };
   return (
     <>
       <ToastContainer />
+      <StudentHeader />
       <Template
+        isAuthPage2={true}
         childrenTop={<PageHeader>{'마이페이지'}</PageHeader>}
         childrenBottom={
-          <div className="box-style">
-            <div className="user-signup-title">새 비밀번호</div>
-            <input
-              className="user-signup"
-              type="password"
-              value={newPassword}
-              maxLength={4}
-              onChange={(e) => setNewPassword(e.target.value)}
-              onKeyDown={(e) => handleKeyDownNext(e, confirmNewPwRef)}
-            ></input>
-            <div className="user-signup-title">새 비밀번호 확인</div>
-            <input
-              ref={confirmNewPwRef}
-              className="user-signup"
-              type="password"
-              maxLength={4}
-              onChange={(e) => setConfirmPw(e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, handleChangePassword)}
-            ></input>
-            {confirmPw === newPassword || (
-              <div className="pw-error">비밀번호가 일치하지 않습니다.</div>
-            )}
-            <div className="btns">
-              <button className="change-btn" onClick={handleChangePassword}>
-                변경
-              </button>
-              <button className="cancelChange-btn" onClick={handlePrevPage}>
-                취소
-              </button>
+          <div className="pc-wrap">
+            <div className="box-style">
+              <div className="user-signup-title">새 비밀번호</div>
+              <input
+                className="user-signup"
+                type="password"
+                value={newPassword}
+                maxLength={4}
+                onChange={(e) => setNewPassword(e.target.value)}
+                onKeyDown={(e) => handleKeyDownNext(e, confirmNewPwRef)}
+              ></input>
+              <div className="user-signup-title">새 비밀번호 확인</div>
+              <input
+                ref={confirmNewPwRef}
+                className="user-signup"
+                type="password"
+                maxLength={4}
+                onChange={(e) => setConfirmPw(e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, handleChangePassword)}
+              ></input>
+              {confirmPw === newPassword || (
+                <div className="pw-error">비밀번호가 일치하지 않습니다.</div>
+              )}
+              <div className="btns">
+                <button className="change-btn" onClick={handleChangePassword}>
+                  변경
+                </button>
+                <button className="cancelChange-btn" onClick={handlePrevPage}>
+                  취소
+                </button>
+              </div>
             </div>
           </div>
         }

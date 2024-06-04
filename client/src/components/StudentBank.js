@@ -449,21 +449,23 @@ export function OwnAccount() {
   }, []);
   return (
     <>
-      {accounts.map((account) => (
-        <div key={account.id}>
-          {account.division === '입출금통장' && (
-            <CheckingAccount account={account} unit={unit} />
-          )}
-          {account.division === '적금통장' && (
-            <SavingAccount
-              account={account}
-              unit={unit}
-              withdrawId={withdrawId}
-              withdrawBalance={withdrawBalance}
-            />
-          )}
-        </div>
-      ))}
+      <div className="pc-wrap">
+        {accounts.map((account) => (
+          <div key={account.id}>
+            {account.division === '입출금통장' && (
+              <CheckingAccount account={account} unit={unit} />
+            )}
+            {account.division === '적금통장' && (
+              <SavingAccount
+                account={account}
+                unit={unit}
+                withdrawId={withdrawId}
+                withdrawBalance={withdrawBalance}
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </>
   );
 }

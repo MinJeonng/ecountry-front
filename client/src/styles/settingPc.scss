@@ -12,11 +12,12 @@ $blue: #61759f;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin: 80px 0 0 0;
+    margin: 80px 100px 0;
+    border-bottom: 10px;
 
     .title-list {
       width: -webkit-fill-available;
-      margin: 50px 100px 30px;
+      margin: 50px 0 20px;
 
       li {
         margin-left: 20px;
@@ -27,11 +28,35 @@ $blue: #61759f;
     }
   }
 
+  .pc-wrap {
+    margin: 80px 100px 0;
+
+    .title-wrap {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      border-bottom: 10px;
+      border-bottom: 2px solid #bacd92;
+      margin: 0;
+
+      .title-list {
+        width: -webkit-fill-available;
+        margin: 50px 0 20px;
+
+        li {
+          margin-left: 20px;
+          list-style: disc;
+          font-size: 16px;
+          color: #777777;
+        }
+      }
+    }
+  }
+
   .box-style2 {
     @include boxStyle-common;
     display: flex;
     flex-direction: column;
-
     padding: 60px;
     justify-content: center;
   }
@@ -40,7 +65,7 @@ $blue: #61759f;
     @include boxStyle-common;
     display: flex;
     flex-direction: column;
-    margin: 30px 100px;
+    margin: 30px 0;
     padding: 60px;
     justify-content: center;
 
@@ -209,7 +234,19 @@ $blue: #61759f;
     font-size: 14px;
     text-align: start;
     padding: 8px 10px;
-    margin: 0 100px 15px;
+    margin: 20px 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid #75a47f;
+  }
+
+  .display2 {
+    position: relative;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: start;
+    padding: 8px 10px;
+    margin: 20px 0;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     border: 1px solid #75a47f;
@@ -336,5 +373,16 @@ $blue: #61759f;
     font-size: 12px;
     display: flex;
     justify-content: space-between;
+  }
+
+  .group-wrap {
+    border-bottom: 1px solid #b3b3b3;
+    margin: 0 100px;
+
+    .group-header {
+      margin: 20px 0;
+      font-size: 14px;
+      font-weight: 800;
+    }
   }
 }

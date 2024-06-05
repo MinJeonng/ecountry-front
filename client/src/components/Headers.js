@@ -291,7 +291,7 @@ export function CommonMainDesktopHeader() {
         .filter(Boolean)
     : [];
 
-  // const storedSkillId = localStorage.getItem('skillId');
+  const storedSkillId = localStorage.getItem('skillId');
 
   return (
     <header>
@@ -315,15 +315,20 @@ export function CommonMainDesktopHeader() {
               <div onClick={() => handleNavigation(path)}>{name}</div>
             </li>
           ))}
-
+          <hr width="80%" color="#e2e4e4" height="1px" noshade />
           {skillBasedLinks.length > 0 && (
             <>
-              <li className="skill-menu-title">스킬 메뉴</li>
-              {/* <hr width="80%" color="#e2e4e4" height="1px" noshade /> */}
+              {/* <li className="skill-menu-title">스킬 메뉴</li> */}
+
               {skillBasedLinks.map(({ text, link, key }) => (
                 <li
                   key={key}
-                  className={window.location.pathname === link ? 'active' : ''}
+                  className={
+                    window.location.pathname === link ||
+                    storedSkillId === String(key)
+                      ? 'active'
+                      : ''
+                  }
                 >
                   <div
                     onClick={() => {
@@ -331,9 +336,6 @@ export function CommonMainDesktopHeader() {
                       navigate(link);
                     }}
                   >
-                    {/* {!storedSkillId || storedSkillId === String(key)
-                      ? text
-                      : null} */}
                     {text}
                   </div>
                 </li>
@@ -353,6 +355,7 @@ export function SkillHeader() {
     (state) => state.studentInfo.studentInfoList
   );
   const userInfo = useSelector((state) => state.auth);
+  const [selectedSkill, setSelectedSkill] = useState(false);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -433,35 +436,29 @@ export function SkillHeader() {
               <div onClick={() => handleNavigation(path)}>{name}</div>
             </li>
           ))}
-
+          <hr width="80%" color="#e2e4e4" height="1px" noshade />
           {skillBasedLinks.length > 0 && (
             <>
-              <li className="skill-menu-title">스킬 메뉴</li>
-              {skillBasedLinks
-                .filter(({ key }) => storedSkillId === String(key))
-                .map(({ text, link, key }) => (
-                  <li
-                    key={key}
-                    // className={
-                    //   window.location.pathname === link ? 'active' : ''
-                    // }
-                    className={
-                      window.location.pathname === link ||
-                      storedSkillId === String(key)
-                        ? 'active'
-                        : ''
-                    }
+              {skillBasedLinks.map(({ text, link, key }) => (
+                <li
+                  key={key}
+                  className={
+                    window.location.pathname === link ||
+                    storedSkillId === String(key)
+                      ? 'active'
+                      : ''
+                  }
+                >
+                  <div
+                    onClick={() => {
+                      localStorage.setItem('skillId', key);
+                      navigate(link);
+                    }}
                   >
-                    <div
-                      onClick={() => {
-                        localStorage.setItem('skillId', key);
-                        navigate(link);
-                      }}
-                    >
-                      {text}
-                    </div>
-                  </li>
-                ))}
+                    {text}
+                  </div>
+                </li>
+              ))}
             </>
           )}
         </ul>

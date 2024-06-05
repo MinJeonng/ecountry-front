@@ -12,6 +12,7 @@ import {
   setSelectedStudentId,
   setSelectedStudentName,
 } from '../store/selectedStudentIdReducer';
+import { SkillHeader } from './Headers';
 
 const SearchStudentStyle = styled.div`
   margin-bottom: 40px;
@@ -33,6 +34,9 @@ const SearchStudentStyle = styled.div`
       position: absolute;
       right: 50px;
     }
+  }
+  @media (min-width: 1160px) {
+    margin-top: 80px;
   }
 `;
 
@@ -516,8 +520,18 @@ function CancelSaving() {
 }
 
 export function SavingTeller() {
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
   return (
     <>
+      {innerWidth >= 1160 && <SkillHeader />}
       <SearchStudent />
       <AddSaving />
       <CancelSaving />

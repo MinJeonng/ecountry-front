@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import axios from 'axios';
 import { getExpire, handleKeyDown } from '../hooks/Functions';
+import { SkillHeader } from './Headers';
 
 export function AssemblyLawList() {
   const { id } = useParams();
@@ -15,6 +16,15 @@ export function AssemblyLawList() {
   const [isAddOpen, setIsAddOpen] = useState(true);
   const [selectedId, setSelectedId] = useState('');
   const [selectedDetail, setSelectedDetail] = useState('');
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
 
   const getRules = async () => {
     const res = await axios({
@@ -162,6 +172,7 @@ export function AssemblyLawList() {
   return (
     <>
       <ToastContainer />
+      {innerWidth >= 1160 && <SkillHeader />}
       <div className="pc-wrap">
         <div className="setting-wrap title-wrap">
           <ul className="title-list">

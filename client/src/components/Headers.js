@@ -251,7 +251,7 @@ export function CommonMainDesktopHeader() {
     { name: '뉴스', path: `/${id}/news` },
     { name: '국회', path: `/${id}/assembly` },
     { name: '국민 신문고', path: `/${id}/boardPeople` },
-    { name: '자리 배치도', path: `/${id}/seatMap` },
+    // { name: '자리 배치도', path: `/${id}/seatMap` },
     { name: '국세청', path: `/${id}/revenue` },
     { name: '마이페이지', path: `/${id}/mypage` },
   ];
@@ -318,17 +318,10 @@ export function CommonMainDesktopHeader() {
           <hr width="80%" color="#e2e4e4" height="1px" noshade />
           {skillBasedLinks.length > 0 && (
             <>
-              {/* <li className="skill-menu-title">스킬 메뉴</li> */}
-
               {skillBasedLinks.map(({ text, link, key }) => (
                 <li
                   key={key}
-                  className={
-                    window.location.pathname === link ||
-                    storedSkillId === String(key)
-                      ? 'active'
-                      : ''
-                  }
+                  className={window.location.pathname === link ? 'active' : ''}
                 >
                   <div
                     onClick={() => {
@@ -357,6 +350,7 @@ export function SkillHeader() {
   const userInfo = useSelector((state) => state.auth);
   // const [selectedSkill, setSelectedSkill] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState(null);
+  const [selectedSkillState, setSelectedSkillState] = useState(null);
   const [selectedMenu, setSelectedMenu] = useState(null);
 
   const handleNavigation = (path) => {
@@ -368,7 +362,7 @@ export function SkillHeader() {
     { name: '뉴스', path: `/${id}/news` },
     { name: '국회', path: `/${id}/assembly` },
     { name: '국민 신문고', path: `/${id}/boardPeople` },
-    { name: '자리 배치도', path: `/${id}/seatMap` },
+    // { name: '자리 배치도', path: `/${id}/seatMap` },
     { name: '국세청', path: `/${id}/revenue` },
     { name: '마이페이지', path: `/${id}/mypage` },
   ];
@@ -381,23 +375,28 @@ export function SkillHeader() {
     0: {
       text: <>은행원 (월급지급)</>,
       link: `/${id}/skills`,
+      state: 0,
     },
     1: {
       text: <>은행원 (적금관리)</>,
       link: `/${id}/skills`,
+      state: 1,
     },
 
     3: {
       text: <>국세청 (세금 징수)</>,
       link: `/${id}/skills`,
+      state: 3,
     },
     4: {
       text: <>신용 관리 등급 위원회</>,
       link: `/${id}/skills`,
+      state: 4,
     },
     5: {
       text: <>국회 (법 제정)</>,
       link: `/${id}/skills`,
+      state: 5,
     },
   };
   // const skillBasedLinks = studentInfoList.skills
@@ -413,16 +412,22 @@ export function SkillHeader() {
         .map((skill) =>
           skillMappings[skill] ? { ...skillMappings[skill], key: skill } : null
         )
-        .filter(Boolean)
+        .filter(
+          (item) =>
+            item &&
+            (selectedSkillState === null || item.state === selectedSkillState) // 현재 선택된 state와 일치하는 항목만 포함
+        )
     : [];
   const storedSkillId = localStorage.getItem('skillId');
-  console.log(storedSkillId);
+  // console.log(storedSkillId);
 
-  const handleSkillClick = (key, link) => {
+  const handleSkillClick = (key, link, state) => {
     setSelectedSkill(key);
+    setSelectedSkillState(state); // 선택된 기능의 state를 설정
     localStorage.setItem('skillId', key);
     navigate(link);
   };
+  console.log(selectedSkillState);
   return (
     <header>
       <img
@@ -448,7 +453,7 @@ export function SkillHeader() {
           <hr width="80%" color="#e2e4e4" height="1px" noshade />
           {skillBasedLinks.length > 0 && (
             <>
-              {skillBasedLinks.map(({ text, link, key }) => (
+              {skillBasedLinks.map(({ text, link, key, state }) => (
                 <li
                   key={key}
                   className={
@@ -464,7 +469,9 @@ export function SkillHeader() {
                         : 'none',
                   }}
                 >
-                  <div onClick={() => handleSkillClick(key, link)}>{text}</div>
+                  <div onClick={() => handleSkillClick(key, link, state)}>
+                    {text}
+                  </div>
                 </li>
               ))}
             </>

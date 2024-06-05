@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { ConfirmBtn } from './Btns';
+import { SkillHeader } from './Headers';
 
 //신용등급 관리 위원회  (학생이 신용등급 수정)
 export default function RatingManage() {
@@ -12,6 +13,15 @@ export default function RatingManage() {
   const [studentList, setStudentList] = useState([]);
   const [updateRating, setUpdateRating] = useState('');
   const [prevRating, setPrevRating] = useState();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
 
   const getStudentList = async () => {
     const res = await axios({
@@ -94,6 +104,7 @@ export default function RatingManage() {
   return (
     <>
       <ToastContainer />
+      {innerWidth >= 1160 && <SkillHeader />}
       <div className="title-wrap-st">
         <ul className="title-list-st title-list">
           <li>국민들의 신용 등급을 수정할 수 있습니다.</li>

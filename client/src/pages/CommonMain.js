@@ -68,6 +68,9 @@ export const BlockLine = styled.div`
     &.secondBox {
       width: 230px;
       height: 90px;
+      .dashBoard-wrap {
+        margin: 0px;
+      }
     }
     &.thirdBox {
       width: 470px;

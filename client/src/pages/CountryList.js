@@ -6,7 +6,6 @@ import '../styles/countryList.scss';
 import axios from 'axios';
 import { PageHeader } from '../components/Headers';
 import { toast, ToastContainer } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { getExpire } from '../hooks/Functions';
 
@@ -161,14 +160,6 @@ export default function CountryList() {
                     </button>
                   </>
                 )}
-                <Link to="/">
-                  <button className="navi-pre-btn">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
-                      alt="뒤로가기"
-                    />
-                  </button>
-                </Link>
               </div>
             </div>
           </div>

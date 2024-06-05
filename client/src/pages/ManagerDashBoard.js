@@ -67,7 +67,7 @@ export const ManagerTopHeader = styled.div`
   display: flex;
   height: 56px;
   border-bottom: 1px solid #d9d9d9;
-  width: 100vw;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
 `;

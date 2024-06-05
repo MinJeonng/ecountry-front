@@ -81,25 +81,17 @@ export default function Skills() {
           }
           childrenBottom={
             <>
-              <div className="student-wrap">
-                {/*월급 */}
-                {skillId == 0 && <SalaryTeller />}
-              </div>
+              {/*월급 */}
+              {skillId == 0 && <SalaryTeller />}
 
-              <div className="student-wrap">
-                {/* 적금 */}
-                {skillId == 1 && <SavingTeller />}
-              </div>
+              {/* 적금 */}
+              {skillId == 1 && <SavingTeller />}
 
-              <div className="student-wrap">
-                {/* 세금 징수 */}
-                {skillId == 3 && <RevenueCollect />}
-              </div>
+              {/* 세금 징수 */}
+              {skillId == 3 && <RevenueCollect />}
 
-              <div className="student-wrap">
-                {/* 신용 등급 관리위원회 */}
-                {skillId == 4 && <RatingManage />}
-              </div>
+              {/* 신용 등급 관리위원회 */}
+              {skillId == 4 && <RatingManage />}
 
               {/* 국회 */}
               {skillId == 5 && <AssemblyLawList />}

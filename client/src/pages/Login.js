@@ -48,10 +48,10 @@ export default function Login() {
       <ToastContainer />
       <Template
         isAuthPage={true}
-        isAuthPage2={true}
+        isAuthPage2={false}
         childrenTop={
           <>
-            <PageHeader>{'관리자 로그인'}</PageHeader>
+            <PageHeader path={`/`}>{'관리자 로그인'}</PageHeader>
           </>
         }
         childrenBottom={

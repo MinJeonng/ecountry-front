@@ -35,7 +35,9 @@ export default function JobList() {
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{'직업 설정'}</PageHeader>}
+          childrenTop={
+            <PageHeader path={`/${id}/manager`}>{'직업 설정'}</PageHeader>
+          }
           childrenBottom={
             <>
               <JobListManager />

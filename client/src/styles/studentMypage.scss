@@ -199,6 +199,11 @@ $blue: #61759f;
     color: #e03232;
   }
 
+  .mypage-list {
+    display: flex;
+    align-items: center;
+  }
+
   // id 카드
 
   .idCard-wrap {
@@ -207,7 +212,8 @@ $blue: #61759f;
     padding: 20px;
     background-color: #fffcf2;
     margin: 30px auto;
-    width: 50%;
+    width: 40%;
+    height: 50%;
 
     .idCard-title {
       text-align: center;
@@ -254,7 +260,7 @@ $blue: #61759f;
     border: 1px solid #b9c0be;
     border-radius: 6px;
     padding: 20px;
-    height: 300px;
+    height: 500px;
     overflow-x: hidden;
     overflow-y: scroll;
 

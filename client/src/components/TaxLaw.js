@@ -211,9 +211,9 @@ export function TaxLaw() {
   }, []);
 
   return (
-    <div>
+    <div className="pc-wrap">
       <ToastContainer />
-      <div className="setting-wrap">
+      <div className="setting-wrap title-wrap">
         <ul className="title-list">
           <li>설정한 세법을 확인할 수 있습니다&#46;</li>
           <li>
@@ -262,7 +262,7 @@ export function TaxLaw() {
                           <div className="set-title">세금명</div>
 
                           <img
-                            className="resetBtn"
+                            className="delete-img"
                             src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
                             onClick={handleDeleteBtn(index)}
                             alt="삭제"
@@ -317,13 +317,13 @@ export function TaxLaw() {
       </div>
 
       {isAddOpen && (
-        <div className="pc-wrap">
+        <div>
           <form className="box-style">
             <div className="reset">
               <div className="set-title">세금명</div>
 
               <img
-                className="resetBtn"
+                className="delete-img"
                 src={`${process.env.PUBLIC_URL}/images/icon-delete.png`}
                 onClick={resetInputs}
                 alt="삭제"

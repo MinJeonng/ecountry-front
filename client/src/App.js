@@ -33,6 +33,7 @@ import TaxLawList from './pages/TaxLawList';
 import Skills from './pages/Skills';
 import { StudentAssembly } from './pages/StudentAssembly';
 import { SettingHeader } from './components/SettingHeader';
+import { StudentSeat } from './pages/StudentSeatMap';
 
 function App() {
   return (
@@ -143,6 +144,10 @@ function App() {
           <Route
             path="/:id/assembly"
             element={<StudentAssembly position="국회" />}
+          />
+          <Route
+            path="/:id/seatMap"
+            element={<StudentSeat position="자리 배치표" />}
           />
           <Route path="/:id/chatbot" element={<ChatBot />} />
           <Route path="/:id/revenue" element={<Revenu position="국세청" />} />

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 import styled from 'styled-components';
+import { CommonMainDesktopHeader, SkillHeader } from './Headers';
 
 export default function SalaryTeller() {
   const { id } = useParams();
@@ -15,6 +16,26 @@ export default function SalaryTeller() {
   const [transferSalary, setTransferSalary] = useState(''); //이체금액
   const [unit, setUnit] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState(''); //studentId
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
+
+  // accoutId로 학생 id 가져오기
+  const findStudentId = (accountId) => {
+    let result = null;
+    studentList?.forEach((data) => {
+      if (data.id == accountId) {
+        result = data.studentId;
+      }
+    });
+    return result;
+  };
 
   //이체 가능 리스트(입금가능리스트)
   const studentListFunc = async () => {
@@ -99,7 +120,7 @@ export default function SalaryTeller() {
   const PaymentSalary = async () => {
     if (depositUser && transferSalary) {
       const isConfirmed = window.confirm(
-        `${depositUserName}님에게 ${transferSalary}${unit.unit} 이체하시겠습니까?`
+        `${depositUserName}님에게 ${transferSalary}${unit.unit} 월급을 지급하시겠습니까?`
       );
       if (isConfirmed) {
         try {
@@ -119,8 +140,20 @@ export default function SalaryTeller() {
           });
           console.log(res);
           if (res.data.success) {
-            toast('이체가 완료되었습니다.', {
+            toast.success('이체가 완료되었습니다.', {
               autoClose: 1200,
+            });
+            const res2 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [findStudentId(depositUser)],
+                content: `월급 ${transferSalary}${unit.unit}이 지급되었습니다.`,
+              },
             });
             setDepositUser('');
             setMemo('');
@@ -129,19 +162,19 @@ export default function SalaryTeller() {
             console.log('success', res.data.success);
           } else {
             console.log(res.data.message);
-            toast('송금에 실패했습니다.', {
+            toast.error('송금에 실패했습니다.', {
               autoClose: 1200,
             });
           }
         } catch (error) {
           console.log('이체 요청 실패', error);
-          toast('이체 요청 중 오류가 발생했습니다.', {
+          toast.error('이체 요청 중 오류가 발생했습니다.', {
             autoClose: 1200,
           });
         }
       }
     } else {
-      toast('정보를 모두 입력해주세요');
+      toast.error('정보를 모두 입력해주세요');
     }
   };
   const handleSelectStudent = (student) => {
@@ -156,59 +189,63 @@ export default function SalaryTeller() {
   return (
     <>
       <ToastContainer />
-
+      {innerWidth >= 1160 && <SkillHeader />}
       {/* <div className="salary-title">월급 지급</div> */}
-      <form className="box-style">
-        <div className="set-title">예금주</div>
-        <select
-          id="name"
-          className="set-input"
-          value={depositUser}
-          onChange={(e) => {
-            const selectedStudent = studentList.find(
-              (student) => student.id === Number(e.target.value)
-            );
 
-            handleSelectStudent(selectedStudent);
-          }}
-        >
-          <option value="" disabled style={{ color: '#a5a5a5' }}>
-            예금주를 선택하세요
-          </option>
-          {studentList.map((student) => {
-            return (
-              <option key={student.id} value={student.id}>
-                {student.rollNumber}번 {student.name}
-              </option>
-            );
-          })}
-        </select>
-        <div className="set-title">이체 금액</div>
-        <div className="container">
+      <div className="pc-wrap">
+        <form className="box-style">
+          <div className="set-title">예금주</div>
+          <select
+            id="name"
+            className="set-input"
+            value={depositUser}
+            onChange={(e) => {
+              const selectedStudent = studentList.find(
+                (student) => student.id === Number(e.target.value)
+              );
+
+
+              handleSelectStudent(selectedStudent);
+            }}
+          >
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
+              예금주를 선택하세요
+            </option>
+            {studentList.map((student) => {
+              return (
+                <option key={student.id} value={student.id}>
+                  {student.rollNumber}번 {student.name}
+                </option>
+              );
+            })}
+          </select>
+          <div className="set-title">이체 금액</div>
+          <div className="container">
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={transferSalary}
+              onChange={(e) => setTransferSalary(e.target.value)}
+            />
+            {/* {unit.unit} */}
+            <span className="unit">{unit.unit}</span>
+          </div>
+          <div className="set-title">메모(필요 시 입력하세요)</div>
           <input
             className="set-input"
-            type="number"
-            min="0"
-            value={transferSalary}
-            onChange={(e) => setTransferSalary(e.target.value)}
+            type="text"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
           />
-          {/* {unit.unit} */}
-          <span className="unit">{unit.unit}</span>
-        </div>
-        <div className="set-title">메모(필요 시 입력하세요)</div>
-        <input
-          className="set-input"
-          type="text"
-          value={memo}
-          onChange={(e) => setMemo(e.target.value)}
-        />
-        <ConfirmBtn
-          onClick={PaymentSalary}
-          btnName="이체"
-          width="100%"
-          backgroundColor="#61759f"
-        ></ConfirmBtn>
-      </form>
+          <ConfirmBtn
+            onClick={PaymentSalary}
+            btnName="이체"
+            width="100%"
+            backgroundColor="#61759f"
+          ></ConfirmBtn>
+        </form>
+      </div>
     </>
   );
 }

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import Template from '../components/Template';
-import { PageHeader } from '../components/Headers';
+import { CommonMainHeader, PageHeader } from '../components/Headers';
 import {
   authFunc,
   chatBotList,
@@ -31,25 +31,48 @@ export function ChangePassword() {
   const confirmNewPwRef = useRef(null);
 
   const handleChangePassword = async () => {
-    const res = await axios({
-      method: 'PATCH',
-      url: `${process.env.REACT_APP_HOST}/api/student/user`,
-      data: { pw: newPassword },
-      headers: {
-        Authorization: `Bearer ${getExpire()}`,
-        'Content-Type': `application/json`,
-        'ngrok-skip-browser-warning': '69420',
-      },
-    });
-    if (res.data.success) {
-      toast.success('비밀번호 변경이 완료되었습니다.', { autoClose: 1300 });
-      setTimeout(() => {
-        localStorage.removeItem('token');
-        navigate(`/${id}/login`);
-      }, 1300);
+    if (userInfo.isStudent) {
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/student/user`,
+        data: { pw: newPassword },
+        headers: {
+          Authorization: `Bearer ${getExpire()}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        toast.success('비밀번호 변경이 완료되었습니다.', { autoClose: 1300 });
+        setTimeout(() => {
+          localStorage.removeItem('token');
+          navigate(`/${id}/login`);
+        }, 1300);
+      } else {
+        console.log(res.data.message);
+        toast.error('비밀번호 변경에 실패했습니다.');
+      }
     } else {
-      console.log(res.data.message);
-      toast.error('비밀번호 변경에 실패했습니다.');
+      const res = await axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_HOST}/api/user/change`,
+        data: { pw: newPassword },
+        headers: {
+          Authorization: `Bearer ${getExpire()}`,
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+      if (res.data.success) {
+        toast.success('비밀번호 변경이 완료되었습니다.', { autoClose: 1300 });
+        setTimeout(() => {
+          localStorage.removeItem('token');
+          navigate(`/${id}/login`);
+        }, 1300);
+      } else {
+        console.log(res.data.message);
+        toast.error('비밀번호 변경에 실패했습니다.');
+      }
     }
   };
 
@@ -73,13 +96,18 @@ export function ChangePassword() {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+
       {isShow && (
         <Template
-          isAuthPage2={true}
-          childrenTop={<PageHeader>{'마이페이지'}</PageHeader>}
+          isAuthPage2={false}
+          childrenTop={
+            <>
+              <CommonMainHeader />
+              <PageHeader>{'마이페이지'}</PageHeader>
+            </>
+          }
           childrenBottom={
-            <div className="pc-wrap">
+            <div className="student-wrap">
               <div className="box-style">
                 <div className="user-signup-title">새 비밀번호</div>
                 <input

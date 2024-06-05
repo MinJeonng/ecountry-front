@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Template from '../components/Template';
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { StudentAssemblyLawList } from '../components/StudentAssemblyLawList';
 import { ChatBotBtn, LoginBtn } from '../components/Btns';
-import { StudentHeader } from '../components/StudentHeader';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { authFunc, confirmCountry } from '../hooks/Functions';
@@ -31,11 +30,13 @@ export function StudentAssembly({ position }) {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{position}</PageHeader>}
+          childrenTop={<PageHeader path={`/${id}/main`}>{position}</PageHeader>}
+
           childrenBottom={
             <>
               {/* 법 리스트 */}

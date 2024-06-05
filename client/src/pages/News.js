@@ -4,15 +4,13 @@ import Template from '../components/Template';
 import { SetPostWrite } from '../components/PostWrite';
 import { SetNewsDetail } from '../components/NewsDetail';
 import { SetNewsRead } from '../components/NewsRead';
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { ChatBotBtn, LoginBtn, NewsPostBtn } from '../components/Btns';
 import axios from 'axios';
-
-import { StudentHeader } from '../components/StudentHeader';
 
 import { authFunc, confirmCountry, getExpire } from '../hooks/Functions';
 import { useSelector } from 'react-redux';
@@ -81,7 +79,10 @@ export function SetNews({ position }) {
   }, []);
   return (
     <>
-      <StudentHeader />
+
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
+
       <ToastContainer />
       {loginBtn && <LoginBtn />}
       {isShow && (
@@ -89,19 +90,21 @@ export function SetNews({ position }) {
           isAuthPage2={true}
           childrenTop={
             <>
+              <CommonMainDesktopHeader />
               <PageHeader>{position}</PageHeader>
             </>
           }
           childrenBottom={
             <>
-              {/* 뉴스 리스트 */}
-              {position == '뉴스' && !isWrite && <SetNewsDetail />}
+              {/* 뉴스 전체 리스트 */}
+              {position == '뉴스 리스트' && !isWrite && <SetNewsDetail />}
               {/* 뉴스 작성 페이지 */}
-              {position === '뉴스' && isWrite && (
+              {position === '뉴스 글 등록' && isWrite && (
                 <SetPostWrite />
                 // <Practice />
               )}
-              {position === '읽기' && <SetNewsRead auth={isAuth} />}
+              {/* 글 하나 있는거 */}
+              {position === '뉴스' && <SetNewsRead auth={isAuth} />}
               {position === '뉴스' && isAuth && !isWrite && (
                 <NewsPostBtn func={setIsWrite} />
               )}

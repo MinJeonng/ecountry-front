@@ -83,7 +83,7 @@ export function SetNewsRead({ auth }) {
 
   return (
     <>
-      <div className="pc-wrap">
+      <div className="student-wrap">
         <div
           className="reset"
           style={{

@@ -42,7 +42,7 @@ export default function Skills() {
   }, []);
   useEffect(() => {
     if (skillId) {
-      // console.log(skillId);
+      console.log('skillId', skillId);
       localStorage.removeItem('skillId');
     }
   });
@@ -53,6 +53,7 @@ export default function Skills() {
       {/* 컴포넌트 쓰는거라 뒤로가기 설정 해주기 */}
       {isShow && (
         <Template
+          isAuthPage2={true}
           childrenTop={
             <>
               {skillId == 0 && (
@@ -80,14 +81,26 @@ export default function Skills() {
           }
           childrenBottom={
             <>
-              {/*월급 */}
-              {skillId == 0 && <SalaryTeller />}
-              {/* 적금 */}
-              {skillId == 1 && <SavingTeller />}
-              {/* 세금 징수 */}
-              {skillId == 3 && <RevenueCollect />}
-              {/* 신용 등급 관리위원회 */}
-              {skillId == 4 && <RatingManage />}
+              <div className="student-wrap">
+                {/*월급 */}
+                {skillId == 0 && <SalaryTeller />}
+              </div>
+
+              <div className="student-wrap">
+                {/* 적금 */}
+                {skillId == 1 && <SavingTeller />}
+              </div>
+
+              <div className="student-wrap">
+                {/* 세금 징수 */}
+                {skillId == 3 && <RevenueCollect />}
+              </div>
+
+              <div className="student-wrap">
+                {/* 신용 등급 관리위원회 */}
+                {skillId == 4 && <RatingManage />}
+              </div>
+
               {/* 국회 */}
               {skillId == 5 && <AssemblyLawList />}
             </>

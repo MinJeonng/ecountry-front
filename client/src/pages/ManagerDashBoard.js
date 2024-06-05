@@ -30,7 +30,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from '../store/userInfoReducer';
 
-
 const Btns = styled.button`
   @media (max-width: 1160px) {
     border-radius: 11px;
@@ -119,150 +118,146 @@ export default function ManagerDashBoard() {
     <>
       <ToastContainer />
       <ChatBotBtn />
-    
-    {loginBtn && <LoginBtn />}
-{innerWidth <= 1160 ? (
-  isShow ? (
-    <Template
-      childrenTop={
-        <>
-          <div className="managerInfo">
-            <div className="InfoPart1">
-              <div className="MainProfileBox">
-                <MainProfile />
+
+      {loginBtn && <LoginBtn />}
+      {innerWidth <= 1160 ? (
+        isShow ? (
+          <Template
+            childrenTop={
+              <>
+                <div className="managerInfo">
+                  <div className="InfoPart1">
+                    <div className="MainProfileBox">
+                      <MainProfile />
+                    </div>
+                    <div className="countryUrl">
+                      <span>국가 홈페이지 주소</span>
+                      <div className="clipboard">
+                        <CopyToClipboard
+                          text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                          onCopy={() =>
+                            toast('클립보드로 복사했습니다.', {
+                              autoClose: 1300,
+                            })
+                          }
+                        >
+                          <img
+                            src={`${process.env.PUBLIC_URL}/images/icon-copy.png`}
+                            alt="복사"
+                          />
+                        </CopyToClipboard>
+                        <Link
+                          to={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                          className="countryLink"
+                          style={{ color: '#777' }}
+                        >
+                          {`http://13.125.85.110/${id}/main`}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="BtnsClass">
+                    <Btns onClick={logoutFunc}>
+                      로그아웃
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+                        alt="로그아웃"
+                      />
+                    </Btns>
+                    <Btns onClick={movetoCountryList}>국가 리스트</Btns>
+                  </div>
+                </div>
+              </>
+            }
+            childrenBottom={
+              <>
+                <MainDashboard />
+              </>
+            }
+          />
+        ) : (
+          <>
+            <ManagerTopHeader>
+              <div className="BtnsClass">
+                <Btns onClick={movetoCountryList}>국가 리스트</Btns>
+                <Btns onClick={logoutFunc}>
+                  로그아웃
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+                    alt="로그아웃"
+                  />
+                </Btns>
               </div>
-              <div className="countryUrl">
-                <span>국가 홈페이지 주소</span>
-                <div className="clipboard">
-                  <CopyToClipboard
-                    text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
-                    onCopy={() =>
-                      toast('클립보드로 복사했습니다.', {
-                        autoClose: 1300,
-                      })
-                    }
-                  >
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/icon-copy.png`}
-                      alt="복사"
-                    />
-                  </CopyToClipboard>
-                  <Link
-                    to={`${process.env.REACT_APP_BASEURL}/${id}/main`}
-                    className="countryLink"
-                    style={{ color: '#777' }}
-                  >
-                    {`http://13.125.85.110/${id}/main`}
-                  </Link>
+            </ManagerTopHeader>
+          </>
+        )
+      ) : (
+        <>
+          <ManagerHeader />
+          <Container>
+            <ManagerTopHeader>
+              <StudentIdCard />
+              <Btns onClick={movetoCountryList}>국가 리스트</Btns>
+            </ManagerTopHeader>
+
+            <CommonMainDashboard>
+              <div className="firstContainer">
+                <div className="main-title">Manager Dashboard</div>
+                <div className="countryUrl">
+                  <span>국가 홈페이지 주소</span>
+                  <div className="clipboard">
+                    <CopyToClipboard
+                      text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                      onCopy={() =>
+                        toast('클립보드로 복사했습니다.', {
+                          autoClose: 1300,
+                        })
+                      }
+                    >
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/icon-copy.png`}
+                        alt="복사"
+                      />
+                    </CopyToClipboard>
+                    <Link
+                      to={`${process.env.REACT_APP_BASEURL}/${id}/main`}
+                      className="countryLink"
+                      style={{ color: '#777' }}
+                    >
+                      {`http://13.125.85.110/${id}/main`}
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="BtnsClass">
-              <Btns onClick={logoutFunc}>
-                로그아웃
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
-                  alt="로그아웃"
-                />
-              </Btns>
-              <Btns onClick={movetoCountryList}>국가 리스트</Btns>
-            </div>
-          </div>
+
+              <BlockLine>
+                <div className="Box firstManagerBox">
+                  <MainProfile />
+                </div>
+                <div className="Box secondBox">
+                  <Revune />
+                </div>
+              </BlockLine>
+              <BlockLine>
+                <div className="Box thirdBox">
+                  <CommonMainNews />
+                </div>
+                <div className="Box fourthBox">
+                  <PcInvestment />
+                </div>
+              </BlockLine>
+              <BlockLine>
+                <div className="Box fifthBox">
+                  <ScheduleList />
+                </div>
+                <div className="Box sixthBox">
+                  <MenuList />
+                </div>
+              </BlockLine>
+            </CommonMainDashboard>
+          </Container>
         </>
-      }
-      childrenBottom={
-        <>
-          <MainDashboard />
-        </>
-      }
-    />
-  ) : (
-    <>
-      <ManagerTopHeader>
-        <div className="BtnsClass">
-          <Btns onClick={movetoCountryList}>국가 리스트</Btns>
-          <Btns onClick={logoutFunc}>
-            로그아웃
-            <img
-              src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
-              alt="로그아웃"
-            />
-          </Btns>
-        </div>
-      </ManagerTopHeader>
-    </>
-  )
-) : (
-  <>
-    <ManagerHeader />
-    <Container>
-      <ManagerTopHeader>
-        <StudentIdCard />
-        <Btns onClick={movetoCountryList}>국가 리스트</Btns>
-      </ManagerTopHeader>
-
-      <CommonMainDashboard>
-        <div className="firstContainer">
-          <div className="main-title">Manager Dashboard</div>
-          <div className="countryUrl">
-            <span>국가 홈페이지 주소</span>
-            <div className="clipboard">
-              <CopyToClipboard
-                text={`${process.env.REACT_APP_BASEURL}/${id}/main`}
-                onCopy={() =>
-                  toast('클립보드로 복사했습니다.', {
-                    autoClose: 1300,
-                  })
-                }
-              >
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/icon-copy.png`}
-                  alt="복사"
-                />
-              </CopyToClipboard>
-              <Link
-                to={`${process.env.REACT_APP_BASEURL}/${id}/main`}
-                className="countryLink"
-                style={{ color: '#777' }}
-              >
-                {`http://13.125.85.110/${id}/main`}
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <BlockLine>
-          <div className="Box firstManagerBox">
-            <MainProfile />
-          </div>
-          <div className="Box secondBox">
-            <Revune />
-          </div>
-        </BlockLine>
-        <BlockLine>
-          <div className="Box thirdBox">
-            <CommonMainNews />
-          </div>
-          <div className="Box fourthBox">
-            <PcInvestment />
-          </div>
-        </BlockLine>
-        <BlockLine>
-          <div className="Box fifthBox">
-            <ScheduleList />
-          </div>
-          <div className="Box sixthBox">
-            <MenuList />
-          </div>
-        </BlockLine>
-      </CommonMainDashboard>
-    </Container>
-  </>
-)}
-
-
-    
-
+      )}
     </>
   );
 }

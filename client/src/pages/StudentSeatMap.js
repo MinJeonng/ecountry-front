@@ -5,8 +5,6 @@ import axios from 'axios';
 import '../styles/seat.scss';
 
 import Template from '../components/Template';
-import SeatMap from '../components/SeatMap';
-import StudentSeatMap from '../components/StudentSeatMap';
 import { PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
 import { ChatBotBtn, LoginBtn } from '../components/Btns';
@@ -15,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 // 자리배치도
-export function SetSeat() {
+export function StudentSeat() {
   const { id } = useParams();
 
   const [loginBtn, setLoginBtn] = useState(false);
@@ -23,7 +21,6 @@ export function SetSeat() {
   const [columns, setColumns] = useState([]);
   const [studentList, setStudentList] = useState([]);
   const [showStudentMap, setShowStudentMap] = useState(true);
-  const [isSeatMapVisible, setIsSeatMapVisible] = useState(false);
   const [seatList, setSeatList] = useState([]);
 
   const userInfo = useSelector((state) => state.auth);
@@ -69,93 +66,6 @@ export function SetSeat() {
     setStudentList(res.data.result);
   };
 
-  const changeList = async (row, col, studentId) => {
-    let isExist = false;
-    let data = [];
-
-    seatList?.map((seat) => {
-      if (seat.rowNum == row && seat.colNum == col) {
-        isExist = true;
-        if (showStudentMap) {
-          console.log('사용자');
-          data = [
-            {
-              id: seat.id,
-              ownerId: seat.ownerId,
-              studentId: studentId,
-              rowNum: row,
-              colNum: col,
-            },
-          ];
-        } else {
-          console.log('소유자');
-          data = [
-            {
-              id: seat.id,
-              ownerId: studentId,
-              studentId: seat.studentId,
-              rowNum: row,
-              colNum: col,
-            },
-          ];
-        }
-      }
-    });
-    if (!isExist) {
-      if (showStudentMap) {
-        console.log('소유자');
-        data = [
-          {
-            ownerId: null,
-            studentId: studentId,
-            rowNum: row,
-            colNum: col,
-            countryId: id,
-          },
-        ];
-      } else {
-        console.log('사용자');
-        data = [
-          {
-            ownerId: studentId,
-            studentId: null,
-            rowNum: row,
-            colNum: col,
-            countryId: id,
-          },
-        ];
-      }
-      console.log(data);
-      const res = await axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_HOST}/api/seat/status`,
-        data,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-      });
-      console.log(res.data);
-    } else {
-      console.log(data);
-      const res = await axios({
-        method: 'PATCH',
-        url: `${process.env.REACT_APP_HOST}/api/seat/status`,
-        data,
-        headers: {
-          'Content-Type': `application/json`,
-          'ngrok-skip-browser-warning': '69420',
-        },
-      });
-      console.log(res.data);
-    }
-    getStatus();
-  };
-
-  const toggleEdit = () => {
-    setIsSeatMapVisible(!isSeatMapVisible);
-  };
-
   const mountFunc = () => {
     getSeat();
     getStudent();
@@ -179,15 +89,13 @@ export function SetSeat() {
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={
-            <PageHeader path={`/${id}/manager`}>{'자리 배치표'}</PageHeader>
-          }
+          childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
           childrenBottom={
             <div>
               <div className="pc-seat-top">
                 <div className="seat-wrap ">
                   <ul className="title-list">
-                    <li>교실 내의 자리 배치를 설정하세요&#46;</li>
+                    <li>교실 내의 자리 배치 현황입니다&#46;</li>
                   </ul>
                 </div>
                 <div className="seat-title">
@@ -205,23 +113,13 @@ export function SetSeat() {
                   </button>
                 </div>
 
-                <StudentSeatMap
+                <StudentSMap
                   columns={columns}
                   seatlist={seatList}
-                  changelist={changeList}
                   studentlist={studentList}
                   isuser={showStudentMap}
                 />
 
-                <button className="blue-btn" onClick={toggleEdit}>
-                  자리 배치 수정
-                </button>
-                {isSeatMapVisible && (
-                  <div className="seat-map-container">
-                    {/* 배치표 추가 */}
-                    <SeatMap columns={columns} />
-                  </div>
-                )}
                 <ChatBotBtn />
               </div>
             </div>
@@ -229,5 +127,57 @@ export function SetSeat() {
         />
       )}
     </>
+  );
+}
+
+export function StudentSMap({ columns, seatlist, studentlist, isuser }) {
+  const getId = (row, col) => {
+    let result = '';
+    if (seatlist?.length > 0) {
+      seatlist.forEach((seat) => {
+        if (seat.rowNum === row && seat.colNum === col) {
+          if (isuser) {
+            if (seat.studentId) {
+              const student = studentlist.find(
+                (student) => student.id === seat.studentId
+              );
+              result = student ? student.name : '';
+            }
+          } else {
+            if (seat.ownerId) {
+              const owner = studentlist.find(
+                (student) => student.id === seat.ownerId
+              );
+              result = owner ? owner.name : '';
+            }
+          }
+        }
+      });
+    }
+    return result;
+  };
+
+  return (
+    <div className="preview">
+      {columns && columns.length > 0 ? (
+        columns.map((column) => (
+          <div className="seating-map" key={column.rowNum}>
+            <div className="column-num">{column.rowNum}열</div>{' '}
+            <div className="row-container">
+              {Array.from({ length: column.colNum }).map((_, columnIndex) => (
+                <div className="cell-input" key={columnIndex}>
+                  {console.log(getId(column.rowNum, columnIndex + 1) || '')}
+                  <div className="cell-value">
+                    {getId(column.rowNum, columnIndex + 1) || ''}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="non-seat">새로운 자리 배치표를 기다리세요</div>
+      )}
+    </div>
   );
 }

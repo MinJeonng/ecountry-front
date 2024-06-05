@@ -57,7 +57,6 @@ const ToManagerBtn = styled.button`
   @media (min-width: 1160px) {
     color: #606060;
     padding: 5px 10px;
-    f
   }
 `;
 
@@ -130,7 +129,7 @@ const ProfileBtn = styled.div`
 export function MainProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useAuth(id);
+  // const [userInfo, setUserInfo] = useAuth(id);
   const fileInputRef = useRef(null);
 
   const [uploadedImageUrl, setUploadedImageUrl] = useState(
@@ -141,7 +140,6 @@ export function MainProfile() {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   const userInfo = useSelector((state) => state.auth);
-
 
   //정보 불러오기
   const getInfo = async () => {
@@ -330,7 +328,11 @@ export function GetName() {
     navigate(`/${id}/manager`);
   };
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
+  useEffect(() => {
+    setUserInfo();
+    console.log('setUserInfo');
+  }, []);
 
   useEffect(() => {
     if (userInfo) {

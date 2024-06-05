@@ -37,6 +37,13 @@ export function AddSavings() {
     setSavingList(res.data.result);
   };
   const sendList = async () => {
+    if (interestRate < 0) {
+      //마이너스 이율 설정 방지
+      toast.error('금리를 제대로 기입해주세요.', {
+        autoClose: 1300,
+      });
+      return;
+    }
     const res = await axios({
       method: 'POST',
       url: `${process.env.REACT_APP_HOST}/api/account`,
@@ -67,6 +74,11 @@ export function AddSavings() {
           content: `${savingName} 적금 상품이 신규 생성되었습니다.`,
         },
       });
+
+      setSavingName('');
+      setInterestRate('');
+      setSavingDeadLine('');
+      setSelectedIndex(null);
     } else {
       toast.error('적금 상품 생성에 실패했습니다. 다시 시도해주세요.', {
         autoClose: 1300,
@@ -85,39 +97,6 @@ export function AddSavings() {
     }
 
     sendList();
-
-    if (selectedIndex !== null) {
-      const updatedSaving = [...savingList];
-      updatedSaving[selectedIndex] = {
-        name: savingName,
-        dueDate: savingDeadLine,
-        interest: interestRate,
-
-        dueDate: savingDeadLine,
-      };
-
-      setSavingList(updatedSaving);
-    } else {
-      const newSavingList = [
-        ...savingList,
-        {
-          name: savingName,
-          dueDate: savingDeadLine,
-          interest: interestRate,
-
-          dueDate: savingDeadLine,
-        },
-      ];
-
-      setSavingList(newSavingList);
-    }
-    setSavingName('');
-    setInterestRate('');
-    setSavingDeadLine('');
-    setSelectedIndex(null);
-    toast('적금 상품이 등록되었습니다.', {
-      autoClose: 1300,
-    });
   };
   const selectInput = (saving, index) => {
     if (selectedIndex === index) {

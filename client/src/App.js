@@ -121,12 +121,8 @@ function App() {
           />
           <Route path="/:id/news" element={<SetNews position="뉴스" />} />
           <Route
-            path="/:id/news/write"
-            element={<SetNews position="뉴스 글쓰기" />}
-          />
-          <Route
             path="/:id/news/read/:newsId"
-            element={<SetNews position="읽기" />}
+            element={<SetNews position="뉴스 읽기" />}
           />
           {/* 학생 페이지 */}
           <Route path="/:id/login" element={<StudentLogin />} />

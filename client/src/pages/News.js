@@ -79,7 +79,6 @@ export function SetNews({ position }) {
   }, []);
   return (
     <>
-
       {/* <StudentHeader /> */}
       <CommonMainDesktopHeader />
 
@@ -97,14 +96,14 @@ export function SetNews({ position }) {
           childrenBottom={
             <>
               {/* 뉴스 전체 리스트 */}
-              {position == '뉴스 리스트' && !isWrite && <SetNewsDetail />}
+              {position == '뉴스' && !isWrite && <SetNewsDetail />}
               {/* 뉴스 작성 페이지 */}
-              {position === '뉴스 글 등록' && isWrite && (
+              {position === '뉴스' && isWrite && (
                 <SetPostWrite />
                 // <Practice />
               )}
               {/* 글 하나 있는거 */}
-              {position === '뉴스' && <SetNewsRead auth={isAuth} />}
+              {position === '뉴스 읽기' && <SetNewsRead auth={isAuth} />}
               {position === '뉴스' && isAuth && !isWrite && (
                 <NewsPostBtn func={setIsWrite} />
               )}

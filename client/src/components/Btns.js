@@ -9,6 +9,12 @@ const StyledConfirmBtn = styled.div`
   justify-content: center;
 `;
 
+const StyledConfirmBtn2 = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 45%;
+`;
+
 const BtnBox = styled.div`
   position: fixed;
   width: 50px;
@@ -97,6 +103,28 @@ export function ConfirmBtn({ onClick, btnName, backgroundColor, width }) {
           {btnName}
         </button>
       </StyledConfirmBtn>
+    </>
+  );
+}
+
+export function ConfirmBtn2({ onClick, btnName, backgroundColor, width }) {
+  const handleClick = (e) => {
+    e.preventDefault(); // 기본 동작 방지
+    onClick(); // 부모 컴포넌트에서 전달된 onClick 함수 실행
+  };
+
+  return (
+    <>
+      <StyledConfirmBtn2>
+        <button
+          className="confirm-btn"
+          onClick={handleClick}
+          type="button"
+          style={{ background: backgroundColor, width: width }}
+        >
+          {btnName}
+        </button>
+      </StyledConfirmBtn2>
     </>
   );
 }

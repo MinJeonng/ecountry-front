@@ -260,9 +260,10 @@ $blue: #61759f;
     border: 1px solid #b9c0be;
     border-radius: 6px;
     padding: 20px;
-    height: 500px;
+    height: auto;
     overflow-x: hidden;
     overflow-y: scroll;
+    width: 40%;
 
     .payStub-receipt-title {
       font-size: 18px;

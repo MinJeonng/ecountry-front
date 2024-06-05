@@ -109,7 +109,7 @@ const ContentStyle = styled.div`
     }
     &.bot {
       &::before {
-        content: '챗봇';
+        content: '나라';
         display: block;
         margin-bottom: 4px;
         color: #777;

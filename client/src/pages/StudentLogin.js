@@ -33,7 +33,9 @@ export default function StudentLogin() {
       setExpire(res.data.result.token);
       setUserAuth(res.data.result.token);
       toast('환영합니다!');
-      window.location.href = `/${id}/main`;
+      setTimeout(() => {
+        window.location.href = `/${id}/main`;
+      }, 1300);
     } else {
       toast.error('입력하신 정보가 틀렸습니다.', {
         autoClose: 1300,
@@ -50,7 +52,6 @@ export default function StudentLogin() {
         childrenTop={
           <PageHeader path={`/${id}/signup`}>{'국민 로그인'}</PageHeader>
         }
-
         childrenBottom={
           <>
             <div className="login-wrap">

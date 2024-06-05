@@ -24,7 +24,6 @@ import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { authFunc, confirmCountry } from '../hooks/Functions';
 
-
 export const CommonMainDashboard = styled.div`
   padding: 35px 40px 10px 310px;
   box-sizing: border-box;
@@ -57,6 +56,7 @@ export const BlockLine = styled.div`
     border-radius: 10px;
     box-shadow: 1.5px 2.99px 5.98px #eff4f0;
     padding: 20px;
+    cursor: pointer;
     &.firstBox {
       width: 190px;
       height: 90px;
@@ -161,12 +161,14 @@ export function CommonMain() {
                 <div className="Box firstBox">
                   <GetName />
                 </div>
-                <div
-                  className="Box secondBox"
-                  onClick={() => navigate(`/${id}/bank`)}
-                >
-                  <OwnAccount />
-                </div>
+                {userInfo.isStudent && (
+                  <div
+                    className="Box secondBox"
+                    onClick={() => navigate(`/${id}/bank`)}
+                  >
+                    <OwnAccount />
+                  </div>
+                )}
               </BlockLine>
               <BlockLine>
                 <div className="Box thirdBox">

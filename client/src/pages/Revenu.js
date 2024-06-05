@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Template from '../components/Template';
 import Revune from '../components/Revune';
 
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { ChatBotBtn, LoginBtn } from '../components/Btns';
 import { StudentHeader } from '../components/StudentHeader';
 import { useParams } from 'react-router-dom';
@@ -33,11 +33,14 @@ export default function Revenu({ position }) {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{position}</PageHeader>}
+          childrenTop={
+            <PageHeader path={`/${id}/revenue`}>{position}</PageHeader>
+          }
           childrenBottom={
             <>
               {position === '국세청' && <Revune />}

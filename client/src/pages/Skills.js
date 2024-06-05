@@ -42,7 +42,7 @@ export default function Skills() {
   }, []);
   useEffect(() => {
     if (skillId) {
-      // console.log(skillId);
+      console.log('skillId', skillId);
       localStorage.removeItem('skillId');
     }
   });

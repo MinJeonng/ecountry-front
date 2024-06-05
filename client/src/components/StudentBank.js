@@ -524,9 +524,9 @@ export function OwnAccount() {
   useEffect(() => {
     window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
   }, []);
+
   return (
     <>
-
       <div className="pc-wrap">
         {accounts.map((account) => (
           <div key={account.id}>
@@ -545,7 +545,6 @@ export function OwnAccount() {
           </div>
         ))}
       </div>
-
     </>
   );
 }

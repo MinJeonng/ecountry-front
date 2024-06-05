@@ -4,7 +4,7 @@ import '../styles/studentMypage.scss';
 
 import Template from '../components/Template';
 import { StudentIdCard } from '../components/StudentIdCard';
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { StudentPayStub } from './StudentPayStub';
 import { StudentHeader } from '../components/StudentHeader';
 import { useEffect, useState } from 'react';
@@ -41,11 +41,14 @@ export default function StudentMyPage() {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{'마이페이지'}</PageHeader>}
+          childrenTop={
+            <PageHeader path={`/${id}/main`}>{'마이페이지'}</PageHeader>
+          }
           childrenBottom={
             <>
               <div className="pc-wrap">

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import Template from '../components/Template';
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import {
   authFunc,
   chatBotList,
@@ -73,11 +73,14 @@ export function ChangePassword() {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{'마이페이지'}</PageHeader>}
+          childrenTop={
+            <PageHeader path={`/${id}/mypage`}>{'비밀번호 변경'}</PageHeader>
+          }
           childrenBottom={
             <div className="pc-wrap">
               <div className="box-style">

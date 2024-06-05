@@ -1,4 +1,4 @@
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { OwnAccount } from '../components/StudentBank';
 import Template from '../components/Template';
 import { TransHistory } from '../components/StudentBankTransHistory';
@@ -32,7 +32,8 @@ export default function StudentBank({ position }) {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-      <StudentHeader />
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
       {isShow && (
         <Template
           isAuthPage2={true}

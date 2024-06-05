@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 import styled from 'styled-components';
+import { CommonMainDesktopHeader, SkillHeader } from './Headers';
 
 export default function SalaryTeller() {
   const { id } = useParams();
@@ -15,6 +16,15 @@ export default function SalaryTeller() {
   const [transferSalary, setTransferSalary] = useState(''); //이체금액
   const [unit, setUnit] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState(''); //studentId
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
 
   //이체 가능 리스트(입금가능리스트)
   const studentListFunc = async () => {
@@ -156,59 +166,61 @@ export default function SalaryTeller() {
   return (
     <>
       <ToastContainer />
-
+      {innerWidth >= 1160 && <SkillHeader />}
       {/* <div className="salary-title">월급 지급</div> */}
-      <form className="box-style">
-        <div className="set-title">예금주</div>
-        <select
-          id="name"
-          className="set-input"
-          value={depositUser}
-          onChange={(e) => {
-            const selectedStudent = studentList.find(
-              (student) => student.id === Number(e.target.value)
-            );
+      <div className="pc-wrap">
+        <form className="box-style">
+          <div className="set-title">예금주</div>
+          <select
+            id="name"
+            className="set-input"
+            value={depositUser}
+            onChange={(e) => {
+              const selectedStudent = studentList.find(
+                (student) => student.id === Number(e.target.value)
+              );
 
-            handleSelectStudent(selectedStudent);
-          }}
-        >
-          <option value="" disabled style={{ color: '#a5a5a5' }}>
-            예금주를 선택하세요
-          </option>
-          {studentList.map((student) => {
-            return (
-              <option key={student.id} value={student.id}>
-                {student.rollNumber}번 {student.name}
-              </option>
-            );
-          })}
-        </select>
-        <div className="set-title">이체 금액</div>
-        <div className="container">
+              handleSelectStudent(selectedStudent);
+            }}
+          >
+            <option value="" disabled style={{ color: '#a5a5a5' }}>
+              예금주를 선택하세요
+            </option>
+            {studentList.map((student) => {
+              return (
+                <option key={student.id} value={student.id}>
+                  {student.rollNumber}번 {student.name}
+                </option>
+              );
+            })}
+          </select>
+          <div className="set-title">이체 금액</div>
+          <div className="container">
+            <input
+              className="set-input"
+              type="number"
+              min="0"
+              value={transferSalary}
+              onChange={(e) => setTransferSalary(e.target.value)}
+            />
+            {/* {unit.unit} */}
+            <span className="unit">{unit.unit}</span>
+          </div>
+          <div className="set-title">메모(필요 시 입력하세요)</div>
           <input
             className="set-input"
-            type="number"
-            min="0"
-            value={transferSalary}
-            onChange={(e) => setTransferSalary(e.target.value)}
+            type="text"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
           />
-          {/* {unit.unit} */}
-          <span className="unit">{unit.unit}</span>
-        </div>
-        <div className="set-title">메모(필요 시 입력하세요)</div>
-        <input
-          className="set-input"
-          type="text"
-          value={memo}
-          onChange={(e) => setMemo(e.target.value)}
-        />
-        <ConfirmBtn
-          onClick={PaymentSalary}
-          btnName="이체"
-          width="100%"
-          backgroundColor="#61759f"
-        ></ConfirmBtn>
-      </form>
+          <ConfirmBtn
+            onClick={PaymentSalary}
+            btnName="이체"
+            width="100%"
+            backgroundColor="#61759f"
+          ></ConfirmBtn>
+        </form>
+      </div>
     </>
   );
 }

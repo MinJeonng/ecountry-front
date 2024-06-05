@@ -51,7 +51,7 @@ export default function Login() {
         isAuthPage2={true}
         childrenTop={
           <>
-            <PageHeader>{'관리자 로그인'}</PageHeader>
+            <PageHeader path={`/`}>{'관리자 로그인'}</PageHeader>
           </>
         }
         childrenBottom={

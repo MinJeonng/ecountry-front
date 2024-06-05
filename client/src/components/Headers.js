@@ -4,7 +4,7 @@ import { ReactComponent as ArrowLeft } from '../images/ico-arr-left.svg';
 import { ReactComponent as Alarm } from '../images/icon-alarm.svg';
 import styled from 'styled-components';
 import { AlarmComponent, SideMenuComponent } from './SideMenu';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Template from './Template';
 import axios from 'axios';
 import '../styles/settingHeader.scss';
@@ -90,6 +90,7 @@ export function CommonMainHeader() {
   const [showAlarm, setShowAlarm] = useState(false);
   const [alarmCount, setAlarmCount] = useState(0);
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const userInfo = useSelector((state) => state.auth);
 
   const getAlarmCount = async () => {
     try {
@@ -138,18 +139,26 @@ export function CommonMainHeader() {
               </HeaderStyle>
             </BoxStyle>
             {showSideMenu && <SideMenuComponent func={closeFunc} />}
-            <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
-              <Alarm onClick={() => setShowAlarm(true)} />
-            </AlarmHeader>
-            {showAlarm && <AlarmComponent func={closeFunc} />}
+            {userInfo.isStudent && (
+              <>
+                <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
+                  <Alarm onClick={() => setShowAlarm(true)} />
+                </AlarmHeader>
+                {showAlarm && <AlarmComponent func={closeFunc} />}
+              </>
+            )}
           </CommonHeader>
         </>
       ) : (
         <>
-          <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
-            <Alarm onClick={() => setShowAlarm(true)} />
-          </AlarmHeader>
-          {showAlarm && <AlarmComponent func={closeFunc} />}
+          {userInfo.isStudent && (
+            <>
+              <AlarmHeader className={alarmCount > 0 ? 'new' : null}>
+                <Alarm onClick={() => setShowAlarm(true)} />
+              </AlarmHeader>
+              {showAlarm && <AlarmComponent func={closeFunc} />}
+            </>
+          )}
         </>
       )}
     </>
@@ -168,6 +177,22 @@ export function PageHeader({ children, position }) {
         return `/${id}/boardPeople`;
       case '신문고 리스트':
         return `/${id}/boardPeople`;
+      case '투자 상품 관리':
+        return `/${id}/manager`;
+      case '투자 상품 확인':
+        return `/${id}/main`;
+      case '뉴스 리스트':
+        return `/${id}/main`;
+      case '뉴스':
+        return `/${id}/news`;
+      case '뉴스 글 등록':
+        return `/${id}/news/read/${id}`;
+      case '거래 내역':
+        return `/${id}/bank`;
+      case '은행':
+        return `/${id}/main`;
+      case '세법 관리':
+        return `/${id}/manager`;
       default:
         return null;
     }
@@ -205,17 +230,23 @@ export function PageHeader({ children, position }) {
 export function CommonMainDesktopHeader() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const studentInfoList = useSelector(
     (state) => state.studentInfo.studentInfoList
   );
+  const userInfo = useSelector((state) => state.auth);
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
+  // useEffect(() => {
+  //   // 페이지 경로가 변경될 때 로컬 스토리지에서 skillId를 삭제
+  //   localStorage.removeItem('skillId');
+  // }, [location]);
+
   const positions = [
     { name: '홈', path: `/${id}/main` },
-    { name: '은행', path: `/${id}/bank` },
     { name: '투자', path: `/${id}/investment` },
     { name: '뉴스', path: `/${id}/news` },
     { name: '국회', path: `/${id}/assembly` },
@@ -223,6 +254,10 @@ export function CommonMainDesktopHeader() {
     { name: '국세청', path: `/${id}/revenue` },
     { name: '마이페이지', path: `/${id}/mypage` },
   ];
+
+  if (userInfo.isStudent) {
+    positions.splice(1, 0, { name: '은행', path: `/${id}/bank` });
+  }
 
   const skillMappings = {
     0: {
@@ -255,6 +290,8 @@ export function CommonMainDesktopHeader() {
         .filter(Boolean)
     : [];
 
+  // const storedSkillId = localStorage.getItem('skillId');
+
   return (
     <header>
       <img
@@ -277,10 +314,12 @@ export function CommonMainDesktopHeader() {
               <div onClick={() => handleNavigation(path)}>{name}</div>
             </li>
           ))}
-          <hr width="80%" color="#e2e4e4" height="1px" noshade />
-          {studentInfoList.skills &&
-            skillBasedLinks.map(({ text, link, key }) => (
-              <>
+
+          {skillBasedLinks.length > 0 && (
+            <>
+              <li className="skill-menu-title">스킬 메뉴</li>
+              {/* <hr width="80%" color="#e2e4e4" height="1px" noshade /> */}
+              {skillBasedLinks.map(({ text, link, key }) => (
                 <li
                   key={key}
                   className={window.location.pathname === link ? 'active' : ''}
@@ -291,11 +330,139 @@ export function CommonMainDesktopHeader() {
                       navigate(link);
                     }}
                   >
+                    {/* {!storedSkillId || storedSkillId === String(key)
+                      ? text
+                      : null} */}
                     {text}
                   </div>
                 </li>
-              </>
-            ))}
+              ))}
+            </>
+          )}
+        </ul>
+      </nav>
+    </header>
+  );
+}
+
+export function SkillHeader() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const studentInfoList = useSelector(
+    (state) => state.studentInfo.studentInfoList
+  );
+  const userInfo = useSelector((state) => state.auth);
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+  const positions = [
+    { name: '홈', path: `/${id}/main` },
+    { name: '투자', path: `/${id}/investment` },
+    { name: '뉴스', path: `/${id}/news` },
+    { name: '국회', path: `/${id}/assembly` },
+    { name: '국민 신문고', path: `/${id}/boardPeople` },
+    { name: '국세청', path: `/${id}/revenue` },
+    { name: '마이페이지', path: `/${id}/mypage` },
+  ];
+
+  if (userInfo.isStudent) {
+    positions.splice(1, 0, { name: '은행', path: `/${id}/bank` });
+  }
+
+  const skillMappings = {
+    0: {
+      text: <>은행원 (월급지급)</>,
+      link: `/${id}/skills`,
+    },
+    1: {
+      text: <>은행원 (적금관리)</>,
+      link: `/${id}/skills`,
+    },
+
+    3: {
+      text: <>국세청 (세금 징수)</>,
+      link: `/${id}/skills`,
+    },
+    4: {
+      text: <>신용 관리 등급 위원회</>,
+      link: `/${id}/skills`,
+    },
+    5: {
+      text: <>국회 (법 제정)</>,
+      link: `/${id}/skills`,
+    },
+  };
+  // const skillBasedLinks = studentInfoList.skills
+  //   ? studentInfoList.skills
+  //       .map((skill) =>
+  //         skillMappings[skill] ? { ...skillMappings[skill], key: skill } : null
+  //       )
+  //       .filter(Boolean)
+  //   : [];
+
+  const skillBasedLinks = studentInfoList.skills
+    ? studentInfoList.skills
+        .map((skill) =>
+          skillMappings[skill] ? { ...skillMappings[skill], key: skill } : null
+        )
+        .filter(Boolean)
+    : [];
+  const storedSkillId = localStorage.getItem('skillId');
+  console.log(storedSkillId);
+  return (
+    <header>
+      <img
+        className="header-logo"
+        src={`${process.env.PUBLIC_URL}/images/logo-defaultImg.jpg`}
+        alt="로고"
+      />
+      <img
+        className="header-logo2"
+        src={`${process.env.PUBLIC_URL}/images/logo-text.png`}
+        alt="로고"
+      />
+      <nav>
+        <ul className="header-menu">
+          {positions.map(({ name, path }) => (
+            <li
+              key={name}
+              className={window.location.pathname === path ? 'active' : ''}
+            >
+              <div onClick={() => handleNavigation(path)}>{name}</div>
+            </li>
+          ))}
+
+          {skillBasedLinks.length > 0 && (
+            <>
+              <li className="skill-menu-title">스킬 메뉴</li>
+              {skillBasedLinks
+                .filter(({ key }) => storedSkillId === String(key))
+                .map(({ text, link, key }) => (
+                  <li
+                    key={key}
+                    // className={
+                    //   window.location.pathname === link ? 'active' : ''
+                    // }
+                    className={
+                      window.location.pathname === link ||
+                      storedSkillId === String(key)
+                        ? 'active'
+                        : ''
+                    }
+                  >
+                    <div
+                      onClick={() => {
+                        localStorage.setItem('skillId', key);
+                        navigate(link);
+                      }}
+                    >
+                      {text}
+                    </div>
+                  </li>
+                ))}
+            </>
+          )}
         </ul>
       </nav>
     </header>

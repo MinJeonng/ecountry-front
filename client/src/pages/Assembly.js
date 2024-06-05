@@ -36,7 +36,7 @@ export function SetAssembly({ position }) {
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{position}</PageHeader>}
+          childrenTop={<PageHeader path={`/${id}/main`}>{position}</PageHeader>}
           childrenBottom={
             <>
               {/* 법 리스트 */}

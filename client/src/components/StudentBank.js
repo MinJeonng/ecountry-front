@@ -538,14 +538,9 @@ export function OwnAccount() {
 
   return (
     <>
-
-      //<div className="pc-wrap">
-
-
       <ToastContainer />
 
       <div className="student-wrap">
-
         {accounts.map((account) => (
           <div key={account.id}>
             {account.division === '입출금통장' && (

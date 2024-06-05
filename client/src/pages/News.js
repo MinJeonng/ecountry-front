@@ -12,8 +12,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ChatBotBtn, LoginBtn, NewsPostBtn } from '../components/Btns';
 import axios from 'axios';
 
-import { StudentHeader } from '../components/StudentHeader';
-
 import { authFunc, confirmCountry, getExpire } from '../hooks/Functions';
 import { useSelector } from 'react-redux';
 
@@ -81,8 +79,10 @@ export function SetNews({ position }) {
   }, []);
   return (
     <>
+
       {/* <StudentHeader /> */}
       <CommonMainDesktopHeader />
+
       <ToastContainer />
       {loginBtn && <LoginBtn />}
       {isShow && (
@@ -90,6 +90,7 @@ export function SetNews({ position }) {
           isAuthPage2={true}
           childrenTop={
             <>
+              <CommonMainDesktopHeader />
               <PageHeader>{position}</PageHeader>
             </>
           }

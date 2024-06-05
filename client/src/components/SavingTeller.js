@@ -273,8 +273,20 @@ function AddSaving() {
             },
           });
           if (res.data.success) {
-            toast('가입이 완료되었습니다.', {
+            toast.success('가입이 완료되었습니다.', {
               autoClose: 1300,
+            });
+            const res2 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [selectedStudentId],
+                content: `신규 적금을 개설하였습니다.`,
+              },
             });
             // setTimeout(() => {
             //   window.location.reload();
@@ -288,7 +300,7 @@ function AddSaving() {
           }
         });
       } catch (error) {
-        toast('적금 가입에 실패했습니다.');
+        toast.error('적금 가입에 실패했습니다.');
         console.log(error);
       }
     }
@@ -299,6 +311,7 @@ function AddSaving() {
   return (
     <>
       <ToastContainer />
+
       <div className="saving-title">적금 가입</div>
       <AvailableListStyle>
         <div className="title">개설 가능 적금 리스트</div>
@@ -417,12 +430,21 @@ function CancelSaving() {
           });
 
           if (res.data.success) {
-            toast('해지가 완료되었습니다.', {
+            toast.success('해지가 완료되었습니다.', {
               autoClose: 1300,
             });
-            // setTimeout(() => {
-            //   window.location.reload();
-            // }, 1400);
+            const res2 = await axios({
+              method: 'POST',
+              url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+              headers: {
+                'Content-Type': `application/json`,
+                'ngrok-skip-browser-warning': '69420',
+              },
+              data: {
+                studentId: [selectedStudentId],
+                content: `적금을 해지하였습니다.`,
+              },
+            });
             console.log('success', res.data.success);
             console.log('balance', balance);
           } else {
@@ -430,7 +452,7 @@ function CancelSaving() {
           }
         }
       } catch (error) {
-        toast('적금 해지에 실패했습니다.');
+        toast.error('적금 해지에 실패했습니다.');
         console.log(error);
       }
     }
@@ -441,6 +463,7 @@ function CancelSaving() {
   return (
     <>
       <ToastContainer />
+
       <div className="saving-title">적금 해지</div>
       <AvailableListStyle>
         <div className="title">{selectedStudentName}</div>

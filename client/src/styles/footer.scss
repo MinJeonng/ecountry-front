@@ -5,8 +5,11 @@
 @include mobile {
   footer {
     text-align: center;
-    padding: 0 40px 40px 40px;
+    /* padding: 0 40px 40px 40px; */
     background-color: #f6f6f6;
+    position: fixed;
+    width: -webkit-fill-available;
+    bottom: 0;
   }
 
   .moFooter {
@@ -17,6 +20,7 @@
     margin-bottom: 10px;
     font-weight: 500;
     cursor: pointer;
+    color: #333;
   }
   .fText {
     margin: 0 20px 10px 20px;
@@ -62,6 +66,7 @@
   .fTel {
     margin-bottom: 15px;
     font-weight: 500;
+    font-size: 14px;
   }
 
   .pcFooter {
@@ -90,6 +95,7 @@
     padding: 10px 20px 10px 0;
     border-right: 1px solid #ccc;
     margin-right: 20px;
+    font-size: 14px;
   }
   .fLogo {
     font-size: 14px;
@@ -122,6 +128,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .fText-span {
+    margin-right: 10px;
   }
 
   .fCopy {

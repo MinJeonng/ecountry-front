@@ -4,7 +4,6 @@ import { CheckInvestment } from '../components/Investment';
 import Template from '../components/Template';
 import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
-import { StudentHeader } from '../components/StudentHeader';
 
 import '../styles/_input_common.scss';
 import '../styles/setting.scss';

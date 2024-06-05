@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { authFunc, confirmCountry } from '../hooks/Functions';
 import { ToastContainer } from 'react-toastify';
 import { LoginBtn } from '../components/Btns';
+import Footer from '../components/Footer';
 
 export default function StudentMyPage() {
   const { id } = useParams();
@@ -43,24 +44,28 @@ export default function StudentMyPage() {
       {loginBtn && <LoginBtn />}
       {/* <StudentHeader /> */}
       <CommonMainDesktopHeader />
+
       {isShow && (
         <Template
           isAuthPage2={true}
           childrenTop={
+
             <PageHeader path={`/${id}/main`}>{'마이페이지'}</PageHeader>
+
           }
           childrenBottom={
             <>
-              <div className="pc-wrap">
+              <div className="student-wrap">
                 <button
                   className="changePassword-btn"
                   onClick={handleChangePassword}
                 >
                   비밀번호 변경
                 </button>
-
-                <StudentIdCard />
-                <StudentPayStub />
+                <div className="mypage-list">
+                  <StudentIdCard />
+                  <StudentPayStub />
+                </div>
               </div>
             </>
           }

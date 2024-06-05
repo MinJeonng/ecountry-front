@@ -3,7 +3,6 @@ import Template from '../components/Template';
 import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { StudentAssemblyLawList } from '../components/StudentAssemblyLawList';
 import { ChatBotBtn, LoginBtn } from '../components/Btns';
-import { StudentHeader } from '../components/StudentHeader';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { authFunc, confirmCountry } from '../hooks/Functions';
@@ -37,6 +36,7 @@ export function StudentAssembly({ position }) {
         <Template
           isAuthPage2={true}
           childrenTop={<PageHeader path={`/${id}/main`}>{position}</PageHeader>}
+
           childrenBottom={
             <>
               {/* 법 리스트 */}

@@ -105,6 +105,17 @@ function CheckingAccount({ account, unit }) {
     innerWidth <= 1160 ||
     (innerWidth > 1160 && location.pathname === `/${id}/bank`);
 
+  const findStudentId = (accountId) => {
+    let result;
+    transList?.forEach((data) => {
+      if (data.id == accountId) {
+        console.log(data.studentId);
+        result = data.studentId;
+      }
+    });
+    return result;
+  };
+
   //이체 가능 리스트
   const transferList = async () => {
     try {
@@ -117,7 +128,6 @@ function CheckingAccount({ account, unit }) {
         },
       });
       if (res.data.success) {
-        console.log(res.data.result);
         setTransList(res.data.result);
       } else {
         console.log(res.data.result.message);
@@ -144,7 +154,7 @@ function CheckingAccount({ account, unit }) {
     if (depositUser && transferAmount) {
       //잔액보다 큰 값 인출 방지
       if (parseInt(transferAmount) > account.balance) {
-        toast('출금할 통장의 잔액이 부족합니다.', {
+        toast.error('출금할 통장의 잔액이 부족합니다.', {
           autoClose: 1300,
         });
         return;
@@ -176,7 +186,7 @@ function CheckingAccount({ account, unit }) {
             },
           });
           if (res.data.success) {
-            toast('이체가 완료되었습니다.', {
+            toast.success('이체가 완료되었습니다.', {
               autoClose: 1300,
             });
             const res2 = await axios({
@@ -187,7 +197,7 @@ function CheckingAccount({ account, unit }) {
                 'ngrok-skip-browser-warning': '69420',
               },
               data: {
-                studentId: [account.id],
+                studentId: [findStudentId(account.id)],
                 content: `${depositUserName}님에게 ${transferAmount}${unit.unit} 이체했습니다. `,
               },
             });
@@ -199,7 +209,7 @@ function CheckingAccount({ account, unit }) {
                 'ngrok-skip-browser-warning': '69420',
               },
               data: {
-                studentId: [depositUser],
+                studentId: [findStudentId(depositUser)],
                 content: `${username}님이 ${transferAmount}${unit.unit} 이체했습니다. `,
               },
             });
@@ -220,7 +230,7 @@ function CheckingAccount({ account, unit }) {
         }
       }
     } else {
-      toast('이체 정보를 모두 입력해주세요.');
+      toast.error('이체 정보를 모두 입력해주세요.');
     }
   };
 
@@ -366,7 +376,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
     // console.log(account.id);
     if (savingAmount) {
       if (parseInt(savingAmount) > withdrawBalance) {
-        toast('출금할 통장의 잔액을 확인해주세요', {
+        toast.error('출금할 통장의 잔액을 확인해주세요', {
           autoClose: 1300,
         });
         return;
@@ -386,7 +396,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
           },
         });
         if (res.data.success) {
-          toast('이체가 완료되었습니다.', {
+          toast.success('이체가 완료되었습니다.', {
             autoClose: 1300,
           });
           setTimeout(() => {
@@ -406,6 +416,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
   };
   return (
     <>
+      <ToastContainer />
       <SavingComponent>
         <AccountName>
           <div className="accountName savingAccount">{account.accountName}</div>
@@ -527,7 +538,14 @@ export function OwnAccount() {
 
   return (
     <>
-      <div className="pc-wrap">
+
+      //<div className="pc-wrap">
+
+
+      <ToastContainer />
+
+      <div className="student-wrap">
+
         {accounts.map((account) => (
           <div key={account.id}>
             {account.division === '입출금통장' && (

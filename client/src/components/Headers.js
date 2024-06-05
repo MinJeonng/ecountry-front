@@ -251,6 +251,7 @@ export function CommonMainDesktopHeader() {
     { name: '뉴스', path: `/${id}/news` },
     { name: '국회', path: `/${id}/assembly` },
     { name: '국민 신문고', path: `/${id}/boardPeople` },
+    { name: '자리 배치도', path: `/${id}/seatMap` },
     { name: '국세청', path: `/${id}/revenue` },
     { name: '마이페이지', path: `/${id}/mypage` },
   ];

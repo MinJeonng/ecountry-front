@@ -50,6 +50,7 @@ export default function StudentLogin() {
         childrenTop={
           <PageHeader path={`/${id}/signup`}>{'국민 로그인'}</PageHeader>
         }
+
         childrenBottom={
           <>
             <div className="login-wrap">

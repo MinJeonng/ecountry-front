@@ -36,9 +36,9 @@ export function SetBoardPeople({ position }) {
 
   return (
     <>
+
       {/* <StudentHeader /> */}
       <CommonMainDesktopHeader />
-
       <ToastContainer />
       {loginBtn && <LoginBtn />}
 
@@ -47,6 +47,7 @@ export function SetBoardPeople({ position }) {
           isAuthPage2={true}
           childrenTop={
             <>
+              <CommonMainDesktopHeader />
               <PageHeader>{position}</PageHeader>
             </>
           }

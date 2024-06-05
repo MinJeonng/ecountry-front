@@ -28,7 +28,7 @@ export function StudentAssemblyLawList() {
 
   return (
     <>
-      <div className="pc-wrap">
+      <div className="student-wrap">
         <ToastContainer />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div

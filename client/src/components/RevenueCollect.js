@@ -24,6 +24,7 @@ export default function RevenueCollect() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
+    console.log(res.data.result);
     setStudentList(res.data.result);
   };
 
@@ -60,10 +61,24 @@ export default function RevenueCollect() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    toast.success(
-      `${selectedStudent.rollNumber}번 ${selectedStudent.name}에게 ${selectTax} ${transaction}${unit} 을 징수하였습니다. `,
-      { autoClose: 1300 }
-    );
+    if (res.data.success) {
+      toast.success(
+        `${selectedStudent.rollNumber}번 ${selectedStudent.name}에게 ${selectTax} ${transaction}${unit} 을 징수하였습니다. `,
+        { autoClose: 1300 }
+      );
+      const res2 = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_HOST}/api/student/notice/add/${id}`,
+        headers: {
+          'Content-Type': `application/json`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+        data: {
+          studentId: [selectedStudent.id],
+          content: `${selectTax} ${transaction}${unit} 부과되었습니다.`,
+        },
+      });
+    }
     setAccountId('');
     setSelectedStudent('');
     setSelectTax('');
@@ -86,6 +101,7 @@ export default function RevenueCollect() {
     const student = studentList.find((student) => student.id == e.target.value);
     if (student) {
       setSelectedStudent({
+        id: student.id,
         rollNumber: student.rollNumber,
         name: student.name,
       });
@@ -122,6 +138,7 @@ export default function RevenueCollect() {
             marginBottom: '10%',
             borderBottom: '2px solid #bacd92',
             paddingBottom: '10px',
+            width: '-webkit-fill-available',
           }}
         >
           과태료 징수

@@ -55,7 +55,7 @@ export function BoardPeopleList() {
 
   return (
     <>
-      <div className="pc-wrap">
+      <div className="student-wrap">
         <ChatBotBtn />
         <p align="right" style={{ marginBottom: '6%', fontSize: '0.8rem' }}>
           {innerWidth >= 1160 ? (

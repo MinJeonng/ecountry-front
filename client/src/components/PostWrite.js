@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
-import { ConfirmBtn } from './Btns';
+import { ConfirmBtn, ConfirmBtn2 } from './Btns';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactQuill, { Quill } from 'react-quill';
 import { storage } from '../config/Firebase';
@@ -297,34 +297,34 @@ export function SetPostWrite({ ...rest }) {
               formats={formats}
             />
             <div className="postBtn">
-              <ConfirmBtn
+              <ConfirmBtn2
                 btnName="취소"
                 onClick={() => document.location.reload()}
                 backgroundColor="#bacd92"
-                width="40vw"
-              ></ConfirmBtn>
+                width="100%"
+              ></ConfirmBtn2>
 
-              <ConfirmBtn
+              <ConfirmBtn2
                 btnName="작성"
                 backgroundColor="#61759f"
                 onClick={addFunc}
-                width="40vw"
-              ></ConfirmBtn>
+                width="100%"
+              ></ConfirmBtn2>
             </div>
             <div className="pc-postBtn">
-              <ConfirmBtn
+              <ConfirmBtn2
                 btnName="취소"
                 onClick={() => document.location.reload()}
                 backgroundColor="#bacd92"
-                width="24vw"
-              ></ConfirmBtn>
+                width="100%"
+              ></ConfirmBtn2>
 
-              <ConfirmBtn
+              <ConfirmBtn2
                 btnName="작성"
                 backgroundColor="#61759f"
                 onClick={addFunc}
-                width="24vw"
-              ></ConfirmBtn>
+                width="100%"
+              ></ConfirmBtn2>
             </div>
           </div>
         </form>

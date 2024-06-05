@@ -5,6 +5,7 @@ import '../styles/setting.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
+import { SkillHeader } from './Headers';
 
 export default function RevenueCollect() {
   const { id } = useParams();
@@ -15,6 +16,16 @@ export default function RevenueCollect() {
   const [transaction, setTransaction] = useState(0);
   const [studentList, setStudentList] = useState([]);
   const [taxList, setTaxList] = useState([]);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
+    return () =>
+      window.removeEventListener(`resize`, () =>
+        setInnerWidth(window.innerWidth)
+      );
+  }, []);
+
   const getStudent = async () => {
     const res = await axios({
       method: 'GET',
@@ -129,6 +140,7 @@ export default function RevenueCollect() {
   }, []);
   return (
     <>
+      {innerWidth >= 1160 && <SkillHeader />}
       <ToastContainer />
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <div

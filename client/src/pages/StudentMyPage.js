@@ -42,15 +42,16 @@ export default function StudentMyPage() {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
 
       {isShow && (
         <Template
           isAuthPage2={true}
           childrenTop={
-            <>
-              <CommonMainDesktopHeader />
-              <PageHeader>{'마이페이지'}</PageHeader>
-            </>
+
+            <PageHeader path={`/${id}/main`}>{'마이페이지'}</PageHeader>
+
           }
           childrenBottom={
             <>

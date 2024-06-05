@@ -97,7 +97,7 @@ export function SideMenuComponent({ func }) {
   const studentInfoList = useSelector(
     (state) => state.studentInfo.studentInfoList
   );
-  // console.log('studentInfoList', studentInfoList);
+  const userInfo = useSelector((state) => state.auth);
 
   const skillMappings = {
     0: {
@@ -168,13 +168,20 @@ export function SideMenuComponent({ func }) {
             alt="닫기"
           />
           <DashboardBox>
-            <div className="skyblueBox" onClick={() => navigate(`/${id}/bank`)}>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/icon-bank-color.png`}
-                alt="은행"
-              />
-              <p>은행</p>
-            </div>
+            {userInfo.isStudent && (
+              <>
+                <div
+                  className="skyblueBox"
+                  onClick={() => navigate(`/${id}/bank`)}
+                >
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/icon-bank-color.png`}
+                    alt="은행"
+                  />
+                  <p>은행</p>
+                </div>
+              </>
+            )}
             <div
               className="blueBox"
               onClick={() => navigate(`/${id}/investment`)}
@@ -214,13 +221,13 @@ export function SideMenuComponent({ func }) {
               />
               <p>국민 신문고</p>
             </div>
-            <div className="skyblueBox" onClick={() => navigate(``)}>
+            {/* <div className="skyblueBox" onClick={() => navigate(``)}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-seats-color.png`}
                 alt="자리 배치도"
               />
               <p>자리 배치도</p>
-            </div>
+            </div> */}
             <div className="blueBox" onClick={() => navigate(`/${id}/revenue`)}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/icon-tax-color.png`}

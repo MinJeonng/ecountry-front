@@ -36,6 +36,9 @@ export function SetBoardPeople({ position }) {
 
   return (
     <>
+
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
       <ToastContainer />
       {loginBtn && <LoginBtn />}
 

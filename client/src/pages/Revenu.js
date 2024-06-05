@@ -33,14 +33,16 @@ export default function Revenu({ position }) {
       <ToastContainer />
       {loginBtn && <LoginBtn />}
 
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
+
       {isShow && (
         <Template
           isAuthPage2={true}
           childrenTop={
-            <>
-              <CommonMainDesktopHeader />
-              <PageHeader>{position}</PageHeader>
-            </>
+
+            <PageHeader path={`/${id}/revenue`}>{position}</PageHeader>
+
           }
           childrenBottom={
             <>

@@ -31,6 +31,8 @@ export default function StudentBank({ position }) {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
 
       {isShow && (
         <Template

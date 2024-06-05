@@ -4,7 +4,7 @@ import Template from '../components/Template';
 import '../styles/_input_common.scss';
 import '../styles/setting.scss';
 import '../styles/_button_common.scss';
-import { PageHeader } from '../components/Headers';
+import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 import { ManagerHeader } from '../components/ManagerHeader';
 import { ChatBotBtn, LoginBtn } from '../components/Btns';
 import { useParams } from 'react-router-dom';
@@ -36,6 +36,7 @@ export default function SetBank({ position }) {
     <>
       <ToastContainer />
       <ManagerHeader />
+
       {loginBtn && <LoginBtn />}
       {isShow && (
         <Template

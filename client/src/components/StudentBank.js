@@ -535,8 +535,12 @@ export function OwnAccount() {
   useEffect(() => {
     window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
   }, []);
+
   return (
     <>
+
+      //<div className="pc-wrap">
+
 
       <ToastContainer />
 

@@ -179,7 +179,9 @@ export function SetSeat() {
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={<PageHeader>{'자리 배치표'}</PageHeader>}
+          childrenTop={
+            <PageHeader path={`/${id}/manager`}>{'자리 배치표'}</PageHeader>
+          }
           childrenBottom={
             <div>
               <div className="pc-seat-top">

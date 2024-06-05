@@ -22,6 +22,7 @@ $blue: #61759f;
     width: 250px;
     border-right: 1px solid #d9d9d9;
     background: #eff4f0;
+    left: 0; //나중 추가
 
     .header-logo {
       width: 70px;
@@ -42,7 +43,7 @@ $blue: #61759f;
     }
 
     .header-menu li {
-      padding: 10px 20px;
+      padding: 8px 20px;
     }
 
     .header-menu li.active {
@@ -60,6 +61,12 @@ $blue: #61759f;
     }
     li div {
       font-size: 15px;
+    }
+    .skill-menu-title {
+      list-style: none;
+      font-size: 14px;
+      border-bottom: 1px solid #ddd;
+      color: #7b7878;
     }
   }
 }

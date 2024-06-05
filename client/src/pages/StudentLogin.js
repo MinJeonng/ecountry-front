@@ -46,8 +46,11 @@ export default function StudentLogin() {
       <ToastContainer />
       <Template
         isAuthPage={true}
-        isAuthPage2={false}
-        childrenTop={<PageHeader>{'국민 로그인'}</PageHeader>}
+        isAuthPage2={true}
+        childrenTop={
+          <PageHeader path={`/${id}/signup`}>{'국민 로그인'}</PageHeader>
+        }
+
         childrenBottom={
           <>
             <div className="login-wrap">

@@ -249,6 +249,13 @@ function AddSaving() {
   };
 
   const addSavingFunc = async () => {
+    if (!selectedStudentId) {
+      toast.error('학생 검색 후 가입할 수 있습니다.', {
+        autoClose: 1300,
+      });
+      return;
+    }
+
     if (selectedSavingId.length > 0) {
       try {
         selectedSavingId.forEach(async (savingId) => {

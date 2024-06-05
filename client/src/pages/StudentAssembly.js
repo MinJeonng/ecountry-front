@@ -30,16 +30,13 @@ export function StudentAssembly({ position }) {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
-
+      {/* <StudentHeader /> */}
+      <CommonMainDesktopHeader />
       {isShow && (
         <Template
           isAuthPage2={true}
-          childrenTop={
-            <>
-              <CommonMainDesktopHeader />
-              <PageHeader>{position}</PageHeader>
-            </>
-          }
+          childrenTop={<PageHeader path={`/${id}/main`}>{position}</PageHeader>}
+
           childrenBottom={
             <>
               {/* 법 리스트 */}

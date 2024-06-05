@@ -540,7 +540,7 @@ export function OwnAccount() {
     <>
       <ToastContainer />
 
-      <div className="student-wrap">
+      <div className="student-wrap dashBoard-wrap">
         {accounts.map((account) => (
           <div key={account.id}>
             {account.division === '입출금통장' && (

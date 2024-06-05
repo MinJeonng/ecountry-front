@@ -28,7 +28,9 @@ export default function Login() {
       })
       .then((res) => {
         if (res.data.success) {
-          toast.success('회원가입 되었습니다.');
+          toast.success('회원가입 되었습니다.', {
+            autoClose: 1300,
+          });
           setTimeout(() => {
             navigate('/login');
           }, 2000);
@@ -168,75 +170,14 @@ export default function Login() {
                     회원가입
                   </button>
                 </form>
-              </div>
-
-              <div className="pc-background-log">
-                <div className="pc-left">
-                  <img
-                    className="left-img"
-                    src={`${process.env.PUBLIC_URL}/images/sample.jpg`}
-                    alt="표지"
-                  />
-                </div>
-                <div className="pc-right">
-                  <div>관리자 회원가입</div>
-                  <form className="signup-box-style">
-                    <div className="user-signup-title">이름</div>
-                    <input
-                      className="user-signup"
-                      type="text"
-                      onChange={(e) => setName(e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(0, e)}
-                      ref={(el) => (inputRefs.current[0] = el)}
-                    ></input>
-                    <div className="user-signup-title">아이디</div>
-                    <input
-                      className="user-signup"
-                      type="text"
-                      onChange={(e) => setUserId(e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(1, e)}
-                      ref={(el) => (inputRefs.current[1] = el)}
-                    ></input>
-                    <div className="user-signup-title">비밀번호</div>
-                    <input
-                      className="user-signup"
-                      type="password"
-                      maxLength={4}
-                      onChange={(e) => setPw(e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(2, e)}
-                      ref={(el) => (inputRefs.current[2] = el)}
-                    ></input>
-                    <div className="user-signup-title">비밀번호 확인</div>
-                    <input
-                      className="user-signup"
-                      type="password"
-                      maxLength={4}
-                      onChange={(e) => setConfirmPw(e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(3, e)}
-                      ref={(el) => (inputRefs.current[3] = el)}
-                    ></input>
-                    {confirmPw === pw || (
-                      <div className="pw-error">
-                        비밀번호가 일치하지 않습니다.
-                      </div>
-                    )}
-                    <button
-                      className="signup-btn"
-                      type="button"
-                      onClick={signupFunc}
-                    >
-                      회원가입
-                    </button>
-                  </form>
-                  <Link to="/">
-                    <button className="navi-pre-btn">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
-                        alt="뒤로가기"
-                      />
-                    </button>
-                  </Link>
-                </div>
+                <Link to="/">
+                  <button className="navi-pre-btn">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
+                      alt="뒤로가기"
+                    />
+                  </button>
+                </Link>
               </div>
             </div>
           </>

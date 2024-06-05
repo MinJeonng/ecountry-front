@@ -355,7 +355,9 @@ export function SkillHeader() {
     (state) => state.studentInfo.studentInfoList
   );
   const userInfo = useSelector((state) => state.auth);
-  const [selectedSkill, setSelectedSkill] = useState(false);
+  // const [selectedSkill, setSelectedSkill] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [selectedMenu, setSelectedMenu] = useState(null);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -366,6 +368,7 @@ export function SkillHeader() {
     { name: '뉴스', path: `/${id}/news` },
     { name: '국회', path: `/${id}/assembly` },
     { name: '국민 신문고', path: `/${id}/boardPeople` },
+    { name: '자리 배치도', path: `/${id}/seatMap` },
     { name: '국세청', path: `/${id}/revenue` },
     { name: '마이페이지', path: `/${id}/mypage` },
   ];
@@ -414,6 +417,12 @@ export function SkillHeader() {
     : [];
   const storedSkillId = localStorage.getItem('skillId');
   console.log(storedSkillId);
+
+  const handleSkillClick = (key, link) => {
+    setSelectedSkill(key);
+    localStorage.setItem('skillId', key);
+    navigate(link);
+  };
   return (
     <header>
       <img
@@ -448,15 +457,14 @@ export function SkillHeader() {
                       ? 'active'
                       : ''
                   }
+                  style={{
+                    display:
+                      selectedSkill === null || selectedSkill === key
+                        ? 'block'
+                        : 'none',
+                  }}
                 >
-                  <div
-                    onClick={() => {
-                      localStorage.setItem('skillId', key);
-                      navigate(link);
-                    }}
-                  >
-                    {text}
-                  </div>
+                  <div onClick={() => handleSkillClick(key, link)}>{text}</div>
                 </li>
               ))}
             </>

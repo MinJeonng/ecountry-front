@@ -86,15 +86,17 @@ $blue: #61759f;
     }
 
     .pc-right {
-      padding: 0 80px;
+      padding: 30px 80px;
       align-items: center;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       flex-direction: column;
       height: 100%;
       position: relative;
-      background-color: #ffffff;
-      width: 480px;
+      width: 640px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
   }
   .login-wrap,

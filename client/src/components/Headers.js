@@ -421,11 +421,12 @@ export function SkillHeader() {
   const storedSkillId = localStorage.getItem('skillId');
   // console.log(storedSkillId);
 
-  const handleSkillClick = (key, link, state) => {
+  const handleSkillClick = (key, link, state, index) => {
     setSelectedSkill(key);
-    setSelectedSkillState(state); // 선택된 기능의 state를 설정
+    // setSelectedSkillState(state); // 선택된 기능의 state를 설정
     localStorage.setItem('skillId', key);
     navigate(link);
+    setSelectedSkillState(index);
   };
   console.log(selectedSkillState);
   return (
@@ -453,7 +454,7 @@ export function SkillHeader() {
           <hr width="80%" color="#e2e4e4" height="1px" noshade />
           {skillBasedLinks.length > 0 && (
             <>
-              {skillBasedLinks.map(({ text, link, key, state }) => (
+              {skillBasedLinks.map(({ text, link, key, state, index }) => (
                 <li
                   key={key}
                   className={
@@ -469,7 +470,9 @@ export function SkillHeader() {
                         : 'none',
                   }}
                 >
-                  <div onClick={() => handleSkillClick(key, link, state)}>
+                  <div
+                    onClick={() => handleSkillClick(key, link, state, index)}
+                  >
                     {text}
                   </div>
                 </li>

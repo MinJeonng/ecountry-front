@@ -44,6 +44,12 @@ $blue: #61759f;
 
     .header-menu li {
       padding: 8px 20px;
+      &.hide {
+        display: none;
+      }
+      &.show {
+        display: block;
+      }
     }
 
     .header-menu li.active {

@@ -9,7 +9,7 @@
 
 ### 프론트엔드
 
-| <img src="https://avatars.githubusercontent.com/u/45068522?v=4" width="130" height="130"> | <img src ="https://avatars.githubusercontent.com/u/51967731?v=4" width="130" height="130"> | <img src ="https://avatars.githubusercontent.com/u/102305630?v=4" width="130" height="130"> |
+| <img src="https://avatars.githubusercontent.com/u/MinJeonng?v=4" width="130" height="130"> | <img src ="https://avatars.githubusercontent.com/u/51967731?v=4" width="130" height="130"> | <img src ="https://avatars.githubusercontent.com/u/102305630?v=4" width="130" height="130"> |
 | :---------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
 |                         [민정](https://github.com/MinJeonng)                         |                          [지혜](https://github.com/Jihye8)                          |                             [시영](https://github.com/cci0)                             |
 

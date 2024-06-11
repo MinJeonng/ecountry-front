@@ -39,7 +39,7 @@ export const ImageCounter = styled.div`
 
 export const StyledImgDiv = styled.div`
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
   flex-direction: row;
   height: fit-content;
   transition: transform ${({ endSwipe }) => (endSwipe ? '0.2s' : '0s')};
@@ -212,7 +212,11 @@ export default function CommonMainNews() {
         <>
           {displayNewsList?.length > 0 ? (
             <Container>
-              <Swipe onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove}>
+              <Swipe
+                style={{ overflow: 'hidden' }}
+                onSwipeEnd={onSwipeEnd}
+                onSwipeMove={onSwipeMove}
+              >
                 <StyledImgDiv
                   imgCount={imgCount}
                   positionx={positionx}

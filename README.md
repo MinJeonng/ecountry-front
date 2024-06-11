@@ -1,1 +1,1 @@
-![title](docs/title.png)
+![title](docs/titleUpdate.png)

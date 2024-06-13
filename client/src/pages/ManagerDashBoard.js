@@ -151,7 +151,7 @@ export default function ManagerDashBoard() {
                           className="countryLink"
                           style={{ color: '#777' }}
                         >
-                          {`http://13.125.85.110/${id}/main`}
+                          {`http://growup.mjlog.co.kr/${id}/main`}
                         </Link>
                       </div>
                     </div>
@@ -224,7 +224,7 @@ export default function ManagerDashBoard() {
                       className="countryLink"
                       style={{ color: '#777' }}
                     >
-                      {`http://13.125.85.110/${id}/main`}
+                      {`http://growup.mjlog.co.kr/${id}/main`}
                     </Link>
                   </div>
                 </div>

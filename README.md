@@ -12,6 +12,7 @@
 ### 프론트엔드
 
 ### 백엔드
+[백엔드 깃허브](https://github.com/cje206/ecountry-back.git)
 
 
 ## 멤버

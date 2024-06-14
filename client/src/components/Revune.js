@@ -439,7 +439,7 @@ export default function Revune() {
         <>
           <TreasuryBoxTwo>
             {/* 국고, 화폐단위 */}
-            <span style={{ fontSize: '1.1rem' }}>국고</span>
+            <span style={{ fontSize: '1.2rem', fontWeight: '600' }}>국고</span>
             <div
               className="pList"
               style={{

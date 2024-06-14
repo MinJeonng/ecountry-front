@@ -19,6 +19,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../store';
 import { persistor } from '../';
 import { auth } from '../store/userInfoReducer';
+import { Btns } from '../pages/ManagerDashBoard';
 
 const Name = styled.div`
   box-sizing: border-box;
@@ -41,7 +42,6 @@ const ProfileContainer = styled.div`
   }
 `;
 const ToManagerBtn = styled.button`
-  /* @media (max-width: 1159px) { */
   border-radius: 11px;
   border: none;
   text-align: center;
@@ -53,10 +53,8 @@ const ToManagerBtn = styled.button`
   box-shadow: 1px 1.3px #c0bebe;
   display: flex;
   align-items: center;
-  /* } */
   @media (min-width: 1160px) {
-    color: #606060;
-    padding: 5px 10px;
+    margin-top: 0px;
   }
 `;
 
@@ -91,7 +89,7 @@ const LogoutBtn = styled.button`
     height: 16px;
   }
   @media (min-width: 1160px) {
-    padding: 5px 10px;
+    margin-top: 0px;
   }
 `;
 
@@ -109,15 +107,22 @@ export const DesktopContainer = styled.div`
   }
 `;
 const ProfileInfo = styled.span`
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #31660f;
+  margin-top: 10px;
 `;
 const Container = styled.div`
   display: flex;
   gap: 5px;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  div {
+    @media (min-width: 1160px) {
+      display: flex;
+      align-items: center;
+    }
+  }
 `;
 const ProfileBtn = styled.div`
   display: flex;
@@ -129,6 +134,7 @@ const ProfileBtn = styled.div`
 export function MainProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   // const [userInfo, setUserInfo] = useAuth(id);
   const fileInputRef = useRef(null);
 
@@ -202,6 +208,14 @@ export function MainProfile() {
     const fileInputRef = ref(storage, `profileImages/${userInfo.id}`);
     profileImageUpload(e, userInfo.id, fileInputRef, updateProfile);
   };
+  const logoutFunc = () => {
+    if (!window.confirm('로그아웃 하시겠습니까?')) {
+      return;
+    }
+    localStorage.clear();
+    dispatch(auth(null));
+    window.location.href = `/login`;
+  };
 
   useEffect(() => {
     if (userInfo) {
@@ -238,31 +252,38 @@ export function MainProfile() {
             onChange={handleImageUpload}
             ref={fileInputRef}
           />
-          {/* <button onClick={updateImg}>완료</button> */}
-
           <Name>{name}</Name>
         </>
       ) : (
         <>
           <Container>
-            <Avatar
-              src={uploadedImageUrl}
-              style={{ marginRight: '10px', cursor: 'pointer' }}
-              size={50}
-              onClick={() => {
-                fileInputRef.current.click();
-              }}
-            />
-            <input
-              type="file"
-              style={{ display: 'none' }}
-              accept="image/jpg,image/png,image/jpeg"
-              name="profile_img"
-              onChange={handleImageUpload}
-              ref={fileInputRef}
-            />
+            <div>
+              <Avatar
+                src={uploadedImageUrl}
+                style={{ marginRight: '10px', cursor: 'pointer' }}
+                size={50}
+                onClick={() => {
+                  fileInputRef.current.click();
+                }}
+              />
+              <input
+                type="file"
+                style={{ display: 'none' }}
+                accept="image/jpg,image/png,image/jpeg"
+                name="profile_img"
+                onChange={handleImageUpload}
+                ref={fileInputRef}
+              />
 
-            <Name>{name}</Name>
+              <Name>{name}</Name>
+            </div>
+            <LogoutBtn onClick={logoutFunc}>
+              로그아웃
+              <img
+                src={`${process.env.PUBLIC_URL}/images/icon-sign-out.png`}
+                alt="로그아웃"
+              />
+            </LogoutBtn>
           </Container>
           <ProfileInfo>
             프로필을 클릭하면 프로필 사진을 변경할 수 있습니다.

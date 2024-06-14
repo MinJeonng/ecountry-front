@@ -29,7 +29,7 @@ export const CommonMainDashboard = styled.div`
   box-sizing: border-box;
   .main-title {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
     color: #333;
     margin-bottom: 35px;
   }
@@ -58,12 +58,12 @@ export const BlockLine = styled.div`
     padding: 20px;
     cursor: pointer;
     &.firstBox {
-      width: 190px;
+      width: 230px;
       height: 90px;
     }
     &.firstManagerBox {
-      width: 200px;
-      height: 9%;
+      width: 400px;
+      height: 90px;
     }
     &.secondBox {
       width: 230px;

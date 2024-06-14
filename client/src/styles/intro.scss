@@ -104,16 +104,16 @@ $blue: #61759f;
     }
 
     .pc-right {
-      padding: 100px 80px 30px;
+      padding: 50px 80px 30px;
       align-items: center;
       display: flex;
       justify-content: flex-start;
       flex-direction: column;
       height: 100%;
       position: relative;
-      width: 640px;
-      overflow-y: auto;
-      overflow-x: hidden;
+      width: 540px;
+      // overflow-y: auto;
+      // overflow-x: hidden;
       box-sizing: border-box;
       background-color: #ffffff;
 

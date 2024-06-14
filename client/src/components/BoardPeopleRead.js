@@ -23,7 +23,7 @@ export function BoardPeopleRead() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     if (res.data.success) {
       setPetitionInfo(res.data.result);
       setIsShow(!res.data.result.isSecret);

@@ -30,7 +30,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from '../store/userInfoReducer';
 
-const Btns = styled.button`
+export const Btns = styled.button`
   @media (max-width: 1160px) {
     border-radius: 11px;
     border: none;
@@ -118,7 +118,6 @@ export default function ManagerDashBoard() {
     <>
       <ToastContainer />
       <ChatBotBtn />
-
       {loginBtn && <LoginBtn />}
       {innerWidth <= 1160 ? (
         isShow ? (

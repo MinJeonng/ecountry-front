@@ -47,6 +47,7 @@ export const StyledImgDiv = styled.div`
     ${({ imgCount, positionx }) =>
       `calc(${positionx}px - ${(imgCount - 1) * 100}%)`}
   );
+  width: 100%;
 `;
 const ImageContainer = styled.div`
   min-width: 100%;
@@ -56,6 +57,7 @@ const ImageContainer = styled.div`
   justify-content: flex-start;
   h4 {
     line-height: 1.2;
+    text-align: center;
   }
   .defaultImg {
     width: 100%;
@@ -91,30 +93,6 @@ const NoneNews = styled.div`
     }
   }
 `;
-const ArrowLeft = styled.div`
-  position: absolute;
-  left: 0%;
-  top: 30%;
-  cursor: pointer;
-  z-index: 2;
-  img {
-    width: 18px;
-    height: 18px;
-  }
-`;
-
-const ArrowRight = styled.div`
-  position: absolute;
-  right: 0%;
-  top: 30%;
-  cursor: pointer;
-  z-index: 2;
-  img {
-    width: 18px;
-    height: 18px;
-    transform: rotate(180deg);
-  }
-`;
 
 export default function CommonMainNews() {
   const { id } = useParams();
@@ -126,6 +104,7 @@ export default function CommonMainNews() {
   const [endSwipe, setEndSwipe] = useState(false);
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [displayNewsList, setDisplayNewsList] = useState([]); //뉴스 보여지는거 5개로 제한
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const shouldRender =
     innerWidth <= 1160 ||
@@ -166,25 +145,6 @@ export default function CommonMainNews() {
     setEndSwipe(true);
   };
 
-  // 화살표 클릭 이벤트 핸들러
-  const handlePrevClick = () => {
-    const prevImgCount = imgCount <= 1 ? displayNewsList.length : imgCount - 1;
-    setImgCount(prevImgCount);
-    updatePosition(prevImgCount); // 위치 업데이트 함수 호출
-  };
-
-  const handleNextClick = () => {
-    const nextImgCount = imgCount >= displayNewsList.length ? 1 : imgCount + 1;
-    setImgCount(nextImgCount);
-    updatePosition(nextImgCount); // 위치 업데이트 함수 호출
-  };
-
-  // 위치를 업데이트하는 함수
-  const updatePosition = (imgCount) => {
-    const newPositionX = -(imgCount - 1) * 100;
-    setPositionx(newPositionX); // 새 위치 설정
-  };
-
   const getNews = async () => {
     const res = await axios({
       method: 'GET',
@@ -205,6 +165,13 @@ export default function CommonMainNews() {
     setDisplayNewsList(newsList.slice(0, 5));
   }, [newsList]);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % displayNewsList.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [displayNewsList.length]);
+
   return (
     <>
       <ToastContainer />
@@ -213,7 +180,7 @@ export default function CommonMainNews() {
           {displayNewsList?.length > 0 ? (
             <Container>
               <Swipe
-                style={{ overflow: 'hidden' }}
+                style={{ overflow: 'hidden', width: '100%' }}
                 onSwipeEnd={onSwipeEnd}
                 onSwipeMove={onSwipeMove}
               >
@@ -269,40 +236,27 @@ export default function CommonMainNews() {
           <>
             {displayNewsList?.length > 0 ? (
               <Container>
-                {displayNewsList.length > 1 && (
-                  <ArrowLeft onClick={handlePrevClick}>
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/icon-arrow-circle.png`}
-                      alt="화살표"
+                <StyledImgDiv>
+                  <ImageContainer
+                    onClick={() =>
+                      navigate(
+                        `/${id}/news/read/${displayNewsList[currentIndex].id}`
+                      )
+                    }
+                  >
+                    <Image
+                      className={
+                        getThumbnail(displayNewsList[currentIndex].content) ===
+                        '/images/defaultImg.jpg'
+                          ? 'defaultImg'
+                          : null
+                      }
+                      src={getThumbnail(displayNewsList[currentIndex].content)}
+                      alt={displayNewsList[currentIndex].title}
                     />
-                  </ArrowLeft>
-                )}
-                <StyledImgDiv
-                  imgCount={imgCount}
-                  positionx={positionx} // 수정된 위치를 사용하여 이미지를 이동
-                  endSwipe={endSwipe}
-                >
-                  {displayNewsList?.map((post, index) => (
-                    <ImageContainer
-                      key={post.id}
-                      onClick={() => navigate(`/${id}/news/read/${post.id}`)}
-                    >
-                      <Image
-                        src={getThumbnail(post.content)}
-                        alt={post.title}
-                      />
-                      <h4>{post.title}</h4>
-                    </ImageContainer>
-                  ))}
+                    <h4>{displayNewsList[currentIndex].title}</h4>
+                  </ImageContainer>
                 </StyledImgDiv>
-                {displayNewsList.length > 1 && (
-                  <ArrowRight onClick={handleNextClick}>
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/icon-arrow-circle.png`}
-                      alt="화살표"
-                    />
-                  </ArrowRight>
-                )}
               </Container>
             ) : (
               <>

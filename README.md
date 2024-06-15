@@ -9,13 +9,16 @@
 
 ## 기술 스택
 
-| JavaScript | React    |  Java   |  SpringBoot   |  Node   |
-| :--------: | :---:    | :-----: | :-----------: | :-----: |
-|   ![js]    | ![react] | ![java] | ![springboot] | ![node] |
-
 ### 프론트엔드
+| JavaScript | React    | Figma    |
+| :--------: | :---:    | :---:    |
+|   ![js]    | ![react] | ![figma] |
 
 ### 백엔드
+|  Java   |  SpringBoot   | JavaScript |  Node   |
+| :-----: | :-----------: | :--------: | :-----: |
+| ![java] | ![springboot] |   ![js]    | ![node] |
+
 [백엔드 깃허브](https://github.com/cje206/ecountry-back.git)
 
 
@@ -34,7 +37,8 @@
 |                             [지은](https://github.com/cje206)                              |                            [현경](https://github.com/Hyunkyung-Nam)                             |                            [명규](https://github.com/gh9727)                             
 
 [js]: /images/javascript.svg
-[react]: /images/stack/react.svg
+[react]: /images/react.svg
+[figma]: /images/figma.svg
 [java]: /images/java.png
 [node]: /images/node.svg
 [springboot]: /images/springboot.svg

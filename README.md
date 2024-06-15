@@ -9,9 +9,9 @@
 
 ## 기술 스택
 
-| JavaScript | React |  Java   |  SpringBoot   |  Node   |
-| :--------: | :---: | :-----: | :-----------: | :-----: |
-|   ![js]    |   ![react]    | ![java] | ![springboot] | ![node] |
+| JavaScript | React    |  Java   |  SpringBoot   |  Node   |
+| :--------: | :---:    | :-----: | :-----------: | :-----: |
+|   ![js]    | ![react] | ![java] | ![springboot] | ![node] |
 
 ### 프론트엔드
 

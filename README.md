@@ -39,6 +39,6 @@
 [js]: /images/javascript.svg
 [react]: /images/react.svg
 [figma]: /images/figma.svg
-[java]: /images/java.png
+[java]: /images/java.svg
 [node]: /images/node.svg
 [springboot]: /images/springboot.svg

@@ -9,6 +9,10 @@
 
 ## 기술 스택
 
+| JavaScript | React |  Java   |  SpringBoot   |  Node   |
+| :--------: | :--------: | :------: | :-----: |
+|   ![js]    |   ![react]    | ![java] | ![springboot] | ![node] |
+
 ### 프론트엔드
 
 ### 백엔드
@@ -28,3 +32,9 @@
 | <img src="https://avatars.githubusercontent.com/u/154851961?v=1" width="130" height="130"> | <img src="https://avatars.githubusercontent.com/u/153169614?v=1" width="130" height="130"> | <img src="https://avatars.githubusercontent.com/u/134291319?v=1" width="130" height="130"> 
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | 
 |                             [지은](https://github.com/cje206)                              |                            [현경](https://github.com/Hyunkyung-Nam)                             |                            [명규](https://github.com/gh9727)                             
+
+[js]: /images/javascript.svg
+[react]: /images/stack/react.svg
+[java]: /images/java.png
+[node]: /images/node.svg
+[springboot]: /images/springboot.svg

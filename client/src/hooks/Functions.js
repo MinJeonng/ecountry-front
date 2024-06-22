@@ -136,7 +136,7 @@ const chatApi = async (msg) => {
       'ngrok-skip-browser-warning': '69420',
     },
   });
-  console.log(res.data.result);
+  // console.log(res.data.result);
   return JSON.parse(res.data.result);
 };
 
@@ -172,7 +172,7 @@ export const chatBotCard = async (msg, keyName) => {
   const newMsg = msg.replace(':', '');
   const list = await chatApi(newMsg);
   if (list?.list[keyName]?.length === 0) {
-    console.log('빈배열');
+    // console.log('빈배열');
     return resultMsg('msg', '검색 결과가 없습니다.');
   } else if (list) {
     return resultMsg(
@@ -213,7 +213,7 @@ const uploadImageFunc = async (file, ref) => {
   try {
     await uploadBytes(ref, file);
     const url = await getDownloadURL(ref); // 업로드된 파일의 URL 가져옴
-    console.log('반환된 이미지경로 : ' + url);
+    // console.log('반환된 이미지경로 : ' + url);
     return url; // URL을 반환
   } catch (error) {
     console.error('이미지 업로드 실패:', error);

@@ -154,7 +154,7 @@ export default function CommonMainNews() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     setNewsList(res.data.result);
   };
   useEffect(() => {

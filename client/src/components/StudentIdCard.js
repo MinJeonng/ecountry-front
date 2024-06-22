@@ -64,9 +64,9 @@ export function StudentIdCard() {
           img: imageUrl,
         },
       });
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.success) {
-        console.log(res.data.success);
+        // console.log(res.data.success);
         toast.success('프로필 변경이 완료되었습니다.', { autoClose: 1300 });
         getUserInfo();
       } else {
@@ -113,7 +113,7 @@ export function StudentIdCard() {
           'ngrok-skip-browser-warning': '69420',
         },
       });
-      console.log(res.data.success);
+      // console.log(res.data.success);
 
       if (res.data.success) {
         const user = res.data.result;
@@ -141,7 +141,7 @@ export function StudentIdCard() {
   };
 
   useEffect(() => {
-    console.log(Image);
+    // console.log(Image);
   }, [Image]);
 
   useEffect(() => {
@@ -155,7 +155,6 @@ export function StudentIdCard() {
   }, []);
 
   return (
-
     <>
       {location.pathname === `/${id}/mypage` && (
         <div className="idCard-wrap">
@@ -193,7 +192,6 @@ export function StudentIdCard() {
               onChange={onChange}
               ref={fileInputRef}
             />
-
           </div>
           <div className="country-name">{countryName}</div>
         </div>

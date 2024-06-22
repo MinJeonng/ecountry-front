@@ -49,7 +49,7 @@ export default function SalaryTeller() {
         },
       });
       if (res.data.success) {
-        console.log(res.data.result);
+        // console.log(res.data.result);
         setStudentList(res.data.result);
       } else {
         console.log(res.data.result.message);
@@ -74,7 +74,7 @@ export default function SalaryTeller() {
         },
       });
       if (res.data.success) {
-        console.log(res.data.result);
+        // console.log(res.data.result);
         setUnit(res.data.result);
       }
     } catch (error) {
@@ -101,8 +101,8 @@ export default function SalaryTeller() {
       },
     });
     if (res.data.success) {
-      console.log('success', res.data.success);
-      console.log(res.data.result);
+      // console.log('success', res.data.success);
+      // console.log(res.data.result);
       setTransferSalary(res.data.result.value);
     } else {
       console.log(res.data.message);
@@ -138,7 +138,7 @@ export default function SalaryTeller() {
               withdrawId: 0, //보내는 사람
             },
           });
-          console.log(res);
+          // console.log(res);
           if (res.data.success) {
             toast.success('이체가 완료되었습니다.', {
               autoClose: 1200,
@@ -159,15 +159,15 @@ export default function SalaryTeller() {
             setMemo('');
             setTransferSalary('');
             setSelectedStudentId('');
-            console.log('success', res.data.success);
+            // console.log('success', res.data.success);
           } else {
-            console.log(res.data.message);
+            // console.log(res.data.message);
             toast.error('송금에 실패했습니다.', {
               autoClose: 1200,
             });
           }
         } catch (error) {
-          console.log('이체 요청 실패', error);
+          // console.log('이체 요청 실패', error);
           toast.error('이체 요청 중 오류가 발생했습니다.', {
             autoClose: 1200,
           });
@@ -178,7 +178,7 @@ export default function SalaryTeller() {
     }
   };
   const handleSelectStudent = (student) => {
-    console.log(student);
+    // console.log(student);
     if (student) {
       setDepositUser(student.id);
       setDepositUserName(student.name);
@@ -203,7 +203,6 @@ export default function SalaryTeller() {
               const selectedStudent = studentList.find(
                 (student) => student.id === Number(e.target.value)
               );
-
 
               handleSelectStudent(selectedStudent);
             }}

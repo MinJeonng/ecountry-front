@@ -38,7 +38,7 @@ export function SetSeat() {
       },
     });
 
-    console.log('Columns:', res.data.result);
+    // console.log('Columns:', res.data.result);
     setColumns(res.data.result);
   };
 
@@ -51,8 +51,8 @@ export function SetSeat() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res);
-    console.log(res.data.result);
+    // console.log(res);
+    // console.log(res.data.result);
     setSeatList(res.data.result);
   };
 
@@ -77,7 +77,7 @@ export function SetSeat() {
       if (seat.rowNum == row && seat.colNum == col) {
         isExist = true;
         if (showStudentMap) {
-          console.log('사용자');
+          // console.log('사용자');
           data = [
             {
               id: seat.id,
@@ -88,7 +88,7 @@ export function SetSeat() {
             },
           ];
         } else {
-          console.log('소유자');
+          // console.log('소유자');
           data = [
             {
               id: seat.id,
@@ -103,7 +103,7 @@ export function SetSeat() {
     });
     if (!isExist) {
       if (showStudentMap) {
-        console.log('소유자');
+        // console.log('소유자');
         data = [
           {
             ownerId: null,
@@ -114,7 +114,7 @@ export function SetSeat() {
           },
         ];
       } else {
-        console.log('사용자');
+        // console.log('사용자');
         data = [
           {
             ownerId: studentId,
@@ -125,7 +125,7 @@ export function SetSeat() {
           },
         ];
       }
-      console.log(data);
+      // console.log(data);
       const res = await axios({
         method: 'POST',
         url: `${process.env.REACT_APP_HOST}/api/seat/status`,
@@ -135,9 +135,9 @@ export function SetSeat() {
           'ngrok-skip-browser-warning': '69420',
         },
       });
-      console.log(res.data);
+      // console.log(res.data);
     } else {
-      console.log(data);
+      // console.log(data);
       const res = await axios({
         method: 'PATCH',
         url: `${process.env.REACT_APP_HOST}/api/seat/status`,
@@ -147,7 +147,7 @@ export function SetSeat() {
           'ngrok-skip-browser-warning': '69420',
         },
       });
-      console.log(res.data);
+      // console.log(res.data);
     }
     getStatus();
   };

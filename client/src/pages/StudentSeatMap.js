@@ -35,7 +35,7 @@ export function StudentSeat() {
       },
     });
 
-    console.log('Columns:', res.data.result);
+    // console.log('Columns:', res.data.result);
     setColumns(res.data.result);
   };
 
@@ -48,8 +48,8 @@ export function StudentSeat() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res);
-    console.log(res.data.result);
+    // console.log(res);
+    // console.log(res.data.result);
     setSeatList(res.data.result);
   };
 

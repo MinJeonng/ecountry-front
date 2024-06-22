@@ -48,7 +48,7 @@ export function TaxLaw() {
       });
       if (resTax.data.success) {
         setTaxLawList(resTax.data.result);
-        console.log(resTax.data.result);
+        // console.log(resTax.data.result);
       }
     } catch (error) {
       toast.error('세금 규칙 로딩 오류', { autoClose: 1300 });

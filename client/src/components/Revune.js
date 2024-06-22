@@ -168,7 +168,7 @@ export default function Revune() {
       },
     });
     setStudentList(res.data.result);
-    console.log(res.data.result);
+    // console.log(res.data.result);
   };
 
   const getTax = async () => {
@@ -180,7 +180,7 @@ export default function Revune() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     setTaxList(res.data.result);
     setShowList(res.data.result);
   };
@@ -216,7 +216,7 @@ export default function Revune() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     setTaxLaw(res.data.result);
   };
 
@@ -224,7 +224,7 @@ export default function Revune() {
     // 학생 검색 기능
     // selectedName과 withdrawId가 일치하는 데이터만 showData에 담기
     if (selectedName) {
-      console.log(selectedName);
+      // console.log(selectedName);
       const newList = [];
       taxList.forEach((tax) => {
         if (tax.withdrawId == selectedName) {

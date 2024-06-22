@@ -105,7 +105,7 @@ export function CommonMainHeader() {
       });
       if (res.data.success) {
         if (res.data.result) {
-          console.log(res.data.result.count);
+          // console.log(res.data.result.count);
           setAlarmCount(res.data.result.count);
         }
       } else {
@@ -428,7 +428,7 @@ export function SkillHeader() {
     navigate(link);
     setSelectedSkillState(index);
   };
-  console.log(selectedSkillState);
+  selectedSkillState;
   return (
     <header>
       <img

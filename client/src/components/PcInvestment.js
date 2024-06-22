@@ -75,8 +75,8 @@ export default function PcInvestment() {
   const [info, setInfo] = useState(null);
   const [isInfo, setIsInfo] = useState(false);
 
-  console.log(products);
-  console.log('list', list);
+  // console.log(products);
+  // console.log('list', list);
 
   const getInvest = async () => {
     const res = await axios({
@@ -127,7 +127,7 @@ export default function PcInvestment() {
       const index = products.length - 1;
       getStatus(products[index].id);
       setInfo(products[index]);
-      console.log('info', info);
+      // console.log('info', info);
     }
   }, [products]);
 

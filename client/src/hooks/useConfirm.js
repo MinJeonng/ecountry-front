@@ -23,7 +23,7 @@ export default function useConfirm() {
     } else {
       toast.error('로그인 후 이용해주세요.', { autoClose: 1300 });
     }
-    console.log(userInfo);
+    // console.log(userInfo);
   };
 
   return [isAuth, confirmAuth];

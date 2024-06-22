@@ -31,7 +31,7 @@ export function SetNewsRead({ auth }) {
           'ngrok-skip-browser-warning': '69420',
         },
       });
-      console.log(res.data.result);
+      // console.log(res.data.result);
       if (res.data.result.countryId == id) {
         const result = res.data.result;
         setNewsTitle(result.title);

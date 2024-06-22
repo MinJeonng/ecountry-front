@@ -456,7 +456,6 @@ export function SkillHeader() {
           <hr width="80%" color="#e2e4e4" height="1px" noshade />
           {skillBasedLinks.length > 0 && (
             <>
-
               {skillBasedLinks.map(({ text, link, key, state }) => (
                 // <li
                 //   key={key}
@@ -484,9 +483,7 @@ export function SkillHeader() {
                         : 'none',
                   }}
                 >
-                  <div
-                    onClick={() => handleSkillClick(key, link, state, index)}
-                  >
+                  <div onClick={() => handleSkillClick(key, link, state)}>
                     {text}
                   </div>
                 </li>

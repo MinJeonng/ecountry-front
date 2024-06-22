@@ -1,5 +1,15 @@
 ![title](docs/titleUpdate.png)
-<br />
+
+![image](docs/background.png)
+
+![image](docs/mainService.png)
+
+![image](docs/Erd.png)
+
+![image](docs/architecture.png)
+
+![image](docs/pageStructure.png)
+
 
 
 
@@ -7,17 +17,21 @@
 
 <br/>
 
-## 기술 스택
+## 사용 기술
 
+![image](docs/stack.png)
+
+<!--
 ### 프론트엔드
-| JavaScript | React    | Figma    |
-| :--------: | :---:    | :---:    |
-|   ![js]    | ![react] | ![figma] |
+| JavaScript | React    | Figma    | 
+| :--------: | :---:    | :---:    | 
+|   ![js]    | ![react] | ![figma] | 
 
 ### 백엔드
 |  Java   |  SpringBoot   | JavaScript |  Node   |
 | :-----: | :-----------: | :--------: | :-----: |
 | ![java] | ![springboot] |   ![js]    | ![node] |
+-->
 
 <br/>
 

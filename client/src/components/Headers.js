@@ -428,7 +428,7 @@ export function SkillHeader() {
     navigate(link);
     setSelectedSkillState(index);
   };
-  selectedSkillState;
+  // selectedSkillState;
   return (
     <header>
       <img

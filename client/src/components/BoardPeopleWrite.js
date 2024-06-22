@@ -38,12 +38,12 @@ export function BoardPeopleWrite() {
           document.location.href = `/${id}/boardPeople`;
         }
       } else {
-        ({
-          title,
-          content,
-          isSecret,
-          countryId: id,
-        });
+        // ({
+        //   title,
+        //   content,
+        //   isSecret,
+        //   countryId: id,
+        // });
         const res = await axios({
           method: 'POST',
           url: `${process.env.REACT_APP_HOST}/api/post/petition`,

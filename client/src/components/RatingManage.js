@@ -105,42 +105,44 @@ export default function RatingManage() {
     <>
       <ToastContainer />
       {innerWidth >= 1160 && <SkillHeader />}
-      <div className="title-wrap-st">
-        <ul className="title-list-st title-list">
-          <li>국민들의 신용 등급을 수정할 수 있습니다.</li>
-        </ul>
-      </div>
+      <div className="pc-wrap">
+        <div className="title-wrap-st">
+          <ul className="title-list-st title-list">
+            <li>국민들의 신용 등급을 수정할 수 있습니다.</li>
+          </ul>
+        </div>
 
-      <form className="box-style">
-        <div className="set-title">변경 대상자</div>
-        <select
-          id="name"
-          className="set-input"
-          value={studentId}
-          onChange={handleStudentId}
-        >
-          <option value="" disabled>
-            대상자 선택
-          </option>
-          {studentList.map((student) => (
-            <option key={student.id} value={student.id}>
-              {student.rollNumber}번 {student.name}
+        <form className="box-style">
+          <div className="set-title">변경 대상자</div>
+          <select
+            id="name"
+            className="set-input"
+            value={studentId}
+            onChange={handleStudentId}
+          >
+            <option value="" disabled>
+              대상자 선택
             </option>
-          ))}
-        </select>
-        <div className="set-title">신용등급</div>
-        <input
-          className="set-input"
-          type="number"
-          value={updateRating}
-          onChange={(e) => setUpdateRating(e.target.value)}
-        ></input>
-      </form>
-      <ConfirmBtn
-        btnName="수정"
-        backgroundColor="#61759f"
-        onClick={getUpdateRating}
-      ></ConfirmBtn>
+            {studentList.map((student) => (
+              <option key={student.id} value={student.id}>
+                {student.rollNumber}번 {student.name}
+              </option>
+            ))}
+          </select>
+          <div className="set-title">신용등급</div>
+          <input
+            className="set-input"
+            type="number"
+            value={updateRating}
+            onChange={(e) => setUpdateRating(e.target.value)}
+          ></input>
+        </form>
+        <ConfirmBtn
+          btnName="수정"
+          backgroundColor="#61759f"
+          onClick={getUpdateRating}
+        ></ConfirmBtn>
+      </div>
     </>
   );
 }

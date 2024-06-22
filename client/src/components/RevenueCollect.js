@@ -142,99 +142,101 @@ export default function RevenueCollect() {
     <>
       {innerWidth >= 1160 && <SkillHeader />}
       <ToastContainer />
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div
-          className="newsHead"
-          style={{
-            color: '#666666',
-            marginBottom: '10%',
-            borderBottom: '2px solid #bacd92',
-            paddingBottom: '10px',
-            width: '-webkit-fill-available',
-          }}
-        >
-          과태료 징수
-        </div>
-      </div>
-      <form className="box-style">
-        <div className="set-title">징수 대상자</div>
-        <select
-          value={accountId}
-          onChange={handleAccountId}
-          style={{
-            width: '100%',
-            height: '30px',
-            border: 'none',
-            backgroundColor: '#f5f6f6',
-            borderBottom: '1px solid #e9ae24',
-            margin: '10px 0 20px 0',
-            outline: 'none',
-          }}
-        >
-          <option value="" disabled>
-            대상자 선택
-          </option>
-          {studentList.map((student) => (
-            <option key={student.id} value={student.id}>
-              {student.rollNumber}번 {student.name}
-            </option>
-          ))}
-        </select>
-        <div className="set-title">징수 사유</div>
-        <select
-          value={selectTax}
-          onChange={(e) => setSelectTax(e.target.value)}
-          style={{
-            width: '100%',
-            height: '30px',
-            border: 'none',
-            backgroundColor: '#f5f6f6',
-            borderBottom: '1px solid #e9ae24',
-            margin: '10px 0 20px 0',
-            outline: 'none',
-          }}
-        >
-          <option value="" disabled>
-            사유 선택
-          </option>
-          {taxList.map((tax, index) => (
-            <option key={index} value={tax.taxName}>
-              {tax.taxName}
-            </option>
-          ))}
-        </select>
-        <div className="set-title">징수 금액</div>
-        <div
-          style={{
-            width: '100%',
-            height: '30px',
-            border: 'none',
-            backgroundColor: '#f5f6f6',
-            borderBottom: '1px solid #e9ae24',
-            // paddingBottom: '20px',
-            margin: '10px 0 20px 0',
-            position: 'relative',
-          }}
-        >
-          <span>{transaction}</span>
-          <span
+      <div className="pc-wrap">
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div
+            className="newsHead"
             style={{
-              color: '#a5a5a5',
-              fontSize: '14px',
-              position: 'absolute',
-              right: 0,
-              marginRight: '9%',
+              color: '#666666',
+              marginBottom: '10%',
+              borderBottom: '2px solid #bacd92',
+              paddingBottom: '10px',
+              width: '-webkit-fill-available',
             }}
           >
-            {unit}
-          </span>
+            과태료 징수
+          </div>
         </div>
-      </form>
-      <ConfirmBtn
-        btnName="징수"
-        backgroundColor="#61759f"
-        onClick={collectionTax}
-      ></ConfirmBtn>
+        <form className="box-style">
+          <div className="set-title">징수 대상자</div>
+          <select
+            value={accountId}
+            onChange={handleAccountId}
+            style={{
+              width: '100%',
+              height: '30px',
+              border: 'none',
+              backgroundColor: '#f5f6f6',
+              borderBottom: '1px solid #e9ae24',
+              margin: '10px 0 20px 0',
+              outline: 'none',
+            }}
+          >
+            <option value="" disabled>
+              대상자 선택
+            </option>
+            {studentList.map((student) => (
+              <option key={student.id} value={student.id}>
+                {student.rollNumber}번 {student.name}
+              </option>
+            ))}
+          </select>
+          <div className="set-title">징수 사유</div>
+          <select
+            value={selectTax}
+            onChange={(e) => setSelectTax(e.target.value)}
+            style={{
+              width: '100%',
+              height: '30px',
+              border: 'none',
+              backgroundColor: '#f5f6f6',
+              borderBottom: '1px solid #e9ae24',
+              margin: '10px 0 20px 0',
+              outline: 'none',
+            }}
+          >
+            <option value="" disabled>
+              사유 선택
+            </option>
+            {taxList.map((tax, index) => (
+              <option key={index} value={tax.taxName}>
+                {tax.taxName}
+              </option>
+            ))}
+          </select>
+          <div className="set-title">징수 금액</div>
+          <div
+            style={{
+              width: '100%',
+              height: '30px',
+              border: 'none',
+              backgroundColor: '#f5f6f6',
+              borderBottom: '1px solid #e9ae24',
+              // paddingBottom: '20px',
+              margin: '10px 0 20px 0',
+              position: 'relative',
+            }}
+          >
+            <span>{transaction}</span>
+            <span
+              style={{
+                color: '#a5a5a5',
+                fontSize: '14px',
+                position: 'absolute',
+                right: 0,
+                marginRight: '9%',
+              }}
+            >
+              {unit}
+            </span>
+          </div>
+        </form>
+        <ConfirmBtn
+          btnName="징수"
+          backgroundColor="#61759f"
+          onClick={collectionTax}
+        ></ConfirmBtn>
+      </div>
     </>
   );
 }

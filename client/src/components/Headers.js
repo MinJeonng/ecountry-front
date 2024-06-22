@@ -399,13 +399,6 @@ export function SkillHeader() {
       state: 5,
     },
   };
-  // const skillBasedLinks = studentInfoList.skills
-  //   ? studentInfoList.skills
-  //       .map((skill) =>
-  //         skillMappings[skill] ? { ...skillMappings[skill], key: skill } : null
-  //       )
-  //       .filter(Boolean)
-  //   : [];
 
   const skillBasedLinks = studentInfoList.skills
     ? studentInfoList.skills
@@ -420,6 +413,15 @@ export function SkillHeader() {
     : [];
   const storedSkillId = localStorage.getItem('skillId');
   // console.log(storedSkillId);
+  useEffect(() => {
+    if (storedSkillId) {
+      const skill = Number(storedSkillId);
+      if (skillMappings[skill]) {
+        setSelectedSkill(skill);
+        setSelectedSkillState(skillMappings[skill].state);
+      }
+    }
+  }, [storedSkillId, skillMappings]);
 
   const handleSkillClick = (key, link, state) => {
     setSelectedSkill(key);
@@ -427,7 +429,7 @@ export function SkillHeader() {
     localStorage.setItem('skillId', key);
     navigate(link);
   };
-  selectedSkillState;
+  // selectedSkillState;
   return (
     <header>
       <img
@@ -454,14 +456,24 @@ export function SkillHeader() {
           {skillBasedLinks.length > 0 && (
             <>
               {skillBasedLinks.map(({ text, link, key, state }) => (
+                // <li
+                //   key={key}
+                //   className={
+                //     window.location.pathname === link ||
+                //     storedSkillId === String(key)
+                //       ? 'active'
+                //       : ''
+                //   }
+                //   style={{
+                //     display:
+                //       selectedSkill === null || selectedSkill === key
+                //         ? 'block'
+                //         : 'none',
+                //   }}
+                // >
                 <li
                   key={key}
-                  className={
-                    window.location.pathname === link ||
-                    storedSkillId === String(key)
-                      ? 'active'
-                      : ''
-                  }
+                  className={selectedSkillState === state ? 'active' : ''}
                   style={{
                     display:
                       selectedSkill === null || selectedSkill === key

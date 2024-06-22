@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
@@ -17,6 +17,7 @@ export function AssemblyLawList() {
   const [selectedId, setSelectedId] = useState('');
   const [selectedDetail, setSelectedDetail] = useState('');
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const location = useLocation();
 
   useEffect(() => {
     window.addEventListener(`resize`, () => setInnerWidth(window.innerWidth));
@@ -172,7 +173,8 @@ export function AssemblyLawList() {
   return (
     <>
       <ToastContainer />
-      {innerWidth >= 1160 && <SkillHeader />}
+      {/* {innerWidth >= 1160 && <SkillHeader /> &&
+        location.pathname === `/${id}/main`} */}
       <div className="pc-wrap">
         <div className="setting-wrap title-wrap">
           <ul className="title-list">

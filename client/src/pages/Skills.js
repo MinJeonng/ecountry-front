@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { PageHeader } from '../components/Headers';
+import { PageHeader, SkillHeader } from '../components/Headers';
 import Template from '../components/Template';
 import { useEffect, useState } from 'react';
 import { SavingTeller } from '../components/SavingTeller';
@@ -18,6 +18,7 @@ export default function Skills() {
   const [loginBtn, setLoginBtn] = useState(false);
   const [isShow, setIsShow] = useState(false);
   const [skillId, setSkillId] = useState();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.auth);
@@ -50,6 +51,7 @@ export default function Skills() {
     <>
       <ToastContainer />
       {loginBtn && <LoginBtn />}
+      {skillId == 5 && innerWidth >= 1160 && <SkillHeader />}
       {/* 컴포넌트 쓰는거라 뒤로가기 설정 해주기 */}
       {isShow && (
         <Template

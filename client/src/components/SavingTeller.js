@@ -132,6 +132,32 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const PcWrap = styled.div`
+  @media (min-width: 1160px) {
+    margin: 80px 100px 50px;
+
+    .title-wrap {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      border-bottom: 10px;
+      border-bottom: 2px solid #bacd92;
+      margin: 0;
+
+      .title-list {
+        width: -webkit-fill-available;
+        margin: 50px 0 20px;
+
+        li {
+          margin-left: 20px;
+          list-style: disc;
+          font-size: 16px;
+          color: #777777;
+        }
+      }
+    }
+  }
+`;
 
 function SearchStudent() {
   const { id } = useParams();
@@ -532,9 +558,11 @@ export function SavingTeller() {
   return (
     <>
       {innerWidth >= 1160 && <SkillHeader />}
-      <SearchStudent />
-      <AddSaving />
-      <CancelSaving />
+      <PcWrap>
+        <SearchStudent />
+        <AddSaving />
+        <CancelSaving />
+      </PcWrap>
     </>
   );
 }

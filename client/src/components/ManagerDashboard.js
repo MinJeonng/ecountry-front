@@ -165,9 +165,9 @@ export function MainDashboard() {
         //pc버전임
         //학생꺼 가져오기
         <>
-          <ManagerDesktopMain>
+          {/* <ManagerDesktopMain>
             <p className="main-title">Dashboard</p>
-          </ManagerDesktopMain>
+          </ManagerDesktopMain> */}
         </>
       )}
     </>

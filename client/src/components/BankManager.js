@@ -171,7 +171,7 @@ export function AddSavings() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.message);
+    // console.log(res.data.message);
     if (res.data.success) {
       toast.success('삭제 완료되었습니다.', { autoClose: 1300 });
     }

@@ -38,7 +38,7 @@ export function BoardPeopleWrite() {
           document.location.href = `/${id}/boardPeople`;
         }
       } else {
-        console.log({
+        ({
           title,
           content,
           isSecret,
@@ -59,7 +59,7 @@ export function BoardPeopleWrite() {
             countryId: id,
           },
         });
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.success) {
           toast.success('글이 등록되었습니다.', {
             autoClose: 1200,
@@ -104,7 +104,7 @@ export function BoardPeopleWrite() {
     }
   }, [petitionId]);
   useEffect(() => {
-    console.log(isSecret);
+    // console.log(isSecret);
   }, [isSecret]);
 
   const contents = useRef();
@@ -119,11 +119,6 @@ export function BoardPeopleWrite() {
             alt="뒤로가기"
           />
         </div>
-
-        {/* <div style={{ color: '#666666', fontWeight: 'bolder' }}>
-        신문고 글쓰기
-      </div> */}
-
         <form className="box-style">
           <div
             className="reset"

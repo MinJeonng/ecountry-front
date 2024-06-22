@@ -113,7 +113,7 @@ export default function CommonMainNews() {
   const [imgCount, setImgCount] = useState(1);
   const [endSwipe, setEndSwipe] = useState(false);
 
-  console.log(newsList);
+  // console.log(newsList);
   const navigate = useNavigate();
   const onSwipeMove = (position) => {
     setEndSwipe(false);
@@ -150,7 +150,7 @@ export default function CommonMainNews() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     setNewsList(res.data.result);
   };
   useEffect(() => {

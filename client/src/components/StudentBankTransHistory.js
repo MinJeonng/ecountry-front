@@ -119,9 +119,9 @@ function CheckingAccount({ account, unit }) {
             'ngrok-skip-browser-warning': '69420',
           },
         });
-        console.log(res);
+        // console.log(res);
         if (res.data.success) {
-          console.log('입출금내역', res.data.result);
+          // console.log('입출금내역', res.data.result);
           setTransList(res.data.result);
         }
       } catch (error) {
@@ -150,7 +150,7 @@ function CheckingAccount({ account, unit }) {
   // 그룹화된 거래내역을 화면에 표시
   const TransListByDate = ({ transList }) => {
     const groupedTrans = groupByDate(transList);
-    console.log('거래내역', groupedTrans);
+    // console.log('거래내역', groupedTrans);
 
     if (Object.keys(groupedTrans).length === 0) {
       // groupedTrans가 비어있다면, "거래내역이 없습니다" 메시지를 표시
@@ -237,7 +237,7 @@ function SavingAccount({ account, unit }) {
           },
         });
         if (res.data.success) {
-          console.log('적금통장', res.data.result);
+          // console.log('적금통장', res.data.result);
           setTransList(res.data.result);
         }
       } catch (error) {
@@ -266,7 +266,7 @@ function SavingAccount({ account, unit }) {
   // 그룹화된 거래내역을 화면에 표시
   const TransListByDate = ({ transList }) => {
     const groupedTrans = groupByDate(transList);
-    console.log('거래내역', groupedTrans);
+    // console.log('거래내역', groupedTrans);
 
     if (Object.keys(groupedTrans).length === 0) {
       // groupedTrans가 비어있다면, "거래내역이 없습니다" 메시지를 표시
@@ -374,7 +374,7 @@ export function TransHistory() {
           },
         });
         if (res.data.success) {
-          console.log(res.data.result);
+          // console.log(res.data.result);
           const result = Array.isArray(res.data.result)
             ? res.data.result
             : [res.data.result];

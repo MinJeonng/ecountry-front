@@ -9,7 +9,7 @@ export default function Test() {
   const userInfo = useSelector((state) => state.auth);
 
   useEffect(() => {
-    console.log(userInfo);
+    // console.log(userInfo);
   }, [userInfo]);
 
   useEffect(() => {}, [userAuth]);

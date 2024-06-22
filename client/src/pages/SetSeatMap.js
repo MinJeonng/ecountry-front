@@ -69,7 +69,7 @@ export default function SetSeatMap() {
         Authorization: `Bearer ${getExpire()}`,
       },
     });
-    console.log('Students:', res.data.result);
+    // console.log('Students:', res.data.result);
     setStudentList(res.data.result);
   };
 
@@ -79,12 +79,12 @@ export default function SetSeatMap() {
       url: `${process.env.REACT_APP_HOST}/api/seat/${id}`,
     });
 
-    console.log('Columns:', res.data.result);
+    // console.log('Columns:', res.data.result);
     setColumns(res.data.result);
   };
 
   const updateSeat = () => {
-    console.log('수정된 값:', tableRows);
+    // console.log('수정된 값:', tableRows);
     setIsEditing(false); // 수정이 완료됐음을 표시
     setIsSeatMapVisible(false);
   };

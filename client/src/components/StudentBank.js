@@ -109,7 +109,7 @@ function CheckingAccount({ account, unit }) {
     let result;
     transList?.forEach((data) => {
       if (data.id == accountId) {
-        console.log(data.studentId);
+        // console.log(data.studentId);
         result = data.studentId;
       }
     });
@@ -221,7 +221,7 @@ function CheckingAccount({ account, unit }) {
             setDepositUser('');
             setMemo('');
             setTransferAmount('');
-            console.log('success', res.data.success);
+            // console.log('success', res.data.success);
           } else {
             console.log(res.data.message);
           }
@@ -403,7 +403,7 @@ function SavingAccount({ account, unit, withdrawId, withdrawBalance }) {
             window.location.reload();
           }, 1400);
           setSavingAmount('');
-          console.log('success', res.data.success);
+          // console.log('success', res.data.success);
         } else {
           console.log(res.data.message);
         }
@@ -489,7 +489,10 @@ export function OwnAccount() {
         setUnit(res.data.result);
       }
     } catch (error) {
-      console.log('화폐단위 불러오는데 실패', error);
+      // console.log('화폐단위 불러오는데 실패', error);
+      toast.errer('화폐 단위를 불러오는데 실패하였습니다.', {
+        autoClose: 1300,
+      });
     }
   };
   useEffect(() => {
@@ -509,7 +512,7 @@ export function OwnAccount() {
           },
         });
         if (res.data.success) {
-          console.log(res.data.result);
+          // console.log(res.data.result);
           const result = Array.isArray(res.data.result)
             ? res.data.result
             : [res.data.result];

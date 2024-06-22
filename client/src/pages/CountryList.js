@@ -55,7 +55,7 @@ export default function CountryList() {
         autoClose: 1300,
       });
     } else {
-      console.log(res.data.message);
+      // console.log(res.data.message);
       toast.error('삭제에 실패했습니다.', {
         autoClose: 1200,
       });

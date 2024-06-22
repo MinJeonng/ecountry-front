@@ -49,7 +49,7 @@ export function ChangePassword() {
           navigate(`/${id}/login`);
         }, 1300);
       } else {
-        console.log(res.data.message);
+        // console.log(res.data.message);
         toast.error('비밀번호 변경에 실패했습니다.');
       }
     } else {
@@ -70,7 +70,7 @@ export function ChangePassword() {
           navigate(`/${id}/login`);
         }, 1300);
       } else {
-        console.log(res.data.message);
+        // console.log(res.data.message);
         toast.error('비밀번호 변경에 실패했습니다.');
       }
     }

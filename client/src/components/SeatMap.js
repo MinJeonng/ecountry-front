@@ -60,7 +60,7 @@ export default function SeatMap() {
           },
         }
       );
-      console.log('자리 배치 등록 결과 :', res.data.success);
+      // console.log('자리 배치 등록 결과 :', res.data.success);
       if (res.data.success) {
         document.location.reload();
       }

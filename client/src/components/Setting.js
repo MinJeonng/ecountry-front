@@ -527,7 +527,7 @@ export function Setting3() {
           header: 1,
         });
 
-        console.log(jsonData);
+        // console.log(jsonData);
         jsonData.forEach((data, index) => {
           if (index > 0) {
             list.push({
@@ -537,7 +537,7 @@ export function Setting3() {
             });
           }
         });
-        console.log(list);
+        // console.log(list);
         setAttendees(list);
       };
       reader.readAsArrayBuffer(files[0]);
@@ -548,7 +548,7 @@ export function Setting3() {
   // 파일 업로드
   const handleUpload = () => {
     if (selectedFile) {
-      console.log(attendees);
+      // console.log(attendees);
       dispatch(
         studentInfo({
           password: null,
@@ -967,7 +967,7 @@ export function Setting5() {
       toast.error('최소 하나의 값을 입력해주세요.', { autoClose: 1300 });
       return;
     }
-    console.log(jobsDisplay);
+    // console.log(jobsDisplay);
     navigate('/setting/law');
     dispatch(jobsInfo({ jobsDisplay: jobsDisplay }));
   };
@@ -1661,7 +1661,7 @@ export function Setting7() {
       toast.error('모든 값을 입력해주세요', { autoClose: 1300 });
       return;
     }
-    console.log(taxLawState);
+    // console.log(taxLawState);
     const newTaxLaw = isCustomUnit ? customUnit : selectedUnit;
     if (newTaxLaw === '') return;
     if (selectedIndex !== null) {

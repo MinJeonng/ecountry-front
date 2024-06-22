@@ -33,7 +33,7 @@ export default function RatingManage() {
       },
     });
     setStudentList(res.data.result);
-    console.log(res.data.result);
+    // console.log(res.data.result);
   };
   const getUpdateRating = async () => {
     if (
@@ -57,7 +57,7 @@ export default function RatingManage() {
         },
       });
       if (res.data.success) {
-        console.log('success');
+        // console.log('success');
         toast.success('신용등급 변경이 완료되었습니다.', { autoClose: 1300 });
         if (prevRating != updateRating) {
           const res2 = await axios({

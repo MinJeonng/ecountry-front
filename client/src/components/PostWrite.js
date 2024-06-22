@@ -162,7 +162,7 @@ export function SetPostWrite({ ...rest }) {
         toast.success('글이 등록되었습니다.', {
           autoClose: 1200,
         });
-        console.log(getExpire());
+        // console.log(getExpire());
         const res2 = await axios({
           method: 'POST',
           url: `${process.env.REACT_APP_HOST}/api/student/notice/add/all/${id}`,
@@ -194,7 +194,7 @@ export function SetPostWrite({ ...rest }) {
       },
     });
     if (res.data.success) {
-      console.log(res.data.result);
+      // console.log(res.data.result);
       setTitle(res.data.result.title);
       setContent(res.data.result.content);
       document.querySelector('.ql-editor').innerHTML = res.data.result.content;
@@ -237,7 +237,7 @@ export function SetPostWrite({ ...rest }) {
   };
 
   useEffect(() => {
-    console.log(postId);
+    // console.log(postId);
     if (postId) {
       getNews(postId);
     }

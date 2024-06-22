@@ -171,7 +171,7 @@ export default function ChatBot() {
 
   useEffect(() => {
     removeMenu();
-    console.log(chatList);
+    // console.log(chatList);
   }, [chatList]);
 
   useEffect(() => {

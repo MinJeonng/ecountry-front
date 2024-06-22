@@ -193,7 +193,7 @@ export function MainProfile() {
         },
       });
       if (res.data.success) {
-        console.log(res.data.success);
+        // console.log(res.data.success);
         toast.success('프로필 변경이 완료되었습니다.', { autoClose: 1300 });
         getInfo();
       } else {
@@ -317,7 +317,7 @@ export function GetName() {
       });
 
       if (res.data.success) {
-        console.log('success');
+        // console.log('success');
         setName(res.data.result.name);
         setJob(res.data.result.job);
         if (userInfo.isStudent) {
@@ -352,7 +352,7 @@ export function GetName() {
   // useEffect(() => {}, []);
   useEffect(() => {
     setUserInfo();
-    console.log('setUserInfo');
+    // console.log('setUserInfo');
   }, []);
 
   useEffect(() => {

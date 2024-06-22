@@ -45,7 +45,7 @@ export function AddInvestment() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     setInvestmentList(res.data.result);
   };
 
@@ -108,7 +108,7 @@ export function AddInvestment() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     setStatusList(res.data.result);
   };
 
@@ -266,7 +266,7 @@ export function AddInvestment() {
   };
 
   useEffect(() => {
-    console.log(investValueList);
+    // console.log(investValueList);
   }, [investValueList]);
 
   useEffect(() => {

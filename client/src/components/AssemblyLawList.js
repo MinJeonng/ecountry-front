@@ -35,7 +35,7 @@ export function AssemblyLawList() {
         'ngrok-skip-browser-warning': '69420',
       },
     });
-    console.log(res.data.result);
+    // console.log(res.data.result);
     setLaws(res.data.result);
   };
 

@@ -28,7 +28,7 @@ export function BoardPeopleList() {
           'ngrok-skip-browser-warning': '69420',
         },
       });
-      console.log(res.data.result);
+      // console.log(res.data.result);
       setContents(res.data.result);
     } catch {
       //프론트 완료 후 작성

@@ -78,7 +78,7 @@ export default function MenuList() {
         });
 
         if (res.data.success && res.data.result.length > 0) {
-          console.log(res.data.result);
+          // console.log(res.data.result);
           const todayFormatted = today
             .toISOString()
             .split('T')[0]

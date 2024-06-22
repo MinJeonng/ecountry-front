@@ -287,7 +287,7 @@ export function AlarmComponent({ func }) {
       });
       if (res.data.success) {
         if (res.data.result) {
-          console.log(res.data.result);
+          // console.log(res.data.result);
           setAlarmList(res.data.result);
         }
       } else {

@@ -5,8 +5,6 @@ import { BoardPeopleWrite } from '../components/BoardPeopleWrite';
 import { BoardPeopleRead } from '../components/BoardPeopleRead';
 import { CommonMainDesktopHeader, PageHeader } from '../components/Headers';
 
-import { StudentHeader } from '../components/StudentHeader';
-
 import { useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { ToastContainer } from 'react-toastify';
@@ -36,8 +34,6 @@ export function SetBoardPeople({ position }) {
 
   return (
     <>
-
-      {/* <StudentHeader /> */}
       <CommonMainDesktopHeader />
       <ToastContainer />
       {loginBtn && <LoginBtn />}

@@ -21,7 +21,7 @@
 
 ## 사용 기술
 
-![image](docs/stack.png)
+![image](docs/skills.png)
 
 <!--
 ### 프론트엔드

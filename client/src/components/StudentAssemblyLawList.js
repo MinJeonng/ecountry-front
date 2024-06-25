@@ -30,16 +30,14 @@ export function StudentAssemblyLawList() {
     <>
       <div className="student-wrap">
         <ToastContainer />
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div
-            className="newsHead"
-            style={{ color: '#333', marginBottom: '10px' }}
-          >
-            기본 법
-          </div>
+        <div
+          className="newsHead"
+          style={{ color: '#333', marginBottom: '10px', fontWeight: 'bold' }}
+        >
+          기본 법
         </div>
         <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '7%' }}
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
         ></div>
         {laws.length !== 0 ? (
           <div className="newsInfo">

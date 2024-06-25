@@ -113,12 +113,6 @@ export function BoardPeopleWrite() {
     <>
       <ToastContainer />
       <div className="student-wrap">
-        <div className="navi-pre-btn2" onClick={(e) => navigate(-1)}>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
-            alt="뒤로가기"
-          />
-        </div>
         <form className="box-style">
           <div
             className="reset"

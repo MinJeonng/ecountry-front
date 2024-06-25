@@ -77,7 +77,7 @@ export function BoardPeopleList() {
           )}
         </p>
         <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '7%' }}
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
         ></div>
         {contents.length !== 0 ? (
           <>

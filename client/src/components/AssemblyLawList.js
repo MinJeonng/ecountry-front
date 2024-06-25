@@ -1,12 +1,10 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ConfirmBtn } from './Btns';
 import { ReactComponent as Arrow } from '../images/ico-arr-left.svg';
 import { toast, ToastContainer } from 'react-toastify';
-
-import axios from 'axios';
 import { getExpire, handleKeyDown } from '../hooks/Functions';
-import { SkillHeader } from './Headers';
 
 export function AssemblyLawList() {
   const { id } = useParams();

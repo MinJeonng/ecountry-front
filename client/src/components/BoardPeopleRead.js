@@ -79,9 +79,9 @@ export function BoardPeopleRead() {
             type="button"
             onClick={updateFunc}
             style={{
-              color: 'white',
+              color: '#000',
               backgroundColor: '#bacd92',
-              padding: '4px 10px 4px 10px',
+              padding: '8px 13px',
               borderRadius: '8px',
               marginBottom: '10px',
               marginRight: '10px',
@@ -94,9 +94,9 @@ export function BoardPeopleRead() {
             type="button"
             onClick={deleteFunc}
             style={{
-              color: 'white',
+              color: '#000',
               backgroundColor: '#bacd92',
-              padding: '4px 10px 4px 10px',
+              padding: '8px 13px',
               borderRadius: '8px',
               marginBottom: '10px',
               border: 'none',
@@ -106,7 +106,7 @@ export function BoardPeopleRead() {
           </button>
         </p>
         <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
+          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10px' }}
         ></div>
 
         <form className="box-style">
@@ -174,11 +174,20 @@ export function BoardPeopleRead() {
           </div>
         </form>
 
-        <div className="navi-pre-btn2" onClick={(e) => navigate(-1)}>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/icon-back.png`}
-            alt="뒤로가기"
-          />
+        <div onClick={(e) => navigate(`/${id}/boardPeople`)}>
+          <button
+            style={{
+              color: '#333',
+              backgroundColor: '#bacd92',
+              padding: '10px 15px',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+              border: 'none',
+            }}
+          >
+            목록
+          </button>
         </div>
       </div>
     </>

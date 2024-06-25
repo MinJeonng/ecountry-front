@@ -190,8 +190,9 @@ export function CheckInvestment() {
         <div
           style={{
             borderBottom: '2px solid #bacd92',
-            marginBottom: '10%',
+            marginBottom: '20px',
             paddingBottom: '15px',
+            fontWeight: 'bold',
           }}
         >
           투자 상품 확인

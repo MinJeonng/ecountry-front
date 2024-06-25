@@ -83,7 +83,7 @@ const LogoutBtn = styled.button`
   height: 32px;
   display: flex;
   align-items: center;
-  text-wrap: nowrap;
+  white-space: nowrap;
   img {
     width: 16px;
     height: 16px;

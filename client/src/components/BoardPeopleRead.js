@@ -74,40 +74,41 @@ export function BoardPeopleRead() {
       <div className="student-wrap">
         <ToastContainer />
         <ChatBotBtn />
-        <p align="right">
-          <button
-            type="button"
-            onClick={updateFunc}
-            style={{
-              color: '#000',
-              backgroundColor: '#bacd92',
-              padding: '8px 13px',
-              borderRadius: '8px',
-              marginBottom: '10px',
-              marginRight: '10px',
-              border: 'none',
-            }}
-          >
-            수정
-          </button>
-          <button
-            type="button"
-            onClick={deleteFunc}
-            style={{
-              color: '#000',
-              backgroundColor: '#bacd92',
-              padding: '8px 13px',
-              borderRadius: '8px',
-              marginBottom: '10px',
-              border: 'none',
-            }}
-          >
-            삭제
-          </button>
-        </p>
-        <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10px' }}
-        ></div>
+        {isShow ? (
+          <p align="right">
+            <button
+              type="button"
+              onClick={updateFunc}
+              style={{
+                color: '#000',
+                backgroundColor: '#bacd92',
+                padding: '8px 13px',
+                borderRadius: '8px',
+                marginBottom: '10px',
+                marginRight: '10px',
+                border: 'none',
+              }}
+            >
+              수정
+            </button>
+            <button
+              type="button"
+              onClick={deleteFunc}
+              style={{
+                color: '#000',
+                backgroundColor: '#bacd92',
+                padding: '8px 13px',
+                borderRadius: '8px',
+                marginBottom: '10px',
+                border: 'none',
+              }}
+            >
+              삭제
+            </button>
+          </p>
+        ) : (
+          <div></div>
+        )}
 
         <form className="box-style">
           <div

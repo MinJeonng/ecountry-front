@@ -72,13 +72,6 @@ export function SetNewsDetail() {
     <>
       {/* <div className="content"> */}
       <div className="student-wrap">
-        {/* <div style={{ display: 'flex', flexDirection: 'row' }}>
-          
-        </div> */}
-        {/* <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '10%' }}
-        ></div> */}
-
         {news.length !== 0 ? (
           <div className="newsInfo"></div>
         ) : (

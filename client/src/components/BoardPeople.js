@@ -76,9 +76,7 @@ export function BoardPeopleList() {
             <NewPostBtn navigate={navigate} path={`/${id}/boardPeople/write`} />
           )}
         </p>
-        <div
-          style={{ borderBottom: '2px solid #bacd92', marginBottom: '20px' }}
-        ></div>
+
         {contents.length !== 0 ? (
           <>
             <div className="newsInfo">

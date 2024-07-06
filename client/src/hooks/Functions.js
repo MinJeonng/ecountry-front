@@ -31,14 +31,17 @@ export function getThumbnail(html) {
 }
 
 export const htmlToText = (html) => {
-  let newHtml = html;
-  while (newHtml.includes('<')) {
-    const s = newHtml.indexOf('<');
-    const e = newHtml.indexOf('>') + 1;
-    const subString = newHtml.slice(s, e);
-    newHtml = newHtml.replaceAll(subString, '');
-  }
-  return newHtml;
+  // let newHtml = html;
+  // while (newHtml.includes('<')) {
+  //   const s = newHtml.indexOf('<');
+  //   const e = newHtml.indexOf('>') + 1;
+  //   const subString = newHtml.slice(s, e);
+  //   newHtml = newHtml.replaceAll(subString, '');
+
+  // }
+  const newHtml = html.replace(/<\/?[^>]+(>|$)/g, '');
+  return newHtml.length > 50 ? newHtml.slice(0, 50) + '...' : newHtml;
+  // return newHtml;
 };
 
 export const getOnlyTime = (time) => {

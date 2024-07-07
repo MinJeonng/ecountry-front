@@ -7,8 +7,31 @@ import styled from 'styled-components';
 
 const ImaContainer = styled.div`
   @media (max-width: 1160px) {
-    width: 20%;
-    height: 20%;
+    width: 100px;
+    /* height: 30%; */
+  }
+  width: 150px;
+  height: auto;
+`;
+const NewsContent = styled.div`
+  margin-left: 18px;
+  .newsTitle {
+    @media (max-width: 1160px) {
+      font-size: 0.9rem;
+    }
+    font-size: 1rem;
+  }
+  .newsTime {
+    @media (max-width: 1160px) {
+      font-size: 0.7rem;
+    }
+    font-size: 0.8rem;
+  }
+  .newsText {
+    @media (max-width: 1160px) {
+      font-size: 0.7rem;
+    }
+    font-size: 0.8rem;
   }
 `;
 
@@ -39,14 +62,6 @@ export function SetNewsDetail() {
       // 프론트 완료 후 작성
     }
   };
-
-  // const nextPage = () => {
-  //   setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  // };
-
-  // const prevPage = () => {
-  //   setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  // };
 
   useEffect(() => {
     getNews();
@@ -85,9 +100,9 @@ export function SetNewsDetail() {
               display: 'flex',
               flexDirection: 'row',
               position: 'relative',
-              marginBottom: '5%',
+              marginBottom: '15px',
               borderRadius: '18px',
-              padding: '4%',
+              padding: '15px',
               alignItems: 'center',
               border: '0.5px solid #e2d9d9',
             }}
@@ -97,15 +112,13 @@ export function SetNewsDetail() {
               <img src={getThumbnail(news.content)} alt="News Image" />
             </ImaContainer>
 
-            <p style={{ marginLeft: '5%' }}>
-              <div>{news.title}</div>
-              <div style={{ fontSize: '11px' }}>
-                {GetTimeText(news.createdAt)}
-              </div>
-              <div style={{ fontSize: '11px' }} className="textLimit">
+            <NewsContent>
+              <div className="newsTitle">{news.title}</div>
+              <div className="newsTime">{GetTimeText(news.createdAt)}</div>
+              <div className="textLimit newsText">
                 {htmlToText(news.content)}
               </div>
-            </p>
+            </NewsContent>
           </div>
         ))}
 

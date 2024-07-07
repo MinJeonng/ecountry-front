@@ -43,7 +43,7 @@ export function CheckInvestment() {
   useEffect(() => {
     const formattedLabels = list.map((item) => {
       const newDate = new Date(item.createdAt);
-      return `${newDate.getMonth() + 1}/${newDate.getDate()}`; // Month is 0-indexed
+      return `${newDate.getMonth() + 1}/${newDate.getDate()}`;
     });
     setLabels(formattedLabels);
   }, [list]);

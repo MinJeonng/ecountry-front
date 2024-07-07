@@ -31,14 +31,17 @@ export function getThumbnail(html) {
 }
 
 export const htmlToText = (html) => {
-  let newHtml = html;
-  while (newHtml.includes('<')) {
-    const s = newHtml.indexOf('<');
-    const e = newHtml.indexOf('>') + 1;
-    const subString = newHtml.slice(s, e);
-    newHtml = newHtml.replaceAll(subString, '');
-  }
-  return newHtml;
+  // let newHtml = html;
+  // while (newHtml.includes('<')) {
+  //   const s = newHtml.indexOf('<');
+  //   const e = newHtml.indexOf('>') + 1;
+  //   const subString = newHtml.slice(s, e);
+  //   newHtml = newHtml.replaceAll(subString, '');
+
+  // }
+  const newHtml = html.replace(/<\/?[^>]+(>|$)/g, '');
+  return newHtml.length > 50 ? newHtml.slice(0, 30) + '...' : newHtml;
+  // return newHtml;
 };
 
 export const getOnlyTime = (time) => {
@@ -96,36 +99,6 @@ export const handleKeyDown = (e, func) => {
     func();
   }
 };
-
-const newsData = [
-  {
-    title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다',
-    url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
-    imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
-    date: '2024-05-29 12:14:20',
-    writer: '김재성 기자',
-    description:
-      '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
-  },
-  {
-    title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다2',
-    url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
-    imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
-    date: '2024-05-29 12:14:20',
-    writer: '김재성 기자',
-    description:
-      '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
-  },
-  {
-    title: '[오늘의 뉴스] 미국에 세계 최대 야생동물 생태통로 생긴다3',
-    url: 'https://kids.donga.com?ptype=article&no=20240529121420438217&psub=online&gbn=',
-    imageUrl: 'www/data/article/thum/202405/20240529121420.jpg',
-    date: '2024-05-29 12:14:20',
-    writer: '김재성 기자',
-    description:
-      '생태통로가 들어서기 전의 모습(맨 왼쪽)과 공사가 진행 중인 현재의 모습(가운데), 그리고 생태통로가 완공됐을 때의 상상도. 캘리포니아 주 제공101번 고속도로 근처 지역을 돌아다니고 있는 코요테. 워싱턴포스트 홈페이지 캡처',
-  },
-];
 
 const chatApi = async (msg) => {
   const res = await axios({

@@ -40,7 +40,7 @@ export const htmlToText = (html) => {
 
   // }
   const newHtml = html.replace(/<\/?[^>]+(>|$)/g, '');
-  return newHtml.length > 50 ? newHtml.slice(0, 50) + '...' : newHtml;
+  return newHtml.length > 50 ? newHtml.slice(0, 30) + '...' : newHtml;
   // return newHtml;
 };
 

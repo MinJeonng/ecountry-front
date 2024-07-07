@@ -65,7 +65,7 @@ export function SetNewsRead({ auth }) {
       },
     });
     if (res.data.success) {
-      toast('뉴스 삭제가 완료되었습니다.');
+      toast('뉴스 삭제가 완료되었습니다.', { autoClose: 1300 });
       navigate(`/${id}/news`);
     }
   };
@@ -145,7 +145,7 @@ export function SetNewsRead({ auth }) {
                       width: '100%',
                       boxSizing: 'border-box',
                       borderBottom: '1px solid rgb(163 167 172)',
-                      padding: 4,
+                      margin: 4,
                     }}
                     onClick={editNews}
                   >

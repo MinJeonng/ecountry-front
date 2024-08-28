@@ -46,6 +46,7 @@ export default function SetBank({ position }) {
           }
           childrenBottom={
             <>
+              {/* 이동 */}
               {position === '적금 상품' && <AddSavings />}
               <ChatBotBtn />
             </>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getExpire } from '../hooks/Functions';
@@ -103,33 +103,62 @@ const NoneTrans = styled.div`
   color: #686464;
 `;
 
+const getTransHistory = async (accountId, setTransList) => {
+  if (!accountId) return; // accountId가 없는 경우 API 호출 방지
+
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_HOST}/api/bank/list/${accountId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    });
+
+    if (res.data.success) {
+      setTransList(res.data.result);
+    }
+  } catch (error) {
+    console.error('입출금 내역 불러오기 실패', error);
+  }
+};
+
 //입출금 거래내역
 function CheckingAccount({ account, unit }) {
   const { accountId } = useParams();
   const [transList, setTransList] = useState([]);
 
-  useEffect(() => {
-    const getTransHistory = async () => {
-      try {
-        const res = await axios({
-          method: 'GET',
-          url: `${process.env.REACT_APP_HOST}/api/bank/list/${accountId}`,
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
-          },
-        });
-        // console.log(res);
-        if (res.data.success) {
-          // console.log('입출금내역', res.data.result);
-          setTransList(res.data.result);
-        }
-      } catch (error) {
-        console.log('입출금 내역 불러오기 실패', error);
-      }
-    };
-    getTransHistory();
+  // useEffect(() => {
+  //   const getTransHistory = async () => {
+  //     try {
+  //       const res = await axios({
+  //         method: 'GET',
+  //         url: `${process.env.REACT_APP_HOST}/api/bank/list/${accountId}`,
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'ngrok-skip-browser-warning': '69420',
+  //         },
+  //       });
+  //       // console.log(res);
+  //       if (res.data.success) {
+  //         // console.log('입출금내역', res.data.result);
+  //         setTransList(res.data.result);
+  //       }
+  //     } catch (error) {
+  //       console.log('입출금 내역 불러오기 실패', error);
+  //     }
+  //   };
+  //   getTransHistory();
+  // }, [accountId]);
+
+  const fetchHistory = useCallback(() => {
+    getTransHistory(accountId, setTransList);
   }, [accountId]);
+
+  useEffect(() => {
+    fetchHistory();
+  }, [fetchHistory]);
 
   //날짜별로 입출금 내역 정리
   const groupByDate = (transList) => {

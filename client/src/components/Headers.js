@@ -76,7 +76,7 @@ const HeaderStyle = styled.header`
 const PageHeaderBox = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 40px;
+  padding-top: 60px;
   padding-left: 20px;
 `;
 const Text = styled.div`
